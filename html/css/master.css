@@ -1,0 +1,530 @@
+/* Clear Floats Without Structural Markup */
+.clearfix:before, .clearfix:after {
+	content: "";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
+.clearfix {
+	zoom: 1;
+}
+/* General */
+body {
+	margin: 0;
+	padding: 0;
+	background: #fff;
+	font-family: "STHeiti", arial, sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	color: #3c3c3c;
+}
+a {
+	color: #3c3c3c;
+	text-decoration: none;
+}
+a:hover {
+	color: #3c3c3c;
+	text-decoration: underline;
+}
+img {
+	border: 0;
+}
+h1, h2, h3, h4 {
+	margin: 0;
+	padding: 0;
+	font-family: "STHeiti";
+	font-weight: 700;
+	color: #000;
+}
+h1 {
+	font-size: 22px;
+}
+
+h2 {
+	font-size: 17px;
+}
+
+h3 {
+	font-size: 18px;
+}
+
+h4 {
+	font-size: 13px;
+}
+
+p {
+	font-size: 12px;
+	line-height: 16px;
+}
+ul, ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.shadow {
+	float: right;
+	width: 8px;
+	height: 100%;
+}
+/* header */
+#container {
+	min-width: 928px;
+}
+#header {
+	overflow: visible;
+	height: 60px;
+	background: #dd3e31;
+}
+#header .shadow {
+	background: url(../images/top-divide-shadow.jpg) repeat-y;
+}
+#top-nav {
+	margin-right: 310px;
+}
+#top-nav .logo {
+	display: block;
+	float: left;
+	margin: 15px 0 0 20px;
+}
+#top-nav .dropdown {
+	float: left;
+	margin-left: 49px;
+}
+#top-nav .dropdown span {
+	display: block;
+	padding: 0 55px 0 12px;
+	height: 60px;
+	background: url(../images/drop-triangle-white.png) 100px 50% no-repeat;
+	line-height: 60px;
+	font-size: 23px;
+	font-weight: 700;
+	color: #ffffff;
+	cursor: pointer;
+}
+#top-nav .dropdown:hover {
+	background-color: #e4e4e4;
+}
+#top-nav .dropdown:hover span {
+	background: url(../images/drop-triangle-black.png) 100px 50% no-repeat;
+	color: #3b3b3b;
+}
+#top-nav .dropdown ul {
+	display: none;
+}
+#top-nav .dropdown ul li {
+	padding: 0 0 0 12px;
+	height: 37px;
+	line-height: 37px;
+	font-size: 20px;
+	font-weight: 700;
+	color: #3b3b3b;
+	cursor: pointer;
+}
+#top-nav .dropdown ul li:hover {
+	background: #7f7e7e;
+	color: #ffffff;
+}
+#top-nav .dropdown:hover ul {
+	display: block;
+}
+#top-nav input {
+	display: block;
+	float: right;
+	margin: 15px 20px 0 0;
+	padding: 0 30px 0 9px;
+	width: 225px;
+	height: 28px;
+	border: 1px solid #5b5b5b;
+	background: #ffffff url(../images/search-icon.png) 97% 50% no-repeat;
+}
+#user-sign {
+	float: right;
+	width: 302px;
+}
+#user-sign.not-signin a {
+	display: block;
+	float: left;
+	margin-left: 23px;
+	padding: 0 10px 0 42px;
+	height: 60px;
+	background: url(../images/weibo_icon.png) 10px 50% no-repeat;
+	line-height: 60px;
+	font-size: 18px;
+	color: #ffffff;
+}
+#user-sign.not-signin a:hover {
+	background-color: #e4e4e4;
+	color: #3b3b3b;
+	text-decoration: none;
+}
+/* user have signin */
+#user-sign.signin .account {
+	float: left;
+	margin-left: 23px;
+}
+#user-sign.signin .account:hover {
+	background-color: #e4e4e4;
+}
+#user-sign.signin .account .user-info {
+	padding: 6px 10px 0 10px;
+	height: 54px;
+	line-height: normal;
+	font-size: 13px;
+	color: #ffffff;
+	cursor: pointer;
+}
+#user-sign.signin .account:hover .user-info {
+	color: #3c3c3c;
+}
+#user-sign.signin .account .user-info img {
+	display: block;
+	margin: 0 auto 2px auto;
+}
+#user-sign.signin .account .user-info span {
+	display: block;
+	text-align: center;
+}
+#user-sign.signin .account ul {
+	display: none;
+}
+#user-sign.signin .account:hover ul {
+	display: block;
+}
+#user-sign.signin .account ul li {
+	padding-left: 10px;
+	height: 23px;
+	line-height: 23px;
+	border-top: 1px dashed #9b9b9b;
+}
+#user-sign.signin .account ul li:hover {
+	background: #7f7e7e;
+}
+#user-sign.signin .account ul li a {
+	display: block;
+	font-size: 12px;
+	color: #3c3c3c;
+}
+#user-sign.signin .account ul li:hover a {
+	color: #ffffff;
+}
+#user-sign.signin .account ul li a:hover {
+	text-decoration: none;
+}
+#content .shadow {
+	background: url(../images/content-divide-shadow.jpg) repeat-y;
+}
+#main {
+	margin-right: 310px;
+	padding-top: 30px;
+}
+#main .wrap {
+	margin: 0 auto;
+}
+#main h2 {
+	padding-left: 20px;
+}
+#main ul li {
+	position: relative;
+	float: left;
+	margin: 0 20px 20px 20px;
+	height: 307px;
+	width: 266px;
+}
+#main ul li img {
+	display: block;
+	border-radius: 0 10px 0 0;
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+#main ul li .title {
+	overflow: hidden;
+	position: absolute;
+	top: 235px;
+	left: 0;
+	height: 27px;
+	width: 100%;
+	background: url(../images/box-opacity.png);
+}
+#main ul li .title h3 {
+	float: left;
+	margin: 3px 0 0 10px;
+	color: #fff;
+}
+#main ul li .title span {
+	display: block;
+	float: left;
+	margin: 6px 0 0 10px;
+	color: #fff;
+}
+#main ul li .user {
+	overflow: hidden;
+	height: 45px;
+	background: #e5e1e1;
+	border-radius: 0 0 10px 0;
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+#main ul li .user img {
+	float: left;
+	box-shadow: none;
+}
+#main ul li .user a {
+	display: block;
+	float: left;
+	margin: 6px 0 0 10px;
+}
+#main ul li .user div {
+	float: left;
+	margin: 8px 0 0 10px;
+}
+#main ul li .user div span {
+	display: block;
+	font-size: 10px;
+	color: #3f3f3f;
+}
+#main ul li .user div p {
+	margin: 0;
+	padding: 0;
+	color: #3b3b3b;
+}
+#main ul li .user div p a {
+	float: none;
+	display: inline;
+	margin: 0;
+}
+#main ul li .add-bag,
+#main ul li .detail {
+	display: none;
+	position: absolute;
+	top: 12px;
+	height: 31px;
+	padding-top: 14px;
+	font-size: 17px;
+	color: #ffffff;
+}
+#main ul li:hover .add-bag,
+#main ul li:hover .detail {
+	display: block;
+}
+#main ul li .add-bag {
+	left: 18px;
+	padding-left: 35px;
+	width: 84px;
+	background: url(../images/add-bag-btn.png);
+}
+#main ul li .add-bag:hover {
+	background: url(../images/add-bag-btn-hover.png);
+	text-decoration: none;
+}
+#main ul li .detail {
+	right: 18px;
+	padding-left: 35px;
+	width: 84px;
+	background: url(../images/detail-btn.png);
+}
+#main ul li .detail:hover {
+	background: url(../images/detail-btn-hover.png);
+	text-decoration: none;
+}
+/* sidebar */
+#sidebar {
+	float: right;
+	width: 302px;
+	padding-top: 30px;
+}
+#my-bag {
+	margin: 0 auto;
+	width: 250px;
+}
+#my-bag h2 {
+	height: 32px;
+	line-height: 32px;
+	padding-left: 12px;
+	background: #56230d;
+	font-size: 17px;
+	color: #ffffff;
+}
+#my-bag .accordion {
+	width: auto;
+	border: 1px solid #8a8a8a;
+}
+#my-bag .ui-accordion .ui-accordion-header {
+	margin: 0;
+	padding: 0 0 0 26px;
+	height: 25px;
+	line-height: 25px;
+	background: #e3d0c8;
+	border: none;
+	border-top: 1px solid #716864;
+	border-bottom: 1px solid #716864;
+	border-radius: 0;
+}
+#my-bag .ui-accordion .ui-accordion-content {
+	top: 0;
+	margin-bottom: 0;
+	padding: 0;
+	background: #f0eaea;
+	border: none;
+	border-radius: 0;
+}
+#my-bag h3 {
+	font-size: 15px;
+	color: #3c3c3c;
+}
+#my-bag .accordion .accordion {
+	padding: 0;
+}
+#my-bag .accordion .accordion .ui-accordion-header a span {
+	font-size: 13px;
+}
+#my-bag .accordion .accordion .ui-accordion-header a small {
+	font-size: 11px;
+}
+#my-bag .accordion .ui-state-active {
+	border-bottom: none;
+}
+#my-bag .accordion ul {
+	border-top: 1px dashed #c2c2c2 !important;
+	padding: 0 11px 0 19px !important;
+}
+#my-bag .accordion ul li {
+	padding: 3px 0;
+	border-bottom: 1px dashed #c2c2c2 !important;
+	font-size: 15px;
+	color: #3c3c3c;
+}
+#my-bag .accordion ul li table {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+#my-bag .accordion ul li table td {
+	vertical-align: middle;
+	padding: 0 10px 0 16px;
+}
+#my-bag .accordion ul li table td.del {
+	padding: 0;
+	width: 19px;
+}
+#my-bag .accordion ul li.last {
+	border-bottom: none !important;
+}
+#my-bag .accordion .ui-accordion .ui-accordion-header {
+	background: #f0eaea !important;
+}
+#my-bag .accordion .ui-accordion .ui-accordion-header {
+	border-top: 1px dashed #c2c2c2 !important;
+}
+#my-bag .accordion .accordion ul {
+	border-top: 1px dashed #C2C2C2 !important;
+    padding: 0 !important;
+    margin: 0 11px 0 14px !important;
+}
+#my-bag .accordion .accordion ul li {
+	margin-left: 8px;
+}
+#my-bag .accordion .accordion div a {
+	display: block;
+	float: right;
+	margin: 5px 0;
+	padding-left: 4px;
+	width: 65px;
+	height: 24px;
+	line-height: 24px;
+	background: url(../images/button01.png);
+	font-size: 13px;
+	color: #ffffff;
+}
+#my-bag .accordion .accordion div a:hover {
+	background: url(../images/button02.png);
+	text-decoration: none;
+}
+
+#my-bag .accordion .accordion ul li table a {
+	float: none;
+	margin: 0 0;
+	padding-left: 0;
+	width: 19px;
+	height: 15px;
+	line-height: 15px;
+	background: url(../images/closeBtn.png);
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #ffffff;
+}
+#my-bag .accordion .accordion ul li table a:hover {
+	background: url(../images/closeBtnHover.png);
+	text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
