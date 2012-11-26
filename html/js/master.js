@@ -18,8 +18,8 @@ $(function() {
 	
 	
 	var $win = $(window);
-	//content shadow height
-	$("#content .shadow").height($("#content").height());
+	
+	
 	//header fix top and sidebar not scroll up
 	$("#header").scrollToFixed({zIndex: 99});
 	$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
@@ -35,7 +35,7 @@ $(function() {
 	}).trigger("resize");
 	
 	//sidebar accordion
-	$( "#sidebar .accordion").accordion({heightStyle: "content", active: 0});
+	$( "#sidebar .accordion").accordion({heightStyle: "content"});
 	
 	//token input
 
