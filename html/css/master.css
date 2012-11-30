@@ -71,9 +71,6 @@ ul, ol {
 	background: url(../images/content-divide-shadow.jpg);
 	z-index: 100;
 }
-#shadow-divide img {
-	position: fixed;
-}
 /* header */
 #container {
 	position: relative;
@@ -133,7 +130,8 @@ ul, ol {
 #top-nav .dropdown:hover ul {
 	display: block;
 }
-#top-nav input {
+/*
+#search-address {
 	display: block;
 	float: right;
 	margin: 15px 20px 0 0;
@@ -143,6 +141,33 @@ ul, ol {
 	border: 1px solid #5b5b5b;
 	background: #ffffff url(../images/search-icon.png) 97% 50% no-repeat;
 }
+*/
+#search-address-wrap {
+	position: relative;
+	float: right;
+	margin: 15px 20px 0 0;
+}
+#search-address-wrap .token-input-list-facebook {
+	width: 234px;
+	padding-right: 30px;
+	border: 1px solid #5b5b5b;
+	background: #ffffff url(../images/search-icon.png) 97% 4px no-repeat;
+}
+.token-input-dropdown-facebook {
+	width: 262px !important;
+	z-index: 999 !important;
+}
+#search-address-wrap label {
+	position: absolute;
+	top: 6px;
+	left: 4px;
+	font-size: 15px;
+	color: #828282;
+	cursor: text;
+}
+
+
+
 #user-sign {
 	float: right;
 	width: 302px;
@@ -304,10 +329,6 @@ ul, ol {
 	padding-top: 14px;
 	font-size: 17px;
 	color: #ffffff;
-}
-#main ul li:hover .add-bag,
-#main ul li:hover .detail {
-	display: block;
 }
 #main ul li .add-bag {
 	left: 18px;
