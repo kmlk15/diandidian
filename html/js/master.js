@@ -36,7 +36,7 @@ $(function() {
 	}).trigger("resize");
 	
 	//sidebar accordion
-	$( "#sidebar .accordion").accordion({heightStyle: "content"});
+	$( "#sidebar .accordion").accordion({heightStyle: "content", collapsible: true, active: false});
 	
 	//token input
 	$("#search-address").tokenInput([

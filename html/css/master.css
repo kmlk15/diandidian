@@ -113,6 +113,7 @@ ul, ol {
 }
 #top-nav .dropdown ul {
 	display: none;
+	border-top: 1px dashed #888888;
 }
 #top-nav .dropdown ul li {
 	padding: 0 0 0 12px;
@@ -456,10 +457,10 @@ ul, ol {
 	display: block;
 	float: right;
 	margin: 5px 11px 5px 0;
-	padding-left: 4px;
-	width: 65px;
-	height: 24px;
-	line-height: 24px;
+	padding-left: 8px;
+	width: 69px;
+	height: 28px;
+	line-height: 28px;
 	background: url(../images/button01.png);
 	font-size: 13px;
 	color: #ffffff;
