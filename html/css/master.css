@@ -492,7 +492,14 @@ ul, ol {
 #my-bag .ui-accordion .accordion-content {
 	overflow: hidden;
 }
-
+#my-bag.empty div {
+	padding-left: 12px;
+	height: 22px;
+	line-height: 22px;
+	background: #f0eaea;
+	font-size: 15px;
+	color: #3c3c3c;
+}
 
 
 
