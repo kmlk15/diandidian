@@ -18,22 +18,22 @@ $(function() {
 	
 	
 	var $win = $(window);
-	
-	
-	//header fix top and sidebar not scroll up
-	$("#header").scrollToFixed({zIndex: 99});
-	$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
-	///$("#main h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
-	
 	//center Attraction List
 	var itemWidth = $("#main ul li").outerWidth(true);
-	//content min-width
-	
 	$win.resize(function(e) {
 		var mainWidth = $("#main").width();
 		var rowCount = Math.floor(mainWidth / itemWidth);
-		$("#main .wrap").width(itemWidth*rowCount);
+		var mainWrapWidth = itemWidth*rowCount;
+		$("#main .wrap").width(mainWrapWidth);
+		//adjust #main h2 width
+		//var leftPadding = (mainWidth - mainWrapWidth) / 2 + parseInt($("#main ul li").css("margin-left"));
+		//$("#main h2").css("padding-left", leftPadding+"px");
+		
 	}).trigger("resize");
+	//header fix top and sidebar not scroll up
+	$("#header").scrollToFixed({zIndex: 99});
+	$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
+	$("#main h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
 	
 	//sidebar accordion
 	//initial state
