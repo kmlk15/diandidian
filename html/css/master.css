@@ -384,51 +384,48 @@ ul, ol {
 	color: #ffffff;
 }
 #my-bag .accordion {
-	width: auto;
 	border: 1px solid #8a8a8a;
 }
-#my-bag .ui-accordion .ui-accordion-header {
+#my-bag .accordion .accordion-header {
 	margin: 0;
 	padding: 0 0 0 26px;
 	height: 25px;
 	line-height: 25px;
-	background: #e3d0c8;
-	border: none;
+	background: #e3d0c8 url(../images/accordion-head-icon.png) 11px 50% no-repeat;
 	border-top: 1px solid #716864;
 	border-bottom: 1px solid #716864;
-	border-radius: 0;
-}
-#my-bag .ui-accordion .ui-accordion-content {
-	top: 0;
-	margin-bottom: 0;
-	padding: 0;
-	background: #f0eaea;
-	border: none;
-	border-radius: 0;
-}
-#my-bag h3, #my-bag h4 {
+	font-weight: normal;
 	font-size: 15px;
 	color: #3c3c3c;
+	cursor: pointer;
 }
-#my-bag .accordion .accordion {
-	padding: 0;
+#my-bag .accordion .accordion-header.state-active {
+	border-bottom: none;
+	background-image: url(../images/accordion-head-icon-active.png);
 }
-#my-bag .accordion .accordion .ui-accordion-header a span {
+#my-bag .accordion .accordion .accordion-header {
+	border-bottom: none;
+	border-top: 1px dashed #c2c2c2;
+	background-color: #f0eaea;
+}
+#my-bag .accordion .accordion-content {
+	display: none;
+	border: none;
+	background: #f0eaea;
+}
+#my-bag .accordion .accordion .accordion-header a span {
 	font-size: 13px;
 }
-#my-bag .accordion .accordion .ui-accordion-header a small {
+#my-bag .accordion .accordion .accordion-header a small {
 	font-size: 11px;
 }
-#my-bag .accordion .ui-state-active {
-	border-bottom: none;
-}
 #my-bag .accordion ul {
-	border-top: 1px dashed #c2c2c2 !important;
-	padding: 0 11px 0 19px !important;
+	border-top: 1px dashed #c2c2c2;
+	padding: 0 11px 0 19px;
 }
 #my-bag .accordion ul li {
 	padding: 3px 0;
-	border-bottom: 1px dashed #c2c2c2 !important;
+	border-bottom: 1px dashed #c2c2c2;
 	font-size: 15px;
 	color: #3c3c3c;
 }
@@ -450,19 +447,12 @@ ul, ol {
 	width: 19px;
 }
 #my-bag .accordion ul li.last {
-	border-bottom: none !important;
-}
-#my-bag .accordion .ui-accordion .ui-accordion-header {
-	background: #f0eaea !important;
-}
-#my-bag .accordion .ui-accordion .ui-accordion-header {
 	border-bottom: none;
-	border-top: 1px dashed #c2c2c2 !important;
 }
 #my-bag .accordion .accordion ul {
-	border-top: 1px dashed #C2C2C2 !important;
-    padding: 0 !important;
-    margin: 0 11px 0 14px !important;
+	border-top: 1px dashed #c2c2c2;
+    padding: 0;
+    margin: 0 11px 0 14px;
 }
 #my-bag .accordion .accordion ul li {
 	margin-left: 8px;
@@ -475,12 +465,12 @@ ul, ol {
 	width: 69px;
 	height: 28px;
 	line-height: 28px;
-	background: url(../images/button01.png);
+	background: url(../images/button01.png) no-repeat;
 	font-size: 13px;
 	color: #ffffff;
 }
 #my-bag .accordion .accordion div a:hover {
-	background: url(../images/button02.png);
+	background-image: url(../images/button02.png);
 	text-decoration: none;
 }
 #my-bag .accordion .accordion ul li table a {
@@ -490,30 +480,18 @@ ul, ol {
 	width: 19px;
 	height: 15px;
 	line-height: 15px;
-	background: url(../images/closeBtn.png);
+	background: url(../images/closeBtn.png) no-repeat;
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 10px;
 	font-weight: bold;
 	color: #ffffff;
 }
 #my-bag .accordion .accordion ul li table a:hover {
-	background: url(../images/closeBtnHover.png);
+	background-image: url(../images/closeBtnHover.png);
 	text-decoration: none;
 }
-#my-bag .ui-accordion .ui-accordion-content {
+#my-bag .ui-accordion .accordion-content {
 	overflow: hidden;
-}
-#my-bag .ui-icon {
-	top: 7px;
-	margin-top: 0;
-	width: 10px;
-	height: 10px;
-}
-#my-bag .ui-state-active .ui-icon {
-	background: url(../images/sprite.png) 0 -11px no-repeat !important;
-}
-#my-bag .ui-state-default .ui-icon {
-	background: url(../images/sprite.png) 0 0 no-repeat;
 }
 
 

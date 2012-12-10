@@ -36,7 +36,21 @@ $(function() {
 	}).trigger("resize");
 	
 	//sidebar accordion
-	$( "#sidebar .accordion").accordion({heightStyle: "content", collapsible: true, active: false});
+	//initial state
+	var $initialOpenHeader = $("#sidebar .accordion .accordion-header:nth-child(1)");
+	$initialOpenHeader.addClass("state-active");
+	$initialOpenHeader.next(".accordion-content").show();
+	$("#sidebar .accordion .accordion-header").click(function(e) {
+		var $clickedHeader = $(this);
+		var $headerNextContent = $clickedHeader.next(".accordion-content");
+		if($headerNextContent.is(":visible")) {
+			$clickedHeader.removeClass("state-active");
+		} else {
+			$clickedHeader.addClass("state-active");
+		}
+		$headerNextContent.slideToggle(200);
+	});
+	
 	
 	//token input
 	$("#search-address").tokenInput([
