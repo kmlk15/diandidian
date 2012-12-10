@@ -68,13 +68,13 @@ ul, ol {
 	right: 310px;
 	width: 8px;
 	height: 100%;
-	background: rgba(0,0,0,0.3);
+	background: url(../images/divider-shadow.png) repeat-y;
 	z-index: 100;
 }
 /* header */
 #container {
 	position: relative;
-	min-width: 928px;
+	min-width: 912px;
 }
 #header {
 	overflow: visible;
@@ -243,20 +243,21 @@ ul, ol {
 }
 #main {
 	margin-right: 310px;
-	padding-top: 30px;
 }
 #main .wrap {
 	margin: 0 auto;
 }
 #main h2 {
 	margin-bottom: 7px;
+	padding-top: 30px;
 	padding-left: 20px;
+	font-size: 23px;
 	color: #3b3b3b;
 }
 #main ul li {
 	position: relative;
 	float: left;
-	margin: 0 20px 20px 20px;
+	margin: 0 10px 20px 10px;
 	height: 307px;
 	width: 266px;
 	border-radius: 0 10px 10px 0;
@@ -277,7 +278,8 @@ ul, ol {
 }
 #main ul li .title h3 {
 	float: left;
-	margin: 3px 0 0 10px;
+	margin: 1px 0 0 10px;
+	line-height: 27px;
 	color: #fff;
 }
 #main ul li .title span {
@@ -322,6 +324,7 @@ ul, ol {
 	margin: 0;
 }
 #main ul li .add-bag,
+#main ul li .added-bag,
 #main ul li .detail {
 	display: none;
 	position: absolute;
@@ -330,12 +333,23 @@ ul, ol {
 	padding-top: 14px;
 	font-size: 17px;
 	color: #ffffff;
+	cursor: pointer;
 }
-#main ul li .add-bag {
+#main ul li .add-bag,
+#main ul li .added-bag {
 	left: 18px;
 	padding-left: 35px;
 	width: 84px;
+}
+#main ul li .add-bag {
 	background: url(../images/add-bag-btn.png);
+}
+#main ul li .added-bag {
+	background: url(../images/added-bag-btn.png);
+	cursor: default;
+}
+#main ul li .added-bag:hover {
+	text-decoration: none;
 }
 #main ul li .add-bag:hover {
 	background: url(../images/add-bag-btn-hover.png);

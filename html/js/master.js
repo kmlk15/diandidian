@@ -22,8 +22,8 @@ $(function() {
 	
 	//header fix top and sidebar not scroll up
 	$("#header").scrollToFixed({zIndex: 99});
-	$("#shadow-divide img").scrollToFixed({zIndex: 99});
 	$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
+	///$("#main h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
 	
 	//center Attraction List
 	var itemWidth = $("#main ul li").outerWidth(true);
@@ -67,7 +67,9 @@ $(function() {
 		var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del"><a href="#"></a></td></tr></table></li>';
 		$ul.append(itemHtml);
 		updateBagCount($ul);
-		searchBagItem($ul,'');
+		//searchBagItem($ul,'');
+		$(this).next(".added-bag").css("display", "block");
+		$(this).css("display", "none");
 		return false;
 	});
 	
@@ -88,11 +90,14 @@ $(function() {
 			//alert(searchBagItem($ul, addressName));
 			if(!searchBagItem($ul, addressName)) {
 				$(this).find(".add-bag").css("display", "block");
+			} else {
+				$(this).find(".added-bag").css("display", "block");
 			}
 			$(this).find(".detail").css("display", "block");
 		},
 		function(){
 			$(this).find(".add-bag").css("display", "none");
+			$(this).find(".added-bag").css("display", "none");
 			$(this).find(".detail").css("display", "none");
 		}
 	);
