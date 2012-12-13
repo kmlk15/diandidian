@@ -1,3 +1,6 @@
+/* Less CSS Variable */
+@white: #ffffff;
+
 /* Clear Floats Without Structural Markup */
 .clearfix:before, .clearfix:after {
 	content: "";
@@ -13,7 +16,7 @@
 body {
 	margin: 0;
 	padding: 0;
-	background: #fff;
+	background: @white;
 	font-family: "STHeiti", arial, sans-serif;
 	font-size: 12px;
 	font-weight: 400;
