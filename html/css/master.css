@@ -31,7 +31,7 @@ a:hover {
 	text-decoration: underline;
 }
 img {
-	border: 0;
+	border: none;
 }
 h1, h2, h3, h4 {
 	margin: 0;
@@ -55,30 +55,55 @@ h3 {
 h4 {
 	font-size: 13px;
 }
-
 p {
-	font-size: 12px;
-	line-height: 16px;
+	font-size: 13px;
+	line-height: 18px;
+	color: #3f3f3f;
 }
 ul, ol {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
+
+.rounded-corners (@radius: 5px) {
+	border-radius: @radius;
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+}
+.opacity (@opacity: 0.8) {
+	-moz-opacity: @opacity;/* Netscape */
+	-khtml-opacity: @opacity;/* Safari 1.x */
+	opacity: @opacity;/* Good browsers */
+}
+
+/* Layout */
+#container {
+	position: relative;
+	width: 100%;
+	min-width: 1200px;
+}
+#home #container {
+	min-width: 912px;
+}
+#main {
+	margin-right: 310px;
+}
+#sidebar {
+	float: right;
+	width: 302px;
+	padding-top: 30px;
+}
 #shadow-divide {
 	position: absolute;
 	top: 0;
-	right: 310px;
+	right: 302px;
 	width: 8px;
 	height: 100%;
 	background: url(../images/divider-shadow.png) repeat-y;
 	z-index: 100;
 }
 /* header */
-#container {
-	position: relative;
-	min-width: 912px;
-}
 #header {
 	overflow: visible;
 	height: 60px;
@@ -134,18 +159,6 @@ ul, ol {
 #top-nav .dropdown:hover ul {
 	display: block;
 }
-/*
-#search-address {
-	display: block;
-	float: right;
-	margin: 15px 20px 0 0;
-	padding: 0 30px 0 9px;
-	width: 225px;
-	height: 28px;
-	border: 1px solid #5b5b5b;
-	background: #ffffff url(../images/search-icon.png) 97% 50% no-repeat;
-}
-*/
 #search-address-wrap {
 	position: relative;
 	float: right;
@@ -169,9 +182,6 @@ ul, ol {
 	color: #828282;
 	cursor: text;
 }
-
-
-
 #user-sign {
 	float: right;
 	width: 302px;
@@ -244,19 +254,19 @@ ul, ol {
 #user-sign.signin .account ul li a:hover {
 	text-decoration: none;
 }
-#main {
-	margin-right: 310px;
-}
-#main .wrap {
+
+
+/* attractions-list */
+#attractions-list {
 	margin: 0 auto;
 }
-#main h2 {
+#attractions-list h2 {
 	padding: 30px 0 7px 10px;
 	background: #ffffff;
 	font-size: 23px;
 	color: #3b3b3b;
 }
-#main ul li {
+#attractions-list ul li {
 	position: relative;
 	float: left;
 	margin: 0 10px 20px 10px;
@@ -265,11 +275,11 @@ ul, ol {
 	border-radius: 0 10px 10px 0;
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 }
-#main ul li img {
+#attractions-list ul li img {
 	display: block;	
 	border-radius: 0 10px 0 0;
 }
-#main ul li .title {
+#attractions-list ul li .title {
 	overflow: hidden;
 	position: absolute;
 	top: 235px;
@@ -278,56 +288,59 @@ ul, ol {
 	width: 100%;
 	background: url(../images/box-opacity.png);
 }
-#main ul li .title h3 {
+#attractions-list ul li .title h3 {
 	float: left;
 	margin: 1px 0 0 10px;
 	line-height: 27px;
 	color: #fff;
 }
-#main ul li .title span {
+#attractions-list ul li .title span {
 	display: block;
 	float: left;
 	margin: 6px 0 0 10px;
 	color: #fff;
 }
-#main ul li .user {
+#attractions-list ul li .user {
 	overflow: hidden;
 	height: 45px;
 	background: #e5e1e1;
 	border-radius: 0 0 10px 0;
 	
 }
-#main ul li .user img {
+#attractions-list ul li .user img {
 	float: left;
 	box-shadow: none;
 }
-#main ul li .user a {
+#attractions-list ul li .user a {
 	display: block;
 	float: left;
 	margin: 6px 0 0 10px;
 }
-#main ul li .user div {
+#attractions-list ul li .user div {
 	float: left;
-	margin: 8px 0 0 10px;
+	margin: 6px 0 0 10px;
 }
-#main ul li .user div span {
+#attractions-list ul li .user div span {
 	display: block;
 	font-size: 10px;
+	line-height: 16px;
 	color: #3f3f3f;
 }
-#main ul li .user div p {
+#attractions-list ul li .user div p {
 	margin: 0;
 	padding: 0;
+	font-size: 12px;
+	line-height: 15px;
 	color: #3b3b3b;
 }
-#main ul li .user div p a {
+#attractions-list ul li .user div p a {
 	float: none;
 	display: inline;
 	margin: 0;
 }
-#main ul li .add-bag,
-#main ul li .added-bag,
-#main ul li .detail {
+#attractions-list ul li .add-bag,
+#attractions-list ul li .added-bag,
+#attractions-list ul li .detail {
 	display: none;
 	position: absolute;
 	top: 12px;
@@ -337,42 +350,37 @@ ul, ol {
 	color: #ffffff;
 	cursor: pointer;
 }
-#main ul li .add-bag,
-#main ul li .added-bag {
+#attractions-list ul li .add-bag,
+#attractions-list ul li .added-bag {
 	left: 18px;
 	padding-left: 35px;
 	width: 84px;
 }
-#main ul li .add-bag {
+#attractions-list ul li .add-bag {
 	background: url(../images/add-bag-btn.png);
 }
-#main ul li .added-bag {
+#attractions-list ul li .added-bag {
 	background: url(../images/added-bag-btn.png);
 	cursor: default;
 }
-#main ul li .added-bag:hover {
+#attractions-list ul li .added-bag:hover {
 	text-decoration: none;
 }
-#main ul li .add-bag:hover {
+#attractions-list ul li .add-bag:hover {
 	background: url(../images/add-bag-btn-hover.png);
 	text-decoration: none;
 }
-#main ul li .detail {
+#attractions-list ul li .detail {
 	right: 18px;
 	padding-left: 35px;
 	width: 84px;
 	background: url(../images/detail-btn.png);
 }
-#main ul li .detail:hover {
+#attractions-list ul li .detail:hover {
 	background: url(../images/detail-btn-hover.png);
 	text-decoration: none;
 }
-/* sidebar */
-#sidebar {
-	float: right;
-	width: 302px;
-	padding-top: 30px;
-}
+/* my-bag */
 #my-bag {
 	margin: 0 auto;
 	width: 250px;
@@ -384,6 +392,7 @@ ul, ol {
 	background: #56230d;
 	font-size: 17px;
 	color: #ffffff;
+	border-radius: 0 7px 0 0;
 }
 #my-bag .accordion {
 	border: 1px solid #8a8a8a;
@@ -502,6 +511,220 @@ ul, ol {
 	background: #f0eaea;
 	font-size: 15px;
 	color: #3c3c3c;
+}
+
+#detail #main {
+	padding-top: 30px;
+}
+
+
+#attraction-detal {
+	margin: 0 auto 50px auto;
+	padding: 14px 0 0 0;
+	width: 842px;
+	border: 1px solid #c2c2c2;
+	border-radius: 0 8px 8px 0;
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+	.breadcrumbs {
+		margin-bottom: 8px;
+		padding: 0 0 0 30px;
+		font-weight: bold;
+		font-size: 23px;
+		color: #3f3f3f;
+		a {
+			color: #3f3f3f;
+		}
+	}
+	.gallery {
+		margin-bottom: 15px;
+		.detail {
+			display: block;
+			margin: 0 auto;
+		}
+		.thumbnails {
+			position: relative;
+			margin: 0 auto;
+			width: 780px;
+			height: 67px;
+			background: #e5e1e1;
+			.arrow {
+				position: absolute;
+				top: 0;
+				display: block;
+				width: 24px;
+				height: 100%;
+				cursor: pointer;
+				img {
+					display: block;
+					margin: 29px auto 0 auto;
+				}
+				&.left-arrow {
+					left: 0;
+				}
+				&.right-arrow {
+					right: 0;
+				}
+			}
+			.ul-wrap {
+				overflow: hidden;
+				position: relative;
+				margin: 0 auto;
+				width: 732px;
+				height: 100%;
+				ul {
+					position: absolute;
+					top: 0;
+					left: 0;
+					margin: 5px 0 0 0;
+					li {
+						position: relative;
+						float: left;
+						margin-right: 3px;
+						border: 1px solid #4b4b4b;
+						background: #000000;
+						&.active, &:hover, {
+							img {
+								.opacity(1);
+							}
+						}
+						&.last {
+							margin-right: 0;
+						}
+						img {
+							display: block;
+							.opacity(0.45);
+						}
+					}
+				}
+			}
+		}
+	}
+	.user-content {
+		margin: 0 auto 14px auto;
+		width: 780px;
+		.col {
+			float: left;
+			&.col1 {
+				width: 60px;
+			}
+			&.col2 {
+				width: 600px;
+				border-right: 1px dashed #7f7e7e;
+				.title {
+					margin-bottom: 7px;
+					h2 {
+						float: left;
+						font-size: 15px;
+						line-height: 18px;
+						color: #3f3f3f;
+					}
+					span {
+						font-size: 12px;
+						line-height: 18px;
+					}
+				}
+				.content {
+					p {
+						margin: 0;
+						&.more {
+							display: none;
+						}
+					}
+					.switch {
+						span {
+							display: block;
+							float: left;
+							padding-right: 13px;
+							color: #dd3e31;
+							cursor: pointer;
+							&.more {
+								background: url(../images/red-triangle-dropdown.png) right 50% no-repeat;
+							}
+							&.less {
+								display: none;
+								background: url(../images/red-triangle-up.png) right 50% no-repeat;
+							}
+						}
+					}
+				}
+			}
+			&.col3 {
+				width: 119px;
+				span {
+					display: block;
+					float: right;
+					padding-left: 27px;
+					width: 77px;
+					height: 29px;
+					line-height: 29px;
+					font-size: 17px;
+					color: #ffffff;
+					cursor: pointer;
+					&.add-bag {
+						margin-bottom: 14px;
+						background: url(../images/detail-add-bag-btn.png) no-repeat;
+					}
+					&.upload-photo {
+						background: url(../images/uploade-photo-btn.png) no-repeat;
+					}
+				}
+			}
+		}
+	}
+	.basic-info {
+		padding: 14px 34px 14px 90px;
+		background: #e5e1e1;
+		font-size: 13px;
+		line-height: 15px;
+		color: #3c3c3c;
+		border-radius: 0 0 8px 0;
+		hr {
+			margin: 13px 0 10px 0;
+			height: 0;
+			border: none;
+			border-top: 1px dashed #7f7e7e;
+		}
+		p {
+			margin: 0;
+			font-size: 13px;
+			color: #3c3c3c;
+			line-height: 15px;
+		}
+		table {
+			border: none;
+			border-collapse: collapse;
+			td {
+				padding: 0;
+				border: none;
+			}
+		}
+		.row {
+			&.row1 {
+				.col {
+					float: left;
+					width: 359px;
+					&.col1 {
+						p {
+							line-height: 18px;
+						}
+					}
+					&.col2 {
+						padding-top: 2px;
+					}
+				}
+			}
+			&.row2, &.row3 {
+				table {
+					td.label {
+						vertical-align: top;
+						width: 35px;
+					}
+				}
+			}
+		}
+	}
+	
+	
 }
 
 

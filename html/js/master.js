@@ -19,21 +19,17 @@ $(function() {
 	
 	var $win = $(window);
 	//center Attraction List
-	var itemWidth = $("#main ul li").outerWidth(true);
+	var itemWidth = $("#attractions-list ul li").outerWidth(true);
 	$win.resize(function(e) {
 		var mainWidth = $("#main").width();
 		var rowCount = Math.floor(mainWidth / itemWidth);
 		var mainWrapWidth = itemWidth*rowCount;
-		$("#main .wrap").width(mainWrapWidth);
-		//adjust #main h2 width
-		//var leftPadding = (mainWidth - mainWrapWidth) / 2 + parseInt($("#main ul li").css("margin-left"));
-		//$("#main h2").css("padding-left", leftPadding+"px");
-		
+		$("#attractions-list").width(mainWrapWidth);
 	}).trigger("resize");
 	//header fix top and sidebar not scroll up
 	$("#header").scrollToFixed({zIndex: 99});
 	$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
-	$("#main h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
+	$("#attractions-list h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
 	
 	//sidebar accordion
 	//initial state
@@ -73,8 +69,8 @@ $(function() {
 	    
 	
 	
-	$("#main ul li .add-bag").click(function(e) {
-		var bagAddress = $("#main h2 .address").text();//which bag to add
+	$("#attractions-list ul li .add-bag").click(function(e) {
+		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
 		var titleText = $(this).prevAll(".title").find("h3").text();
@@ -96,7 +92,7 @@ $(function() {
 	});
 	
 	
-	$("#main ul li").hover(
+	$("#attractions-list ul li").hover(
 		function(){
 			var addressName = $(this).find(".title h3").text();
 			var $ul = $("#my-bag .accordion .accordion div ul");
@@ -116,9 +112,80 @@ $(function() {
 		}
 	);
 	
+	initDetailGallery();
+	
+	$("#attraction-detal .user-content .col2 .content .switch .more").click(function(e) {
+		$(this).parents(".content").find("p.more").show();
+		$(this).hide();
+		$(this).next(".less").show();
+	});
+	$("#attraction-detal .user-content .col2 .content .switch .less").click(function(e) {
+		$(this).parents(".content").find("p.more").hide();
+		$(this).hide();
+		$(this).prev(".more").show();
+	});
+	
 })
 
-
+/**
+detail page gallery
+*/
+function initDetailGallery() {
+	var stepWidth = 3;
+	var moveTimeout = 1;
+	var ulWrapWidth = $("#attraction-detal .thumbnails .ul-wrap").width();
+	//preview ul width
+	var $ul = $("#attraction-detal .thumbnails ul");
+	var ulWidth = 0;
+	$ul.find("li").each(function(index, element) {
+		ulWidth = ulWidth + $(element).outerWidth(true);
+	});
+	$ul.width(ulWidth);
+	$ul.find("li a").click(function(e) {
+		var href = $(this).attr("href");
+		var $detail = $(this).parents(".gallery").children(".detail");
+		$detail.attr("src", href);
+		return false;
+	});
+	var moveLeftInterval = null;
+	var moveRightInterval = null;
+	$("#attraction-detal .thumbnails .left-arrow").hover(
+		function(){
+			moveLeftInterval = setInterval(moveLeft, moveTimeout);
+		},
+		function(){
+			if (moveLeftInterval) {
+				clearInterval(moveLeftInterval);
+			}
+		}
+	);
+	$("#attraction-detal .thumbnails .right-arrow").hover(
+		function() {
+			moveRightInterval = setInterval(moveRight,moveTimeout);
+		},
+		function() {
+			if (moveRightInterval) {
+				clearInterval(moveRightInterval);
+			}
+		}
+	);
+	function moveLeft() {
+		var leftWidth = (parseInt($ul.css("left")))*-1;
+		
+		leftWidth = leftWidth-stepWidth;
+		if(leftWidth<0) leftWidth = 0;
+		$ul.css("left", "-"+leftWidth+"px");
+	}
+	function moveRight() {
+		var leftWidth = (parseInt($ul.css("left")))*-1;
+		leftWidth = leftWidth + stepWidth;
+		console.log(leftWidth)
+		var maxLeftWidth = ulWidth-ulWrapWidth;
+		console.log(maxLeftWidth)
+		if (leftWidth > maxLeftWidth) leftWidth = maxLeftWidth;
+		$ul.css("left", "-"+leftWidth+"px");
+	}
+}
 
 /**
 update bag item account
