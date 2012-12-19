@@ -115,12 +115,12 @@ $(function() {
 	initDetailGallery();
 	
 	$("#attraction-detal .user-content .col2 .content .switch .more").click(function(e) {
-		$(this).parents(".content").find("p.more").show();
+		$(this).parents(".content").find("p span.more").show();
 		$(this).hide();
 		$(this).next(".less").show();
 	});
 	$("#attraction-detal .user-content .col2 .content .switch .less").click(function(e) {
-		$(this).parents(".content").find("p.more").hide();
+		$(this).parents(".content").find("p span.more").hide();
 		$(this).hide();
 		$(this).prev(".more").show();
 	});
@@ -141,6 +141,13 @@ function initDetailGallery() {
 		ulWidth = ulWidth + $(element).outerWidth(true);
 	});
 	$ul.width(ulWidth);
+	//remove arrow if gallery not enough
+	if (ulWidth < ulWrapWidth) {
+		$ul.css("position", "static");
+		$("#attraction-detal .gallery .thumbnails .arrow").hide();
+	}
+	
+	
 	$ul.find("li a").click(function(e) {
 		var href = $(this).attr("href");
 		var $detail = $(this).parents(".gallery").children(".detail");

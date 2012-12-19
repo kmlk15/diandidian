@@ -515,11 +515,10 @@ ul, ol {
 
 #detail #main {
 	padding-top: 30px;
+	padding-bottom: 50px;
 }
-
-
 #attraction-detal {
-	margin: 0 auto 50px auto;
+	margin: 0 auto;
 	padding: 14px 0 0 0;
 	width: 842px;
 	border: 1px solid #c2c2c2;
@@ -575,7 +574,7 @@ ul, ol {
 					position: absolute;
 					top: 0;
 					left: 0;
-					margin: 5px 0 0 0;
+					margin: 5px auto 0 auto;
 					li {
 						position: relative;
 						float: left;
@@ -608,7 +607,8 @@ ul, ol {
 				width: 60px;
 			}
 			&.col2 {
-				width: 600px;
+				padding-right: 15px;
+				width: 585px;
 				border-right: 1px dashed #7f7e7e;
 				.title {
 					margin-bottom: 7px;
@@ -626,7 +626,7 @@ ul, ol {
 				.content {
 					p {
 						margin: 0;
-						&.more {
+						.more {
 							display: none;
 						}
 					}
@@ -705,11 +705,18 @@ ul, ol {
 					width: 359px;
 					&.col1 {
 						p {
-							line-height: 18px;
+							line-height: 24px;
 						}
 					}
 					&.col2 {
 						padding-top: 2px;
+						table {
+							.website {
+								td {
+									padding-top: 8px;
+								}
+							}
+						}
 					}
 				}
 			}
