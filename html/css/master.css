@@ -653,19 +653,26 @@ ul, ol {
 				span {
 					display: block;
 					float: right;
-					padding-left: 27px;
-					width: 77px;
-					height: 29px;
-					line-height: 29px;
+					margin-right: -10px;
+					padding-top: 14px;
+					padding-left: 35px;
+					width: 84px;
+					height: 31px;
 					font-size: 17px;
 					color: #ffffff;
 					cursor: pointer;
 					&.add-bag {
-						margin-bottom: 14px;
-						background: url(../images/detail-add-bag-btn.png) no-repeat;
+						margin-top: -10px;
+						background: url(../images/add-bag-btn.png) no-repeat;
+						&:hover {
+							background-image: url(../images/add-bag-btn-hover.png);
+						}
 					}
 					&.upload-photo {
-						background: url(../images/uploade-photo-btn.png) no-repeat;
+						background: url(../images/upload-photo-btn.png) no-repeat;
+						&:hover {
+							background-image: url(../images/upload-photo-btn-hover.png);
+						}
 					}
 				}
 			}

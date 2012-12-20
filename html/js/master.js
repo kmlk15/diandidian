@@ -14,7 +14,7 @@ $(function() {
     		}
   		}
 	})(jQuery)
-	jQuery.preLoadImages("images/button02.png", "images/closeBtnHover.png", "images/add-bag-btn-hover.png", "images/detail-btn-hover.png");
+	jQuery.preLoadImages("images/button02.png", "images/closeBtnHover.png", "images/add-bag-btn-hover.png", "images/detail-btn-hover.png", "images/upload-photo-btn-hover.png");
 	
 	
 	var $win = $(window);
