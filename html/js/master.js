@@ -1,21 +1,6 @@
 // JavaScript Document
 $(function() {
 	
-	/* pre-load images */
-	(function($) {
-  		var cache = [];
-  		// Arguments are image paths relative to the current page.
-  		$.preLoadImages = function() {
-    		var args_len = arguments.length;
-    		for (var i = args_len; i--;) {
-      			var cacheImage = document.createElement('img');
-      			cacheImage.src = arguments[i];
-      			cache.push(cacheImage);
-    		}
-  		}
-	})(jQuery)
-	jQuery.preLoadImages("images/button02.png", "images/closeBtnHover.png", "images/add-bag-btn-hover.png", "images/detail-btn-hover.png", "images/upload-photo-btn-hover.png");
-	
 	
 	var $win = $(window);
 	//center Attraction List

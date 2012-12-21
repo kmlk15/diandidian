@@ -1,10 +1,18 @@
 /* Less CSS Variable */
 @white: #ffffff;
+@black: #ffffff;
+@textGrey: #3c3c3c;
 
 /* Clear Floats Without Structural Markup */
 .clearfix:before, .clearfix:after {
-	content: "";
-	display: table;
+	content: '.';
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	font-size: 0;
+	line-height: 0;
+	width: 0;
+	height: 0;
 }
 .clearfix:after {
 	clear: both;
@@ -20,14 +28,14 @@ body {
 	font-family: "STHeiti", arial, sans-serif;
 	font-size: 12px;
 	font-weight: 400;
-	color: #3c3c3c;
+	color: @textGrey;
 }
 a {
-	color: #3c3c3c;
+	color:  @textGrey;
 	text-decoration: none;
 }
 a:hover {
-	color: #3c3c3c;
+	color:  @textGrey;
 	text-decoration: underline;
 }
 img {
@@ -357,27 +365,27 @@ ul, ol {
 	width: 84px;
 }
 #attractions-list ul li .add-bag {
-	background: url(../images/add-bag-btn.png);
+	background: url(../images/sprite.png) 0 -95px no-repeat;
 }
 #attractions-list ul li .added-bag {
-	background: url(../images/added-bag-btn.png);
+	background: url(../images/sprite.png) 0 -190px no-repeat;
 	cursor: default;
 }
 #attractions-list ul li .added-bag:hover {
 	text-decoration: none;
 }
 #attractions-list ul li .add-bag:hover {
-	background: url(../images/add-bag-btn-hover.png);
+	background: url(../images/sprite.png) 0 0 no-repeat;
 	text-decoration: none;
 }
 #attractions-list ul li .detail {
 	right: 18px;
 	padding-left: 35px;
 	width: 84px;
-	background: url(../images/detail-btn.png);
+	background: url(../images/sprite.png) 0 -666px no-repeat;
 }
 #attractions-list ul li .detail:hover {
-	background: url(../images/detail-btn-hover.png);
+	background: url(../images/sprite.png) 0 -571px no-repeat;
 	text-decoration: none;
 }
 /* my-bag */
@@ -476,12 +484,12 @@ ul, ol {
 	width: 69px;
 	height: 28px;
 	line-height: 28px;
-	background: url(../images/button01.png) no-repeat;
+	background: url(../images/sprite.png) 0 -285px no-repeat;
 	font-size: 13px;
 	color: #ffffff;
 }
 #my-bag .accordion .accordion div a:hover {
-	background-image: url(../images/button02.png);
+	background: url(../images/sprite.png) 0 -363px no-repeat;
 	text-decoration: none;
 }
 #my-bag .accordion .accordion ul li table a {
@@ -491,14 +499,14 @@ ul, ol {
 	width: 19px;
 	height: 15px;
 	line-height: 15px;
-	background: url(../images/closeBtn.png) no-repeat;
+	background: url(../images/sprite.png) 0 -441px no-repeat;
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 10px;
 	font-weight: bold;
 	color: #ffffff;
 }
 #my-bag .accordion .accordion ul li table a:hover {
-	background-image: url(../images/closeBtnHover.png);
+	background: url(../images/sprite.png) 0 -506px no-repeat;
 	text-decoration: none;
 }
 #my-bag .ui-accordion .accordion-content {
@@ -663,15 +671,15 @@ ul, ol {
 					cursor: pointer;
 					&.add-bag {
 						margin-top: -10px;
-						background: url(../images/add-bag-btn.png) no-repeat;
+						background: url(../images/sprite.png) 0 -95px no-repeat;
 						&:hover {
-							background-image: url(../images/add-bag-btn-hover.png);
+							background: url(../images/sprite.png) 0 0 no-repeat;
 						}
 					}
 					&.upload-photo {
-						background: url(../images/upload-photo-btn.png) no-repeat;
+						background: url(../images/sprite.png) 0 -856px no-repeat;
 						&:hover {
-							background-image: url(../images/upload-photo-btn-hover.png);
+							background: url(../images/sprite.png) 0 -761px no-repeat;
 						}
 					}
 				}
