@@ -1,7 +1,25 @@
 /* Less CSS Variable */
 @white: #ffffff;
-@black: #ffffff;
+@black: #000000;
 @textGrey: #3c3c3c;
+@textGrey2: #3f3f3f;
+@textGrey3: #3b3b3b;
+@red: #dd3e31;
+@greyDropDownHoverBg: #e4e4e4;
+@greyDashBorder: #888888;
+@greyTopDropHoverBg: #7f7e7e;
+@searchBorderColor: #5b5b5b;
+@searchLabelColor: #828282;
+@accountMenuBorderColor: #9b9b9b;
+@attractionListBottomBg: #e5e1e1;
+@myBagHeaderBg: #56230d;
+@myBagBorderColor: #8a8a8a;
+@myBagItemHeaderBg: #e3d0c8;
+@myBagItemBorderColor: #716864;
+@myBagItemDashSeparateColor: #c2c2c2;
+@myBagItemBg: #f0eaea;
+@galleryBorderColor: #4b4b4b;
+
 
 /* Clear Floats Without Structural Markup */
 .clearfix:before, .clearfix:after {
@@ -46,7 +64,7 @@ h1, h2, h3, h4 {
 	padding: 0;
 	font-family: "STHeiti";
 	font-weight: 700;
-	color: #000;
+	color: @black;
 }
 h1 {
 	font-size: 22px;
@@ -66,7 +84,7 @@ h4 {
 p {
 	font-size: 13px;
 	line-height: 18px;
-	color: #3f3f3f;
+	color: @textGrey2;
 }
 ul, ol {
 	list-style: none;
@@ -91,8 +109,10 @@ ul, ol {
 	width: 100%;
 	min-width: 1200px;
 }
-#home #container {
-	min-width: 912px;
+#home {
+	#container {
+		min-width: 912px;
+	}
 }
 #main {
 	margin-right: 310px;
@@ -115,421 +135,424 @@ ul, ol {
 #header {
 	overflow: visible;
 	height: 60px;
-	background: #dd3e31;
+	background: @red;
 }
 #top-nav {
 	margin-right: 310px;
-}
-#top-nav .logo {
-	display: block;
-	float: left;
-	margin: 15px 0 0 20px;
-}
-#top-nav .dropdown {
-	float: left;
-	margin-left: 49px;
-}
-#top-nav .dropdown span {
-	display: block;
-	padding: 0 55px 0 12px;
-	height: 60px;
-	background: url(../images/drop-triangle-white.png) 100px 50% no-repeat;
-	line-height: 60px;
-	font-size: 23px;
-	font-weight: 700;
-	color: #ffffff;
-	cursor: pointer;
-}
-#top-nav .dropdown:hover {
-	background-color: #e4e4e4;
-}
-#top-nav .dropdown:hover span {
-	background: url(../images/drop-triangle-black.png) 100px 50% no-repeat;
-	color: #3b3b3b;
-}
-#top-nav .dropdown ul {
-	display: none;
-	border-top: 1px dashed #888888;
-}
-#top-nav .dropdown ul li {
-	padding: 0 0 0 12px;
-	height: 37px;
-	line-height: 37px;
-	font-size: 20px;
-	font-weight: 700;
-	color: #3b3b3b;
-	cursor: pointer;
-}
-#top-nav .dropdown ul li:hover {
-	background: #7f7e7e;
-	color: #ffffff;
-}
-#top-nav .dropdown:hover ul {
-	display: block;
+	.logo {
+		display: block;
+		float: left;
+		margin: 15px 0 0 20px;
+	}
+	.dropdown {
+		float: left;
+		margin-left: 49px;
+		span {
+			display: block;
+			padding: 0 55px 0 12px;
+			height: 60px;
+			background: url(../images/drop-triangle-white.png) 100px 50% no-repeat;
+			line-height: 60px;
+			font-size: 23px;
+			font-weight: 700;
+			color: @white;
+			cursor: pointer;
+		}
+		&:hover {
+			background-color: @greyDropDownHoverBg;
+			span {
+				background: url(../images/drop-triangle-black.png) 100px 50% no-repeat;
+				color: @textGrey3;
+			}
+			ul {
+				display: block;
+			}
+		}
+		ul {
+			display: none;
+			border-top: 1px dashed @greyDashBorder;
+			li {
+				padding: 0 0 0 12px;
+				height: 37px;
+				line-height: 37px;
+				font-size: 20px;
+				font-weight: 700;
+				color: @textGrey3;
+				cursor: pointer;
+				&:hover {
+					background: @greyTopDropHoverBg;
+					color: @white;
+				}
+			}
+		}
+		
+	}
 }
 #search-address-wrap {
 	position: relative;
 	float: right;
 	margin: 15px 20px 0 0;
-}
-#search-address-wrap .token-input-list-facebook {
-	width: 234px;
-	padding-right: 30px;
-	border: 1px solid #5b5b5b;
-	background: #ffffff url(../images/search-icon.png) 97% 4px no-repeat;
+	.token-input-list-facebook {
+		width: 234px;
+		padding-right: 30px;
+		border: 1px solid @searchBorderColor;
+		background: @white url(../images/search-icon.png) 97% 4px no-repeat;
+	}
+	label {
+		position: absolute;
+		top: 6px;
+		left: 4px;
+		font-size: 15px;
+		color: @searchLabelColor;
+		cursor: text;
+	}
 }
 .token-input-dropdown-facebook {
 	width: 262px !important;
 	z-index: 999 !important;
 }
-#search-address-wrap label {
-	position: absolute;
-	top: 6px;
-	left: 4px;
-	font-size: 15px;
-	color: #828282;
-	cursor: text;
-}
 #user-sign {
 	float: right;
 	width: 302px;
+	&.not-signin {
+		a {
+			display: block;
+			float: left;
+			margin-left: 23px;
+			padding: 0 10px 0 42px;
+			height: 60px;
+			background: url(../images/weibo_icon.png) 10px 50% no-repeat;
+			line-height: 60px;
+			font-size: 18px;
+			color: @white;
+			&:hover {
+				background-color: @greyDropDownHoverBg;
+				color: @textGrey3;
+				text-decoration: none;
+			}
+		}
+	}
+	/* user have signin */
+	&.signin {
+		.account {
+			float: left;
+			margin-left: 23px;
+			&:hover {
+				background-color: @greyDropDownHoverBg;
+				.user-info {
+					color: @textGrey;
+				}
+				ul {
+					display: block;
+				}
+			}
+			.user-info {
+				padding: 6px 10px 0 10px;
+				height: 54px;
+				line-height: normal;
+				font-size: 13px;
+				color: @white;
+				cursor: pointer;
+				img {
+					display: block;
+					margin: 0 auto 2px auto;
+				}
+				span {
+					text-align: center;
+				}
+			}
+			ul {
+				display: none;
+				li {
+					padding-left: 10px;
+					height: 23px;
+					line-height: 23px;
+					border-top: 1px dashed @accountMenuBorderColor;
+					&:hover {
+						background: @greyTopDropHoverBg;
+						a {
+							color: @white;
+						}
+					}
+					a {
+						display: block;
+						font-size: 12px;
+						color: @textGrey;
+						&:hover {
+							text-decoration: none;
+						}
+					}
+				}
+			}
+		}
+	}
 }
-#user-sign.not-signin a {
-	display: block;
-	float: left;
-	margin-left: 23px;
-	padding: 0 10px 0 42px;
-	height: 60px;
-	background: url(../images/weibo_icon.png) 10px 50% no-repeat;
-	line-height: 60px;
-	font-size: 18px;
-	color: #ffffff;
-}
-#user-sign.not-signin a:hover {
-	background-color: #e4e4e4;
-	color: #3b3b3b;
-	text-decoration: none;
-}
-/* user have signin */
-#user-sign.signin .account {
-	float: left;
-	margin-left: 23px;
-}
-#user-sign.signin .account:hover {
-	background-color: #e4e4e4;
-}
-#user-sign.signin .account .user-info {
-	padding: 6px 10px 0 10px;
-	height: 54px;
-	line-height: normal;
-	font-size: 13px;
-	color: #ffffff;
-	cursor: pointer;
-}
-#user-sign.signin .account:hover .user-info {
-	color: #3c3c3c;
-}
-#user-sign.signin .account .user-info img {
-	display: block;
-	margin: 0 auto 2px auto;
-}
-#user-sign.signin .account .user-info span {
-	text-align: center;
-}
-#user-sign.signin .account ul {
-	display: none;
-}
-#user-sign.signin .account:hover ul {
-	display: block;
-}
-#user-sign.signin .account ul li {
-	padding-left: 10px;
-	height: 23px;
-	line-height: 23px;
-	border-top: 1px dashed #9b9b9b;
-}
-#user-sign.signin .account ul li:hover {
-	background: #7f7e7e;
-}
-#user-sign.signin .account ul li a {
-	display: block;
-	font-size: 12px;
-	color: #3c3c3c;
-}
-#user-sign.signin .account ul li:hover a {
-	color: #ffffff;
-}
-#user-sign.signin .account ul li a:hover {
-	text-decoration: none;
-}
-
-
 /* attractions-list */
 #attractions-list {
 	margin: 0 auto;
-}
-#attractions-list h2 {
-	padding: 30px 0 7px 10px;
-	background: #ffffff;
-	font-size: 23px;
-	color: #3b3b3b;
-}
-#attractions-list ul li {
-	position: relative;
-	float: left;
-	margin: 0 10px 20px 10px;
-	height: 307px;
-	width: 266px;
-	border-radius: 0 10px 10px 0;
-	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
-}
-#attractions-list ul li img {
-	display: block;	
-	border-radius: 0 10px 0 0;
-}
-#attractions-list ul li .title {
-	overflow: hidden;
-	position: absolute;
-	top: 235px;
-	left: 0;
-	height: 27px;
-	width: 100%;
-	background: url(../images/box-opacity.png);
-}
-#attractions-list ul li .title h3 {
-	float: left;
-	margin: 1px 0 0 10px;
-	line-height: 27px;
-	color: #fff;
-}
-#attractions-list ul li .title span {
-	display: block;
-	float: left;
-	margin: 6px 0 0 10px;
-	color: #fff;
-}
-#attractions-list ul li .user {
-	overflow: hidden;
-	height: 45px;
-	background: #e5e1e1;
-	border-radius: 0 0 10px 0;
-	
-}
-#attractions-list ul li .user img {
-	float: left;
-	box-shadow: none;
-}
-#attractions-list ul li .user a {
-	display: block;
-	float: left;
-	margin: 6px 0 0 10px;
-}
-#attractions-list ul li .user div {
-	float: left;
-	margin: 6px 0 0 10px;
-}
-#attractions-list ul li .user div span {
-	display: block;
-	font-size: 10px;
-	line-height: 16px;
-	color: #3f3f3f;
-}
-#attractions-list ul li .user div p {
-	margin: 0;
-	padding: 0;
-	font-size: 12px;
-	line-height: 15px;
-	color: #3b3b3b;
-}
-#attractions-list ul li .user div p a {
-	float: none;
-	display: inline;
-	margin: 0;
-}
-#attractions-list ul li .add-bag,
-#attractions-list ul li .added-bag,
-#attractions-list ul li .detail {
-	display: none;
-	position: absolute;
-	top: 12px;
-	height: 31px;
-	padding-top: 14px;
-	font-size: 17px;
-	color: #ffffff;
-	cursor: pointer;
-}
-#attractions-list ul li .add-bag,
-#attractions-list ul li .added-bag {
-	left: 18px;
-	padding-left: 35px;
-	width: 84px;
-}
-#attractions-list ul li .add-bag {
-	background: url(../images/sprite.png) 0 -95px no-repeat;
-}
-#attractions-list ul li .added-bag {
-	background: url(../images/sprite.png) 0 -190px no-repeat;
-	cursor: default;
-}
-#attractions-list ul li .added-bag:hover {
-	text-decoration: none;
-}
-#attractions-list ul li .add-bag:hover {
-	background: url(../images/sprite.png) 0 0 no-repeat;
-	text-decoration: none;
-}
-#attractions-list ul li .detail {
-	right: 18px;
-	padding-left: 35px;
-	width: 84px;
-	background: url(../images/sprite.png) 0 -666px no-repeat;
-}
-#attractions-list ul li .detail:hover {
-	background: url(../images/sprite.png) 0 -571px no-repeat;
-	text-decoration: none;
+	h2 {
+		padding: 30px 0 7px 10px;
+		background: @white;
+		font-size: 23px;
+		color: @textGrey3;
+	}
+	ul {
+		li {
+			position: relative;
+			float: left;
+			margin: 0 10px 20px 10px;
+			height: 307px;
+			width: 266px;
+			border-radius: 0 10px 10px 0;
+			box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+			img {
+				display: block;	
+				border-radius: 0 10px 0 0;
+			}
+			.title {
+				overflow: hidden;
+				position: absolute;
+				top: 235px;
+				left: 0;
+				height: 27px;
+				width: 100%;
+				background: url(../images/box-opacity.png);
+				h3 {
+					float: left;
+					margin: 1px 0 0 10px;
+					line-height: 27px;
+					color: #fff;
+				}
+				span {
+					display: block;
+					float: left;
+					margin: 6px 0 0 10px;
+					color: @white;
+				}
+			}
+			.user {
+				overflow: hidden;
+				height: 45px;
+				background: @attractionListBottomBg;
+				border-radius: 0 0 10px 0;
+				img {
+					float: left;
+					box-shadow: none;
+				}
+				a {
+					display: block;
+					float: left;
+					margin: 6px 0 0 10px;
+				}
+				div {
+					float: left;
+					margin: 6px 0 0 10px;
+					span {
+						display: block;
+						font-size: 10px;
+						line-height: 16px;
+						color: @textGrey2;
+					}
+					p {
+						margin: 0;
+						padding: 0;
+						font-size: 12px;
+						line-height: 15px;
+						color: @textGrey3;
+						a {
+							float: none;
+							display: inline;
+							margin: 0;
+						}
+					}
+				}
+			}
+			.add-bag, .added-bag, .detail {
+				display: none;
+				position: absolute;
+				top: 12px;
+				height: 31px;
+				padding-top: 14px;
+				font-size: 17px;
+				color: @white;
+				cursor: pointer;
+			}
+			.add-bag, .added-bag {
+				left: 18px;
+				padding-left: 35px;
+				width: 84px;
+			}
+			.add-bag {
+				background: url(../images/sprite.png) 0 -95px no-repeat;
+				&:hover {
+					background: url(../images/sprite.png) 0 0 no-repeat;
+					text-decoration: none;
+				}
+			}
+			.added-bag {
+				background: url(../images/sprite.png) 0 -190px no-repeat;
+				cursor: default;
+			}
+			.detail {
+				right: 18px;
+				padding-left: 35px;
+				width: 84px;
+				background: url(../images/sprite.png) 0 -666px no-repeat;
+				&:hover {
+					background: url(../images/sprite.png) 0 -571px no-repeat;
+					text-decoration: none;
+				}
+			}
+		}
+	}
 }
 /* my-bag */
 #my-bag {
 	margin: 0 auto;
 	width: 250px;
+	h2 {
+		height: 32px;
+		line-height: 32px;
+		padding-left: 12px;
+		background: @myBagHeaderBg;
+		font-size: 17px;
+		color: @white;
+		border-radius: 0 7px 0 0;
+	}
+	.accordion {
+		border: 1px solid @myBagBorderColor;
+		.accordion-header {
+			margin: 0;
+			padding: 0 0 0 26px;
+			height: 25px;
+			line-height: 25px;
+			background: @myBagItemHeaderBg url(../images/accordion-head-icon.png) 11px 50% no-repeat;
+			border-top: 1px solid @myBagItemBorderColor;
+			border-bottom: 1px solid @myBagItemBorderColor;
+			font-weight: normal;
+			font-size: 15px;
+			color: @textGrey;
+			cursor: pointer;
+			&.state-active {
+				border-bottom: none;
+				background-image: url(../images/accordion-head-icon-active.png);
+			}
+		}
+		.accordion {
+			.accordion-header {
+				border-bottom: none;
+				border-top: 1px dashed @myBagItemDashSeparateColor;
+				background-color: @myBagItemBg;
+				a {
+					span {
+						
+					}
+				}
+			}
+			ul {
+				border-top: 1px dashed @myBagItemDashSeparateColor;
+				padding: 0;
+				margin: 0 11px 0 14px;
+				li {
+					margin-left: 8px;
+					table {
+						a {
+							float: none;
+							margin: 0 0;
+							padding-left: 0;
+							width: 19px;
+							height: 15px;
+							line-height: 15px;
+							background: url(../images/sprite.png) 0 -441px no-repeat;
+							font-family: Verdana, Geneva, sans-serif;
+							font-size: 10px;
+							font-weight: bold;
+							color: @white;
+							&:hover {
+								background: url(../images/sprite.png) 0 -506px no-repeat;
+								text-decoration: none;
+							}
+						}
+					}
+				}
+			}
+			div {
+				a {
+					display: block;
+					float: right;
+					margin: 5px 11px 5px 0;
+					padding-left: 8px;
+					width: 69px;
+					height: 28px;
+					line-height: 28px;
+					background: url(../images/sprite.png) 0 -285px no-repeat;
+					font-size: 13px;
+					color: @white;
+					&:hover {
+						background: url(../images/sprite.png) 0 -363px no-repeat;
+						text-decoration: none;
+					}
+				}
+			}
+		}
+		.accordion-content {
+			display: none;
+			border: none;
+			background: @myBagItemBg;
+		}
+		ul {
+			border-top: 1px dashed @myBagItemDashSeparateColor;
+			padding: 0 11px 0 19px;
+			li {
+				padding: 3px 0;
+				border-bottom: 1px dashed @myBagItemDashSeparateColor;
+				font-size: 15px;
+				color: @textGrey;
+				table {
+					width: 100%;
+					height: 100%;
+					border: none;
+					td {
+						vertical-align: top;
+						padding: 0 10px 0 16px;
+						font-size: 13px;
+						&.english {
+							font-family: Verdana, Geneva, sans-serif;
+						}
+						&.del {
+							padding: 0;
+							width: 19px;
+						}
+					}
+				}
+				&.last {
+					border-bottom: none;
+				}
+			}
+		}
+	}
+	&.empty {
+		div {
+			padding-left: 12px;
+			height: 22px;
+			line-height: 22px;
+			background: @myBagItemBg;
+			font-size: 15px;
+			color: @textGrey;
+		}
+	}
 }
-#my-bag h2 {
-	height: 32px;
-	line-height: 32px;
-	padding-left: 12px;
-	background: #56230d;
-	font-size: 17px;
-	color: #ffffff;
-	border-radius: 0 7px 0 0;
-}
-#my-bag .accordion {
-	border: 1px solid #8a8a8a;
-}
-#my-bag .accordion .accordion-header {
-	margin: 0;
-	padding: 0 0 0 26px;
-	height: 25px;
-	line-height: 25px;
-	background: #e3d0c8 url(../images/accordion-head-icon.png) 11px 50% no-repeat;
-	border-top: 1px solid #716864;
-	border-bottom: 1px solid #716864;
-	font-weight: normal;
-	font-size: 15px;
-	color: #3c3c3c;
-	cursor: pointer;
-}
-#my-bag .accordion .accordion-header.state-active {
-	border-bottom: none;
-	background-image: url(../images/accordion-head-icon-active.png);
-}
-#my-bag .accordion .accordion .accordion-header {
-	border-bottom: none;
-	border-top: 1px dashed #c2c2c2;
-	background-color: #f0eaea;
-}
-#my-bag .accordion .accordion-content {
-	display: none;
-	border: none;
-	background: #f0eaea;
-}
-#my-bag .accordion .accordion .accordion-header a span {
-	font-size: 13px;
-}
-#my-bag .accordion .accordion .accordion-header a small {
-	font-size: 11px;
-}
-#my-bag .accordion ul {
-	border-top: 1px dashed #c2c2c2;
-	padding: 0 11px 0 19px;
-}
-#my-bag .accordion ul li {
-	padding: 3px 0;
-	border-bottom: 1px dashed #c2c2c2;
-	font-size: 15px;
-	color: #3c3c3c;
-}
-#my-bag .accordion ul li table {
-	width: 100%;
-	height: 100%;
-	border: none;
-}
-#my-bag .accordion ul li table td {
-	vertical-align: top;
-	padding: 0 10px 0 16px;
-	font-size: 13px;
-}
-#my-bag .accordion ul li table td.english {
-	font-family: Verdana, Geneva, sans-serif;
-}
-#my-bag .accordion ul li table td.del {
-	padding: 0;
-	width: 19px;
-}
-#my-bag .accordion ul li.last {
-	border-bottom: none;
-}
-#my-bag .accordion .accordion ul {
-	border-top: 1px dashed #c2c2c2;
-    padding: 0;
-    margin: 0 11px 0 14px;
-}
-#my-bag .accordion .accordion ul li {
-	margin-left: 8px;
-}
-#my-bag .accordion .accordion div a {
-	display: block;
-	float: right;
-	margin: 5px 11px 5px 0;
-	padding-left: 8px;
-	width: 69px;
-	height: 28px;
-	line-height: 28px;
-	background: url(../images/sprite.png) 0 -285px no-repeat;
-	font-size: 13px;
-	color: #ffffff;
-}
-#my-bag .accordion .accordion div a:hover {
-	background: url(../images/sprite.png) 0 -363px no-repeat;
-	text-decoration: none;
-}
-#my-bag .accordion .accordion ul li table a {
-	float: none;
-	margin: 0 0;
-	padding-left: 0;
-	width: 19px;
-	height: 15px;
-	line-height: 15px;
-	background: url(../images/sprite.png) 0 -441px no-repeat;
-	font-family: Verdana, Geneva, sans-serif;
-	font-size: 10px;
-	font-weight: bold;
-	color: #ffffff;
-}
-#my-bag .accordion .accordion ul li table a:hover {
-	background: url(../images/sprite.png) 0 -506px no-repeat;
-	text-decoration: none;
-}
-#my-bag .ui-accordion .accordion-content {
-	overflow: hidden;
-}
-#my-bag.empty div {
-	padding-left: 12px;
-	height: 22px;
-	line-height: 22px;
-	background: #f0eaea;
-	font-size: 15px;
-	color: #3c3c3c;
-}
-
-#detail #main {
-	padding-top: 30px;
-	padding-bottom: 50px;
+#detail {
+	#main {
+		padding-top: 30px;
+		padding-bottom: 50px;
+	}
 }
 #attraction-detal {
 	margin: 0 auto;
 	padding: 14px 0 0 0;
 	width: 842px;
-	border: 1px solid #c2c2c2;
+	border: 1px solid @myBagItemDashSeparateColor;
 	border-radius: 0 8px 8px 0;
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 	.breadcrumbs {
@@ -537,9 +560,9 @@ ul, ol {
 		padding: 0 0 0 30px;
 		font-weight: bold;
 		font-size: 23px;
-		color: #3f3f3f;
+		color: @textGrey2;
 		a {
-			color: #3f3f3f;
+			color: @textGrey2;
 		}
 	}
 	.gallery {
@@ -553,7 +576,7 @@ ul, ol {
 			margin: 0 auto;
 			width: 780px;
 			height: 67px;
-			background: #e5e1e1;
+			background: @attractionListBottomBg;
 			.arrow {
 				position: absolute;
 				top: 0;
@@ -587,8 +610,8 @@ ul, ol {
 						position: relative;
 						float: left;
 						margin-right: 3px;
-						border: 1px solid #4b4b4b;
-						background: #000000;
+						border: 1px solid @galleryBorderColor;
+						background: @black;
 						&.active, &:hover, {
 							img {
 								.opacity(1);
@@ -617,14 +640,14 @@ ul, ol {
 			&.col2 {
 				padding-right: 15px;
 				width: 585px;
-				border-right: 1px dashed #7f7e7e;
+				border-right: 1px dashed @greyTopDropHoverBg;
 				.title {
 					margin-bottom: 7px;
 					h2 {
 						float: left;
 						font-size: 15px;
 						line-height: 18px;
-						color: #3f3f3f;
+						color: @textGrey2;
 					}
 					span {
 						font-size: 12px;
@@ -643,7 +666,7 @@ ul, ol {
 							display: block;
 							float: left;
 							padding-right: 13px;
-							color: #dd3e31;
+							color: @red;
 							cursor: pointer;
 							&.more {
 								background: url(../images/red-triangle-dropdown.png) right 50% no-repeat;
@@ -667,7 +690,7 @@ ul, ol {
 					width: 84px;
 					height: 31px;
 					font-size: 17px;
-					color: #ffffff;
+					color: @white;
 					cursor: pointer;
 					&.add-bag {
 						margin-top: -10px;
@@ -688,21 +711,21 @@ ul, ol {
 	}
 	.basic-info {
 		padding: 14px 34px 14px 90px;
-		background: #e5e1e1;
+		background: @attractionListBottomBg;
 		font-size: 13px;
 		line-height: 15px;
-		color: #3c3c3c;
+		color: @textGrey;
 		border-radius: 0 0 8px 0;
 		hr {
 			margin: 13px 0 10px 0;
 			height: 0;
 			border: none;
-			border-top: 1px dashed #7f7e7e;
+			border-top: 1px dashed @greyTopDropHoverBg;
 		}
 		p {
 			margin: 0;
 			font-size: 13px;
-			color: #3c3c3c;
+			color: @textGrey;
 			line-height: 15px;
 		}
 		table {
