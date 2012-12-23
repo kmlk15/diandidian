@@ -10,7 +10,17 @@ $(function() {
 		var rowCount = Math.floor(mainWidth / itemWidth);
 		var mainWrapWidth = itemWidth*rowCount;
 		$("#attractions-list").width(mainWrapWidth);
+		
+		//sidebar scroll
+		//alert($win.height());
+		var headerHeight = $("#header").height();
+		var sidebarPaddingTop = parseInt($("#sidebar").css("padding-top"));
+		var sideBarHeight = $win.height() - headerHeight - sidebarPaddingTop;
+		if (isNaN(sideBarHeight) || sideBarHeight < 0) sideBarHeight = 0;
+		$("#sidebar").height(sideBarHeight);
+		
 	}).trigger("resize");
+	
 	//header fix top and sidebar not scroll up
 	$("#header").scrollToFixed({zIndex: 99});
 	$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
@@ -53,7 +63,7 @@ $(function() {
 	});
 	    
 	
-	
+	//home page to add to bag, you should change to use backend to add
 	$("#attractions-list ul li .add-bag").click(function(e) {
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
@@ -68,6 +78,7 @@ $(function() {
 		return false;
 	});
 	
+	//home page delete from bag, you should change to use backend to delete
 	$("#my-bag .accordion .accordion div ul li table td.del a").live('click',function() {
 		var $itemDel = $(this).parents("li");
 		var $ul = $(this).parents("ul");
@@ -75,6 +86,23 @@ $(function() {
 		updateBagCount($ul);
 		return false;
 	});
+	
+	
+	//detail page to add to bag, you should change to use backend to add, add you should avoid duplicate items
+	$("#attraction-detal .user-content .col.col3 span.add-bag").click(function(e) {
+		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
+		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
+		$ul = $($ul[0]);
+		var titleText = $("#attraction-detal .user-content .col.col2 .title h2").text();
+		var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del"><a href="#"></a></td></tr></table></li>';
+		$ul.append(itemHtml);
+		updateBagCount($ul);
+		//searchBagItem($ul,'');
+		return false;
+	});
+	
+	
+	
 	
 	
 	$("#attractions-list ul li").hover(
