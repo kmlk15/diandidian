@@ -92,7 +92,10 @@ ul, ol {
 	margin: 0;
 	padding: 0;
 }
-
+.jspVerticalBar {
+	width: 10px !important;
+	background: #c6c6c6;
+}
 .rounded-corners (@top-left:5px, @top-right:5px, @bottom-right:5px, @bottom-left:5px) {
 	border-radius: @arguments;
 	-webkit-border-radius: @arguments;
@@ -122,8 +125,10 @@ ul, ol {
 	overflow: auto;
 	float: right;
 	width: 302px;
-	
 	padding-top: 30px;
+	position: fixed;
+	top: 60px;
+	right: 0;
 }
 #shadow-divide {
 	position: absolute;
@@ -555,6 +560,7 @@ ul, ol {
 	margin: 0 auto;
 	padding: 14px 0 0 0;
 	width: 842px;
+	
 	border: 1px solid @myBagItemDashSeparateColor;
 	.rounded-corners(0, 8px, 8px, 0);
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);

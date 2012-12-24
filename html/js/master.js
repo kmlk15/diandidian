@@ -1,23 +1,24 @@
 // JavaScript Document
 $(function() {
 	
-	
 	var $win = $(window);
-	//center Attraction List
 	var itemWidth = $("#attractions-list ul li").outerWidth(true);
 	$win.resize(function(e) {
+		//center Attraction List
 		var mainWidth = $("#main").width();
 		var rowCount = Math.floor(mainWidth / itemWidth);
 		var mainWrapWidth = itemWidth*rowCount;
 		$("#attractions-list").width(mainWrapWidth);
 		
 		//sidebar scroll
-		//alert($win.height());
 		var headerHeight = $("#header").height();
 		var sidebarPaddingTop = parseInt($("#sidebar").css("padding-top"));
 		var sideBarHeight = $win.height() - headerHeight - sidebarPaddingTop;
 		if (isNaN(sideBarHeight) || sideBarHeight < 0) sideBarHeight = 0;
 		$("#sidebar").height(sideBarHeight);
+		
+		//sidebar fixed
+		updateSideBarPosition($(this));
 		
 		//planning page
 		var topBottomSpace = 183;
@@ -33,17 +34,27 @@ $(function() {
 		}
 		
 		
-		
-		
-		$("#container").width($(this).width());
+		//$("#container").width($(this).width());
 		
 	}).trigger("resize");
 	
+	$win.scroll(function(event) {
+		if (event.target.nodeName == "DIV") {
+		  // Dump scroll event if the target is a DIV, because that means the event is coming
+		  // from a scrollable div and so there's no need to make adjustments to our layout
+		  return;
+		}
+		updateSideBarPosition($(this));
+	});
+	
+	
 	//header fix top and sidebar not scroll up
 	$("#header").scrollToFixed({zIndex: 99});
-	$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
+	//$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
 	$("#attractions-list h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
-	//$("#attraction-planning h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
+	//$("#sidebar").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0});
+	
+	
 	//sidebar accordion
 	//initial state
 	var $initialOpenHeader = $("#sidebar .accordion .accordion-header:nth-child(1)");
@@ -245,6 +256,15 @@ function searchBagItem($ul, name) {
 }
 
 
+
+function updateSideBarPosition($win) {
+	var contentMinWidth = parseInt($("#container").css("min-width"));
+	var leftPos = $win.width() - contentMinWidth;
+	leftPos = leftPos + $win.scrollLeft();
+	if (leftPos>0) leftPos=0;
+	
+	$("#sidebar").css("right", leftPos + "px");
+}
 
 
 
