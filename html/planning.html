@@ -2,16 +2,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Detail Page</title>
+<title>Planning Page</title>
 <meta http-equiv="keywords" content="" />
 <meta http-equiv="description" content="" />
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+<link href="css/jquery.ui.core.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.ui.theme.css" rel="stylesheet" type="text/css" />
 <link href="css/token-input.css" rel="stylesheet" type="text/css" />
 <link href="css/token-input-facebook.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet/less" type="text/css" href="css/master.css">
 <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jquery.ui.datepicker.js"></script>
 <script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>
 <script type="text/javascript" src="js/jquery.tokeninput.js"></script>
+<script type="text/javascript" src="js/jquery.ba-resize.js"></script>
+<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="js/jquery.em.js"></script>
+<script type="text/javascript" src="js/jquery.jscrollpane.js"></script>
+<link rel="stylesheet/less" type="text/css" href="css/jScrollPane.css">
 <script type="text/javascript" src="js/master.js"></script>
 <!--[if lt IE 8]>
 <link href="css/ie7.css" rel="stylesheet" type="text/css" />
@@ -20,8 +31,20 @@
 <script type="text/javascript" src="js/ie.js"></script>
 <![endif]-->
 <script type="text/javascript" src="js/less-1.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#main .top-space").scrollToFixed({zIndex: 96, marginTop: 60});
+		$("#main .bottom-space").scrollToFixed({zIndex: 96,  bottom: 0});
+		$("#attraction-planning .top").scrollToFixed({zIndex: 96, marginTop: 94});
+		$("#attraction-planning .mid .left").scrollToFixed({zIndex: 98, bottom: 46});
+		$("#attraction-planning .mid .right").scrollToFixed({zIndex: 97, bottom: 46});
+		$("#attraction-planning .bottom").scrollToFixed({zIndex: 98, bottom: 20});
+		
+		
+	})
+</script>
 </head>
-<body id="detail">
+<body id="planning">
 	<div id="container">
 		<div id="header">
 			<div id="user-sign" class="signin">
@@ -126,91 +149,142 @@
 					</div><!-- end accordion -->
 				</div><!-- end my-bag -->
 			</div><!-- end sidebar -->
+			
 			<div id="main">
-				<div id="attraction-detal">
-					<div class="breadcrumbs"><a href="#">香港</a> &gt; <a href="#">南区</a> &gt; <a href="#">海洋公园</a></div>
-					<div class="gallery">
-						<img class="detail" src="images/dummy/img10.jpg" width="780" height="435" alt="海洋公园" />
-						<div class="thumbnails">
-							<span class="arrow left-arrow"><img src="images/left-arrow.png" width="10" height="12" /></span>
-							<span class="arrow right-arrow"><img src="images/right-arrow.png" width="10" height="12" /></span>
-							<div class="ul-wrap">
-								<ul class="clearfix">
-									<li class="active"><a href="images/dummy/img10.jpg"><img src="images/dummy/img11.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img12.jpg"><img src="images/dummy/img12.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li class="last"><a href="images/dummy/img13.jpg"><img src="images/dummy/img13.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-								</ul>
-							</div>
+				<div class="top-space"></div>
+				<div id="attraction-planning">
+					<div class="top">
+						top
+					</div>
+					<div class="mid clearfix">
+						<div class="left">
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
 						</div>
-					</div><!-- end gallery -->
-					<div class="user-content clearfix">
-						<div class="col col1">
-							<img src="images/dummy/img18.png" width="49" height="49" alt="User Icon" />
+						<div class="right">right</div>
+						<div class="attractions">
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
 						</div>
-						<div class="col col2">
-							<div class="title">
-								<h2>海洋公园</h2><span>- (广告) - 香港海洋公园30国庆烟花汇演开始月1日至3月</span>
-							</div>
-							<div class="content">
-								<p>
-									海洋公园我已经去过不下5次, 每次去好像都有更多的游乐设施和展馆。这次和同事去, 她还未去过香港, 所以这次我就当她的导游。其实这位同事是个胆子非常小的女孩, 所以她连过山车都没坐过, 这次我
-									<span class="more">特意带她到冰极天地里坐极地时速过山车, 好让她体验一下坐过山车有多爽！想不到她因此而喜欢上过山车,我们玩完了极地时速, 还坐了动感快车,疯狂过山车,越矿飞车等等, 胆子太小的朋友记得坐一下极地时速, 说不定你也因此克服了恐高.</span>
-								</p>
-								<div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
-							</div>
-						</div>
-						<div class="col col3">
-							<span class="add-bag">加入背包</span>
-							<span class="upload-photo">上传照片</span>
-						</div>
-					</div><!-- end user-content -->
-					<div class="basic-info">
-						<div class="row row1 clearfix">
-							<div class="col col1">
-								<p>
-									地址: 香港黄竹坑<br />
-									电话: 852-25520291<br />
-									开放时间: 9:30am - 10:00pm
-								</p>
-							</div>
-							<div class="col col2">
-								<table>
-									<tr>
-										<td rowspan="3" valign="top">门票：</td><td>日间入场门票</td>
-									</tr>
-									<tr>
-										<td>成人</td><td>$280</td>
-									</tr>
-									<tr>
-										<td>小童(3至11岁)</td><td>$140</td>
-									</tr>
-									<tr class="website">
-										<td>网站：</td><td colspan="2"><a href="http://www.oceanpark.com.hk" target="_blank">www.oceanpark.com.hk/</a></td>
-									</tr>
-								</table>
-							</div>
-						</div>
-						<hr />
-						<div class="row row2">
-							<table>
-								<tr><td rowspan="3" class="label">交通:</td><td>城巴: (852) 2873 0818 <a href="http://www.citybus.com.hk" target="_blank">www.citybus.com.hk</a></td></tr>
-								<tr><td>新巴: (852) 2136 8888 <a href="http://www.nwfb.com.hk" target="_blank">www.nwfb.com.hk</a></td></tr>
-								<tr><td>九巴: (852) 2745 4466 <a href="http://www.kmb.com.hk" target="_blank">www.kmb.com.hk</a></td></tr>
-							</table>
-						</div>
-						<hr />
-						<div class="row row3">
-							<table>
-								<tr>
-									<td class="label">简介:</td>
-									<td>
-										香港海洋公园是香港一个以海洋为主的大型主题公园，位于香港南区的黄竹坑，1977年1月10日落成启用。2007年，该园入场人次达490万，位列全球第16名，亚太区第5名。香港海洋公园分为3部分，分别为位于北面的山下花园，和南面的南朗山南麓及大树湾，占地共17公顷，有40多个游乐设施。山下花园与南朗山以登山缆车和海洋列车连接。而南朗山与大树湾之间，则以登山电梯连接，是全世界第2长的户外电动扶梯。
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div><!-- end basic-info -->
-				</div><!-- end attraction-detail -->
+					</div>
+					<div class="bottom">
+						bbbbb
+					</div>
+				</div><!-- end attraction-planning -->
+				<div class="bottom-space"></div>
 			</div><!-- end main -->
 		</div><!-- end content -->
 	</div><!-- end container -->

@@ -19,13 +19,31 @@ $(function() {
 		if (isNaN(sideBarHeight) || sideBarHeight < 0) sideBarHeight = 0;
 		$("#sidebar").height(sideBarHeight);
 		
+		//planning page
+		var topBottomSpace = 183;
+		var sideHeight = $(this).height() - topBottomSpace;
+		$("#attraction-planning .mid .left, #attraction-planning .mid .right").height(sideHeight);
+		
+		
+		var attractionsHeight = $("#attraction-planning .mid .attractions").height();
+		if(sideHeight>attractionsHeight) {
+			$("#attraction-planning .mid").height(sideHeight);
+		} else {
+			$("#attraction-planning .mid").height(attractionsHeight);
+		}
+		
+		
+		
+		
+		$("#container").width($(this).width());
+		
 	}).trigger("resize");
 	
 	//header fix top and sidebar not scroll up
 	$("#header").scrollToFixed({zIndex: 99});
 	$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
 	$("#attractions-list h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
-	
+	//$("#attraction-planning h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
 	//sidebar accordion
 	//initial state
 	var $initialOpenHeader = $("#sidebar .accordion .accordion-header:nth-child(1)");

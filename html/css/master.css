@@ -19,6 +19,7 @@
 @myBagItemDashSeparateColor: #c2c2c2;
 @myBagItemBg: #f0eaea;
 @galleryBorderColor: #4b4b4b;
+@greyBg: #ededed;
 
 
 /* Clear Floats Without Structural Markup */
@@ -92,10 +93,10 @@ ul, ol {
 	padding: 0;
 }
 
-.rounded-corners (@radius: 5px) {
-	border-radius: @radius;
-	-webkit-border-radius: @radius;
-	-moz-border-radius: @radius;
+.rounded-corners (@top-left:5px, @top-right:5px, @bottom-right:5px, @bottom-left:5px) {
+	border-radius: @arguments;
+	-webkit-border-radius: @arguments;
+	-moz-border-radius: @arguments;
 }
 .opacity (@opacity: 0.8) {
 	-moz-opacity: @opacity;/* Netscape */
@@ -118,8 +119,10 @@ ul, ol {
 	margin-right: 310px;
 }
 #sidebar {
+	overflow: auto;
 	float: right;
 	width: 302px;
+	
 	padding-top: 30px;
 }
 #shadow-divide {
@@ -303,11 +306,11 @@ ul, ol {
 			margin: 0 10px 20px 10px;
 			height: 307px;
 			width: 266px;
-			border-radius: 0 10px 10px 0;
+			.rounded-corners(0, 10px, 10px, 0);
 			box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 			img {
 				display: block;	
-				border-radius: 0 10px 0 0;
+				.rounded-corners(0, 10px, 0, 0);
 			}
 			.title {
 				overflow: hidden;
@@ -334,7 +337,7 @@ ul, ol {
 				overflow: hidden;
 				height: 45px;
 				background: @attractionListBottomBg;
-				border-radius: 0 0 10px 0;
+				.rounded-corners(0, 0, 10px, 0);
 				img {
 					float: left;
 					box-shadow: none;
@@ -417,7 +420,7 @@ ul, ol {
 		background: @myBagHeaderBg;
 		font-size: 17px;
 		color: @white;
-		border-radius: 0 7px 0 0;
+		.rounded-corners(0, 7px, 0, 0);
 	}
 	.accordion {
 		border: 1px solid @myBagBorderColor;
@@ -553,7 +556,7 @@ ul, ol {
 	padding: 14px 0 0 0;
 	width: 842px;
 	border: 1px solid @myBagItemDashSeparateColor;
-	border-radius: 0 8px 8px 0;
+	.rounded-corners(0, 8px, 8px, 0);
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 	.breadcrumbs {
 		margin-bottom: 8px;
@@ -715,7 +718,7 @@ ul, ol {
 		font-size: 13px;
 		line-height: 15px;
 		color: @textGrey;
-		border-radius: 0 0 8px 0;
+		.rounded-corners(0, 0, 8px, 0);
 		hr {
 			margin: 13px 0 10px 0;
 			height: 0;
@@ -768,12 +771,63 @@ ul, ol {
 			}
 		}
 	}
-	
-	
 }
 
 
+#planning {
+	#main {
+		.top-space {
+			height: 34px;
+			background: @white;
+		}
+		.bottom-space {
+			height: 20px;
+			background: @white;
+		}
+	}
+}
 
+#attraction-planning {
+	margin: 0 auto;
+	width: 844px;
+	.top {
+		height: 45px;
+		background: @greyBg;
+		border: 1px solid @myBagItemDashSeparateColor;
+		border-bottom: none;
+		.rounded-corners(0, 8px, 0, 0);
+		box-shadow: 4px 0px 2px -2px rgba(0,0,0,0.5);
+	}
+	.mid {
+		
+		.left {
+			overflow: auto;
+			float: left;
+			width: 142px;
+			border-left: 1px solid @myBagItemDashSeparateColor;
+			background: @greyBg;
+		}
+		.right {
+			float: right;
+			
+			width: 21px;
+			border-right: 1px solid @myBagItemDashSeparateColor;
+			background: @greyBg;
+			box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+		}
+		.attractions {
+			padding: 0 21px 0 142px;
+		}
+	}
+	.bottom {
+		height: 26px;
+		background: @greyBg;
+		border: 1px solid @myBagItemDashSeparateColor;
+		border-top: none;
+		.rounded-corners(0, 0, 8px, 0);
+		box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+	}
+}
 
 
 
