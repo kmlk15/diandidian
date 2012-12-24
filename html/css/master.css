@@ -143,6 +143,7 @@ ul, ol {
 #header {
 	overflow: visible;
 	height: 60px;
+	width: 100% !important;
 	background: @red;
 }
 #top-nav {
@@ -836,12 +837,40 @@ ul, ol {
 }
 
 
+/* mockup2 */
 
-
-
-
-
-
+#attraction-planning-wrap {
+	margin: 30px 30px 0 30px;
+	padding: 0 20px 20px 0;
+	
+	border: 1px solid #c2c2c2;
+	background: #ededed;
+	.rounded-corners(0, 8px, 8px, 0);
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+#attraction-planning2 {
+	width: 100%;
+	height: 100%;
+	background: #ffffff;
+}
+#attraction-planning2 .top {
+	height: 45px;
+	background: #ededed;
+}
+#plan-timeline {
+	float: left;
+	width: 142px;
+	height: 100%;
+	background: #ededed;
+	overflow: auto;
+}
+#plan-attractions {
+	height: 100%;
+	overflow: auto;
+}
+#planning2 #content {
+	padding-bottom: 20px;
+}
 
 
 

@@ -25,18 +25,18 @@
 <script type="text/javascript" src="js/less-1.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		$("#main .top-space").scrollToFixed({zIndex: 96, marginTop: 60});
-		$("#main .bottom-space").scrollToFixed({zIndex: 96,  bottom: 0});
-		$("#attraction-planning .top").scrollToFixed({zIndex: 96, marginTop: 94});
-		$("#attraction-planning .mid .left").scrollToFixed({zIndex: 98, bottom: 46});
-		$("#attraction-planning .mid .right").scrollToFixed({zIndex: 97, bottom: 46});
-		$("#attraction-planning .bottom").scrollToFixed({zIndex: 98, bottom: 20});
-		//$("#attraction-planning .mid .left").jScrollPane();
-		
+		$(window).resize(function(e) {
+			var space = 133;
+			var height = $(this).height()-space;
+			$("#attraction-planning-wrap").height(height);
+			
+			$("#attraction-planning2 .mid").height(height-$("#attraction-planning2 .top").height());
+			
+		}).trigger("resize");;
 	})
 </script>
 </head>
-<body id="planning">
+<body id="planning2">
 	<div id="container">
 		<div id="header">
 			<div id="user-sign" class="signin">
@@ -143,159 +143,107 @@
 			</div><!-- end sidebar -->
 			
 			<div id="main">
-				<div class="top-space"></div>
-				<div id="attraction-planning">
-					<div class="top">
-						top
-					</div>
-					<div class="mid clearfix">
-						<div class="left">
-							<p>
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-							left<br />
-                            </p>
+				
+				<div id="attraction-planning-wrap">
+					<div id="attraction-planning2">
+						<div class="top">top</div>
+						<div class="mid">
+								<div id="plan-timeline">
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+									timeline<br />
+								</div>
+							<div id="plan-attractions">
+								<p style="margin: 0">
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+									attractions<br />
+								</p>
+							</div>
 						</div>
-						<div class="right">right</div>
-						<div class="attractions">
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-							attractions<br />
-						</div>
-					</div>
-					<div class="bottom">
-						bbbbb
-					</div>
-				</div><!-- end attraction-planning -->
-				<div class="bottom-space"></div>
+					</div><!-- end attraction-planning -->
+				</div><!-- end attraction-planning-wrap -->
+				
 			</div><!-- end main -->
 		</div><!-- end content -->
 	</div><!-- end container -->
