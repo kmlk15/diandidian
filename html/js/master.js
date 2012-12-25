@@ -32,9 +32,10 @@ $(function() {
 		} else {
 			$("#attraction-planning .mid").height(attractionsHeight);
 		}
-		
-		
 		//$("#container").width($(this).width());
+		if($(this).height()>$("#container").height()) {
+			$("#shadow-divide").height($(this).height());
+		}
 		
 	}).trigger("resize");
 	

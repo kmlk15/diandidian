@@ -114,6 +114,9 @@ ul, ol {
 	min-width: 1200px;
 }
 #home {
+	#header {
+		min-width: 912px;
+	}
 	#container {
 		min-width: 912px;
 	}
@@ -144,6 +147,7 @@ ul, ol {
 	overflow: visible;
 	height: 60px;
 	width: 100% !important;
+	min-width: 1200px;
 	background: @red;
 }
 #top-nav {
