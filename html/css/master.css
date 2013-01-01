@@ -4,6 +4,7 @@
 @textGrey: #3c3c3c;
 @textGrey2: #3f3f3f;
 @textGrey3: #3b3b3b;
+@textGrey4: #575757;
 @red: #dd3e31;
 @greyDropDownHoverBg: #e4e4e4;
 @greyDashBorder: #888888;
@@ -20,6 +21,10 @@
 @myBagItemBg: #f0eaea;
 @galleryBorderColor: #4b4b4b;
 @greyBg: #ededed;
+@greyBorderColor: #d9d9d9;
+@greyPlanDropDownBg: #d3d3d3;
+@greyPlanDropDownHoverBg: #bebebe;
+@calendarBorderColor: #aaaaaa;
 
 
 /* Clear Floats Without Structural Markup */
@@ -785,97 +790,418 @@ ul, ol {
 }
 
 
+
+/* plan page */
+#top-nav .return-search {
+	display: block;
+	float: left;
+	margin: 15px 0 0 20px;
+	font-size: 23px;
+	font-weight: 700;
+	color: @white;
+}
 #planning {
+	
 	#main {
-		.top-space {
-			height: 34px;
-			background: @white;
-		}
-		.bottom-space {
-			height: 20px;
-			background: @white;
-		}
+		height: 660px;
 	}
 }
-
-#attraction-planning {
-	margin: 0 auto;
-	width: 844px;
-	.top {
-		height: 45px;
-		background: @greyBg;
-		border: 1px solid @myBagItemDashSeparateColor;
-		border-bottom: none;
-		.rounded-corners(0, 8px, 0, 0);
-		box-shadow: 4px 0px 2px -2px rgba(0,0,0,0.5);
-	}
-	.mid {
-		
-		.left {
-			overflow: auto;
-			float: left;
-			width: 142px;
-			border-left: 1px solid @myBagItemDashSeparateColor;
-			background: @greyBg;
-		}
-		.right {
-			float: right;
-			
-			width: 21px;
-			border-right: 1px solid @myBagItemDashSeparateColor;
-			background: @greyBg;
-			box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
-		}
-		.attractions {
-			padding: 0 21px 0 142px;
-		}
-	}
-	.bottom {
-		height: 26px;
-		background: @greyBg;
-		border: 1px solid @myBagItemDashSeparateColor;
-		border-top: none;
-		.rounded-corners(0, 0, 8px, 0);
-		box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+#planning #my-bag .accordion .accordion h4.accordion-header {
+	background: none;
+	cursor: text;
+	&.no-plan {
+		color: @red;
 	}
 }
-
-
-/* mockup2 */
 
 #attraction-planning-wrap {
+	position: relative;
 	margin: 30px 30px 0 30px;
 	padding: 0 20px 20px 0;
-	
-	border: 1px solid #c2c2c2;
-	background: #ededed;
+	border: 1px solid @myBagItemDashSeparateColor;
+	background: @greyBg;
 	.rounded-corners(0, 8px, 8px, 0);
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+	.date {
+		display: none;
+		position: absolute;
+		top: 45px;
+		z-index: 5;
+		background: @white;
+		&.start-date {
+			left: 142px;
+			border: 1px solid @calendarBorderColor;
+			.rounded-corners(4px, 0, 0, 4px);
+			.datepicker {
+				.ui-datepicker {
+					.rounded-corners(0, 0, 0, 4px);
+				}
+			}
+		}
+		&.end-date {
+			left: 374px;
+			border: 1px solid @calendarBorderColor;
+			border-left: none;
+			.rounded-corners(0, 4px, 4px, 0);
+			.datepicker {
+				.ui-datepicker {
+					.rounded-corners(0, 0, 4px, 0);
+				}
+			}
+		}
+		h4 {
+			margin: 0 0 0 5px;
+			padding: 0;
+			font-size: 15px;
+			line-height: 25px;
+			color: @textGrey3;
+		}
+		.datepicker {
+			.ui-datepicker {
+				border: none;
+				border-radius: 0;
+			}
+		}
+	}
 }
-#attraction-planning2 {
+#attraction-planning {
 	width: 100%;
 	height: 100%;
-	background: #ffffff;
+	background: @white;
 }
-#attraction-planning2 .top {
-	height: 45px;
-	background: #ededed;
-}
-#plan-timeline {
+#plan-timeline-wrap {
 	float: left;
 	width: 142px;
 	height: 100%;
-	background: #ededed;
+	background: @greyBg;
+}
+#plan-timeline {
 	overflow: auto;
+	margin: 45px 0 0 0;
+	.date-line {
+		position: relative;
+		margin-right: 5px;
+		padding-right: 13px;
+		border-right: 1px solid @red;
+		p {
+			margin: 0 0 12px 0;
+			font-size: 18px;
+			color: @red;
+			text-align: right;
+		}
+		a {
+			display: block;
+			float: right;
+			clear: both;
+			margin: 0 0 8px 0;
+			width: 80px;
+			border: 1px solid @greyBg;
+			font-size: 18px;
+			text-align: right;
+			&.year {
+				font-size: 16px;
+			}
+			&:hover {
+				text-decoration: none;
+			}
+			&.active {
+				
+				border: 1px dashed @red;
+			}
+		}
+		img {
+			position: absolute;
+			top: 2px;
+			right: -1px;
+		}
+	}
+}
+#plan-date-input {
+	overflow: visible;
+	
+	width: 142px;
+	.calendar-icon {
+		display: block;
+		margin: 0 0 10px 91px;
+		cursor: pointer;
+	}
+	p {
+		margin: 0 17px 0 0;
+		font-size: 16px;
+		color: @textGrey3;
+		text-align: right;
+	}
+	
 }
 #plan-attractions {
 	height: 100%;
+	.header {
+		overflow: visible;
+		height: 45px;
+		background: @greyBg;
+		.plan-name {
+			float: left;
+			input {
+				display: block;
+				margin: 15px 0 0 0;
+				padding: 0 0 0 6px;
+				height: 23px;
+				width: 208px;
+				border: 1px solid @greyBorderColor;
+				box-shadow: inset 3px 3px 3px -2px rgba(0,0,0,0.75);
+				&.placeholder {
+					font-size: 18px;
+					color: @greyTopDropHoverBg;
+				}
+			}
+			p {
+				margin: 18px 0 0 8px;
+				font-size: 18px;
+				color: @textGrey2;
+			}
+		}
+		.plan-menu {
+			position: relative;
+			float: right;
+			margin: 11px 0 0 0;
+			&:hover {
+				span {
+					background: url(../images/sprite.png) 0 -901px no-repeat;
+				}
+				ul {
+					display: block;
+				}
+			}
+			span {
+				position: relative;
+				display: block;
+				padding: 5px 0 0 7px;
+				width: 95px;
+				height: 22px;
+				background: url(../images/sprite.png) 0 -929px no-repeat;
+				font-size: 17px;
+				color: @white;
+				cursor: pointer;
+				z-index: 5;
+			}
+			ul {
+				display: none;
+				position: absolute;
+				top: 17px;
+				padding: 10px 0 0 0;
+				width: 102px;
+				background: @greyPlanDropDownBg;
+				z-index: 3;
+				li {
+					padding: 0 0 0 7px;
+					height: 28px;
+					line-height: 28px;
+					border-bottom: 1px dashed @accountMenuBorderColor;
+					font-size: 17px;
+					color: @textGrey4;
+					cursor: pointer;
+					&.last {
+						border-bottom: none;
+					}
+					&:hover {
+						background: @greyPlanDropDownHoverBg;
+						color: @white;
+					}
+				}
+			}
+		}
+	}
+}
+#plan-attractions-list-wrap {
 	overflow: auto;
 }
-#planning2 #content {
-	padding-bottom: 20px;
+#plan-attractions-list {
+	
+	position: relative;
+	margin: 0 auto;
+	padding: 10px 0 0 0;
+	hr {
+		margin: 0 0 10px 0;
+		height: 0;
+		border: none;
+		border-top: 1px dashed @accountMenuBorderColor;
+	}
+	h3 {
+		margin: 0 0 6px 0;
+		padding: 0 0 0 10px;
+		font-size: 18px;
+		color: @textGrey3;
+	}
+	ul {
+		li {
+			position: relative;
+			float: left;
+			margin: 0 10px 20px 10px;
+			width: 200px;
+			background: @attractionListBottomBg;
+			box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+			.rounded-corners(0, 10px, 10px, 0);
+			img {
+				display: block;
+				cursor: move;
+				.rounded-corners(0, 10px, 0, 0);
+			}
+			.droppable-point {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 5px;
+				height: 5px;
+				background: #f00;
+			}
+			.bottom {
+				padding: 0 0 3px 8px;
+				cursor: pointer;
+				h4 {
+					font-weight: 400;
+					font-size: 16px;
+					line-height: 1.4;
+					color: @textGrey3;
+				}
+				span {
+					font-size: 11px;
+					color: @textGrey3;
+				}
+			}
+			.hover-cover {
+				display: none;
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding: 10px;
+				width: 180px;
+				height: 161px;
+				background: url(../images/box-opacity.png) repeat;
+				.rounded-corners(0, 10px, 0, 0);
+				table {
+					border-collapse: collapse;
+					border: none;
+					td {
+						padding: 0 0 3px 0;
+						font-size: 12px;
+						color: @white;
+						&.label {
+							vertical-align: top;
+							width: 30px;
+						}
+					}
+				}
+				.btn {
+					display: block;
+					position: absolute;
+					bottom: 6px;
+					width: 90px;
+					height: 30px;
+					line-height: 30px;
+					font-size: 15px;
+					color: @white;
+					cursor: pointer;
+					&.remark {
+						left: 9px;
+						padding-left: 34px;
+						width: 56px;
+						background: url(../images/sprite.png) 0 -1002px no-repeat;
+						&:hover {
+							background: url(../images/sprite.png) 0 -966px no-repeat;
+						}
+						
+					}
+					&.detail {
+						right: 9px;
+						padding-left: 19px;
+						width: 71px;
+						background: url(../images/sprite.png) 0 -1035px no-repeat;
+						&:hover {
+							background: url(../images/sprite.png) 0 -1068px no-repeat;
+						}
+					}
+				}
+				.note-input {
+					display: none;
+					position: absolute;
+					top: 6px;
+					left: 6px;
+					width: 186px;
+					height: 168px;
+					border: 1px solid @greyBorderColor;
+					background: @white;
+					z-index: 5;
+					textarea {
+						overflow: hidden;
+						margin: 0;
+						padding: 12px 0 0 8px;
+						width: 178px;
+						height: 156px;
+						border: none;
+						resize: none;
+						font-size: 13px;
+						color: @textGrey3;
+						background: @white;
+					}
+					span {
+						display: block;
+						position: absolute;
+						bottom: 5px;
+						right: 4px;
+						padding-left: 5px;
+						width: 34px;
+						height: 20px;
+						line-height: 20px;
+						background: url(../images/note-input-btn.png) no-repeat;
+						cursor: pointer;
+						font-size: 13px;
+						color: @white;
+					}
+				}
+			}
+		}
+	}
+}
+.ui-draggable-dragging {
+	list-style: none;
+	background: @attractionListBottomBg;
+	.rounded-corners(0, 10px, 10px, 0);
+	img {
+		cursor: move;
+		.rounded-corners(0, 10px, 0, 0);
+	}
+	.droppable-point {
+		position: absolute;
+				top: 0;
+				left: 0;
+				width: 5px;
+				height: 5px;
+				background: #f00;
+	}
+	.bottom {
+		h4 {
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 1.4;
+			color: @textGrey3;
+		}
+		span {
+			font-size: 11px;
+			color: @textGrey3;
+		}
+	}
+	.hover-cover {
+		display: none;
+	}
 }
 
+/*
+
+
+#planning #content {
+	padding-bottom: 20px;
+}
+*/
 
 
 

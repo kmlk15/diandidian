@@ -10,6 +10,7 @@
 <link href="css/token-input-facebook.css" rel="stylesheet" type="text/css" />
 <link type="text/css" href="css/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 <link rel="stylesheet/less" type="text/css" href="css/master.css">
+<link rel="stylesheet/less" type="text/css" href="planning-mockup2.css">
 <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>
 <script type="text/javascript" src="js/jquery.tokeninput.js"></script>
@@ -25,18 +26,65 @@
 <script type="text/javascript" src="js/less-1.3.1.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		$(window).resize(function(e) {
-			var space = 133;
-			var height = $(this).height()-space;
-			$("#attraction-planning-wrap").height(height);
-			
-			$("#attraction-planning2 .mid").height(height-$("#attraction-planning2 .top").height());
-			
-		}).trigger("resize");;
+		$("#main .top-space").scrollToFixed({zIndex: 96, marginTop: 60});
+		$("#main .bottom-space").scrollToFixed({zIndex: 96,  bottom: 0});
+		$("#attraction-planning .top").scrollToFixed({zIndex: 96, marginTop: 94});
+		$("#attraction-planning .mid .left").scrollToFixed({zIndex: 98, bottom: 46});
+		$("#attraction-planning .mid .right").scrollToFixed({zIndex: 97, bottom: 46});
+		$("#attraction-planning .bottom").scrollToFixed({zIndex: 98, bottom: 20});
+		//$("#attraction-planning .mid .left").jScrollPane();
+		
 	})
 </script>
+<style type="text/css">
+#planning #main .top-space {
+	height: 34px;
+	background: #fff;
+}
+#planning #main .bottom-space {
+	height: 20px;
+	background: #fff;
+}
+#attraction-planning {
+	margin: 0 auto;
+	width: 844px;
+}
+#attraction-planning .top {
+	height: 45px;
+	background: #ededed;
+	border: 1px solid #c2c2c2;
+	border-bottom: none;
+	.rounded-corners(0, 8px, 0, 0);
+	box-shadow: 4px 0px 2px -2px rgba(0,0,0,0.5);
+}
+#attraction-planning .mid .left {
+	overflow: auto;
+	float: left;
+	width: 142px;
+	border-left: 1px solid #c2c2c2;
+	background: #ededed;
+}
+#attraction-planning .mid .right {
+	float: right;
+	width: 21px;
+	border-right: 1px solid #c2c2c2;
+	background: #ededed;
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+#attraction-planning .attractions {
+	padding: 0 21px 0 142px;
+}
+#attraction-planning .bottom {
+	height: 26px;
+	background: #ededed;
+	border: 1px solid #c2c2c2;
+	border-top: none;
+	.rounded-corners(0, 0, 8px, 0);
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+</style>
 </head>
-<body id="planning2">
+<body id="planning">
 	<div id="container">
 		<div id="header">
 			<div id="user-sign" class="signin">
@@ -143,107 +191,159 @@
 			</div><!-- end sidebar -->
 			
 			<div id="main">
-				
-				<div id="attraction-planning-wrap">
-					<div id="attraction-planning2">
-						<div class="top">top</div>
-						<div class="mid">
-								<div id="plan-timeline">
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-									timeline<br />
-								</div>
-							<div id="plan-attractions">
-								<p style="margin: 0">
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-									attractions<br />
-								</p>
-							</div>
+				<div class="top-space"></div>
+				<div id="attraction-planning">
+					<div class="top">
+						top
+					</div>
+					<div class="mid clearfix">
+						<div class="left">
+							<p>
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+							left<br />
+                            </p>
 						</div>
-					</div><!-- end attraction-planning -->
-				</div><!-- end attraction-planning-wrap -->
-				
+						<div class="right">right</div>
+						<div class="attractions">
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+							attractions<br />
+						</div>
+					</div>
+					<div class="bottom">
+						bbbbb
+					</div>
+				</div><!-- end attraction-planning -->
+				<div class="bottom-space"></div>
 			</div><!-- end main -->
 		</div><!-- end content -->
 	</div><!-- end container -->

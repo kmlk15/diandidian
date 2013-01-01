@@ -53,7 +53,7 @@ $(function() {
 	$("#header").scrollToFixed({zIndex: 99});
 	//$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
 	$("#attractions-list h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
-	//$("#sidebar").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0});
+	$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0});
 	
 	
 	//sidebar accordion
@@ -91,7 +91,30 @@ $(function() {
 	$("#search-address-wrap label").click(function(e) {
 		$("#search-address-wrap #token-input-search-address").focus();
 	});
-	    
+	
+	//placeholder
+	$("[placeholder]").focus(function() {
+		var input = $(this);
+		input.removeClass("placeholder")
+		if (input.val() == input.attr("placeholder")) {
+			input.val("");
+		}
+	}).blur(function() {
+		var input = $(this);
+		if (input.val() == "" || input.val() == input.attr("placeholder")) {
+			input.val(input.attr("placeholder"));
+			input.addClass("placeholder")
+		}
+	}).blur();
+ 
+	$("[placeholder]").parents("form").submit(function() {
+		$(this).find("[placeholder]").each(function() {
+			var input = $(this);
+			if (input.val() == input.attr("placeholder")) {
+				input.val("");
+			}
+		})
+	});
 	
 	//home page to add to bag, you should change to use backend to add
 	$("#attractions-list ul li .add-bag").click(function(e) {
@@ -263,7 +286,6 @@ function updateSideBarPosition($win) {
 	var leftPos = $win.width() - contentMinWidth;
 	leftPos = leftPos + $win.scrollLeft();
 	if (leftPos>0) leftPos=0;
-	
 	$("#sidebar").css("right", leftPos + "px");
 }
 
