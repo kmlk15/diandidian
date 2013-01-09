@@ -218,6 +218,8 @@ function initDetailGallery() {
 		var href = $(this).attr("href");
 		var $detail = $(this).parents(".gallery").children(".detail");
 		$detail.attr("src", href);
+		$ul.find("li.active").removeClass("active");
+		$(this).parent("li").addClass("active");
 		return false;
 	});
 	var moveLeftInterval = null;
