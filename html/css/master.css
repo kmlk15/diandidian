@@ -25,6 +25,7 @@
 @greyPlanDropDownBg: #d3d3d3;
 @greyPlanDropDownHoverBg: #bebebe;
 @calendarBorderColor: #aaaaaa;
+@scrollColor: #c6c6c6;
 
 
 /* Clear Floats Without Structural Markup */
@@ -99,7 +100,9 @@ ul, ol {
 }
 .jspVerticalBar {
 	width: 10px !important;
-	background: #c6c6c6;
+	.jspDrag {
+		background: @scrollColor;
+	}
 }
 .rounded-corners (@top-left:5px, @top-right:5px, @bottom-right:5px, @bottom-left:5px) {
 	border-radius: @arguments;

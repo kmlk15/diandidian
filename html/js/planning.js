@@ -84,7 +84,40 @@ $(function() {
 	$("#plan-timeline .date-line a").droppable(
 		{
 		 	hoverClass: 'active',
-			tolerance: "top-left-touch"
+			tolerance: "top-left-touch",
+			drop: function(event, ui) {
+				var $droppingUl = ui.draggable.parent("ul");
+				var href = $(this).attr("href");
+				var dateValue = href.replace(new RegExp("/", "g") ,"");
+				var $targetHeader = $("#plan-attractions-list").find(".t-"+dateValue);
+				if ($targetHeader.length>0) {
+					var $ul = $targetHeader.next("ul");
+					//$ul.append(ui.helper);
+					ui.draggable.appendTo($ul);
+				} else {
+					var dateArr = href.split("/");
+					var year = dateArr[0];
+					var month = dateArr[1];
+					var day = dateArr[2];
+					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日</h3><ul class="clearfix"></ul>';
+					var beforeTarget = findDropHeaderPos(dateValue);
+					if(beforeTarget) {
+						beforeTarget.before(targetHtml).before("<hr />");
+						beforeTarget.prev().prev().append(ui.draggable);
+					} else {
+						$("#plan-attractions-list").append("<hr />");
+						$("#plan-attractions-list").append(targetHtml);
+						$("#plan-attractions-list ul:last").append(ui.draggable);
+					}
+				}
+				//remove header if drag to empty
+				if ($droppingUl.find("li").length<=0) {
+					$droppingUl.prev("h3").remove();
+					$droppingUl.next("hr").remove();
+					$droppingUl.remove();
+				}
+				
+			}
 		}
 	);
 	
@@ -111,6 +144,22 @@ $(function() {
 	})
 		
 })
+
+function findDropHeaderPos(date) {
+	var dateValue = parseInt(date);
+	var returnObj = null;
+	$("#plan-attractions-list h3").each(function(index, element) {
+		var headerClass = $(element).attr("class");
+		if (headerClass) {
+			var classDateValue = parseInt(headerClass.replace("t-", ""));
+			if(classDateValue > dateValue) {
+				returnObj = $(element);
+				return (false);
+			}
+		}
+	});
+	return returnObj;
+}
 
 
 

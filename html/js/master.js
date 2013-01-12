@@ -184,11 +184,13 @@ $(function() {
 		$(this).parents(".content").find("p span.more").show();
 		$(this).hide();
 		$(this).next(".less").show();
+		$("#shadow-divide").height($(document).height());
 	});
 	$("#attraction-detal .user-content .col2 .content .switch .less").click(function(e) {
 		$(this).parents(".content").find("p span.more").hide();
 		$(this).hide();
 		$(this).prev(".more").show();
+		$("#shadow-divide").height($(document).height());
 	});
 	
 })
