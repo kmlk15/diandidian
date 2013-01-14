@@ -8,15 +8,15 @@ $(function() {
 		$("#plan-attractions-list-wrap, #plan-timeline").height(height-$("#plan-attractions .header").height());
 		
 		//center plan-attractions-list
-		var wrapWidth = $("#plan-attractions-list-wrap").width();
-		var rowCount = Math.floor(wrapWidth / planItemWidth);
-		var mainWidth = planItemWidth*rowCount;
-		$("#plan-attractions-list").width(mainWidth);
+		//var wrapWidth = $("#plan-attractions-list-wrap").width();
+		//var rowCount = Math.floor(wrapWidth / planItemWidth);
+		//var mainWidth = planItemWidth*rowCount;
+		//$("#plan-attractions-list").width(mainWidth);
 		
 		if($(this).height()>$("#container").height()) {
 			$("#shadow-divide").height($(this).height());
 		}
-		
+		setPlanAttractionsListPaddingBottom();
 	}).trigger("resize");;
 	
 	
@@ -37,6 +37,9 @@ $(function() {
 			$(this).children(".hover-cover").hide();
 		}
 	);
+	$("#plan-attractions-list ul li .hover-cover").click(function(e) {
+		$(this).hide();
+	});
 	$("#plan-attractions-list ul li .hover-cover .btn.remark").click(function(e) {
 		$(this).prev(".note-input").show();
 	});
@@ -70,20 +73,22 @@ $(function() {
 	$("#plan-attractions-list ul li").draggable(
 		{
 		 	zIndex:2000,
-			 helper: 'clone',
+			helper: 'clone',
 			containment: '#main',
-			 appendTo: 'body',
-			 handle: "img",
-			 drag: function( event, ui ) {
+			appendTo: 'body',
+			handle: "img",
+			cursor: "pointer",
+			cursorAt: { top: 0, left: 0 },
+			drag: function( event, ui ) {
 				 //console.log(ui.position.top);
 				 // console.log($("#plan-timeline .date-line a.active").offset().top);
 			}
 		}
 	);
 	
-	$("#plan-timeline .date-line a").droppable(
+	$("#plan-timeline .date-line a:not('.year')").droppable(
 		{
-		 	hoverClass: 'active',
+		 	hoverClass: 'drop-hover',
 			tolerance: "top-left-touch",
 			drop: function(event, ui) {
 				var $droppingUl = ui.draggable.parent("ul");
@@ -100,6 +105,13 @@ $(function() {
 					var month = dateArr[1];
 					var day = dateArr[2];
 					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日</h3><ul class="clearfix"></ul>';
+					if($(this).hasClass("no-sign")) {
+						targetHtml =  '<h3 class="t-'+dateValue+'">尚未安排</h3><ul class="clearfix"></ul>';
+						$("#plan-attractions-list").prepend("<hr />");
+						$("#plan-attractions-list").prepend(targetHtml);
+						$("#plan-attractions-list ul:first").append(ui.draggable);
+						return;
+					}
 					var beforeTarget = findDropHeaderPos(dateValue);
 					if(beforeTarget) {
 						beforeTarget.before(targetHtml).before("<hr />");
@@ -109,32 +121,36 @@ $(function() {
 						$("#plan-attractions-list").append(targetHtml);
 						$("#plan-attractions-list ul:last").append(ui.draggable);
 					}
+					addDroppable();
 				}
 				//remove header if drag to empty
 				if ($droppingUl.find("li").length<=0) {
 					$droppingUl.prev("h3").remove();
-					$droppingUl.next("hr").remove();
+					$droppingUl.prev("hr").remove();
 					$droppingUl.remove();
 				}
-				
+				setPlanAttractionsListPaddingBottom();
 			}
 		}
 	);
 	
 	var attractionsApi = $("#plan-attractions-list-wrap").data('jsp');
 	$("#plan-timeline .date-line a").click(function(e) {
+		
 		var href = $(this).attr("href");
 		href = href.replace(new RegExp("/", "g") ,"");
-	
 		var $target = $("#plan-attractions-list").find(".t-"+href);
-		var arrowTopPosstion = 3;
-		var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+3;
-		arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
-		$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
 		if ($target.length>0) {
+			var arrowTopPosstion = 3;
+			var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
+			arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
+			$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
 			attractionsApi.scrollToElement($target,true, 1000);
+			$("#plan-timeline .date-line a.active").removeClass("active");
+			$(this).addClass("active");
+			$("#plan-attractions-list h3.active").removeClass("active");
+			$target.addClass("active");
 		}
-		
 		return false;
 	});
 	
@@ -161,9 +177,30 @@ function findDropHeaderPos(date) {
 	return returnObj;
 }
 
+function setPlanAttractionsListPaddingBottom() {
+	var visibleHeight = $("#plan-attractions-list-wrap").height();
+	var h3Height = $("#plan-attractions-list h3").outerHeight(true);
+	var lastUlHeight = $("#plan-attractions-list ul:last").outerHeight(true);
+	var paddintBottom = visibleHeight - h3Height - lastUlHeight;
+	$("#plan-attractions-list").css("padding-bottom", paddintBottom+"px");
+}
 
 
-
+function addDroppable() {
+	$("#plan-attractions-list ul").droppable(
+		{
+			drop: function(event, ui) {
+				var $droppingUl = ui.draggable.parent("ul");
+				ui.draggable.appendTo($(this));
+				if ($droppingUl.find("li").length<=0) {
+					$droppingUl.prev("h3").remove();
+					$droppingUl.prev("hr").remove();
+					$droppingUl.remove();
+				}
+			}
+		}
+	)
+}
 
 
 

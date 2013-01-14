@@ -53,7 +53,7 @@ $(function() {
 	$("#header").scrollToFixed({zIndex: 99});
 	//$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
 	$("#attractions-list h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
-	$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0});
+	$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
 	
 	
 	//sidebar accordion
