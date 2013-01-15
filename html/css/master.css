@@ -573,7 +573,6 @@ ul, ol {
 	margin: 0 auto;
 	padding: 14px 0 0 0;
 	width: 842px;
-	
 	border: 1px solid @myBagItemDashSeparateColor;
 	.rounded-corners(0, 8px, 8px, 0);
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
@@ -929,7 +928,8 @@ ul, ol {
 		cursor: pointer;
 	}
 	p {
-		margin: 0 17px 0 0;
+		clear: both;
+		margin: 0 4px 0 0;
 		font-size: 16px;
 		color: @textGrey3;
 		text-align: right;
@@ -944,6 +944,7 @@ ul, ol {
 		background: @greyBg;
 		.plan-name {
 			float: left;
+			position: relative;
 			input {
 				display: block;
 				margin: 15px 0 0 0;
@@ -952,10 +953,14 @@ ul, ol {
 				width: 208px;
 				border: 1px solid @greyBorderColor;
 				box-shadow: inset 3px 3px 3px -2px rgba(0,0,0,0.75);
-				&.placeholder {
-					font-size: 18px;
-					color: @greyTopDropHoverBg;
-				}
+			}
+			label {
+				position: absolute;
+				top: 17px;
+				left: 5px;
+				z-index: 2;
+				font-size: 18px;
+				color: @greyTopDropHoverBg;
 			}
 			p {
 				margin: 18px 0 0 8px;
