@@ -26,7 +26,8 @@
 @greyPlanDropDownHoverBg: #bebebe;
 @calendarBorderColor: #aaaaaa;
 @scrollColor: #c6c6c6;
-
+@scrollBgColor: #dedede;
+@unselectableDateBg: #bbbbbb;
 
 /* Clear Floats Without Structural Markup */
 .clearfix:before, .clearfix:after {
@@ -100,8 +101,11 @@ ul, ol {
 }
 .jspVerticalBar {
 	width: 10px !important;
-	.jspDrag {
-		background: @scrollColor;
+	.jspTrack {
+		background: @scrollBgColor;
+		.jspDrag {
+			background: @scrollColor;
+		}
 	}
 }
 .rounded-corners (@top-left:5px, @top-right:5px, @bottom-right:5px, @bottom-left:5px) {
@@ -114,7 +118,12 @@ ul, ol {
 	-khtml-opacity: @opacity;/* Safari 1.x */
 	opacity: @opacity;/* Good browsers */
 }
-
+.ui-datepicker-unselectable {
+	opacity: 1 !important;
+}
+.ui-datepicker-unselectable span {
+	background: @unselectableDateBg !important;
+}
 /* Layout */
 #container {
 	position: relative;
@@ -719,6 +728,10 @@ ul, ol {
 						&:hover {
 							background: url(../images/sprite.png) 0 0 no-repeat;
 						}
+						&.added {
+							background: url(../images/sprite.png) 0 -190px no-repeat;
+							cursor: default;
+						}
 					}
 					&.upload-photo {
 						background: url(../images/sprite.png) 0 -856px no-repeat;
@@ -734,7 +747,7 @@ ul, ol {
 		padding: 14px 34px 14px 90px;
 		background: @attractionListBottomBg;
 		font-size: 13px;
-		line-height: 15px;
+		line-height: 18px;
 		color: @textGrey;
 		.rounded-corners(0, 0, 8px, 0);
 		hr {
@@ -855,7 +868,7 @@ ul, ol {
 			padding: 0;
 			font-size: 15px;
 			line-height: 25px;
-			color: @textGrey3;
+			color: @red;
 		}
 		.datepicker {
 			.ui-datepicker {
@@ -879,9 +892,11 @@ ul, ol {
 #plan-timeline {
 	overflow: auto;
 	margin: 45px 0 0 0;
+	.jspPane {
+		width: 122px !important;
+	}
 	.date-line {
 		position: relative;
-		margin-right: 5px;
 		padding-right: 13px;
 		border-right: 1px solid @red;
 		.active {
@@ -924,12 +939,12 @@ ul, ol {
 	.calendar-icon {
 		display: block;
 		float: right;
-		margin: 0 3px 10px 0;
+		margin: 0 0 10px 0;
 		cursor: pointer;
 	}
 	p {
 		clear: both;
-		margin: 0 4px 0 0;
+		margin: 0;
 		font-size: 16px;
 		color: @textGrey3;
 		text-align: right;
@@ -956,7 +971,7 @@ ul, ol {
 			}
 			label {
 				position: absolute;
-				top: 17px;
+				top: 19px;
 				left: 5px;
 				z-index: 2;
 				font-size: 18px;
@@ -1026,16 +1041,16 @@ ul, ol {
 #plan-attractions-list {
 	position: relative;
 	margin: 0 20px 0 20px;
-	padding: 10px 0 0 0;
+	padding: 3px 0 0 0;
 	hr {
-		margin: 0 0 10px 0;
+		margin: 0 0 5px 0;
 		height: 0;
 		border: none;
 		border-top: 1px dashed @accountMenuBorderColor;
 	}
 	h3 {
 		margin: 0 0 6px 0;
-		padding: 0 0 0 10px;
+		padding: 7px 0 0 10px;
 		font-size: 18px;
 		color: @textGrey3;
 		&.active {
@@ -1092,7 +1107,8 @@ ul, ol {
 					border: none;
 					td {
 						padding: 0 0 3px 0;
-						font-size: 12px;
+						font-size: 11px;
+						line-height: 14px;
 						color: @white;
 						&.label {
 							vertical-align: top;

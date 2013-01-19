@@ -32,7 +32,6 @@ $(function() {
 		} else {
 			$("#attraction-planning .mid").height(attractionsHeight);
 		}
-		//$("#container").width($(this).width());
 		if($(this).height()>$("#container").height()) {
 			$("#shadow-divide").height($(this).height());
 		}
@@ -51,7 +50,6 @@ $(function() {
 	
 	//header fix top and sidebar not scroll up
 	$("#header").scrollToFixed({zIndex: 99});
-	//$("#sidebar").scrollToFixed({zIndex: 98, marginTop: $("#header").outerHeight(true)});
 	$("#attractions-list h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
 	$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
 	
@@ -92,29 +90,6 @@ $(function() {
 		$("#search-address-wrap #token-input-search-address").focus();
 	});
 	
-	//placeholder
-	$("[placeholder]").focus(function() {
-		var input = $(this);
-		input.removeClass("placeholder")
-		if (input.val() == input.attr("placeholder")) {
-			input.val("");
-		}
-	}).blur(function() {
-		var input = $(this);
-		if (input.val() == "" || input.val() == input.attr("placeholder")) {
-			input.val(input.attr("placeholder"));
-			input.addClass("placeholder")
-		}
-	}).blur();
- 
-	$("[placeholder]").parents("form").submit(function() {
-		$(this).find("[placeholder]").each(function() {
-			var input = $(this);
-			if (input.val() == input.attr("placeholder")) {
-				input.val("");
-			}
-		})
-	});
 	
 	//home page to add to bag, you should change to use backend to add
 	$("#attractions-list ul li .add-bag").click(function(e) {
@@ -143,6 +118,9 @@ $(function() {
 	
 	//detail page to add to bag, you should change to use backend to add, add you should avoid duplicate items
 	$("#attraction-detal .user-content .col.col3 span.add-bag").click(function(e) {
+		if($(this).hasClass("added")) {
+			return;
+		}
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
@@ -150,7 +128,8 @@ $(function() {
 		var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del"><a href="#"></a></td></tr></table></li>';
 		$ul.append(itemHtml);
 		updateBagCount($ul);
-		//searchBagItem($ul,'');
+		$(this).text("已在背包");
+		$(this).addClass("added");
 		return false;
 	});
 	
@@ -214,8 +193,6 @@ function initDetailGallery() {
 		$ul.css("position", "static");
 		$("#attraction-detal .gallery .thumbnails .arrow").hide();
 	}
-	
-	
 	$ul.find("li a").click(function(e) {
 		var href = $(this).attr("href");
 		var $detail = $(this).parents(".gallery").children(".detail");

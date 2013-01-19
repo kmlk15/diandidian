@@ -33,26 +33,29 @@ $(function() {
 	});
 	$("#plan-attractions-list ul li .hover-cover .btn.remark").click(function(e) {
 		$(this).prev(".note-input").show();
+		event.stopPropagation();
 	});
 	$("#plan-attractions-list ul li .hover-cover .note-input span").click(function(e) {
 		$(this).parents(".hover-cover").hide();
 	});
-	
+	$("#plan-attractions-list ul li .hover-cover .note-input").click(function(e) {
+		event.stopPropagation();
+	});
 	var planStartDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker(
 		{
 			changeYear: true,
 			yearRange: "-0:+3",
-			changeMonth: true
+			changeMonth: true,
+			minDate: 0
 		}
 	);
 	//$("#attraction-planning-wrap .start-date > .ui-datepicker").prepend("<h4>开始日期</h4>");
-	
-	
 	var planEndDate = $("#attraction-planning-wrap .end-date .datepicker").datepicker(
 		{
 			changeYear: true,
 			yearRange: "-0:+3",
 			changeMonth: true,
+			minDate: 0,
 			onSelect: function(dateText, inst) {
 				var startDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker("getDate");
 				var endDate = $(this).datepicker("getDate");
@@ -64,8 +67,10 @@ $(function() {
 				var startLoopDate = startDate;
 				var year = startLoopDate.getFullYear();
 				var month = startLoopDate.getMonth()+1;
+				var formatMonth = month<10 ? "0"+month : month;
 				var date = startLoopDate.getDate();
-				var loopTimeHtml = '<a class="year" href="'+year+'">'+year+'</a><a href="'+year+'/'+month+'/'+date+'">'+month+'月'+date+'日</a>';
+				var formatDate = date<10 ? "0"+date : date;
+				var loopTimeHtml = '<a class="year" href="'+year+'">'+year+'</a><a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
 				for(var i=0; i<durationDay; i++) {
 					startLoopDate = new Date(startLoopDate.getTime()+(24*60*60*1000));
 					if (year != startLoopDate.getFullYear()) {
@@ -73,11 +78,13 @@ $(function() {
 						loopTimeHtml = loopTimeHtml + '<a class="year" href="'+year+'">'+year+'</a>';
 					}
 					date = startLoopDate.getDate();
+					formatDate = date<10 ? "0"+date : date;
 					if (month != (startLoopDate.getMonth()+1)) {
 						month = startLoopDate.getMonth()+1;
-						loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+month+'/'+date+'">'+month+'月'+date+'日</a>';
+						formatMonth = month<10 ? "0"+month : month;
+						loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
 					} else {
-						loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+month+'/'+date+'">'+date+'日</a>';
+						loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+date+'日</a>';
 					}
 				}
 				timeLinkHtml = timeLinkHtml + loopTimeHtml + '</div>';
@@ -114,11 +121,7 @@ $(function() {
 					console.log('Handle jsp-scroll-y',
 								'scrollPositionY=', scrollPositionY);
 	})
-	
-	
 	initialPlanNameLabel();
-	
-		
 })
 
 function findDropHeaderPos(date) {
@@ -154,7 +157,11 @@ function addDroppable() {
 				ui.draggable.appendTo($(this));
 				if ($droppingUl.find("li").length<=0) {
 					$droppingUl.prev("h3").remove();
-					$droppingUl.prev("hr").remove();
+					if($droppingUl.prev("hr").length>0) {
+						$droppingUl.prev("hr").remove();
+					} else if ($droppingUl.next("hr").length>0) {
+						$droppingUl.next("hr").remove();
+					}
 					$droppingUl.remove();
 				}
 			}
@@ -235,7 +242,12 @@ function initialTimeLineLink() {
 				//remove header if drag to empty
 				if ($droppingUl.find("li").length<=0) {
 					$droppingUl.prev("h3").remove();
-					$droppingUl.prev("hr").remove();
+					if($droppingUl.prev("hr").length>0) {
+						$droppingUl.prev("hr").remove();
+					} else if ($droppingUl.next("hr").length>0) {
+						$droppingUl.next("hr").remove();
+						highlightTopDate();
+					}
 					$droppingUl.remove();
 				}
 				setPlanAttractionsListPaddingBottom();
@@ -246,7 +258,13 @@ function initialTimeLineLink() {
 
 
 
-
+function highlightTopDate() {
+	var $topHeader = $("#plan-attractions-list h3:first");
+	var className = $topHeader.attr('class');
+	var timeLineHref = className.substring(2, 6) + "/" + className.substring(6, 8) + "/" + className.substring(8, 10);
+	var $timeLink = $("#plan-timeline .date-line a[href='"+timeLineHref+"']");
+	$timeLink.trigger("click");
+}
 
 
 
