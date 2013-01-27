@@ -1211,7 +1211,7 @@ ul, ol {
 		}
 	}
 	.hover-cover {
-		display: none;
+		display: none !important;
 	}
 }
 

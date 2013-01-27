@@ -33,20 +33,24 @@ $(function() {
 	});
 	$("#plan-attractions-list ul li .hover-cover .btn.remark").click(function(e) {
 		$(this).prev(".note-input").show();
-		event.stopPropagation();
+		return false;
 	});
 	$("#plan-attractions-list ul li .hover-cover .note-input span").click(function(e) {
 		$(this).parents(".hover-cover").hide();
 	});
 	$("#plan-attractions-list ul li .hover-cover .note-input").click(function(e) {
-		event.stopPropagation();
+		return false;
 	});
 	var planStartDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker(
 		{
 			changeYear: true,
 			yearRange: "-0:+3",
 			changeMonth: true,
-			minDate: 0
+			minDate: 0,
+			onSelect: function(dateText, inst) {
+				var startDate = $(this).datepicker("getDate");
+				$("#attraction-planning-wrap .end-date .datepicker").datepicker( "option", "minDate", startDate);
+			}
 		}
 	);
 	//$("#attraction-planning-wrap .start-date > .ui-datepicker").prepend("<h4>开始日期</h4>");
@@ -107,20 +111,12 @@ $(function() {
 			helper: 'clone',
 			containment: '#main',
 			appendTo: 'body',
-			handle: "img",
 			cursor: "pointer",
-			cursorAt: { top: 0, left: 0 },
-			drag: function( event, ui ) {
-				 //console.log(ui.position.top);
-				 // console.log($("#plan-timeline .date-line a.active").offset().top);
-			}
+			cursorAt: { top: 0, left: 0 }
 		}
 	);
 	initialTimeLineLink();
-	$("#plan-attractions-list-wrap").bind("jsp-scroll-y",function(event, scrollPositionY, isAtTop, isAtBottom) {
-					console.log('Handle jsp-scroll-y',
-								'scrollPositionY=', scrollPositionY);
-	})
+	
 	initialPlanNameLabel();
 })
 
