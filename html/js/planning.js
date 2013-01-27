@@ -1,5 +1,4 @@
 $(function() {
-	var planItemWidth = $("#plan-attractions-list ul li").outerWidth(true);
 	
 	$(window).resize(function(e) {
 		var space = 133;
@@ -13,34 +12,28 @@ $(function() {
 	}).trigger("resize");;
 	
 	
-	$("#plan-attractions-list ul li .bottom").hover(
-		function() {
-			var $hoverCover = $(this).next(".hover-cover");
-			$hoverCover.show();
-			$hoverCover.children(".note-input").hide();
-		},
-		null
-	);
 	
-	$("#plan-attractions-list ul li").hover(
-		null,
-		function() {
-			$(this).children(".hover-cover").hide();
-		}
-	);
-	$("#plan-attractions-list ul li .hover-cover").click(function(e) {
-		$(this).hide();
-	});
-	$("#plan-attractions-list ul li .hover-cover .btn.remark").click(function(e) {
+	$("#plan-attractions-list ul li .bottom").live('mouseenter', function() {
+		var $hoverCover = $(this).next(".hover-cover");
+		$hoverCover.show();
+		$hoverCover.children(".note-input").hide();
+	})
+	
+	$("#plan-attractions-list ul li").live('mouseleave', function() {
+		$(this).children(".hover-cover").hide();
+	})
+	$("#plan-attractions-list ul li .hover-cover").live('click', function() {$(this).hide();})
+	$("#plan-attractions-list ul li .hover-cover .btn.remark").live('click', function() {
 		$(this).prev(".note-input").show();
 		return false;
-	});
-	$("#plan-attractions-list ul li .hover-cover .note-input span").click(function(e) {
+	})
+	$("#plan-attractions-list ul li .hover-cover .note-input span").live('click', function() {
 		$(this).parents(".hover-cover").hide();
-	});
-	$("#plan-attractions-list ul li .hover-cover .note-input").click(function(e) {
+	})
+	$("#plan-attractions-list ul li .hover-cover .note-input").live('click', function() {
 		return false;
-	});
+	})
+	
 	var planStartDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker(
 		{
 			changeYear: true,
@@ -104,7 +97,15 @@ $(function() {
 	$("#plan-date-input .calendar-icon").click(function(e) {
 		$("#attraction-planning-wrap .date").toggle();
 	});
-	var dropped = false;
+	
+	draggableAttraction();
+	
+	initialTimeLineLink();
+	
+	initialPlanNameLabel();
+})
+
+function draggableAttraction() {
 	$("#plan-attractions-list ul li").draggable(
 		{
 		 	zIndex:2000,
@@ -115,10 +116,7 @@ $(function() {
 			cursorAt: { top: 0, left: 0 }
 		}
 	);
-	initialTimeLineLink();
-	
-	initialPlanNameLabel();
-})
+}
 
 function findDropHeaderPos(date) {
 	var dateValue = parseInt(date);
@@ -140,7 +138,7 @@ function setPlanAttractionsListPaddingBottom() {
 	var visibleHeight = $("#plan-attractions-list-wrap").height();
 	var h3Height = $("#plan-attractions-list h3").outerHeight(true);
 	var lastUlHeight = $("#plan-attractions-list ul:last").outerHeight(true);
-	var paddintBottom = visibleHeight - h3Height - lastUlHeight;
+	var paddintBottom = visibleHeight - h3Height - lastUlHeight - 5;
 	$("#plan-attractions-list").css("padding-bottom", paddintBottom+"px");
 }
 
