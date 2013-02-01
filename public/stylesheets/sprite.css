@@ -1,0 +1,55 @@
+.sprite-add-bag-btn-hover {
+	background-position: 0 0;
+	width: 119px;
+	height: 45px;
+}
+.sprite-add-bag-btn {
+	background-position: 0 -95px;
+	width: 119px;
+	height: 45px;
+}
+.sprite-added-bag-btn {
+	background-position: 0 -190px;
+	width: 119px;
+	height: 45px;
+}
+.sprite-button01 {
+	background-position: 0 -285px;
+	width: 77px;
+	height: 28px;
+}
+.sprite-button02 {
+	background-position: 0 -363px;
+	width: 77px;
+	height: 28px;
+}
+.sprite-closeBtn {
+	background-position: 0 -441px;
+	width: 19px;
+	height: 15px;
+}
+.sprite-closeBtnHover {
+	background-position: 0 -506px;
+	width: 19px;
+	height: 15px;
+}
+.sprite-detail-btn-hover {
+	background-position: 0 -571px;
+	width: 119px;
+	height: 45px;
+}
+.sprite-detail-btn {
+	background-position: 0 -666px;
+	width: 119px;
+	height: 45px;
+}
+.sprite-upload-photo-btn-hover {
+	background-position: 0 -761px;
+	width: 119px;
+	height: 45px;
+}
+.sprite-upload-photo-btn {
+	background-position: 0 -856px;
+	width: 119px;
+	height: 45px;
+}

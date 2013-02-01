@@ -1,0 +1,1281 @@
+/* Less CSS Variable */
+@white: #ffffff;
+@black: #000000;
+@textGrey: #3c3c3c;
+@textGrey2: #3f3f3f;
+@textGrey3: #3b3b3b;
+@textGrey4: #575757;
+@red: #dd3e31;
+@greyDropDownHoverBg: #e4e4e4;
+@greyDashBorder: #888888;
+@greyTopDropHoverBg: #7f7e7e;
+@searchBorderColor: #5b5b5b;
+@searchLabelColor: #828282;
+@accountMenuBorderColor: #9b9b9b;
+@attractionListBottomBg: #e5e1e1;
+@myBagHeaderBg: #56230d;
+@myBagBorderColor: #8a8a8a;
+@myBagItemHeaderBg: #e3d0c8;
+@myBagItemBorderColor: #716864;
+@myBagItemDashSeparateColor: #c2c2c2;
+@myBagItemBg: #f0eaea;
+@galleryBorderColor: #4b4b4b;
+@greyBg: #ededed;
+@greyBorderColor: #d9d9d9;
+@greyPlanDropDownBg: #d3d3d3;
+@greyPlanDropDownHoverBg: #bebebe;
+@calendarBorderColor: #aaaaaa;
+@scrollColor: #c6c6c6;
+@scrollBgColor: #dedede;
+@unselectableDateBg: #bbbbbb;
+
+/* Clear Floats Without Structural Markup */
+.clearfix:before, .clearfix:after {
+	content: '.';
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	font-size: 0;
+	line-height: 0;
+	width: 0;
+	height: 0;
+}
+.clearfix:after {
+	clear: both;
+}
+.clearfix {
+	zoom: 1;
+}
+/* General */
+body {
+	margin: 0;
+	padding: 0;
+	background: @white;
+	font-family: "STHeiti", arial, sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	color: @textGrey;
+}
+a {
+	color:  @textGrey;
+	text-decoration: none;
+}
+a:hover {
+	color:  @textGrey;
+	text-decoration: underline;
+}
+img {
+	border: none;
+}
+h1, h2, h3, h4 {
+	margin: 0;
+	padding: 0;
+	font-family: "STHeiti";
+	font-weight: 700;
+	color: @black;
+}
+h1 {
+	font-size: 22px;
+}
+
+h2 {
+	font-size: 17px;
+}
+
+h3 {
+	font-size: 18px;
+}
+
+h4 {
+	font-size: 13px;
+}
+p {
+	font-size: 13px;
+	line-height: 18px;
+	color: @textGrey2;
+}
+ul, ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.jspVerticalBar {
+	width: 10px !important;
+	.jspTrack {
+		background: @scrollBgColor;
+		.jspDrag {
+			background: @scrollColor;
+		}
+	}
+}
+.rounded-corners (@top-left:5px, @top-right:5px, @bottom-right:5px, @bottom-left:5px) {
+	border-radius: @arguments;
+	-webkit-border-radius: @arguments;
+	-moz-border-radius: @arguments;
+}
+.opacity (@opacity: 0.8) {
+	-moz-opacity: @opacity;/* Netscape */
+	-khtml-opacity: @opacity;/* Safari 1.x */
+	opacity: @opacity;/* Good browsers */
+}
+.ui-datepicker-unselectable {
+	opacity: 1 !important;
+}
+.ui-datepicker-unselectable span {
+	background: @unselectableDateBg !important;
+}
+/* Layout */
+#container {
+	position: relative;
+	width: 100%;
+	min-width: 1200px;
+}
+#home {
+	#header {
+		min-width: 912px;
+	}
+	#container {
+		min-width: 912px;
+	}
+}
+#main {
+	margin-right: 310px;
+}
+#sidebar {
+	overflow: auto;
+	float: right;
+	width: 302px;
+	padding-top: 30px;
+	position: fixed;
+	top: 60px;
+	right: 0;
+}
+#shadow-divide {
+	position: absolute;
+	top: 0;
+	right: 302px;
+	width: 8px;
+	height: 100%;
+	background: url(../images/divider-shadow.png) repeat-y;
+	z-index: 100;
+}
+/* header */
+#header {
+	overflow: visible;
+	height: 60px;
+	width: 100% !important;
+	min-width: 1200px;
+	background: @red;
+}
+#top-nav {
+	margin-right: 310px;
+	.logo {
+		display: block;
+		float: left;
+		margin: 15px 0 0 20px;
+	}
+	.dropdown {
+		float: left;
+		margin-left: 49px;
+		span {
+			display: block;
+			padding: 0 55px 0 12px;
+			height: 60px;
+			background: url(../images/drop-triangle-white.png) 100px 50% no-repeat;
+			line-height: 60px;
+			font-size: 23px;
+			font-weight: 700;
+			color: @white;
+			cursor: pointer;
+		}
+		&:hover {
+			background-color: @greyDropDownHoverBg;
+			span {
+				background: url(../images/drop-triangle-black.png) 100px 50% no-repeat;
+				color: @textGrey3;
+			}
+			ul {
+				display: block;
+			}
+		}
+		ul {
+			display: none;
+			border-top: 1px dashed @greyDashBorder;
+			li {
+				padding: 0 0 0 12px;
+				height: 37px;
+				line-height: 37px;
+				font-size: 20px;
+				font-weight: 700;
+				color: @textGrey3;
+				cursor: pointer;
+				&:hover {
+					background: @greyTopDropHoverBg;
+					color: @white;
+				}
+			}
+		}
+		
+	}
+}
+#search-address-wrap {
+	position: relative;
+	float: right;
+	margin: 15px 20px 0 0;
+	.token-input-list-facebook {
+		width: 234px;
+		padding-right: 30px;
+		border: 1px solid @searchBorderColor;
+		background: @white url(../images/search-icon.png) 97% 4px no-repeat;
+	}
+	label {
+		position: absolute;
+		top: 6px;
+		left: 4px;
+		font-size: 15px;
+		color: @searchLabelColor;
+		cursor: text;
+	}
+}
+.token-input-dropdown-facebook {
+	width: 262px !important;
+	z-index: 999 !important;
+}
+#user-sign {
+	float: right;
+	width: 302px;
+	&.not-signin {
+		a {
+			display: block;
+			float: left;
+			margin-left: 23px;
+			padding: 0 10px 0 42px;
+			height: 60px;
+			background: url(../images/weibo_icon.png) 10px 50% no-repeat;
+			line-height: 60px;
+			font-size: 18px;
+			color: @white;
+			&:hover {
+				background-color: @greyDropDownHoverBg;
+				color: @textGrey3;
+				text-decoration: none;
+			}
+		}
+	}
+	/* user have signin */
+	&.signin {
+		.account {
+			float: left;
+			margin-left: 23px;
+			&:hover {
+				background-color: @greyDropDownHoverBg;
+				.user-info {
+					color: @textGrey;
+				}
+				ul {
+					display: block;
+				}
+			}
+			.user-info {
+				padding: 6px 10px 0 10px;
+				height: 54px;
+				line-height: normal;
+				font-size: 13px;
+				color: @white;
+				cursor: pointer;
+				img {
+					display: block;
+					margin: 0 auto 2px auto;
+				}
+				span {
+					text-align: center;
+				}
+			}
+			ul {
+				display: none;
+				li {
+					padding-left: 10px;
+					height: 23px;
+					line-height: 23px;
+					border-top: 1px dashed @accountMenuBorderColor;
+					&:hover {
+						background: @greyTopDropHoverBg;
+						a {
+							color: @white;
+						}
+					}
+					a {
+						display: block;
+						font-size: 12px;
+						color: @textGrey;
+						&:hover {
+							text-decoration: none;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+/* attractions-list */
+#attractions-list {
+	margin: 0 auto;
+	h2 {
+		padding: 30px 0 7px 10px;
+		background: @white;
+		font-size: 23px;
+		color: @textGrey3;
+	}
+	ul {
+		li {
+			position: relative;
+			float: left;
+			margin: 0 10px 20px 10px;
+			height: 307px;
+			width: 266px;
+			.rounded-corners(0, 10px, 10px, 0);
+			box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+			img {
+				display: block;	
+				.rounded-corners(0, 10px, 0, 0);
+			}
+			.title {
+				overflow: hidden;
+				position: absolute;
+				top: 235px;
+				left: 0;
+				height: 27px;
+				width: 100%;
+				background: url(../images/box-opacity.png);
+				h3 {
+					float: left;
+					margin: 1px 0 0 10px;
+					line-height: 27px;
+					color: #fff;
+				}
+				span {
+					display: block;
+					float: left;
+					margin: 6px 0 0 10px;
+					color: @white;
+				}
+			}
+			.user {
+				overflow: hidden;
+				height: 45px;
+				background: @attractionListBottomBg;
+				.rounded-corners(0, 0, 10px, 0);
+				img {
+					float: left;
+					box-shadow: none;
+				}
+				a {
+					display: block;
+					float: left;
+					margin: 6px 0 0 10px;
+				}
+				div {
+					float: left;
+					margin: 6px 0 0 10px;
+					span {
+						display: block;
+						font-size: 10px;
+						line-height: 16px;
+						color: @textGrey2;
+					}
+					p {
+						margin: 0;
+						padding: 0;
+						font-size: 12px;
+						line-height: 15px;
+						color: @textGrey3;
+						a {
+							float: none;
+							display: inline;
+							margin: 0;
+						}
+					}
+				}
+			}
+			.add-bag, .added-bag, .detail {
+				display: none;
+				position: absolute;
+				top: 12px;
+				height: 31px;
+				padding-top: 14px;
+				font-size: 17px;
+				color: @white;
+				cursor: pointer;
+			}
+			.add-bag, .added-bag {
+				left: 18px;
+				padding-left: 35px;
+				width: 84px;
+			}
+			.add-bag {
+				background: url(../images/sprite.png) 0 -95px no-repeat;
+				&:hover {
+					background: url(../images/sprite.png) 0 0 no-repeat;
+					text-decoration: none;
+				}
+			}
+			.added-bag {
+				background: url(../images/sprite.png) 0 -190px no-repeat;
+				cursor: default;
+			}
+			.detail {
+				right: 18px;
+				padding-left: 35px;
+				width: 84px;
+				background: url(../images/sprite.png) 0 -666px no-repeat;
+				&:hover {
+					background: url(../images/sprite.png) 0 -571px no-repeat;
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}
+/* my-bag */
+#my-bag {
+	margin: 0 auto;
+	width: 250px;
+	h2 {
+		height: 32px;
+		line-height: 32px;
+		padding-left: 12px;
+		background: @myBagHeaderBg;
+		font-size: 17px;
+		color: @white;
+		.rounded-corners(0, 7px, 0, 0);
+	}
+	.accordion {
+		border: 1px solid @myBagBorderColor;
+		.accordion-header {
+			margin: 0;
+			padding: 0 0 0 26px;
+			height: 25px;
+			line-height: 25px;
+			background: @myBagItemHeaderBg url(../images/accordion-head-icon.png) 11px 50% no-repeat;
+			border-top: 1px solid @myBagItemBorderColor;
+			border-bottom: 1px solid @myBagItemBorderColor;
+			font-weight: normal;
+			font-size: 15px;
+			color: @textGrey;
+			cursor: pointer;
+			&.state-active {
+				border-bottom: none;
+				background-image: url(../images/accordion-head-icon-active.png);
+			}
+		}
+		.accordion {
+			.accordion-header {
+				border-bottom: none;
+				border-top: 1px dashed @myBagItemDashSeparateColor;
+				background-color: @myBagItemBg;
+				a {
+					span {
+						
+					}
+				}
+			}
+			ul {
+				border-top: 1px dashed @myBagItemDashSeparateColor;
+				padding: 0;
+				margin: 0 11px 0 14px;
+				li {
+					margin-left: 8px;
+					table {
+						a {
+							float: none;
+							margin: 0 0;
+							padding-left: 0;
+							width: 19px;
+							height: 15px;
+							line-height: 15px;
+							background: url(../images/sprite.png) 0 -441px no-repeat;
+							font-family: Verdana, Geneva, sans-serif;
+							font-size: 10px;
+							font-weight: bold;
+							color: @white;
+							&:hover {
+								background: url(../images/sprite.png) 0 -506px no-repeat;
+								text-decoration: none;
+							}
+						}
+					}
+				}
+			}
+			div {
+				a {
+					display: block;
+					float: right;
+					margin: 5px 11px 5px 0;
+					padding-left: 8px;
+					width: 69px;
+					height: 28px;
+					line-height: 28px;
+					background: url(../images/sprite.png) 0 -285px no-repeat;
+					font-size: 13px;
+					color: @white;
+					&:hover {
+						background: url(../images/sprite.png) 0 -363px no-repeat;
+						text-decoration: none;
+					}
+				}
+			}
+		}
+		.accordion-content {
+			display: none;
+			border: none;
+			background: @myBagItemBg;
+		}
+		ul {
+			border-top: 1px dashed @myBagItemDashSeparateColor;
+			padding: 0 11px 0 19px;
+			li {
+				padding: 3px 0;
+				border-bottom: 1px dashed @myBagItemDashSeparateColor;
+				font-size: 15px;
+				color: @textGrey;
+				table {
+					width: 100%;
+					height: 100%;
+					border: none;
+					td {
+						vertical-align: top;
+						padding: 0 10px 0 16px;
+						font-size: 13px;
+						&.english {
+							font-family: Verdana, Geneva, sans-serif;
+						}
+						&.del {
+							padding: 0;
+							width: 19px;
+						}
+					}
+				}
+				&.last {
+					border-bottom: none;
+				}
+			}
+		}
+	}
+	&.empty {
+		div {
+			padding-left: 12px;
+			height: 22px;
+			line-height: 22px;
+			background: @myBagItemBg;
+			font-size: 15px;
+			color: @textGrey;
+		}
+	}
+}
+#detail {
+	#main {
+		padding-top: 30px;
+		padding-bottom: 50px;
+	}
+}
+#attraction-detal {
+	margin: 0 auto;
+	padding: 14px 0 0 0;
+	width: 842px;
+	border: 1px solid @myBagItemDashSeparateColor;
+	.rounded-corners(0, 8px, 8px, 0);
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+	.breadcrumbs {
+		margin-bottom: 8px;
+		padding: 0 0 0 30px;
+		font-weight: bold;
+		font-size: 23px;
+		color: @textGrey2;
+		a {
+			color: @textGrey2;
+		}
+	}
+	.gallery {
+		margin-bottom: 15px;
+		.detail {
+			display: block;
+			margin: 0 auto;
+		}
+		.thumbnails {
+			position: relative;
+			margin: 0 auto;
+			width: 780px;
+			height: 67px;
+			background: @attractionListBottomBg;
+			.arrow {
+				position: absolute;
+				top: 0;
+				display: block;
+				width: 24px;
+				height: 100%;
+				cursor: pointer;
+				img {
+					display: block;
+					margin: 29px auto 0 auto;
+				}
+				&.left-arrow {
+					left: 0;
+				}
+				&.right-arrow {
+					right: 0;
+				}
+			}
+			.ul-wrap {
+				overflow: hidden;
+				position: relative;
+				margin: 0 auto;
+				width: 732px;
+				height: 100%;
+				ul {
+					position: absolute;
+					top: 0;
+					left: 0;
+					margin: 5px auto 0 auto;
+					li {
+						position: relative;
+						float: left;
+						margin-right: 3px;
+						border: 1px solid @galleryBorderColor;
+						background: @black;
+						&.active, &:hover, {
+							img {
+								.opacity(1);
+							}
+						}
+						&.last {
+							margin-right: 0;
+						}
+						img {
+							display: block;
+							.opacity(0.45);
+						}
+					}
+				}
+			}
+		}
+	}
+	.user-content {
+		margin: 0 auto 14px auto;
+		width: 780px;
+		.col {
+			float: left;
+			&.col1 {
+				width: 60px;
+			}
+			&.col2 {
+				padding-right: 15px;
+				width: 585px;
+				border-right: 1px dashed @greyTopDropHoverBg;
+				.title {
+					margin-bottom: 7px;
+					h2 {
+						float: left;
+						font-size: 15px;
+						line-height: 18px;
+						color: @textGrey2;
+					}
+					span {
+						font-size: 12px;
+						line-height: 18px;
+					}
+				}
+				.content {
+					p {
+						margin: 0;
+						.more {
+							display: none;
+						}
+					}
+					.switch {
+						span {
+							display: block;
+							float: left;
+							padding-right: 13px;
+							color: @red;
+							cursor: pointer;
+							&.more {
+								background: url(../images/red-triangle-dropdown.png) right 50% no-repeat;
+							}
+							&.less {
+								display: none;
+								background: url(../images/red-triangle-up.png) right 50% no-repeat;
+							}
+						}
+					}
+				}
+			}
+			&.col3 {
+				width: 119px;
+				span {
+					display: block;
+					float: right;
+					margin-right: -10px;
+					padding-top: 14px;
+					padding-left: 35px;
+					width: 84px;
+					height: 31px;
+					font-size: 17px;
+					color: @white;
+					cursor: pointer;
+					&.add-bag {
+						margin-top: -10px;
+						background: url(../images/sprite.png) 0 -95px no-repeat;
+						&:hover {
+							background: url(../images/sprite.png) 0 0 no-repeat;
+						}
+						&.added {
+							background: url(../images/sprite.png) 0 -190px no-repeat;
+							cursor: default;
+						}
+					}
+					&.upload-photo {
+						background: url(../images/sprite.png) 0 -856px no-repeat;
+						&:hover {
+							background: url(../images/sprite.png) 0 -761px no-repeat;
+						}
+					}
+				}
+			}
+		}
+	}
+	.basic-info {
+		padding: 14px 34px 14px 90px;
+		background: @attractionListBottomBg;
+		font-size: 13px;
+		line-height: 18px;
+		color: @textGrey;
+		.rounded-corners(0, 0, 8px, 0);
+		hr {
+			margin: 13px 0 10px 0;
+			height: 0;
+			border: none;
+			border-top: 1px dashed @greyTopDropHoverBg;
+		}
+		p {
+			margin: 0;
+			font-size: 13px;
+			color: @textGrey;
+			line-height: 15px;
+		}
+		table {
+			border: none;
+			border-collapse: collapse;
+			td {
+				padding: 0;
+				border: none;
+			}
+		}
+		.row {
+			&.row1 {
+				.col {
+					float: left;
+					width: 359px;
+					&.col1 {
+						p {
+							line-height: 24px;
+						}
+					}
+					&.col2 {
+						padding-top: 2px;
+						table {
+							.website {
+								td {
+									padding-top: 8px;
+								}
+							}
+						}
+					}
+				}
+			}
+			&.row2, &.row3 {
+				table {
+					td.label {
+						vertical-align: top;
+						width: 35px;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+/* plan page */
+#top-nav .return-search {
+	display: block;
+	float: left;
+	margin: 18px 0 0 20px;
+	font-size: 23px;
+	font-weight: 700;
+	color: @white;
+}
+#planning {
+	#main {
+		height: 660px;
+	}
+}
+#planning #my-bag .accordion .accordion h4.accordion-header {
+	background: none;
+	cursor: text;
+	&.no-plan {
+		color: @red;
+	}
+}
+
+#attraction-planning-wrap {
+	position: relative;
+	margin: 30px 30px 0 30px;
+	padding: 0 20px 20px 0;
+	border: 1px solid @myBagItemDashSeparateColor;
+	background: @greyBg;
+	.rounded-corners(0, 8px, 8px, 0);
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+	.date {
+		display: none;
+		position: absolute;
+		top: 45px;
+		z-index: 5;
+		background: @white;
+		&.start-date {
+			left: 142px;
+			border: 1px solid @calendarBorderColor;
+			.rounded-corners(4px, 0, 0, 4px);
+			.datepicker {
+				.ui-datepicker {
+					.rounded-corners(0, 0, 0, 4px);
+				}
+			}
+		}
+		&.end-date {
+			left: 374px;
+			border: 1px solid @calendarBorderColor;
+			border-left: none;
+			.rounded-corners(0, 4px, 4px, 0);
+			.datepicker {
+				.ui-datepicker {
+					.rounded-corners(0, 0, 4px, 0);
+				}
+			}
+		}
+		h4 {
+			margin: 0 0 0 5px;
+			padding: 0;
+			font-size: 15px;
+			line-height: 25px;
+			color: @red;
+		}
+		.datepicker {
+			.ui-datepicker {
+				border: none;
+				border-radius: 0;
+			}
+		}
+	}
+}
+#attraction-planning {
+	width: 100%;
+	height: 100%;
+	background: @white;
+}
+#plan-timeline-wrap {
+	float: left;
+	width: 142px;
+	height: 100%;
+	background: @greyBg;
+}
+#plan-timeline {
+	overflow: auto;
+	margin: 45px 0 0 0;
+	.jspPane {
+		width: 122px !important;
+	}
+	.date-line {
+		position: relative;
+		padding-right: 13px;
+		border-right: 1px solid @red;
+		.active {
+			color: @red;
+		}
+		p {
+			margin: 0 0 12px 0;
+			font-size: 18px;
+			text-align: right;
+		}
+		a {
+			display: block;
+			float: right;
+			clear: both;
+			margin: 0 0 8px 0;
+			width: 80px;
+			border: 1px solid @greyBg;
+			font-size: 18px;
+			text-align: right;
+			&.year {
+				font-size: 16px;
+			}
+			&:hover {
+				text-decoration: none;
+			}
+			&.drop-hover {
+				
+				border: 1px dashed @red;
+			}
+		}
+		img {
+			position: absolute;
+			top: 2px;
+			right: -1px;
+		}
+	}
+}
+#plan-date-input {
+	overflow: visible;
+	.calendar-icon {
+		display: block;
+		float: right;
+		margin: 0 0 10px 0;
+		cursor: pointer;
+	}
+	p {
+		clear: both;
+		margin: 0;
+		font-size: 16px;
+		color: @textGrey3;
+		text-align: right;
+	}
+	
+}
+#plan-attractions {
+	height: 100%;
+	.header {
+		overflow: visible;
+		height: 45px;
+		background: @greyBg;
+		.plan-name {
+			float: left;
+			position: relative;
+			input {
+				display: block;
+				margin: 15px 0 0 0;
+				padding: 0 0 0 6px;
+				height: 23px;
+				width: 208px;
+				border: 1px solid @greyBorderColor;
+				box-shadow: inset 3px 3px 3px -2px rgba(0,0,0,0.75);
+			}
+			label {
+				position: absolute;
+				top: 19px;
+				left: 5px;
+				z-index: 2;
+				font-size: 18px;
+				color: @greyTopDropHoverBg;
+			}
+			p {
+				margin: 18px 0 0 8px;
+				font-size: 18px;
+				color: @textGrey2;
+			}
+		}
+		.plan-menu {
+			position: relative;
+			float: right;
+			margin: 11px 0 0 0;
+			&:hover {
+				span {
+					background: url(../images/sprite.png) 0 -901px no-repeat;
+				}
+				ul {
+					display: block;
+				}
+			}
+			span {
+				position: relative;
+				display: block;
+				padding: 5px 0 0 7px;
+				width: 95px;
+				height: 22px;
+				background: url(../images/sprite.png) 0 -929px no-repeat;
+				font-size: 17px;
+				color: @white;
+				cursor: pointer;
+				z-index: 5;
+			}
+			ul {
+				display: none;
+				position: absolute;
+				top: 17px;
+				padding: 10px 0 0 0;
+				width: 102px;
+				background: @greyPlanDropDownBg;
+				z-index: 3;
+				li {
+					padding: 0 0 0 7px;
+					height: 28px;
+					line-height: 28px;
+					border-bottom: 1px dashed @accountMenuBorderColor;
+					font-size: 17px;
+					color: @textGrey4;
+					cursor: pointer;
+					&.last {
+						border-bottom: none;
+					}
+					&:hover {
+						background: @greyPlanDropDownHoverBg;
+						color: @white;
+					}
+				}
+			}
+		}
+	}
+}
+#plan-attractions-list-wrap {
+	overflow: auto;
+}
+#plan-attractions-list {
+	position: relative;
+	margin: 0 20px 0 20px;
+	padding: 3px 0 0 0;
+	hr {
+		margin: 0 0 5px 0;
+		height: 0;
+		border: none;
+		border-top: 1px dashed @accountMenuBorderColor;
+	}
+	h3 {
+		margin: 0 0 6px 0;
+		padding: 7px 0 0 10px;
+		font-size: 18px;
+		color: @textGrey3;
+		&.active {
+			color: @red;
+		}
+	}
+	ul {
+		li {
+			position: relative;
+			float: left;
+			margin: 0 10px 20px 10px;
+			background: @attractionListBottomBg;
+			box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+			.rounded-corners(0, 10px, 10px, 0);
+			img {
+				display: block;
+				cursor: move;
+				.rounded-corners(0, 10px, 0, 0);
+			}
+			.droppable-point {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 5px;
+				height: 5px;
+				background: #f00;
+			}
+			.bottom {
+				padding: 0 0 3px 8px;
+				cursor: pointer;
+				h4 {
+					font-weight: 400;
+					font-size: 16px;
+					line-height: 1.4;
+					color: @textGrey3;
+				}
+				span {
+					font-size: 11px;
+					color: @textGrey3;
+				}
+			}
+			.hover-cover {
+				display: none;
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding: 10px;
+				width: 180px;
+				height: 161px;
+				background: url(../images/box-opacity.png) repeat;
+				.rounded-corners(0, 10px, 0, 0);
+				table {
+					border-collapse: collapse;
+					border: none;
+					td {
+						padding: 0 0 3px 0;
+						font-size: 11px;
+						line-height: 14px;
+						color: @white;
+						&.label {
+							vertical-align: top;
+							width: 30px;
+						}
+					}
+				}
+				.btn {
+					display: block;
+					position: absolute;
+					bottom: 6px;
+					width: 90px;
+					height: 30px;
+					line-height: 30px;
+					font-size: 15px;
+					color: @white;
+					cursor: pointer;
+					&.remark {
+						left: 9px;
+						padding-left: 34px;
+						width: 56px;
+						background: url(../images/sprite.png) 0 -1002px no-repeat;
+						&:hover {
+							background: url(../images/sprite.png) 0 -966px no-repeat;
+						}
+						
+					}
+					&.detail {
+						right: 9px;
+						padding-left: 19px;
+						width: 71px;
+						background: url(../images/sprite.png) 0 -1035px no-repeat;
+						&:hover {
+							background: url(../images/sprite.png) 0 -1068px no-repeat;
+						}
+					}
+				}
+				.note-input {
+					display: none;
+					position: absolute;
+					top: 6px;
+					left: 6px;
+					width: 186px;
+					height: 168px;
+					border: 1px solid @greyBorderColor;
+					background: @white;
+					z-index: 5;
+					textarea {
+						overflow: hidden;
+						margin: 0;
+						padding: 12px 0 0 8px;
+						width: 178px;
+						height: 156px;
+						border: none;
+						resize: none;
+						font-size: 13px;
+						color: @textGrey3;
+						background: @white;
+					}
+					span {
+						display: block;
+						position: absolute;
+						bottom: 5px;
+						right: 4px;
+						padding-left: 5px;
+						width: 34px;
+						height: 20px;
+						line-height: 20px;
+						background: url(../images/note-input-btn.png) no-repeat;
+						cursor: pointer;
+						font-size: 13px;
+						color: @white;
+					}
+				}
+			}
+		}
+	}
+}
+.ui-draggable-dragging {
+	list-style: none;
+	background: rgba(229,225,225,0.6);
+	.rounded-corners(0, 10px, 10px, 0);
+	width: 100px;
+	img {
+		.rounded-corners(0, 10px, 0, 0);
+		width: 100px;
+		height: 90px;
+		opacity: 0.6;
+	}
+	.bottom {
+		h4 {
+			font-weight: 400;
+			font-size: 8px;
+			line-height: 1.4;
+			color: @textGrey3;
+		}
+		span {
+			font-size: 5px;
+			color: @textGrey3;
+		}
+	}
+	.hover-cover {
+		display: none !important;
+	}
+}
+
+/*
+
+
+#planning #content {
+	padding-bottom: 20px;
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
