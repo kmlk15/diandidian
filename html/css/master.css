@@ -1157,11 +1157,11 @@ ul, ol {
 					background: @white;
 					z-index: 5;
 					textarea {
-						overflow: hidden;
+						overflow: auto;
 						margin: 0;
 						padding: 12px 0 0 8px;
 						width: 178px;
-						height: 156px;
+						height: 126px;
 						border: none;
 						resize: none;
 						font-size: 13px;
