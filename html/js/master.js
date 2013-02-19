@@ -1,9 +1,9 @@
-// JavaScript Document
 $(function() {
 	
 	var $win = $(window);
-	var itemWidth = $("#attractions-list ul li").outerWidth(true);
+	
 	$win.resize(function(e) {
+		var itemWidth = $("#attractions-list ul li").outerWidth(true);
 		//center Attraction List
 		var mainWidth = $("#main").width();
 		var rowCount = Math.floor(mainWidth / itemWidth);
@@ -32,8 +32,11 @@ $(function() {
 		} else {
 			$("#attraction-planning .mid").height(attractionsHeight);
 		}
+		
 		if($(this).height()>$("#container").height()) {
 			$("#shadow-divide").height($(this).height());
+		} else {
+			$("#shadow-divide").css("height", "100%");
 		}
 		
 	}).trigger("resize");
@@ -92,7 +95,7 @@ $(function() {
 	
 	
 	//home page to add to bag, you should change to use backend to add
-	$("#attractions-list ul li .add-bag").click(function(e) {
+	$("#attractions-list ul li .add-bag").live('click',function(e) {
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
@@ -104,7 +107,7 @@ $(function() {
 		$(this).next(".added-bag").css("display", "block");
 		$(this).css("display", "none");
 		return false;
-	});
+	})
 	
 	//home page delete from bag, you should change to use backend to delete
 	$("#my-bag .accordion .accordion div ul li table td.del a").live('click',function() {
@@ -133,10 +136,26 @@ $(function() {
 		return false;
 	});
 	
+	homeAttractionHover();
+	initDetailGallery();
 	
+	$("#attraction-detal .user-content .col2 .content .switch .more").click(function(e) {
+		$(this).parents(".content").find("p span.more").show();
+		$(this).hide();
+		$(this).next(".less").show();
+		$("#shadow-divide").height($(document).height());
+	});
+	$("#attraction-detal .user-content .col2 .content .switch .less").click(function(e) {
+		$(this).parents(".content").find("p span.more").hide();
+		$(this).hide();
+		$(this).prev(".more").show();
+		$("#shadow-divide").height($(document).height());
+	});
 	
-	
-	
+})
+
+
+function homeAttractionHover() {
 	$("#attractions-list ul li").hover(
 		function(){
 			var addressName = $(this).find(".title h3").text();
@@ -156,23 +175,9 @@ $(function() {
 			$(this).find(".detail").css("display", "none");
 		}
 	);
-	
-	initDetailGallery();
-	
-	$("#attraction-detal .user-content .col2 .content .switch .more").click(function(e) {
-		$(this).parents(".content").find("p span.more").show();
-		$(this).hide();
-		$(this).next(".less").show();
-		$("#shadow-divide").height($(document).height());
-	});
-	$("#attraction-detal .user-content .col2 .content .switch .less").click(function(e) {
-		$(this).parents(".content").find("p span.more").hide();
-		$(this).hide();
-		$(this).prev(".more").show();
-		$("#shadow-divide").height($(document).height());
-	});
-	
-})
+}
+
+
 
 /**
 detail page gallery
