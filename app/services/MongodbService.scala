@@ -7,7 +7,7 @@ import com.mongodb.WriteConcern
 
 trait MongodbServiceComponent {
 
-  def getMongoService(collection: String)
+  def getMongoService(collection: String):MongodbService
 
   trait MongodbService {
     def find(q: DBObject): List[DBObject]
@@ -19,9 +19,10 @@ trait MongodbServiceComponent {
     def delete(obj: DBObject): Int
   }
 
+}
   trait MongodbServiceComponentImpl extends MongodbServiceComponent {
     
-    override def getMongoService(collection: String) = new MongodbService {
+    override def getMongoService(collection: String):MongodbService = new MongodbService {
       val mongoDB = MongoConnection()("topo")
       val col = mongoDB(collection)
 
@@ -52,4 +53,3 @@ trait MongodbServiceComponent {
       }
     }
   }
-}

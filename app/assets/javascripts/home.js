@@ -1,5 +1,5 @@
 function loadHomeAttractions() {
-	$.getJSON("/example", null, function(json){
+	$.getJSON("/location", null, function(json){
 		var attractionListHtml = '';
 		if (json.length > 0) {
 			attractionListHtml += '<h2>中国 &gt; 香港</h2><ul class="clearfix">';
