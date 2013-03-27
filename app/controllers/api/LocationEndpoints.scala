@@ -478,8 +478,7 @@ object LocationEndpoints extends Controller {
      /*val location=  com.mongodb.util.JSON.parse(json).asInstanceOf[BasicDBList];
         location.toArray.foreach(l=>ls.save(l.asInstanceOf[BasicDBObject]))*/
    // ls.save(location.get(0).asInstanceOf[BasicDBObject])
-   val locations= "[%s]".format(ls.list.mkString(","))
-    print(locations)
+  //  val locations= "[%s]".format(ls.list.mkString(","))
     Ok(json).as("application/json")
   }
 }
