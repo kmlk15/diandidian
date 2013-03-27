@@ -95,7 +95,7 @@ $(function() {
 	
 	
 	//home page to add to bag, you should change to use backend to add
-	$("#attractions-list ul li .add-bag").live('click',function(e) {
+	$("#attractions-list ul li .add-bag").on('click',function(e) {
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
