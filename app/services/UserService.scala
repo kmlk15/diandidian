@@ -3,6 +3,7 @@ package services
 import com.mongodb.DBObject
 import base.mongoService
 import com.mongodb.casbah.commons.MongoDBObject
+import dao.UserRepositoryComponent
 
 trait UserServiceComponent {
   val userService: UserService
@@ -15,37 +16,30 @@ trait UserServiceComponent {
 
     def update(q: DBObject, obj: DBObject)
 
-    def delete(obj: DBObject): Int
+    def delete(obj: DBObject)
   }
 }
 
-trait UserServiceComponentImpl extends UserServiceComponent {
-
+trait UserServiceComponentImpl extends UserServiceComponent { this: UserRepositoryComponent =>
   override val userService = new UserService {
-    val user = mongoService.getMongoService("user")
-
     override def list(): List[DBObject] = {
       val q = MongoDBObject()
-      val ls = user.find(q)
-      ls.toList
+      userRepository.find(q)
     }
-
     override def getById(id: String): DBObject = {
-      val q = MongoDBObject()
-      q.put("_id", id)
-      user.findOne(q)
+      userRepository.getById(id)
     }
 
     override def save(obj: DBObject) = {
-      user.insert(obj)
+      userRepository.save(obj)
     }
 
     override def update(q: DBObject, obj: DBObject) {
-      user.update(q, obj)
+      userRepository.update(q, obj)
     }
 
     override def delete(obj: DBObject) {
-      user.delete(obj)
+      userRepository.delete(obj)
     }
   }
 }

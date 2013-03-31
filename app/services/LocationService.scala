@@ -3,6 +3,8 @@ package services
 import com.mongodb.casbah.Imports._
 import com.mongodb.DBObject
 import base.mongoService
+import models.Location
+import dao.LocationRepositoryComponent
 
 trait LocationServiceComponent {
 
@@ -19,25 +21,21 @@ trait LocationServiceComponent {
 
     def update(q: DBObject, obj: DBObject)
 
-    def delete(obj: DBObject): Int
+    def delete(obj: DBObject)
   }
 }
 
-trait LocationServiceComponentImpl extends LocationServiceComponent {
+trait LocationServiceComponentImpl extends LocationServiceComponent { this: LocationRepositoryComponent =>
 
   override val locationService = new LocationService {
-    val location = mongoService.getMongoService("location")
 
     override def list(): List[DBObject] = {
       val q = MongoDBObject()
-      val ls = location.find(q)
-      ls.toList
+      locationRepository.find(q)
     }
 
     override def getById(id: String): DBObject = {
-      val q = MongoDBObject()
-      q.put("_id", id)
-      location.findOne(q)
+      locationRepository.getById(id)
     }
 
     override def getBySlug(slug: String): Option[DBObject] = {
@@ -45,15 +43,15 @@ trait LocationServiceComponentImpl extends LocationServiceComponent {
     }
 
     override def save(obj: DBObject) {
-      location.insert(obj);
-    }
-    
-    override def update(q: DBObject, obj: DBObject){
-      location.update(q, obj)
+      locationRepository.save(obj)
     }
 
-    override def delete(obj: DBObject){
-      location.delete(obj)
+    override def update(q: DBObject, obj: DBObject) {
+      locationRepository.update(q, obj)
+    }
+
+    override def delete(obj: DBObject) {
+      locationRepository.delete(obj)
     }
   }
 }
