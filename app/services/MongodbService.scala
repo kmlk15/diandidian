@@ -4,12 +4,16 @@ import com.mongodb.DBObject
 import com.mongodb.casbah.MongoConnection
 import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.WriteConcern
+import com.novus.salat._
+import com.novus.salat.global._
+import com.mongodb.casbah.Imports._
 
 trait MongodbServiceComponent {
-
-  def getMongoService(collection: String):MongodbService
+	  
+  def getMongoService(collection: String): MongodbService
 
   trait MongodbService {
+    def list[T <: AnyRef]()(implicit manifest: Manifest[T]): List[T]
     def find(q: DBObject): List[DBObject]
     def findOne(q: DBObject): DBObject
     def insert(obj: DBObject)
@@ -20,36 +24,44 @@ trait MongodbServiceComponent {
   }
 
 }
-  trait MongodbServiceComponentImpl extends MongodbServiceComponent {
-    
-    override def getMongoService(collection: String):MongodbService = new MongodbService {
-      val mongoDB = MongoConnection()("topo")
-      val col = mongoDB(collection)
+trait MongodbServiceComponentImpl extends MongodbServiceComponent {
 
-      override def find(q: DBObject): List[DBObject] = {
-        val result = col.find(q)
-        result.toList
-      }
-      override def findOne(q: DBObject): DBObject = {
-        val result = col.findOne(q)
-        result.head
-      }
-      override def insert(obj: DBObject) {
-        col.insert(obj)
-      }
-      override def update(q: DBObject, obj: DBObject, upsert: Boolean, multi: Boolean, concern: WriteConcern): Int = {
-        val result = col.update(q, obj, upsert, multi, concern)
-        result.getN()
-      }
-      override def update(q: DBObject, obj: DBObject) = {
-        update(q, obj, false, false, null)
-      }
-      override def delete(obj: DBObject, concern: WriteConcern): Int = {
-        val result = col.remove(obj, concern);
-        result.getN()
-      }
-      override def delete(obj: DBObject): Int = {
-        delete(obj, null)
-      }
+  override def getMongoService(collection: String): MongodbService = new MongodbService {
+    val mongoDB = MongoConnection()("topo")
+    val col = mongoDB(collection)
+
+    override def list[T <: AnyRef]()(implicit manifest: Manifest[T]): List[T] = {
+      val klass = manifest.erasure.asInstanceOf[Class[T]]
+      col.find(MongoDBObject()).toList.map(item =>
+        grater[T].asObject(item)
+      )
+    }
+
+    override def find(q: DBObject): List[DBObject] = {
+      val result = col.find(q)
+      result.toList
+    }
+
+    override def findOne(q: DBObject): DBObject = {
+      val result = col.findOne(q)
+      result.head
+    }
+    override def insert(obj: DBObject) {
+      col.insert(obj)
+    }
+    override def update(q: DBObject, obj: DBObject, upsert: Boolean, multi: Boolean, concern: WriteConcern): Int = {
+      val result = col.update(q, obj, upsert, multi, concern)
+      result.getN()
+    }
+    override def update(q: DBObject, obj: DBObject) = {
+      update(q, obj, false, false, null)
+    }
+    override def delete(obj: DBObject, concern: WriteConcern): Int = {
+      val result = col.remove(obj, concern);
+      result.getN()
+    }
+    override def delete(obj: DBObject): Int = {
+      delete(obj, null)
     }
   }
+}

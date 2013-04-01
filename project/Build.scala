@@ -11,11 +11,13 @@ object ApplicationBuild extends Build {
     jdbc,
     anorm,
     "org.mongodb" % "casbah_2.10" % "2.5.0",
-    "net.debasishg" % "sjson_2.10" % "0.19"
+    "net.debasishg" % "sjson_2.10" % "0.19",
+    "com.novus" % "salat-core_2.10" % "1.9.2-SNAPSHOT"
   )
 
   def commonResolvers = Seq(
-    "sonatype" at "http://oss.sonatype.org/content/repositories/releases"
+    "sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases",
+    "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(

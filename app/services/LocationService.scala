@@ -11,7 +11,7 @@ trait LocationServiceComponent {
   val locationService: LocationService
 
   trait LocationService {
-    def list(): List[DBObject]
+    def list(): List[Location]
 
     def getById(id: String): DBObject
 
@@ -25,17 +25,21 @@ trait LocationServiceComponent {
   }
 }
 
-trait LocationServiceComponentImpl extends LocationServiceComponent { this: LocationRepositoryComponent =>
+trait LocationServiceComponentImpl extends LocationServiceComponent { 
+  
+  this: LocationServiceComponent =>
 
   override val locationService = new LocationService {
 
-    override def list(): List[DBObject] = {
-      val q = MongoDBObject()
-      locationRepository.find(q)
+    lazy val mongoClient = mongoService.getMongoService("location")
+    
+    override def list(): List[Location] = {
+      mongoClient.list[Location]()
     }
 
     override def getById(id: String): DBObject = {
-      locationRepository.getById(id)
+      //locationRepository.getById(id)
+      null
     }
 
     override def getBySlug(slug: String): Option[DBObject] = {
@@ -43,15 +47,15 @@ trait LocationServiceComponentImpl extends LocationServiceComponent { this: Loca
     }
 
     override def save(obj: DBObject) {
-      locationRepository.save(obj)
+      //locationRepository.save(obj)
     }
 
     override def update(q: DBObject, obj: DBObject) {
-      locationRepository.update(q, obj)
+      //locationRepository.update(q, obj)
     }
 
     override def delete(obj: DBObject) {
-      locationRepository.delete(obj)
+      //locationRepository.delete(obj)
     }
   }
 }
