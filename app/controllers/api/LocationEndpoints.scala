@@ -239,9 +239,11 @@ object LocationEndpoints extends Controller {
 {
 	"name":"Ã©Â¦â„¢Ã¦Â¸Â¯Ã¤ÂºÂ¤Ã¦Ëœâ€œÃ¥Â»Â£Ã¥Â Â´",
 	"addresses": {
-		"street":"Ã¥ÂºÂ·Ã¦Â¨â€šÃ¥Â»Â£Ã¥Â Â´8Ã¨â„¢Å¸",
+		"street1":"Ã¥ÂºÂ·Ã¦Â¨â€šÃ¥Â»Â£Ã¥Â Â´8Ã¨â„¢Å¸",
+        "street2":"Ã¥ÂºÂ·Ã¦Â¨â€šÃ¥Â»Â£Ã¥Â Â´8Ã¨â„¢Å¸",
 		"district":"Ã¤Â¸Â­Ã¨Â¥Â¿Ã¥ï¿½â‚¬",
 		"city":"Ã©Â¦â„¢Ã¦Â¸Â¯",
+        "postalCode":"Ã©Â¦â„¢Ã¦Â¸Â¯",
 		"stateProvince":"Ã©Â¦â„¢Ã¦Â¸Â¯Ã§â€°Â¹Ã¥Ë†Â¥Ã¨Â¡Å’Ã¦â€�Â¿Ã¥ï¿½â‚¬",
 		"country":"Ã¤Â¸Â­Ã¥â€ºÂ½",
 		"latitude": 100,
@@ -329,7 +331,8 @@ object LocationEndpoints extends Controller {
 		"holiday":""
 	},
 	"phones":{
-		"General":"Ã¯Â¼Ë†853Ã¯Â¼â€° 933 339"
+		"General":"Ã¯Â¼Ë†853Ã¯Â¼â€° 933 339",
+       "fax":"dsdsdsd"
 	},
 	"url":"www.oceanpark.com.hk",
 	"pictures":{
@@ -473,8 +476,72 @@ object LocationEndpoints extends Controller {
 ]           
       """
 
+      val jd="""
+      [
+        {
+	"name":"Ã©Â¦â„¢Ã¦Â¸Â¯Ã¤ÂºÂ¤Ã¦Ëœâ€œÃ¥Â»Â£Ã¥Â Â´",
+	"addresses": {
+		"street1":"Ã¥ÂºÂ·Ã¦Â¨â€šÃ¥Â»Â£Ã¥Â Â´8Ã¨â„¢Å¸",
+        "street2":"Ã¥ÂºÂ·Ã¦Â¨â€šÃ¥Â»Â£Ã¥Â Â´8Ã¨â„¢Å¸",
+		"district":"Ã¤Â¸Â­Ã¨Â¥Â¿Ã¥ï¿½â‚¬",
+		"city":"Ã©Â¦â„¢Ã¦Â¸Â¯",
+        "postalCode":"Ã©Â¦â„¢Ã¦Â¸Â¯",
+		"stateProvince":"Ã©Â¦â„¢Ã¦Â¸Â¯Ã§â€°Â¹Ã¥Ë†Â¥Ã¨Â¡Å’Ã¦â€�Â¿Ã¥ï¿½â‚¬",
+		"country":"Ã¤Â¸Â­Ã¥â€ºÂ½",
+		"latitude": 100,
+		"longitude": 100
+	},
+	"admissions": {
+		"general": 0,
+		"adults": 0,
+		"children": 0,
+		"students": 0,
+		"seniors": 0,
+		"currency":"HKD"
+	},
+	"categories":{
+		"level_1":"Architecture",
+		"level_2":"Skyscraper"
+	},
+	"hours":{
+		"monday" :"",
+		"tuesday" :"",
+		"wednesday" :"",
+		"thursday" :"",
+		"friday" :"",
+		"saturday":"",
+		"sunday":"",
+		"holiday":""
+	},
+	"phones":{
+		"General":"(852)2748 8080"
+	},
+	"url":"www.oceanpark.com.hk",
+	"pictures":{
+		"planning": "/assets/images/dummy/planning/img07.jpg",
+		"result":[
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/result_1.jpg", 
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/result_2.jpg",
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/result_3.jpg"
+		],
+		"thumbnail":[
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/thb_1.jpg",
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/thb_2.jpg",
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/thb_3.jpg"
+		],
+		"hero":[
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/result_1.jpg", 
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/result_2.jpg",
+			"/assets/images/china/sars/hong_kong/southern/ocean_park/result_3.jpg"
+		]
+		
+	},
+	"fact":"Ã¤ÂºÂ¤Ã¦Ëœâ€œÃ¥Â»Â£Ã¥Â Â´Ã¦ËœÂ¯Ã©Â¦â„¢Ã¦Â¸Â¯Ã§Å¡â€žÃ¤Â¸â‚¬Ã§Âµâ€žÃ¨Â¾Â¦Ã¥â€¦Â¬Ã¥Â®Â¤Ã¥Â¤Â§Ã¦Â¨â€œÃ¯Â¼Å’Ã¤Â½ï¿½Ã¦â€“Â¼Ã©Â¦â„¢Ã¦Â¸Â¯Ã¥Â³Â¶Ã¤Â¸Â­Ã§â€™Â°Ã¥ÂºÂ·Ã¦Â¨â€šÃ¥Â»Â£Ã¥Â Â´8Ã¨â„¢Å¸Ã¯Â¼Å’Ã©â€žÂ°Ã¦Å½Â¥Ã¦Â¸Â¯Ã©ï¿½ÂµÃ©Â¦â„¢Ã¦Â¸Â¯Ã§Â«â„¢Ã£â‚¬â€šÃ¤ÂºÂ¤Ã¦Ëœâ€œÃ¥Â»Â£Ã¥Â Â´Ã¥â€¦Â±Ã¦Å“â€°3Ã¥ÂºÂ§Ã¨Â¾Â¦Ã¥â€¦Â¬Ã¥Â¤Â§Ã¦Â¨â€œÃ¯Â¼Å’Ã¥Âºâ€¢Ã¥Â±Â¤Ã¨Â¨Â­Ã¦Å“â€°Ã¥â€¢â€ Ã¥Â Â´Ã¯Â¼Å’Ã¥Å“Â°Ã¤Â¸â€¹Ã¨Â¨Â­Ã¦Å“â€°Ã¥Â·Â´Ã¥Â£Â«Ã§Â¸Â½Ã§Â«â„¢Ã£â‚¬â€šÃ¤Â¸Â¦Ã¦Å“â€°Ã¥Â¤Å¡Ã¦Â¢ï¿½Ã¨Â¡Å’Ã¤ÂºÂºÃ¥Â¤Â©Ã¦Â©â€¹Ã©â‚¬Â£Ã¦Å½Â¥Ã¥Å“â€¹Ã©Å¡â€ºÃ©â€¡â€˜Ã¨Å¾ï¿½Ã¤Â¸Â­Ã¥Â¿Æ’Ã¯Â¼Å’Ã¦â‚¬Â¡Ã¥â€™Å’Ã¥Â¤Â§Ã¥Â»Ë†Ã¥ï¿½Å Ã§â€™Â°Ã§ï¿½Æ’Ã¥Â¤Â§Ã¥Â»Ë†Ã£â‚¬â€šÃ¥Å“Â¨Ã§Â¬Â¬Ã¤ÂºÅ’Ã¥ÂºÂ§Ã¦Â­Â£Ã©â€“â‚¬Ã¥â„¢Â´Ã¦Â°Â´Ã¦Â±Â Ã¦â€œÂºÃ¦â€�Â¾Ã¦Å“â€°Ã¥ï¿½Â°Ã§ï¿½Â£Ã©â€ºâ€¢Ã¥Â¡â€˜Ã¥Â¤Â§Ã¥Â¸Â«Ã¦Å“Â±Ã©Å ËœÃ©â€˜â€žÃ©â‚¬Â Ã§Å¡â€žÃ¥Â¤ÂªÃ¦Â¥ÂµÃ©â€ºâ€¢Ã¥Â¡â€˜Ã¯Â¼Å’Ã¥ï¿½Å Ã¤Â¸â‚¬Ã¥Â°ï¿½Ã¦Â°Â´Ã§â€°â€ºÃ©â€ºâ€¢Ã¥Â¡â€˜Ã£â‚¬â€šÃ¥Å“Â¨Ã§Â¬Â¬Ã¤Â¸â‚¬Ã¥ÂºÂ§Ã§Å¡â€žÃ¦Â­Â£Ã©â€“â‚¬Ã¦Â°Â´Ã¦Â±Â Ã¤Â¸Â­Ã¥Â¤Â®Ã¯Â¼Å’Ã¨Â£ï¿½Ã¦â€�Â¾Ã¦Å“â€°Ã¤Â¸â‚¬Ã¥â‚¬â€¹8Ã¥Â­â€”Ã¥Â½Â¢Ã§Å¡â€žÃ©â€ºâ€¢Ã¥Â¡â€˜Ã£â‚¬â€š"
+}
+        ]
+        """
       
-     /*val location=  com.mongodb.util.JSON.parse(json).asInstanceOf[BasicDBList];
+    /* val location=  com.mongodb.util.JSON.parse(json).asInstanceOf[BasicDBList];
         location.toArray.foreach(l=>ls.save(l.asInstanceOf[BasicDBObject]))*/
    // ls.save(location.get(0).asInstanceOf[BasicDBObject])
   //  val locations= "[%s]".format(ls.list.mkString(","))

@@ -4,7 +4,6 @@ import com.mongodb.casbah.Imports._
 import com.mongodb.DBObject
 import base.mongoService
 import models.Location
-import dao.LocationRepositoryComponent
 
 trait LocationServiceComponent {
 
@@ -13,13 +12,13 @@ trait LocationServiceComponent {
   trait LocationService {
     def list(): List[Location]
 
-    def getById(id: String): DBObject
+    def getById(id: String): Location
 
-    def getBySlug(slug: String): Option[DBObject]
+    def getBySlug(slug: String): Option[Location]
 
-    def save(obj: DBObject)
+    def save(obj: Location)
 
-    def update(q: DBObject, obj: DBObject)
+    def update(q: DBObject, obj: Location)
 
     def delete(obj: DBObject)
   }
@@ -31,31 +30,31 @@ trait LocationServiceComponentImpl extends LocationServiceComponent {
 
   override val locationService = new LocationService {
 
-    lazy val mongoClient = mongoService.getMongoService("location")
+    lazy val mongoClient = mongoService.getMongoService[Location]("location")
     
     override def list(): List[Location] = {
-      mongoClient.list[Location]()
+      mongoClient.list()
     }
 
-    override def getById(id: String): DBObject = {
-      //locationRepository.getById(id)
+    override def getById(id: String): Location = {
+       val q = MongoDBObject()
+      mongoClient.findOne(q)
+    }
+
+    override def getBySlug(slug: String): Option[Location] = {
       null
     }
 
-    override def getBySlug(slug: String): Option[DBObject] = {
-      null
+    override def save(obj: Location) {
+      mongoClient.insert(obj)
     }
 
-    override def save(obj: DBObject) {
-      //locationRepository.save(obj)
-    }
-
-    override def update(q: DBObject, obj: DBObject) {
-      //locationRepository.update(q, obj)
+    override def update(q: DBObject, obj: Location) {
+     mongoClient.update(q, obj)
     }
 
     override def delete(obj: DBObject) {
-      //locationRepository.delete(obj)
+      mongoClient.delete(obj)
     }
   }
 }

@@ -25,7 +25,8 @@ class UserEndpoints extends Controller{
   }
   
   def saveUser(user:String)=Action{
-    val userObj=  com.mongodb.util.JSON.parse(user).asInstanceOf[DBObject];
+    val js=JsValue.fromString(user);
+    val userObj = fromjson[User](js)
     val savedUser=us.save(userObj)
      Ok("%s".format(savedUser)).as("application/json")
   }
