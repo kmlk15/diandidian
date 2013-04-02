@@ -22,7 +22,7 @@ trait UserServiceComponent {
 
 trait UserServiceComponentImpl extends UserServiceComponent { this: UserServiceComponent =>
   override val userService = new UserService {
-    lazy val mongoClient = mongoService.getMongoService[User]("location")
+    lazy val mongoClient = mongoService.getMongoService[User]("user")
     override def list(): List[User] = {
       val q = MongoDBObject()
       mongoClient.find(q)
