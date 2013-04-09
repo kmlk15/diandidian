@@ -47,7 +47,10 @@ case class User(
   quotes: String,
   currency: Currency,
   work: List[Work],
-  interest: List[Interest])
+  interest: List[Interest],
+  facebookId:String,
+  twitterId:String,
+  weiboId:String)
 
 object Work {
   implicit val workFormat = asProduct6("employer", "location", "position", "startDate", "endDate", "current")(Work.apply)(Work.unapply(_).get)
@@ -69,5 +72,5 @@ object Currency {
   implicit val currencyFormat = asProduct2("name", "symbol")(Currency.apply)(Currency.unapply(_).get)
 }
 object User {
- implicit val userFormat = asProduct16("name", "gender", "locale", "languages", "url", "ageRange","timezone","bio","birthday","email","hometown","location","quotes","currency","work","interest")(User.apply)(User.unapply(_).get)
+ implicit val userFormat = asProduct19("name", "gender", "locale", "languages", "url", "ageRange","timezone","bio","birthday","email","hometown","location","quotes","currency","work","interest","facebookId","twitterId","weiboId")(User.apply)(User.unapply(_).get)
 }

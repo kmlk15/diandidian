@@ -11,6 +11,8 @@ trait UserServiceComponent {
     def list(): List[User]
 
     def getById(id: String): User
+    
+    def getUser(q: DBObject):User
 
     def save(obj: User)
 
@@ -30,6 +32,10 @@ trait UserServiceComponentImpl extends UserServiceComponent { this: UserServiceC
     override def getById(id: String): User = {
       val q = MongoDBObject()
       q.put("_id", id)
+      mongoClient.findOne(q)
+    }
+    
+    override def getUser(q: DBObject):User={
       mongoClient.findOne(q)
     }
 
