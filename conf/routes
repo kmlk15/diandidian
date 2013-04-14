@@ -8,5 +8,12 @@ GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example
 GET     /location                    controllers.api.LocationEndpoints.location
 
+# login page 
+POST    /register                   controllers.api.UserEndpoints.saveUser
+GET    /fbLogin/:fbid               controllers.api.UserEndpoints.loginWithFB(fbid)
+GET    /twitterLogin/:twitterId     controllers.api.UserEndpoints.loginWithTwitter(twitterId)
+GET    /weiboLogin/:weiboId         controllers.api.UserEndpoints.loginWithWeibo(weiboId)
+GET    /logout                      controllers.api.UserEndpoints.logout
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

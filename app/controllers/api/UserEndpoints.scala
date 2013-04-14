@@ -14,6 +14,7 @@ import com.mongodb.util.JSON
 import com.mongodb.DBObject
 import com.mongodb.BasicDBList
 import com.mongodb.BasicDBObject
+import views.html.helper.form
 
 object UserEndpoints extends Controller {
 
@@ -23,10 +24,12 @@ object UserEndpoints extends Controller {
     Ok(user).as("application/json")
   }
 
-  def saveUser(user:String) = Action {
-    val js = JsValue.fromString(user);
-    val userObj = fromjson[User](js)
-    val savedUser = us.save(userObj)
+  def saveUser() = Action {request =>
+   val formData = request.body.asFormUrlEncoded;
+   val user=formData.get("user")(0);
+   val js = JsValue.fromString(user);
+   val userObj = fromjson[User](js)
+   val savedUser = us.save(userObj)
     Ok("%s".format(savedUser)).as("application/json")
   }
 
@@ -56,5 +59,43 @@ object UserEndpoints extends Controller {
   
   def logout=Action{
     Ok("success").withNewSession
+  }
+  
+  def example{
+    print("saving user");
+    val json = """
+   {
+    "name": "Name",
+    "gender": "String",
+    "locale": "String",
+    "languages": [],
+    "url": {
+      "fbProfile": "String",
+  "fbProfilePic": "String",
+  "website": "String"
+      },
+    "ageRange": "String",
+    "timezone": "String",
+    "bio": "String",
+    "birthday": "String",
+    "email": "String",
+    "hometown": "String",
+    "location": "String",
+    "quotes": "String",
+    "currency": {
+       "name": "String",
+       "symbol": "String"
+      },
+    "work": [],
+    "interest": [],
+    "facebookId": "String",
+    "twitterId": "String",
+    "weiboId": "String"
+}
+      """
+   val js = JsValue.fromString(json);
+   val userObj = fromjson[User](js)
+  // val savedUser = us.save(userObj)
+      // saveUser(json)
   }
   }
