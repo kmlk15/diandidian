@@ -5,11 +5,11 @@ import DefaultProtocol._
 import JsonSerialization._
 
 case class Address(
-  street1: String,
-  street2: String,
+  street: String,
+  district: String,
   city: String,
   postalCode: String,
-  stateOrProvince: String,
+  stateProvince: String,
   country: String,
   latitude: Double,
   longitude: Double)
@@ -42,6 +42,10 @@ case class Pictures(
   thumbnail: List[String],
   hero: List[String])
 
+case class Category(
+  level_1: String,
+  level_2: String)  
+  
 case class Location(
   name: String,
   address: Address,
@@ -50,10 +54,11 @@ case class Location(
   hours: Hours,
   url: String,
   pictures: Pictures,
+  category: Category,
   fact: String)
 
 object Address {
-  implicit val addressFormat = asProduct8("street1", "street2", "city", "postalCode", "stateOrProvince", "country", "latitude", "longitude")(Address.apply)(Address.unapply(_).get)
+  implicit val addressFormat = asProduct8("street", "district", "city", "postalCode", "stateProvince", "country", "latitude", "longitude")(Address.apply)(Address.unapply(_).get)
 }  
   
 object Phone {
@@ -72,6 +77,10 @@ object Pictures {
   implicit val picturesFormat = asProduct4("planning", "result", "thumbnail", "hero")(Pictures.apply)(Pictures.unapply(_).get)
 }
 
+object Category {
+  implicit val categoryFormat = asProduct2("level_1", "level_2")(Category.apply)(Category.unapply(_).get)
+} 
+
 object Location {
-  implicit val locationFormat = asProduct8("name", "address", "phone", "admission", "hours", "url", "pictures", "fact")(Location.apply)(Location.unapply(_).get)
+  implicit val locationFormat = asProduct9("name", "address", "phone", "admission", "hours", "url", "pictures", "category", "fact")(Location.apply)(Location.unapply(_).get)
 }  

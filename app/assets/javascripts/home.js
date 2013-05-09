@@ -14,7 +14,7 @@ function loadHomeAttractions() {
 				}
 				attractionHtml += '<div class="title">';
 				attractionHtml += '<h3>'+item.name+'</h3>';
-				attractionHtml += '<span>'+item.addresses.city+': '+item.addresses.district+'</span>';
+				attractionHtml += '<span>'+item.address.city+': '+item.address.district+'</span>';
 				attractionHtml += '</div>';
 				attractionHtml += '<div class="user">';
 				attractionHtml += '<a href="#"><img src="/assets/images/dummy/user01.png" width="32" height="32" alt="" /></a>';
