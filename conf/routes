@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                           controllers.Home.index
+GET     /detail/:name                 controllers.Detail.view(name: String)
 GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example
 GET     /location                    controllers.api.LocationEndpoints.location
