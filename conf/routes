@@ -5,9 +5,15 @@
 # Home page
 GET     /                           controllers.Home.index
 
-GET     /detail/savetoMongodb                 controllers.Detail.savetoMongodb()
+GET     /detail/					    controllers.Detail.readMongodb()
 
-GET     /detail/:name                 controllers.Detail.view(name: String)
+
+GET     /detail/readMongodb         controllers.Detail.readMongodb()
+GET     /detail/savetoMongodb       controllers.Detail.savetoMongodb()
+
+GET     /detail/:name               controllers.Detail.view(name: String)
+
+
 
 GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example

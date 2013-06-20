@@ -8,90 +8,77 @@ import reactivemongo.api.gridfs.GridFS
 import reactivemongo.api.gridfs.Implicits.DefaultReadFileReader
 import reactivemongo.api.collections.default.BSONCollection
 import reactivemongo.bson._
-import play.modules.reactivemongo.MongoController
+
+import play.modules.reactivemongo._
+import play.modules.reactivemongo.json.collection.JSONCollection
+
+import play.api.Play.current
 
 import models.v2._
 import models.v2.MognoLocation._
-
+import play.modules.reactivemongo.json.BSONFormats
 
 object Detail extends Controller with MongoController {
-  
-   val collection = db[BSONCollection]("locations")
+
+  val collection = db[BSONCollection]("locations")
+  def jsoncollection: JSONCollection = db.collection[JSONCollection]("locations")
 
   def view(name: String) = Action {
-     Logger.debug("name="+ name)
-     /**
-      * name 不适合作为主键
-      * 需要将 数据保存到 mongodb 中
-      * 
-      */
-    Ok(views.html.detail("detail"))
-    
+    Logger.debug("name=" + name)
+    /**
+     * name 不适合作为主键
+     * 需要将 数据保存到 mongodb 中
+     *
+     */
+    Async {
+      val builder = collection.find[BSONDocument](BSONDocument("name" -> name))
+      Logger.debug("builder=" + builder.toString())
+
+      val cursor = builder.cursor[Location]
+      cursor.headOption.map {
+        case Some(location) => { Ok(views.html.detail(location)) }
+        case None => { NotFound }
+      }
+    }
   }
-  
+
   /**
    * 临时的方法， 将已知的数据保存到  mongodb 中
    * 这里的关系比较复杂，需要将 json -> case class , -> json -> mongodb
    * json in <-> json out ?
-   *  
+   *
    */
-  def savetoMongodb()= Action{
-    val location = Location()
-    
-     AsyncResult {
-        collection.insert(location) map(
-        	x  =>	Ok(" insert ok location=" + x.toString )
-        )
+  def savetoMongodb() = Action {
+    Async {
+      jsonVal match {
+        case arr: json.JsArray => {
+          val t1 = arr.as[Seq[json.JsValue]].map(jv => { jsoncollection.insert(jv) })
+          t1.last.map(f => { Ok("批量插入") })
+        }
+        case _ => { scala.concurrent.Future(Ok("____")) }
+      }
     }
-     
-    
   }
+  def readMongodb() = Action {
+
+    Async {
+      val builder = collection.find[BSONDocument](BSONDocument())
+      Logger.debug("builder=" + builder.toString())
+
+      val cursor = builder.cursor[Location]
+
+      val futureList = cursor.toList
+      futureList.map { list =>
+        Ok(views.html.detailList(list))
+
+      }
+    }
+  }
+  
 lazy val jsonVal = json.Json.parse(jsonStr)
 
   
   val jsonStr = """
-[ {
-  "name" : "会议展览中心",
-  "address" : {
-    "street" : "博览道1号",
-    "district" : "湾仔",
-    "city" : "香港",
-    "stateProvince" : "香港特別行政區",
-    "country" : "中国",
-    "latitude" : 100,
-    "longitude" : 100,
-    "postalCode" : ""
-  },
-  "admission" : {
-    "general" : 0.0,
-    "adults" : 0.0,
-    "children" : 0.0,
-    "student" : 0.0,
-    "seniors" : 0.0,
-    "currency" : "HKD"
-  },
-  "category" : {
-    "level_1" : "Park",
-    "level_2" : "Garden Park"
-  },
-  "hours" : {
-    "monday" : "",
-    "tuesday" : "",
-    "wednesday" : "",
-    "thursday" : "",
-    "friday" : "",
-    "saturday" : "",
-    "sunday" : "",
-    "holiday" : ""
-  },
-  "phone" : {
-    "general" : "(852) 25374591",
-    "fax" : ""
-  },
-  "url" : "",
-  "pictures" : {
-    "planning" : "/assets/images/dummy/pla...
-scala> println(res1)
 [ {
   "name" : "会议展览中心",
   "address" : {

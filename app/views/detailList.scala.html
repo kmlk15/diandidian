@@ -1,0 +1,28 @@
+@(list : List[models.v2.Location])
+
+@main("list"){
+	<div id="container">
+		<div id="header">
+			@common.header()
+		</div><!-- end header -->
+		<div id="shadow-divide"></div>
+		<div id="content">
+			<div id="sidebar">
+				 @common.sideBar("testname")
+			</div><!-- end sidebar -->
+			<div id="main">
+			
+<h1>@list.size</h1>
+<ul>
+@list.map{ l => 
+
+<li><a href="@routes.Detail.view(l.name)">@l.name</a></li>
+
+}
+</ul>
+
+			</div><!-- end main -->
+		</div><!-- end content -->
+	</div><!-- end container -->
+	
+}

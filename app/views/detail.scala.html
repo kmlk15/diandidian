@@ -1,8 +1,10 @@
-@(message: String)
+@(location : models.v2.Location)
 
 
-@main(message){
+@main(location.name){
+<p>
 
+</p>
 	<div id="container">
 		<div id="header">
 			@common.header()
@@ -14,25 +16,18 @@
 			</div><!-- end sidebar -->
 			<div id="main">
 				<div id="attraction-detal">
-					<div class="breadcrumbs"><a href="#">香港</a> &gt; <a href="#">南区</a> &gt; <a href="#">海洋公园</a></div>
+					<div class="breadcrumbs"><a href="#">@location.address.city</a> &gt; <a href="#">@location.address.district</a> &gt; <a href="@routes.Detail.view(location.name)">@location.name</a></div>
 					<div class="gallery">
-						<img class="detail" src="images/dummy/img10.jpg" width="780" height="435" alt="海洋公园" />
+						<img class="detail" src="@(location.pictures.planning)" width="780" height="435" alt="@location.name" />
 						<div class="thumbnails">
-							<span class="arrow left-arrow"><img src="images/left-arrow.png" width="10" height="12" /></span>
-							<span class="arrow right-arrow"><img src="images/right-arrow.png" width="10" height="12" /></span>
+							<span class="arrow left-arrow"><img src='@routes.Assets.at("images/left-arrow.png")' width="10" height="12" /></span>
+							<span class="arrow right-arrow"><img src='@routes.Assets.at("images/right-arrow.png")' width="10" height="12" /></span>
 							<div class="ul-wrap">
 								<ul class="clearfix">
-									<li class="active"><a href="images/dummy/img10.jpg"><img src="images/dummy/img11.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img12.jpg"><img src="images/dummy/img12.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img13.jpg"><img src="images/dummy/img13.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img14.jpg"><img src="images/dummy/img14.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img15.jpg"><img src="images/dummy/img15.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img16.jpg"><img src="images/dummy/img16.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img17.jpg"><img src="images/dummy/img17.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img10.jpg"><img src="images/dummy/img11.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img10.jpg"><img src="images/dummy/img11.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li><a href="images/dummy/img10.jpg"><img src="images/dummy/img11.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
-									<li class="last"><a href="images/dummy/img10.jpg"><img src="images/dummy/img11.jpg" width="100" height="55" alt="Thumbnail" /></a></li>
+								 
+								 @location.pictures.thumbnail.map { img =>
+								 	<li class="" ><a href="@img"><img src="@img" width="100" height="55" alt="Thumbnail" /></a></li>
+									}
 								</ul>
 							</div>
 						</div>
@@ -43,7 +38,7 @@
 						</div>
 						<div class="col col2">
 							<div class="title">
-								<h2>海洋公园</h2><span>- (广告) - 香港海洋公园30国庆烟花汇演开始月1日至3月</span>
+								<h2>@location.name</h2><span>- (广告) - 香港海洋公园30国庆烟花汇演开始月1日至3月</span>
 							</div>
 							<div class="content">
 								<p>
@@ -62,8 +57,8 @@
 						<div class="row row1 clearfix">
 							<div class="col col1">
 								<p>
-									地址: 香港黄竹坑<br />
-									电话: 852-25520291<br />
+									地址: @location.address.street<br />
+									电话: @location.phone.general<br />
 									开放时间: 9:30am - 10:00pm
 								</p>
 							</div>
@@ -73,13 +68,13 @@
 										<td rowspan="3" valign="top">门票：</td><td>日间入场门票</td>
 									</tr>
 									<tr>
-										<td>成人</td><td>$280</td>
+										<td>成人</td><td>@location.admission.adults @location.admission.currency</td>
 									</tr>
 									<tr>
-										<td>小童(3至11岁)</td><td>$140</td>
+										<td>小童(3至11岁)</td><td>@location.admission.children @location.admission.currency</td>
 									</tr>
 									<tr class="website">
-										<td>网站：</td><td colspan="2"><a href="http://www.oceanpark.com.hk" target="_blank">www.oceanpark.com.hk/</a></td>
+										<td>网站：</td><td colspan="2"><a href="@location.url" target="_blank">@location.url</a></td>
 									</tr>
 								</table>
 							</div>
@@ -98,7 +93,7 @@
 								<tr>
 									<td class="label">简介:</td>
 									<td>
-										香港海洋公园是香港一个以海洋为主的大型主题公园，位于香港南区的黄竹坑，1977年1月10日落成启用。2007年，该园入场人次达490万，位列全球第16名，亚太区第5名。香港海洋公园分为3部分，分别为位于北面的山下花园，和南面的南朗山南麓及大树湾，占地共17公顷，有40多个游乐设施。山下花园与南朗山以登山缆车和海洋列车连接。而南朗山与大树湾之间，则以登山电梯连接，是全世界第2长的户外电动扶梯。
+										@location.fact
 									</td>
 								</tr>
 							</table>
@@ -108,5 +103,5 @@
 			</div><!-- end main -->
 		</div><!-- end content -->
 	</div><!-- end container -->
-
+ 
 }
