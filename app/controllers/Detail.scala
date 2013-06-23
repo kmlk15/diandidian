@@ -41,7 +41,26 @@ object Detail extends Controller with MongoController {
       }
     }
   }
+  
+  def viewJson(name: String) = Action {
+    Logger.debug("name=" + name)
+    /**
+     * name 不适合作为主键
+     * 需要将 数据保存到 mongodb 中
+     *
+     */
+    Async {
+      val builder = jsoncollection.find (json.Json.obj("name" -> name))
+      Logger.debug("builder=" + builder.toString())
 
+      val cursor = builder.cursor[json.JsValue]
+      cursor.headOption.map {
+        case Some(location) => { Ok( location ) }
+        case None => { NotFound }
+      }
+    }
+  }
+  
   /**
    * 临时的方法， 将已知的数据保存到  mongodb 中
    * 这里的关系比较复杂，需要将 json -> case class , -> json -> mongodb

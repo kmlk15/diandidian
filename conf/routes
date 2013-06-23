@@ -10,6 +10,7 @@ GET     /detail/					    controllers.Detail.readMongodb()
 
 GET     /detail/readMongodb         controllers.Detail.readMongodb()
 GET     /detail/savetoMongodb       controllers.Detail.savetoMongodb()
+GET     /detail/json/:name          controllers.Detail.viewJson(name: String)
 
 GET     /detail/:name               controllers.Detail.view(name: String)
 
