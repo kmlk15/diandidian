@@ -200,6 +200,7 @@ function initDetailGallery() {
 	}
 	$ul.find("li a").click(function(e) {
 		var href = $(this).attr("href");
+		alert("href=" + href )
 		var $detail = $(this).parents(".gallery").children(".detail");
 		$detail.attr("src", href);
 		$ul.find("li.active").removeClass("active");

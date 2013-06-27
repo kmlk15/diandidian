@@ -1,0 +1,159 @@
+@(name: String )
+
+@script={
+<script>
+var detailname = "@name";
+</script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/knockout-2.2.1.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/knockout.mapping-latest.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/detailview.js")"></script>
+
+
+}
+
+@main( name , script){
+
+<p>
+
+</p>
+	<div id="container">
+		<div id="header">
+			@common.header()
+		</div><!-- end header -->
+		<div id="shadow-divide"></div>
+		<div id="content">
+			<div id="sidebar">
+				 @common.sideBar("testname")
+			</div><!-- end sidebar -->
+			<div id="main">
+				<div id="attraction-detal">
+					<div class="breadcrumbs"><a href="#"><span data-bind="text: address.city" ></span></a> &gt; <a href="#"><span data-bind="text: address.district" ></span></a> &gt; <a href="#"><span data-bind="text: name" ></span></a></div>
+					<div class="gallery">
+						<img class="detail" src="" width="780" height="435" alt=""   data-bind="attr: { src: pictures.planning, alt: name }"  />
+						<div class="thumbnails">
+							<span class="arrow left-arrow"><img src='@routes.Assets.at("images/left-arrow.png")' width="10" height="12" /></span>
+							<span class="arrow right-arrow"><img src='@routes.Assets.at("images/right-arrow.png")' width="10" height="12" /></span>
+							<div class="ul-wrap">
+								<ul class="clearfix" data-bind="foreach: pictures.thumbnail" >
+								 
+								  
+								 	<li class="" ><a href=""><img src="" width="100" height="55" alt="Thumbnail"  data-bind="attr: { src: $data.img , alt: name }" /></a></li>
+									 
+								</ul>
+							</div>
+						</div>
+					</div><!-- end gallery -->
+					<div class="user-content clearfix">
+						<div class="col col1">
+							<img src="/assets/images/dummy/img18.png" width="49" height="49" alt="User Icon" />
+						</div>
+						<div class="col col2">
+							<div class="title">
+								<h2> </h2><span>- (广告) - 香港海洋公园30国庆烟花汇演开始月1日至3月</span>
+							</div>
+							<div class="content">
+								<p>
+									海洋公园我已经去过不下5次, 每次去好像都有更多的游乐设施和展馆。这次和同事去, 她还未去过香港, 所以这次我就当她的导游。其实这位同事是个胆子非常小的女孩, 所以她连过山车都没坐过, 这次我
+									<span class="more">特意带她到冰极天地里坐极地时速过山车, 好让她体验一下坐过山车有多爽！想不到她因此而喜欢上过山车,我们玩完了极地时速, 还坐了动感快车,疯狂过山车,越矿飞车等等, 胆子太小的朋友记得坐一下极地时速, 说不定你也因此克服了恐高.</span>
+								</p>
+								<div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
+							</div>
+						</div>
+						<div class="col col3">
+							<span class="add-bag">加入背包</span>
+							<span class="upload-photo">上传照片</span>
+						</div>
+					</div><!-- end user-content -->
+					<div class="basic-info">
+						<div class="row row1 clearfix">
+							<div class="col col1">
+								<p>
+									地址:  <span data-bind="text: address.street"></span><br />
+									电话:  <span data-bind="text: phone.general"></span><br />
+									开放时间:  
+									<table>
+									<tr>
+									<td> Monday: </td><td><span data-bind="text: hours.monday"></span></td>
+									</tr>
+									<tr>
+									<td> Tuesday: </td><td><span data-bind="text: hours.tuesday"></span></td>
+									</tr>
+									<tr>
+									<td> Wednesday: </td><td><span data-bind="text: hours.wednesday"></span></td>
+									</tr>
+									<tr>
+									<td> Thursday: </td><td><span data-bind="text: hours.thursday"></span></td>
+									</tr>
+									<tr>
+									<td> Friday: </td><td><span data-bind="text: hours.friday"></span></td>
+									</tr>
+									<tr>
+									<td> Saturday: </td><td><span data-bind="text: hours.saturday"></span></td>
+									</tr>
+									<tr>
+									<td> Sunday: </td><td><span data-bind="text: hours.sunday"></span></td>
+									</tr>
+									<tr>
+									<td> Holiday: </td><td><span data-bind="text: hours.holiday"></span></td>
+									
+									</tr>
+									</table>
+								</p>
+							</div>
+							<div class="col col2">
+								<table>
+									<tr>
+										<td   valign="top">门票：</td><td>日间入场门票</td>
+									</tr>
+									<tr>
+										<td>general</td><td><span  data-bind="text: admission.general  " > </span> <span data-bind="text: admission.currency"></span> </td>
+									</tr>
+									
+									<tr>
+										<td>成人</td><td><span  data-bind="text: admission.adults  " > </span> <span data-bind="text: admission.currency"></span> </td>
+									</tr>
+									<tr>
+										<td>小童(3至11岁)</td><td> <span  data-bind="text: admission.children  " > </span> <span data-bind="text: admission.currency"></span> </td>
+									</tr>
+									<tr>
+									<td>student</td>
+									
+									<td><span  data-bind="text: admission.student  " > </span> <span data-bind="text: admission.currency"></span></td>
+									</tr>
+									<tr>
+									<td>seniors</td>
+									<td><span  data-bind="text: admission.seniors " > </span> <span data-bind="text: admission.currency"></span></td>
+									</tr>
+									
+									<tr class="website">
+										<td>网站：</td><td colspan="2"><a href="" target="_blank"  data-bind="text: url"  data-bind="attr:{ href: url }" > </a></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<hr />
+						<div class="row row2">
+							<table>
+								<tr><td rowspan="3" class="label">交通:</td><td>城巴: (852) 2873 0818 <a href="http://www.citybus.com.hk" target="_blank">www.citybus.com.hk</a></td></tr>
+								<tr><td>新巴: (852) 2136 8888 <a href="http://www.nwfb.com.hk" target="_blank">www.nwfb.com.hk</a></td></tr>
+								<tr><td>九巴: (852) 2745 4466 <a href="http://www.kmb.com.hk" target="_blank">www.kmb.com.hk</a></td></tr>
+							</table>
+						</div>
+						<hr />
+						<div class="row row3">
+							<table>
+								<tr>
+									<td class="label">简介:</td>
+									<td  data-bind="html: fact"  >
+										 
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div><!-- end basic-info -->
+				</div><!-- end attraction-detail -->
+			</div><!-- end main -->
+		</div><!-- end content -->
+	</div><!-- end container -->
+ 
+}

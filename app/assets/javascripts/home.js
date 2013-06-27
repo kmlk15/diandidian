@@ -25,7 +25,7 @@ function loadHomeAttractions() {
 				attractionHtml += '</div>';
 				attractionHtml += '<span class="add-bag">加入背包</span >';
 				attractionHtml += '<span class="added-bag">已在背包</span >';
-				attractionHtml += '<span class="detail">详情</span >';
+				attractionHtml += '<span class="detail"><a href="/detail/view/' +  item.name + '">详情</a></span >';
 				attractionHtml += '</li>';
 				attractionListHtml += attractionHtml;
 			});

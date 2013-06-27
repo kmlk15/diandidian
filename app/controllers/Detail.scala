@@ -12,6 +12,12 @@ object Detail extends Controller with MongoController {
 
   def jsoncollection: JSONCollection = db.collection[JSONCollection]("location")
 
+  def view(name: String ) = Action {
+    Logger.debug("name=" + name )
+    
+    Ok( views.html.detailview( name ))
+  }
+  
   def viewJson(name: String) = Action {
     Logger.debug("name=" + name)
     /**
