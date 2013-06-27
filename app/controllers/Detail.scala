@@ -15,13 +15,13 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 import play.api.Play.current
 
 import models.v2._
-import models.v2.MognoLocation._
+import models.v2.MognoLocationBson._
 import play.modules.reactivemongo.json.BSONFormats
 
 object Detail extends Controller with MongoController {
 
-  val collection = db[BSONCollection]("locations")
-  def jsoncollection: JSONCollection = db.collection[JSONCollection]("locations")
+  val collection = db[BSONCollection]("location")
+  def jsoncollection: JSONCollection = db.collection[JSONCollection]("location")
 
   def view(name: String) = Action {
     Logger.debug("name=" + name)
@@ -34,9 +34,13 @@ object Detail extends Controller with MongoController {
       val builder = collection.find[BSONDocument](BSONDocument("name" -> name))
       Logger.debug("builder=" + builder.toString())
 
-      val cursor = builder.cursor[Location]
+      val cursor = builder.cursor[BSONDocument]
+      
       cursor.headOption.map {
-        case Some(location) => { Ok(views.html.detail(location)) }
+        case Some(location) => {
+          
+        	Ok(BSONFormats.toJSON(location))
+        }
         case None => { NotFound }
       }
     }
