@@ -1,4 +1,4 @@
-@()
+@()(implicit flash: Flash)
 @import helper._
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -41,7 +41,7 @@ if ($("form#thismyForm").valid()) {
 			<legend>Add User:</legend>
 			<p>
 				<label for="username">UserName </label> 
-				<input  id="username" name="username" minlength="2" maxlength="32" type="text" required />
+				<input  id="username" name="username" minlength="2" maxlength="32" type="text" required value='@flash.get("username").getOrElse("")' />
 			</p>
 
 			<p>

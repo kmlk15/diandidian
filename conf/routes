@@ -12,7 +12,7 @@ GET    /detail/json/:name          controllers.Detail.viewJson(name: String)
 GET    /login/					controllers.Login.login()
 
 GET		/login/user/registerForm		controllers.Login.registerForm()
-POST		/login/user/register			controllers.Login.register()
+POST	/login/user/register			controllers.Login.register()
 
 
 GET    /login/weibo					controllers.Login.weibo()
