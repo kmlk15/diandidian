@@ -22,7 +22,9 @@ class MognoLocationTest  extends  Specification{
       
       val jsonval2 = Json.toJson(location2)
       val fromJson2 = jsonval2.as[Location]
-      location2 === fromJson2
+      
+      "must equals" ! e2 
+      def e2 = location2 === fromJson2
       
       
       
@@ -38,7 +40,8 @@ class MognoLocationTest  extends  Specification{
       val location2 =Location( name="testname" , address= Address( street = "test street" ))
       val bsonval2 =  BSON.writeDocument(location2)
       val fromBson2 =  BSON.readDocument[Location](bsonval2)
-      location2 === fromBson2
+      "must equals" ! e2 
+     def e2 =  location2 === fromBson2
       
     }
 
@@ -63,7 +66,8 @@ class MognoLocationTest  extends  Specification{
       val jsonval2 = Json.toJson(location2)
       val bsonval2 =  BSONFormats.BSONDocumentFormat.reads(jsonval2).get
       val fromBson2 =  BSON.readDocument[Location](bsonval2)
-      location2 ===  fromBson2 
+      "must equals" ! e2 
+      def e2 = location2 ===  fromBson2 
 
  
       

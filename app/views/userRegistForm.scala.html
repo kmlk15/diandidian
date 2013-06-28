@@ -1,0 +1,67 @@
+@()
+@import helper._
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Diandidian - User Register </title>
+ 
+<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" ></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.js")"></script>
+
+<script>
+$(document).ready(function() {
+	$("form#thismyForm").submit(function(){
+var form = $("form#thismyForm").validate();
+if ($("form#thismyForm").valid()) {
+	return true;
+}else{
+ 
+	return false;
+}
+	})
+});
+
+</script>
+</head>
+<body>
+<div id="topFrame">
+	<div id="topBox">
+		<div id="topContent"><img src="@routes.Assets.at("images/login_img/img_loginDiandidian.png")" alt="diandidian" width="108" height="60" /></div>
+	</div>
+</div>
+
+<div id="mainframe">
+	<div id="">
+	 <form action ="/login/user/register"  method="post"  enctype="multipart/form-data" id="thismyForm" >
+	<fieldset>
+			
+			<legend>Add User:</legend>
+			<p>
+				<label for="username">UserName </label> 
+				<input  id="username" name="username" minlength="2" maxlength="32" type="text" required />
+			</p>
+
+			<p>
+				<label for="email">Email </label> 
+				<input  id="email" name="email" minlength="2" type="email" required />
+			</p>
+			
+			<p>
+				<label for="avatar">avatar </label> 
+			 	<input type="file" name="avatar" id="avatar">
+			 </p>
+			 <p>
+			 <input type="submit">
+			 </p>
+   
+   
+	</fieldset>    
+   	</form>
+ 
+	</div>
+</div>
+</body>
+</html>
