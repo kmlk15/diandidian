@@ -34,6 +34,7 @@ if ($("form#thismyForm").valid()) {
 
 <div id="mainframe">
 	<div id="">
+	<h2>@flash.get("msg").getOrElse("")</h2>
 	 <form action ="/login/user/register"  method="post"  enctype="multipart/form-data" id="thismyForm" >
 	<fieldset>
 			
@@ -45,7 +46,7 @@ if ($("form#thismyForm").valid()) {
 
 			<p>
 				<label for="email">Email </label> 
-				<input  id="email" name="email" minlength="2" type="email" required />
+				<input  id="email" name="email" minlength="2" type="email" required  value='@flash.get("email").getOrElse("")'  />
 			</p>
 			
 			<p>

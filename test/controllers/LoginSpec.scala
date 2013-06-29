@@ -22,6 +22,8 @@ class LoginSpec extends Specification {
 	  "new user register " in new WithBrowser( webDriver=   classOf[FirefoxDriver]   ) {
 	    
   browser.goTo("/login/user/registerForm")
+  Thread.sleep(1000)
+  
   val html = browser.pageSource()
   //println(html)
   //println("title="+  browser.title() ) 
@@ -31,10 +33,10 @@ class LoginSpec extends Specification {
   browser.$("input#username").first().text("w1aa")
   browser.$("input#email").first().text("w1aa@bokee.net")
   
-  val upload = browser.webDriver.findElement(   By.id("avatar"))
-  upload.sendKeys("/tmp/t1.jpg")
+ // val upload = browser.webDriver.findElement(   By.id("avatar"))
+  //upload.sendKeys("/tmp/t1.jpg")
    
-  Thread.sleep(5000)
+  Thread.sleep(15000)
    
   browser.$("form#thismyForm").submit()
   //browser.$("title").getTexts().get(0) must equalTo("Diandidian - User Register ")
@@ -42,7 +44,7 @@ class LoginSpec extends Specification {
   val jsonStr = browser.pageSource()
   println( "jsonstr=" + jsonStr )
  jsonStr.contains( """"email":"w1@bokee.net","""") 	    
-	    
+	 Thread.sleep(5000)   
 	  }
 	  
 	}

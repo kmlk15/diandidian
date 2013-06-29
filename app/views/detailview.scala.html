@@ -1,4 +1,4 @@
-@(name: String )
+@(name: String )(implicit session: Session)
 
 @script={
 <script>
@@ -18,7 +18,7 @@ var detailname = "@name";
 </p>
 	<div id="container">
 		<div id="header">
-			@common.header()
+			@common.header(  session  )
 		</div><!-- end header -->
 		<div id="shadow-divide"></div>
 		<div id="content">
