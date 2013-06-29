@@ -107,7 +107,8 @@ object Login extends Controller with MongoController {
                     ( user \ "avatar" ) match{
                      case json.JsString( avatarId ) =>{
                        Logger.debug(" 删除 avatarId=" + avatarId )
-                       gridFS.files.remove(  BSONDocument("_id" -> BSONObjectID(avatarId ) ) ) 
+                       
+                       gridFS.remove(  BSONObjectID(avatarId ) ) 
                        avatarId
                      }
                      case _  =>""
