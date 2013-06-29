@@ -24,6 +24,7 @@ GET    /callbak/witter  				 controllers.Login.twitterCallbak()
 GET    /login/facebook					controllers.Login.facebook()
 GET    /callbak/facebook  				 controllers.Login.facebookCallbak()
 
+GET   /login/user/avatar/:id            controllers.Login.getAttachment(id: String) 
 
 
 GET     /test                       controllers.api.LocationEndpoints.test

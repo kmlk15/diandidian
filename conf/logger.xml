@@ -1,0 +1,25 @@
+<configuration debug="true">
+
+  <appender name="STDOUT"
+    class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>
+        %d{HH:mm:ss} [%thread] %highlight(%-5level) %logger{36}:[%F:%L] - %msg%n
+     </pattern>
+    </encoder>
+  </appender>
+  <logger name="ch.qos.logback" level="ERROR" />
+  <logger name="org" level="ERROR" />
+  <logger name="com" level="ERROR" />
+  <logger name="util" level="INFO" />
+
+  <logger name="controllers" level="DEBUG" />
+  <logger name="models" level="INFO" />
+
+  
+  
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+</configuration>

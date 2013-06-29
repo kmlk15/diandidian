@@ -1,5 +1,8 @@
 package models.v2
 
+import play.api.libs.json._
+import reactivemongo.bson.BSONObjectID
+
  
 case class Address(
   street: String = "",
@@ -78,4 +81,23 @@ object MognoLocationBson {
   implicit val locationHandler = Macros.handler[Location]
 }
   
+
+ object BSONObjectIDFormats {
+  
+  val objectIDRegExFormat = "^[0-9a-fA-F]{24}$".r
+  def isObjectIDValid(input: String): Boolean = (objectIDRegExFormat findFirstIn input).nonEmpty
  
+  implicit object ObjectIdReads extends Format[BSONObjectID] {
+    def reads(json: JsValue): JsResult[BSONObjectID] = json.asOpt[JsObject] map { oid =>
+      (oid \ "$oid" ).asOpt[String] map { str =>
+        if (isObjectIDValid(str))
+        JsSuccess(new BSONObjectID(str))
+      else
+        JsError("Invalid ObjectId %s".format(str))
+      } getOrElse (JsError("Value is not an ObjectId"))
+    } getOrElse (JsError("Value is not an ObjectId"))
+ 
+    def writes(oid: BSONObjectID): JsValue = Json.obj("$oid" -> JsString(oid.stringify))
+  }
+ 
+}
