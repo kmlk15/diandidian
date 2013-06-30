@@ -4,7 +4,7 @@
 				<div class="account">
 					<div class="user-info">
 						<img src='/login/user/avatar/@session.get("avatar").getOrElse("")' width="32" height="32" alt="" />
-						<span>@session.get("username").getOrElse("匿名")</span>
+						<span><a href="/login/user/registerForm">@session.get("username").getOrElse("匿名")</a></span>
 					</div><!-- end user-info -->
 					<ul>
 						<li><a href="#">退出</a></li>

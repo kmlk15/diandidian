@@ -1,4 +1,4 @@
-@()(implicit flash: Flash)
+@(username:String=""  , email: String="" , avatar: String =""  )(implicit flash: Flash)
 @import helper._
 
  
@@ -31,7 +31,9 @@ if ($("form#thismyForm").valid()) {
 		<div id="topContent"><img src="@routes.Assets.at("images/login_img/img_loginDiandidian.png")" alt="diandidian" width="108" height="60" /></div>
 	</div>
 </div>
+<p>
 
+</p>
 <div id="mainframe">
 	<div id="">
 	<h2>@flash.get("msg").getOrElse("")</h2>
@@ -41,17 +43,20 @@ if ($("form#thismyForm").valid()) {
 			<legend>Add User:</legend>
 			<p>
 				<label for="username">UserName </label> 
-				<input  id="username" name="username" minlength="2" maxlength="32" type="text" required value='@flash.get("username").getOrElse("")' />
+				<input  id="username" name="username" minlength="2" maxlength="32" type="text" required value='@flash.get("username").getOrElse(username)' />
 			</p>
 
 			<p>
 				<label for="email">Email </label> 
-				<input  id="email" name="email" minlength="2" type="email" required  value='@flash.get("email").getOrElse("")'  />
+				<input  id="email" name="email" minlength="2" type="email" required  value='@flash.get("email").getOrElse(email)'  />
 			</p>
 			
 			<p>
 				<label for="avatar">avatar </label> 
 			 	<input type="file" name="avatar" id="avatar">
+			 	@if( avatar != ""){
+			 	<img src="/login/user/avatar/@avatar" />
+			 	}
 			 </p>
 			 <p>
 			 <input type="submit">

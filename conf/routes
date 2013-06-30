@@ -15,14 +15,15 @@ GET		/login/user/registerForm		controllers.Login.registerForm()
 POST	/login/user/register			controllers.Login.register()
 
 
-GET    /login/weibo					controllers.Login.weibo()
-GET    /callbak/weibo  				 controllers.Login.weiboCallbak()
+GET    /login/weibo					controllers.LoginWeibo.weibo()
+GET    /login/callback/weibo  				 controllers.LoginWeibo.weiboCallback()
+
 
 GET    /login/twitter					controllers.Login.twitter()
-GET    /callbak/witter  				 controllers.Login.twitterCallbak()
+GET    /login/callback/witter  				 controllers.Login.twitterCallback()
 
 GET    /login/facebook					controllers.Login.facebook()
-GET    /callbak/facebook  				 controllers.Login.facebookCallbak()
+GET    /login/callback/facebook  				 controllers.Login.facebookCallback()
 
 GET   /login/user/avatar/:id            controllers.Login.getAttachment(id: String) 
 

@@ -39,24 +39,59 @@ object Login extends Controller with MongoController {
    *
    */
   def registerForm() = Action { implicit request =>
-    Ok(views.html.userRegistForm())
+
+    request.session.get("userId") match {
+      case None => {
+        Logger.debug("userid is None")
+        Ok(views.html.userRegistForm())
+      }
+      case Some(userId) => {
+        Logger.debug("userId=" + userId)
+        val cursor = userCollection.find(Json.obj("_id" -> userId)).cursor[json.JsObject]
+        val futurList = cursor.toList(1)
+        Async {
+          val tmp = futurList.map {
+            userList =>
+              {
+                if (userList.isEmpty) {
+                  Logger.debug("user not exist")
+                  Ok(views.html.userRegistForm())
+                } else {
+
+                  val userObj = userList.head
+                  Logger.debug("user exist = " + userObj)
+                  val username = ((userObj \ "username").asOpt[String]).getOrElse("")
+                  val email = ((userObj \ "email").asOpt[String]).getOrElse("")
+                  val avatar = ((userObj \ "avatar").asOpt[String]).getOrElse("")
+                  Logger.debug((Map("username" -> username, "email" -> email)).toString)
+
+                  Ok(views.html.userRegistForm(username, email, avatar))
+                }
+
+              }
+
+          }
+          tmp
+        }
+
+      }
+    }
+
   }
 
   /**
    * 注册信息 保存
    * 一个 email 只能注册一次
-   * 
+   *
    */
   def register() = Action(gridFSBodyParser(gridFS)) { request =>
     val paramMap = request.body.asFormUrlEncoded
-    
-    
+
     def get(key: String): String = {
       paramMap.get(key).getOrElse(Seq()).headOption.getOrElse("")
     }
 
     Logger.debug("paramMap=" + paramMap)
-     
 
     val userIdStr = request.session.get("userId").getOrElse(get("userId"))
 
@@ -80,17 +115,17 @@ object Login extends Controller with MongoController {
     def validateEmail: Boolean = if (email == "" || email.length() < 2 || !email.matches(emailPattern)) false else true
     def vaidatePassword: Boolean = if (password == "") true else if (password.length() < 2 || password.length() > 32) false else true
 
-    def redirect2Input( msg: String ) ={
-       Redirect(routes.Login.registerForm).flashing(
+    def redirect2Input(msg: String) = {
+      Redirect(routes.Login.registerForm).flashing(
         "userId" -> userId,
         "username" -> username,
         "email" -> email,
         "password" -> password,
-        "msg" ->  msg )
+        "msg" -> msg)
     }
-    
+
     if ((!validateUsername || !validateEmail || !vaidatePassword)) {
-       redirect2Input(" ERROR ")
+      redirect2Input(" ERROR ")
     } else {
       /**
        * 1 user  save to  mongodb
@@ -138,10 +173,12 @@ object Login extends Controller with MongoController {
                     Logger.debug(""" user \ "avatar" = """ + (user \ "avatar"))
                     (user \ "avatar") match {
                       case json.JsString(avatarId) => {
-                        Logger.debug(" 删除 avatarId=" + avatarId)
-
-                        gridFS.remove(BSONObjectID(avatarId))
+                        if (avatarId != "") {
+                          Logger.debug(" 删除 avatarId=" + avatarId)
+                          gridFS.remove(BSONObjectID(avatarId))
+                        }
                         avatarId
+
                       }
                       case _ => ""
                     }
@@ -154,7 +191,7 @@ object Login extends Controller with MongoController {
                 Logger.debug(" 删除 结束 ")
 
                 val futureUpload = for {
-                	  //删除已经有头像
+                  //删除已经有头像
                   r <- remove
 
                   // we wait (non-blocking) for the upload to complete.
@@ -190,18 +227,20 @@ object Login extends Controller with MongoController {
 
                   futureUpload.map {
                     case userJsval => {
-                      val avatarId = ( userJsval \ "avatar") .as[String]
-                      Ok(userJsval).withSession("userId" -> userId , "username" -> username , "email" -> email ,"avatar" ->avatarId )
+                      val avatarId = (userJsval \ "avatar").as[String]
+                      Ok(userJsval).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
                     }
                   }.recover {
-                    case _ => BadRequest
+                    case _ =>
+                      Logger.error("ERROR " + "recover")
+                      BadRequest
                   }
 
                 }
 
               } else {
-                redirect2Input(  "email exist" )
-               
+                redirect2Input("email exist")
+
               }
             }
 
@@ -222,11 +261,11 @@ object Login extends Controller with MongoController {
                 if (canUseEmail) {
                   Logger.debug(" 允许 注册 ，email 可以正常使用")
                   userCollection.save(userJsval)
-                    val avatarId = ( userJsval \ "avatar") .as[String]
-                  Ok(userJsval).withSession("userId" -> userId , "username" -> username , "email" -> email ,"avatar" ->avatarId )
+                  val avatarId = (userJsval \ "avatar").as[String]
+                  Ok(userJsval).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
                 } else {
-                  redirect2Input(  "email exist" )
-                 }
+                  redirect2Input("email exist")
+                }
             }
           }
         }
@@ -251,16 +290,12 @@ object Login extends Controller with MongoController {
     }
   }
 
-  def weibo() = TODO
-
-  def weiboCallbak() = TODO
-
   def twitter() = TODO
 
-  def twitterCallbak() = TODO
+  def twitterCallback() = TODO
 
   def facebook() = TODO
 
-  def facebookCallbak() = TODO
+  def facebookCallback() = TODO
 
 }
