@@ -19,7 +19,7 @@ class LoginSpec extends Specification {
 	val log = LoggerFactory.getLogger(classOf[LoginSpec])
 	
 	"User register " should{
-	  "new user register " in new WithBrowser( webDriver= classOf[FirefoxDriver] ,port=8084 ,app = FakeApplication()  ) {
+	  "new user register " in new WithBrowser(  FIREFOX, FakeApplication() , 8084  ) {
 	    
   browser.goTo("/login/user/registerForm")
   Thread.sleep(1000)

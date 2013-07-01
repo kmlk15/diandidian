@@ -18,16 +18,21 @@ class LoginWeiboSpec extends Specification {
 	val log = LoggerFactory.getLogger(classOf[LoginSpec])
 	
 	"Weibo Login " should{
-	  "new user login" in new WithBrowser( webDriver=   classOf[FirefoxDriver] ,port=8084  ) {
+	  "new user login" in new WithBrowser(     FIREFOX, FakeApplication() , 8084    ) {
 	    browser.goTo("/login/")
-	    Thread.sleep(15000)
-	    browser.$("a[herf=/login/weibo]").click()
+	    Thread.sleep(1000)
+	    browser.$("a#weibo").click()
+	      Thread.sleep(1000)
 	    browser.title().contains("应用授权")
 	    browser.$("input#userId").text("wuhaohz@sina.cn")
 	    browser.$("input#passwd").text("6543217a")
-	    Thread.sleep(5000)
+	    Thread.sleep(1000)
 	    browser.$("a[action-type=submit]").click()
 	    
+	    Thread.sleep(1000)
+	    browser.title().contains("应用授权")
+	    browser.$("a[action-type=submit]").click()
+	    //如何对 mongodb 进行处理，保证是 新用户？
 	    Thread.sleep(5000)
 	  }
 

@@ -20,7 +20,7 @@ import play.api.libs.ws.WS
 
 
 object LoginWeibo extends Controller with MongoController {
-  val log = LoggerFactory.getLogger(Login.getClass())
+  val log = LoggerFactory.getLogger(LoginWeibo.getClass())
 
   /**
    * use
