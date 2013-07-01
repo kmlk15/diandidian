@@ -34,6 +34,9 @@ object Login extends Controller with MongoController {
   def login() = Action {
     Ok(views.html.login())
   }
+   def logout() = Action {
+    Redirect(routes.Home.index()).withNewSession
+  }
   /**
    * 必须已经是 通过 weibo/twitter/facebook 登录的
    *
@@ -228,7 +231,9 @@ object Login extends Controller with MongoController {
                   futureUpload.map {
                     case userJsval => {
                       val avatarId = (userJsval \ "avatar").as[String]
-                      Ok(userJsval).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
+                      
+                    //  Ok(userJsval).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
+                      Redirect(routes.Home.index()).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
                     }
                   }.recover {
                     case _ =>

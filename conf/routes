@@ -10,6 +10,7 @@ GET    /detail/view/:name        controllers.Detail.view( name: String  )
 GET    /detail/json/:name          controllers.Detail.viewJson(name: String)
 
 GET    /login/					controllers.Login.login()
+GET    /login/logout					controllers.Login.logout()
 
 GET		/login/user/registerForm		controllers.Login.registerForm()
 POST	/login/user/register			controllers.Login.register()

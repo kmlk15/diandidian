@@ -12,14 +12,14 @@ import java.io.File
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.safari.SafariDriver
-import org.jsoup.Jsoup
+
 import org.openqa.selenium.By
 
 class LoginSpec extends Specification {
 	val log = LoggerFactory.getLogger(classOf[LoginSpec])
 	
 	"User register " should{
-	  "new user register " in new WithBrowser( webDriver=   classOf[FirefoxDriver]   ) {
+	  "new user register " in new WithBrowser( webDriver= classOf[FirefoxDriver] ,port=8084 ,app = FakeApplication()  ) {
 	    
   browser.goTo("/login/user/registerForm")
   Thread.sleep(1000)

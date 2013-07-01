@@ -7,6 +7,7 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.mvc.Action
 import play.api.mvc.Controller
 import play.api.Play
+import play.api.Play.current
 import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
 import reactivemongo.bson.BSONDocument
@@ -17,8 +18,9 @@ import scala.concurrent.Future
 import play.api.mvc.Result
 import play.api.libs.ws.WS
 
+
 object LoginWeibo extends Controller with MongoController {
-  val Logger = LoggerFactory.getLogger(Login.getClass())
+  val log = LoggerFactory.getLogger(Login.getClass())
 
   /**
    * use
@@ -33,11 +35,10 @@ object LoginWeibo extends Controller with MongoController {
   def userWeiboCollection: JSONCollection = db.collection[JSONCollection]("userweibo")
 
   //获取 新浪授权
-
-  val sinaappkey = "2454366401"
-  val sinaappSecret = "9067b727d0f051496d3df4175c251fed"
-
-  val sinacallbackurl = "http://127.0.0.1:9000/login/callback/weibo"
+  
+  val sinaappkey =  Play.configuration.getString("sinaappkey",None).getOrElse("2454366401")
+  val sinaappSecret = Play.configuration.getString("sinaappSecret",None).getOrElse("9067b727d0f051496d3df4175c251fed")
+  val sinacallbackurl = Play.configuration.getString("sinacallbackurl",None).getOrElse("http://127.0.0.1:8084/login/callback/weibo")
 
   def weibo() = Action {
 
@@ -46,6 +47,8 @@ object LoginWeibo extends Controller with MongoController {
       "client_id" -> Seq(sinaappkey),
       "response_type" -> Seq("code"),
       "redirect_uri" -> Seq(sinacallbackurl))
+      
+      log.debug("queryString=" +  queryString)
     Redirect(url, queryString, 302)
   }
 
@@ -65,7 +68,7 @@ object LoginWeibo extends Controller with MongoController {
       get.map { response =>
         {
           val myjson = response.json
-            Logger.info(myjson.toString)
+            log.info(myjson.toString)
             
           //如果 还没有绑定，  进入绑定流程； 如果已经绑定 ，则直接登录
           //进入 如果没有帐号，则需要创建一个用户名
