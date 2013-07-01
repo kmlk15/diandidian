@@ -18,7 +18,9 @@ class LoginWeiboSpec extends Specification {
 	val log = LoggerFactory.getLogger(classOf[LoginSpec])
 	
 	"Weibo Login " should{
-	  "new user login" in new WithBrowser(     FIREFOX, FakeApplication() , 8084    ) {
+	  "new user login" in new WithBrowser(     FIREFOX, FakeApplication( 
+	  additionalConfiguration = Map("mongodb.uri" -> "mongodb://localhost:27017/mytest")    
+	  ) , 8084    ) {
 	    browser.goTo("/login/")
 	    Thread.sleep(1000)
 	    browser.$("a#weibo").click()
