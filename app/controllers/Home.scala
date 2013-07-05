@@ -9,4 +9,8 @@ object Home extends Controller {
     Ok(views.html.home("Home"))
   }
   
+  def coming = Action {
+    Ok(views.html.coming())
+  }
+  
 }

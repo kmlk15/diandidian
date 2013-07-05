@@ -3,8 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Home.index
+GET     /                           controllers.Home.coming
 
+GET     /home                           controllers.Home.index
  
 GET    /detail/view/:name        controllers.Detail.view( name: String  )
 GET    /detail/json/:name          controllers.Detail.viewJson(name: String)
