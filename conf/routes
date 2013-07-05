@@ -24,8 +24,8 @@ GET    /login/callback/weibo  				 controllers.LoginWeibo.weiboCallback()
 GET    /login/twitter					controllers.LoginTwitter.twitter()
 GET    /login/callback/twitter  				 controllers.LoginTwitter.twitterCallback()
 
-GET    /login/facebook					controllers.Login.facebook()
-GET    /login/callback/facebook  				 controllers.Login.facebookCallback()
+GET    /login/facebook					controllers.LoginFacebook.facebook()
+GET    /login/callback/facebook  				 controllers.LoginFacebook.facebookCallback()
 
 GET   /login/user/avatar/:id            controllers.Login.getAttachment(id: String) 
 
