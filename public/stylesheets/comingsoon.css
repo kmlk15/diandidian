@@ -1,0 +1,75 @@
+/*--------------------
+FOR LOGIN ONLY
+---------------------*/
+body {
+	font-family: "STHeiti", arial, sans-serif;
+	background:#e3e3e3;
+	font-size: 12px;
+	font-weight: 400;
+	color: #5c5c5c;
+	margin:0;
+}
+html {
+	height:100%;
+	margin-bottom:1px;
+}
+* {
+	padding:0;
+	margin:0;
+	border:0;
+}
+.clear {
+	clear: both;
+}
+/*--------------------
+	main page elements
+---------------------*/
+#topColorBar {
+	position:relative;
+	width:100%;
+	height:5px;
+	background: #00a651;
+}
+#topNavFrame {
+	position:relative;
+	width:100%;
+	height:88px;
+	background: #fff;
+}
+#topNavCont {
+	width:1216px;
+	background: #fff;
+	margin: auto;
+}
+#imageFrame {
+	position:relative;
+	width:100%;
+}
+#imageCont {
+	width:1216px;
+	background: #000;
+	margin: auto;
+}
+.left-col {
+	float: left;
+	width: 888px;
+	margin-left: 88px;
+	background: #fff;
+}
+.right-col {
+	float: left;
+	height: 88px;
+	background: #fff;
+}
+
+.textBox {
+	float: left;
+	font-size: 18px;
+	margin-right: 15px;
+	margin-top: 43px;
+}
+.iconBox {
+	float: left;
+	margin-top: 43px;
+	margin-right: 12px;
+}
