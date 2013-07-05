@@ -236,8 +236,8 @@ object Login extends Controller with MongoController {
                       Redirect(routes.Home.index()).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
                     }
                   }.recover {
-                    case _ =>
-                      Logger.error("ERROR " + "recover")
+                    case x =>
+                      Logger.error("ERROR " + "recover" + x )
                       BadRequest
                   }
 
@@ -267,7 +267,9 @@ object Login extends Controller with MongoController {
                   Logger.debug(" 允许 注册 ，email 可以正常使用")
                   userCollection.save(userJsval)
                   val avatarId = (userJsval \ "avatar").as[String]
-                  Ok(userJsval).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
+                  //Ok(userJsval).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
+                  Redirect(routes.Home.index()).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatarId)
+
                 } else {
                   redirect2Input("email exist")
                 }

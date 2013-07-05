@@ -18,7 +18,6 @@ import scala.concurrent.Future
 import play.api.mvc.Result
 import play.api.libs.ws.WS
 
-
 object LoginWeibo extends Controller with MongoController {
   val log = LoggerFactory.getLogger(LoginWeibo.getClass())
 
@@ -35,10 +34,10 @@ object LoginWeibo extends Controller with MongoController {
   def userWeiboCollection: JSONCollection = db.collection[JSONCollection]("userweibo")
 
   //获取 新浪授权
-  
-  val sinaappkey =  Play.configuration.getString("sinaappkey",None).getOrElse("2454366401")
-  val sinaappSecret = Play.configuration.getString("sinaappSecret",None).getOrElse("9067b727d0f051496d3df4175c251fed")
-  val sinacallbackurl = Play.configuration.getString("sinacallbackurl",None).getOrElse("http://127.0.0.1:8084/login/callback/weibo")
+
+  val sinaappkey = Play.configuration.getString("sinaappkey", None).getOrElse("2454366401")
+  val sinaappSecret = Play.configuration.getString("sinaappSecret", None).getOrElse("9067b727d0f051496d3df4175c251fed")
+  val sinacallbackurl = Play.configuration.getString("sinacallbackurl", None).getOrElse("http://127.0.0.1:8084/login/callback/weibo")
 
   def weibo() = Action {
 
@@ -47,8 +46,8 @@ object LoginWeibo extends Controller with MongoController {
       "client_id" -> Seq(sinaappkey),
       "response_type" -> Seq("code"),
       "redirect_uri" -> Seq(sinacallbackurl))
-      
-      log.debug("queryString=" +  queryString)
+
+    log.debug("queryString=" + queryString)
     Redirect(url, queryString, 302)
   }
 
@@ -68,16 +67,16 @@ object LoginWeibo extends Controller with MongoController {
       get.map { response =>
         {
           val myjson = response.json
-            log.info(myjson.toString)
-            
+          log.info(myjson.toString)
+
           //如果 还没有绑定，  进入绑定流程； 如果已经绑定 ，则直接登录
           //进入 如果没有帐号，则需要创建一个用户名
           // 如果有，执行一次登录， 并将 进行账户绑定
           (myjson \ "uid").asOpt[String] match {
             case None => {
               //有可能 出错了， 提示， 请重试
-              
-                Ok(myjson.toString)
+
+              Ok(myjson.toString)
             }
             case Some(weiboId) => {
               /**
@@ -87,86 +86,90 @@ object LoginWeibo extends Controller with MongoController {
                */
               val cursor = userWeiboCollection.find(Json.obj("weiboId" -> weiboId)).cursor[json.JsObject]
               val futurList = cursor.toList(1)
-              Async{ 
-              futurList.map { jsobjList =>
-                {
+              Async {
+                futurList.map { jsobjList =>
                   if (jsobjList.isEmpty) {
-                    /**
-                     * 1 创建一个 user
-                     * 2 建立 user 和 weibo 的关系
-                     * 3 页面重定向到 注册页面
-                     * 4 这里最好能够 获取  用户在 weibo 的 nickname
-                     * 这里有许多异步？
-                     */
-                    val userId = BSONObjectID.generate.stringify
-                    val userJsval = Json.obj(
-                      "_id" -> userId,
-                      "username" -> "",
-                      "email" -> "",
-                      "password" -> "",
-                      "avatar" -> "")
-
-                    userCollection.save(userJsval)
-                    val weiboUserJsval = Json.obj(
-                      "weiboId" -> weiboId,
-                      "userId" -> userId,
-                      "token" -> myjson)
-
-                    userWeiboCollection.save(weiboUserJsval)
-
-                    Redirect(routes.Login.registerForm).withSession("userId" -> userId)
-
+                    newAccount(myjson, weiboId)
                   } else {
-                	  /**
-                	   * 用户信息是否 完整
-                	   * 1 完整， 进入 首页
-                	   * 2 不完整， 进入  registerForm
-                	   */
-                    val userId = (  jsobjList.head \"userId" ).as[String]
-                    
-                   val cursor =  userCollection.find(Json.obj("_id" -> userId )).cursor[json.JsObject]
-                   val futurList = cursor.toList(1)
-                   Async{
-                  futurList.map{ userList =>{
-                    if(userList.isEmpty){
-                      /**
-                       * user 对象被删除了？
-                       * 重新填写
-                       */
-                      Redirect(routes.Login.registerForm).withSession("userId" -> userId)
-                    } else{
-                      val userObj =  userList.head
-                      val username = (( userObj \ "username" ).asOpt[String]).getOrElse("")
-                      val email =   (( userObj \ "email" ).asOpt[String]).getOrElse("")
-                      val avatar =  (( userObj \ "avatar" ).asOpt[String]).getOrElse("")
-                      if( username =="" || email == "" ){
-                        
-                        Redirect(routes.Login.registerForm).withSession("userId" -> userId).flashing( "username"-> username , "email" -> email )
-                        
-                      }else{
-                        Redirect(routes.Home.index ).withSession("userId" -> userId ,"username" -> username , "email" -> email ,"avatar" ->avatar )
-                      }
-                      
-                      
-                       
-                    } 
-                    
-                    
-                      }}
-                    }
-                   
+                   val userId = (jsobjList.head \ "userId").as[String]
+                    existsAccount(userId)
                   }
-                }
                 }
               }
             }
 
           }
-        
+
         }
       }
 
     }
+  }
+
+  private def existsAccount(userId: String ): play.api.mvc.AsyncResult = {
+    /**
+     * 用户信息是否 完整
+     * 1 完整， 进入 首页
+     * 2 不完整， 进入  registerForm
+     */
+    
+
+    val cursor = userCollection.find(Json.obj("_id" -> userId)).cursor[json.JsObject]
+    val futurList = cursor.toList(1)
+    Async {
+      futurList.map { userList =>
+        {
+          if (userList.isEmpty) {
+            /**
+             * user 对象被删除了？
+             * 重新填写
+             */
+            Redirect(routes.Login.registerForm).withSession("userId" -> userId)
+          } else {
+            val userObj = userList.head
+            val username = ((userObj \ "username").asOpt[String]).getOrElse("")
+            val email = ((userObj \ "email").asOpt[String]).getOrElse("")
+            val avatar = ((userObj \ "avatar").asOpt[String]).getOrElse("")
+            if (username == "" || email == "") {
+
+              Redirect(routes.Login.registerForm).withSession("userId" -> userId).flashing("username" -> username, "email" -> email)
+
+            } else {
+              Redirect(routes.Home.index).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatar)
+            }
+
+          }
+
+        }
+      }
+    }
+  }
+
+  private def newAccount(myjson: play.api.libs.json.JsValue, weiboId: String): play.api.mvc.PlainResult = {
+    /**
+     * 1 创建一个 user
+     * 2 建立 user 和 weibo 的关系
+     * 3 页面重定向到 注册页面
+     * 4 这里最好能够 获取  用户在 weibo 的 nickname
+     * 这里有许多异步？
+     */
+    val userId = BSONObjectID.generate.stringify
+    val userJsval = Json.obj(
+      "_id" -> userId,
+      "username" -> "",
+      "email" -> "",
+      "password" -> "",
+      "avatar" -> "")
+
+    userCollection.save(userJsval)
+    val weiboUserJsval = Json.obj(
+      "weiboId" -> weiboId,
+      "userId" -> userId,
+      "token" -> myjson)
+
+    userWeiboCollection.save(weiboUserJsval)
+
+    Redirect(routes.Login.registerForm).withSession("userId" -> userId)
   }
 
 }

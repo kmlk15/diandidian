@@ -22,7 +22,7 @@ GET    /login/callback/weibo  				 controllers.LoginWeibo.weiboCallback()
 
 
 GET    /login/twitter					controllers.LoginTwitter.twitter()
-GET    /login/callback/witter  				 controllers.LoginTwitter.twitterCallback()
+GET    /login/callback/twitter  				 controllers.LoginTwitter.twitterCallback()
 
 GET    /login/facebook					controllers.Login.facebook()
 GET    /login/callback/facebook  				 controllers.Login.facebookCallback()

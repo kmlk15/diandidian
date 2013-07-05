@@ -59,7 +59,13 @@ object LoginTwitter extends Controller with MongoController {
    * 自己实现的
    *
    */
-  val KEY = ConsumerKey("PMllGT3OzjU3FdqKddvYA", "OHd2dJ7DA8w24tbjQVz4r6ZrPfV5rx5AXDFXlBswn8")
+    val key = Play.configuration.getString("twitterappkey", None).getOrElse("")
+  val secret = Play.configuration.getString("twitterappSecret", None).getOrElse("")
+  val callbackurl = Play.configuration.getString("twittercallbackurl", None).getOrElse("")
+
+  
+ 
+  val KEY = ConsumerKey( key , secret )
   val twitterServiceInfo = ServiceInfo(
     "https://api.twitter.com/oauth/request_token",
     "https://api.twitter.com/oauth/access_token",
@@ -83,15 +89,37 @@ object LoginTwitter extends Controller with MongoController {
           log.debug(" oauth_verifier ?? 这里是2次进入？ 从twittercallbak 再到 login? 带上参数？")
           log.debug("Right(t)" + t)
           // 获取 token 后， 返回到首页
-          Ok( t.toString )
+          
           //Redirect(routes.Application.index).withSession("token" -> t.token, "secret" -> t.secret)
-
+          
+            t.token.split("-") match{
+            case x: Array[ String] if  x.length == 2  =>{ 
+              val twitterId = x(0)
+              log.debug("twitterId=" + twitterId  )
+              val myjson = json.Json.obj("token"-> t.token , "secret" -> t.secret)
+              
+                val cursor = userTwitterCollection.find(Json.obj("twitterId" -> twitterId)).cursor[json.JsObject]
+              val futurList = cursor.toList(1)
+              Async {
+                futurList.map { jsobjList =>
+                  if (jsobjList.isEmpty) {
+                    newAccount(myjson, twitterId)
+                  } else {
+                   val userId = (jsobjList.head \ "userId").as[String]
+                    existsAccount(userId)
+                  }
+                }
+              }
+              
+            }
+            case _ =>{   Ok("ERROR")  }
+          }
         }
         case Left(e) => throw e
       }
     }.getOrElse(
 
-      TWITTER.retrieveRequestToken("http://diandidian.51qibo.com/login/callback/witter") match {
+      TWITTER.retrieveRequestToken( callbackurl ) match {
         case Right(t) => {
           log.debug(" Right(t) ")
           // We received the unauthorized tokens in the OAuth object - store it before we proceed
@@ -121,5 +149,74 @@ object LoginTwitter extends Controller with MongoController {
     } yield {
       RequestToken(token, secret)
     }
+  }
+  
+  
+  
+  
+  
+  private def existsAccount(userId: String ): play.api.mvc.AsyncResult = {
+    /**
+     * 用户信息是否 完整
+     * 1 完整， 进入 首页
+     * 2 不完整， 进入  registerForm
+     */
+     
+    val cursor = userCollection.find(Json.obj("_id" -> userId)).cursor[json.JsObject]
+    val futurList = cursor.toList(1)
+    Async {
+      futurList.map { userList =>
+        {
+          if (userList.isEmpty) {
+            /**
+             * user 对象被删除了？
+             * 重新填写
+             */
+            Redirect(routes.Login.registerForm).withSession("userId" -> userId)
+          } else {
+            val userObj = userList.head
+            val username = ((userObj \ "username").asOpt[String]).getOrElse("")
+            val email = ((userObj \ "email").asOpt[String]).getOrElse("")
+            val avatar = ((userObj \ "avatar").asOpt[String]).getOrElse("")
+            if (username == "" || email == "") {
+
+              Redirect(routes.Login.registerForm).withSession("userId" -> userId).flashing("username" -> username, "email" -> email)
+
+            } else {
+              Redirect(routes.Home.index).withSession("userId" -> userId, "username" -> username, "email" -> email, "avatar" -> avatar)
+            }
+
+          }
+
+        }
+      }
+    }
+  }
+
+  private def newAccount(myjson: play.api.libs.json.JsValue, twitterId: String): play.api.mvc.PlainResult = {
+    /**
+     * 1 创建一个 user
+     * 2 建立 user 和 weibo 的关系
+     * 3 页面重定向到 注册页面
+     * 4 这里最好能够 获取  用户在 weibo 的 nickname
+     * 这里有许多异步？
+     */
+    val userId = BSONObjectID.generate.stringify
+    val userJsval = Json.obj(
+      "_id" -> userId,
+      "username" -> "",
+      "email" -> "",
+      "password" -> "",
+      "avatar" -> "")
+
+    userCollection.save(userJsval)
+    val twitterUser = Json.obj(
+      "twitterId" -> twitterId,
+      "userId" -> userId,
+      "token" -> myjson)
+
+    userTwitterCollection.save(twitterUser)
+
+    Redirect(routes.Login.registerForm).withSession("userId" -> userId)
   }
 }
