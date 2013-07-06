@@ -62,7 +62,9 @@ object LoginWeibo extends Controller with MongoController {
       "redirect_uri" -> Seq(sinacallbackurl),
       "code" -> Seq(code))
       log.debug("accessTokenUrl=" + accessTokenUrl )
+     
     Async {
+      
       val get = WS.url(accessTokenUrl).post(queryString)
       get.map { response =>
         {

@@ -7,6 +7,8 @@ object ApplicationBuild extends Build {
   val appName = "diandidian"
   val appVersion = "0.1.0"
 
+  javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+    
   val appDependencies = Seq(
     jdbc,
     anorm,
