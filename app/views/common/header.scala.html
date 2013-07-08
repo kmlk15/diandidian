@@ -3,7 +3,7 @@
 <div id="user-sign" class="signin">
 				<div class="account">
 					<div class="user-info">
-						<img src='/login/user/avatar/@session.get("avatar").getOrElse("")' width="32" height="32" alt="" />
+						<img src='@session.get("avatar").getOrElse("")' width="32" height="32" alt="" />
 						<span>
 						@if( session.get("username")==None){
 							<a href='/login/'>登录</a>

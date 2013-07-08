@@ -68,17 +68,17 @@ object LoginWeibo extends Controller with MongoController {
       val get = WS.url(accessTokenUrl).post(queryString)
       get.map { response =>
         {
-          val myjson = response.json
-          log.info(myjson.toString)
+          val accesstokenJson = response.json
+          log.info(accesstokenJson.toString)
 
           //如果 还没有绑定，  进入绑定流程； 如果已经绑定 ，则直接登录
           //进入 如果没有帐号，则需要创建一个用户名
           // 如果有，执行一次登录， 并将 进行账户绑定
-          (myjson \ "uid").asOpt[String] match {
+          (accesstokenJson \ "uid").asOpt[String] match {
             case None => {
               //有可能 出错了， 提示， 请重试
 
-              Ok(myjson.toString)
+              Ok(accesstokenJson.toString)
             }
             case Some(weiboId) => {
               /**
@@ -91,7 +91,7 @@ object LoginWeibo extends Controller with MongoController {
               Async {
                 futurList.map { jsobjList =>
                   if (jsobjList.isEmpty) {
-                    newAccount(myjson, weiboId)
+                    newAccount(accesstokenJson, weiboId)
                   } else {
                    val userId = (jsobjList.head \ "userId").as[String]
                     existsAccount(userId)
@@ -146,8 +146,48 @@ object LoginWeibo extends Controller with MongoController {
       }
     }
   }
+  
+  /**
+   * 获取数据，并 跳转到主页
+   */
+  private def newAccount(accesstokenJson: play.api.libs.json.JsValue, weiboId: String): play.api.mvc.AsyncResult = {
+		  (accesstokenJson \ "access_token").asOpt[String] match{
+		    case None =>{
+		      //错误提示页面 
+		      Async{
+		    	  Future ( Ok("error") )
+		      }
+		    }
+		    case Some(token) =>{
+		      val url = "https://api.weibo.com/2/users/show.json?uid="+ weiboId + "&access_token=" + token
+		        Async {
+		    	  val get = WS.url(url).get
+		    	    get.map { response =>
+			          val userinfoJson = response.json
+			          log.debug(userinfoJson.toString)
+			           /**
+			            * 
+			            */
+			          val screenname =( ( userinfoJson \ "screen_name") .asOpt[String] ).getOrElse("")
+			          val name = ( userinfoJson \ "name") .asOpt[String].getOrElse("")
+			          val avatar =  ( userinfoJson \ "profile_image_url") .asOpt[String].getOrElse("")
+			          Redirect(routes.Home.index()).withSession( "username" -> screenname,  "avatar" -> avatar)
 
-  private def newAccount(myjson: play.api.libs.json.JsValue, weiboId: String): play.api.mvc.PlainResult = {
+			          
+			          
+		    	  }	 
+		      } 
+		      
+		      
+		    }
+		  }
+    
+    
+     
+  }
+  
+  
+  private def newAccount2(myjson: play.api.libs.json.JsValue, weiboId: String): play.api.mvc.PlainResult = {
     /**
      * 1 创建一个 user
      * 2 建立 user 和 weibo 的关系
