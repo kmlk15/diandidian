@@ -12,6 +12,7 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     jdbc,
     anorm,
+    "org.twitter4j" % "twitter4j-core" % "3.0.3" ,
     "org.seleniumhq.selenium" % "selenium-java" % "2.33.0" % "test",
     "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test",
     "org.reactivemongo" %% "play2-reactivemongo" % "0.9",

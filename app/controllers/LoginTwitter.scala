@@ -24,6 +24,9 @@ import play.api.libs.oauth.RequestToken
 import play.api.libs.oauth.OAuthSupportProxy
 import play.api.libs.ws.WS.WSRequestHolder
 import play.api.mvc.RequestHeader
+import twitter4j.TwitterFactory
+import twitter4j.Twitter
+import twitter4j.conf.ConfigurationBuilder
 
 
 object LoginTwitter extends Controller with MongoController {
@@ -103,7 +106,7 @@ object LoginTwitter extends Controller with MongoController {
               Async {
                 futurList.map { jsobjList =>
                   if (jsobjList.isEmpty) {
-                    newAccount(myjson, twitterId)
+                    newAccount( t , twitterId)	
                   } else {
                    val userId = (jsobjList.head \ "userId").as[String]
                     existsAccount(userId)
@@ -193,7 +196,29 @@ object LoginTwitter extends Controller with MongoController {
     }
   }
 
-  private def newAccount(myjson: play.api.libs.json.JsValue, twitterId: String): play.api.mvc.PlainResult = {
+  private def newAccount( reqToken: RequestToken , twitterId: String): play.api.mvc.PlainResult = {
+ 
+    val cb = new ConfigurationBuilder()
+    cb.setDebugEnabled(true)
+      .setOAuthConsumerKey(key)
+      .setOAuthConsumerSecret(secret)
+      .setOAuthAccessToken(reqToken.token)
+      .setOAuthAccessTokenSecret(reqToken.secret)
+      
+      //.setHttpProxyHost("")
+      //.setHttpProxyPort()
+      
+    val tf = new TwitterFactory(cb.build())
+    val twitter = tf.getInstance()
+    val profile = twitter.showUser(  twitterId.toLong)
+    log.debug("profile=" + profile )
+    val name =  profile.getName()
+    val avatar = profile.getProfileImageURL()
+    Redirect(routes.Home.index()).withSession("username" -> name, "avatar" -> avatar)
+
+    
+  }
+  private def newAccount2(myjson: play.api.libs.json.JsValue, twitterId: String): play.api.mvc.PlainResult = {
     /**
      * 1 创建一个 user
      * 2 建立 user 和 weibo 的关系
