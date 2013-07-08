@@ -62,9 +62,19 @@ object  LoginFacebook extends Controller with MongoController {
   }
   
 
+  /**
+   * 
+   * http://stackoverflow.com/questions/6490332/facebook-api-get-profile-feed-with-authors-avatars
+   * You can simply use the ID as the image with /picture:
+	* <img src="https://graph.facebook.com/1337/picture"/>
+    */
 
 def facebookCallback() = Action { implicit request =>
-
+   val errorCode =request.getQueryString("error_code").getOrElse("")
+   if(errorCode!=""){
+     val error_message = request.getQueryString("error_message").getOrElse("")
+     Ok( errorCode + "\t" +  error_message )
+   }else{
     val code = request.getQueryString("code") 
     code  match{
       case Some(code) =>{
@@ -155,6 +165,7 @@ def facebookCallback() = Action { implicit request =>
       }
       
     }
+   }
   }
 
 
@@ -198,7 +209,18 @@ def facebookCallback() = Action { implicit request =>
     }
   }
 
-  private def newAccount(myjson: play.api.libs.json.JsValue, facebookId: String): play.api.mvc.PlainResult = {
+  private def newAccount(userinfoJson: play.api.libs.json.JsValue, facebookId: String): play.api.mvc.PlainResult = {
+   
+    log.debug(Json.prettyPrint(userinfoJson))
+    val first_name = ((userinfoJson \ "first_name").asOpt[String]).getOrElse("")
+    val name = (userinfoJson \ "name").asOpt[String].getOrElse("")
+    val avatar = "https://graph.facebook.com/" + facebookId + "/picture"
+    
+    Redirect(routes.Home.index()).withSession("username" -> first_name, "avatar" -> avatar)
+
+  }
+  
+  private def newAccount2(myjson: play.api.libs.json.JsValue, facebookId: String): play.api.mvc.PlainResult = {
     /**
      * 1 创建一个 user
      * 2 建立 user 和 weibo 的关系

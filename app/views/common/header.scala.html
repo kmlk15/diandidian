@@ -1,6 +1,6 @@
 @(implicit session: Session)
 
-<div id="user-sign" class="signin">
+<div id="user-sign"  @if( session.get("username")==None) {  class="not-signin"}else{ class="signin"} >
 				<div class="account">
 					<div class="user-info">
 						<img src='@session.get("avatar").getOrElse("")' width="32" height="32" alt="" />
@@ -8,7 +8,7 @@
 						@if( session.get("username")==None){
 							<a href='/login/'>登录</a>
 						}else{
-							@session.get("username").getOrElse("") &nbsp; <a href="/login/logout">退出</a>  
+							@session.get("username").getOrElse("") &nbsp; 
 						}
 						
 						</span>

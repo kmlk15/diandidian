@@ -1,4 +1,4 @@
-@(message: String)
+@(message: String)(implicit session: Session)
 
 @script={
 <script type="text/javascript" src="@routes.Assets.at("javascripts/home.js")"></script>
@@ -6,9 +6,32 @@
 @main(message, script ) {
 <div id="container">
 	<div id="header">
-		<div id="user-sign" class="not-signin">
-			<a href="#">微博登录</a>
-		</div>
+	
+		<div id="user-sign" @if( session.get("username")==None) {  class="not-signin"}else{ class="signin"}   >
+				<div class="account">
+					<div class="user-info">
+						<img src='@session.get("avatar").getOrElse("")' width="32" height="32" alt="" />
+						<span>
+						@if( session.get("username")==None){
+							<a href='/login/'>登录</a>
+						}else{
+							@session.get("username").getOrElse("") &nbsp;   
+						}
+						
+						</span>
+					</div><!-- end user-info -->
+					<ul>
+						<li>@if( session.get("username")==None){
+						 
+						}else{
+						 <a href="/login/logout">退出</a>  
+						}
+						
+						</li>
+					</ul>
+				</div><!-- end account -->
+			</div><!-- end user-sign -->
+			
 		
 		<div id="top-nav" class="clearfix">
 			<a class="logo" href="/"><img src="/assets/images/logo.png" width="107" height="34" alt="点地点" /></a>
