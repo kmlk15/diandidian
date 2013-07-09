@@ -79,8 +79,9 @@ object LoginTwitter extends Controller with MongoController {
    * 不支持 代理的 Oauth1.0
    * OAuthSupportProxy
    */
-
-  val TWITTER = OAuthSupportProxy(twitterServiceInfo, false, Some(("127.0.0.1", 3128)))
+ val proxy = if(System.getenv("http_proxy")!=null)  Some(("127.0.0.1", 3128)) else None
+ 
+ val TWITTER = OAuthSupportProxy(twitterServiceInfo, false, proxy )
 
   def twitter() = Action { request =>
     request.getQueryString("oauth_verifier").map { verifier =>
