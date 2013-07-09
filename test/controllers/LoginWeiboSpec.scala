@@ -15,7 +15,7 @@ import org.openqa.selenium.safari.SafariDriver
 
 import org.openqa.selenium.By
 class LoginWeiboSpec extends Specification {
-	val log = LoggerFactory.getLogger(classOf[LoginSpec])
+	val log = LoggerFactory.getLogger(classOf[LoginWeiboSpec])
 	
 	"Weibo Login " should{
 	  "new user login" in new WithBrowser(     FIREFOX, FakeApplication( 
@@ -23,7 +23,7 @@ class LoginWeiboSpec extends Specification {
 	  ) , 8084    ) {
 	    browser.goTo("/login/")
 	    Thread.sleep(1000)
-	    browser.$("a#weibo").click()
+	    browser.$("a#twitterBtn").click()
 	      Thread.sleep(1000)
 	    browser.title().contains("应用授权")
 	    browser.$("input#userId").text("wuhaohz@sina.cn")
