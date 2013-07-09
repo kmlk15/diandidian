@@ -61,10 +61,10 @@ object LoginWeibo extends Controller with MongoController {
       "grant_type" -> Seq("authorization_code"),
       "redirect_uri" -> Seq(sinacallbackurl),
       "code" -> Seq(code))
-      log.debug("accessTokenUrl=" + accessTokenUrl )
-     
+    log.debug("accessTokenUrl=" + accessTokenUrl)
+
     Async {
-      
+
       val get = WS.url(accessTokenUrl).post(queryString)
       get.map { response =>
         {
@@ -93,8 +93,14 @@ object LoginWeibo extends Controller with MongoController {
                   if (jsobjList.isEmpty) {
                     newAccount(accesstokenJson, weiboId)
                   } else {
-                   val userId = (jsobjList.head \ "userId").as[String]
-                    existsAccount(userId)
+                	  log.debug("get from  mongodb ")
+                    val userinfoJson = (jsobjList.head \ "profile")
+                    log.debug("userinfoJson=" + Json.prettyPrint(userinfoJson))
+                    val screenname = ((userinfoJson \ "screen_name").asOpt[String]).getOrElse("")
+                    val name = (userinfoJson \ "name").asOpt[String].getOrElse("")
+                    val avatar = (userinfoJson \ "profile_image_url").asOpt[String].getOrElse("")
+                    Redirect(routes.Home.index()).withSession("username" -> screenname, "avatar" -> avatar)
+
                   }
                 }
               }
@@ -108,13 +114,12 @@ object LoginWeibo extends Controller with MongoController {
     }
   }
 
-  private def existsAccount(userId: String ): play.api.mvc.AsyncResult = {
+  private def existsAccount(userId: String): play.api.mvc.AsyncResult = {
     /**
      * 用户信息是否 完整
      * 1 完整， 进入 首页
      * 2 不完整， 进入  registerForm
      */
-    
 
     val cursor = userCollection.find(Json.obj("_id" -> userId)).cursor[json.JsObject]
     val futurList = cursor.toList(1)
@@ -146,47 +151,72 @@ object LoginWeibo extends Controller with MongoController {
       }
     }
   }
-  
+
   /**
    * 获取数据，并 跳转到主页
    */
   private def newAccount(accesstokenJson: play.api.libs.json.JsValue, weiboId: String): play.api.mvc.AsyncResult = {
-		  (accesstokenJson \ "access_token").asOpt[String] match{
-		    case None =>{
-		      //错误提示页面 
-		      Async{
-		    	  Future ( Ok("error") )
-		      }
-		    }
-		    case Some(token) =>{
-		      val url = "https://api.weibo.com/2/users/show.json?uid="+ weiboId + "&access_token=" + token
-		        Async {
-		    	  val get = WS.url(url).get
-		    	    get.map { response =>
-			          val userinfoJson = response.json
-			          log.debug(userinfoJson.toString)
-			           /**
-			            * 
-			            */
-			          val screenname =( ( userinfoJson \ "screen_name") .asOpt[String] ).getOrElse("")
-			          val name = ( userinfoJson \ "name") .asOpt[String].getOrElse("")
-			          val avatar =  ( userinfoJson \ "profile_image_url") .asOpt[String].getOrElse("")
-			          Redirect(routes.Home.index()).withSession( "username" -> screenname,  "avatar" -> avatar)
+    (accesstokenJson \ "access_token").asOpt[String] match {
+      case None => {
+        //错误提示页面 
+        Async {
+          Future(Ok("error"))
+        }
+      }
+      case Some(token) => {
+        val url = "https://api.weibo.com/2/users/show.json?uid=" + weiboId + "&access_token=" + token
+        Async {
+          val get = WS.url(url).get
+          get.map { response =>
+            val userinfoJson = response.json
+            log.debug(userinfoJson.toString)
+            	/**
+            	 * {"error":"applications over the unaudited use restrictions!","error_code":21321,"request":"/2/users/show.json"}
+            	 */
+            	val  errormsg = ((userinfoJson \ "error").asOpt[String]).getOrElse("")
+            	if(errormsg!=""){
+            	  
+            		Ok(Json.stringify( userinfoJson ))
+            		
+            	}else{
+            /**
+             *
+             */
+            val screenname = ((userinfoJson \ "screen_name").asOpt[String]).getOrElse("")
+            val name = (userinfoJson \ "name").asOpt[String].getOrElse("")
+            val avatar = (userinfoJson \ "profile_image_url").asOpt[String].getOrElse("")
+            if(screenname !=""){
+            //save to  mongodb
+	            val userId = BSONObjectID.generate.stringify
+	            val userJsval = Json.obj(
+	              "_id" -> userId,
+	              "username" -> "",
+	              "email" -> "",
+	              "password" -> "",
+	              "avatar" -> "")
+	              
+	              userCollection.save ( userJsval)
+	              
+	              
+	            val weiboUserJsval = Json.obj(
+	              "weiboId" -> weiboId,
+	              "userId" -> userId,
+	              "token" -> accesstokenJson,
+	              "profile" -> userinfoJson)
+	
+	            userWeiboCollection.save(weiboUserJsval)
+            }
+            Redirect(routes.Home.index()).withSession("username" -> screenname, "avatar" -> avatar)
 
-			          
-			          
-		    	  }	 
-		      } 
-		      
-		      
-		    }
-		  }
-    
-    
-     
+          }
+          }
+        }
+
+      }
+    }
+
   }
-  
-  
+
   private def newAccount2(myjson: play.api.libs.json.JsValue, weiboId: String): play.api.mvc.PlainResult = {
     /**
      * 1 创建一个 user
