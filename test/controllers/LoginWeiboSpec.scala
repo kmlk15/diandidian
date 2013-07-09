@@ -73,7 +73,7 @@ class LoginWeiboSpec extends Specification {
 	    }
 	   
 	   
-	    driver.close()
+	    driver.quit()
 	  }
 
 	}

@@ -30,7 +30,7 @@ class LoginTwitterTest  extends Specification {
   }
 
 
-driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
 	"twiiter Login " should{
 	  "twiiter user login" in  {
@@ -43,12 +43,14 @@ driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	    val title = driver.getTitle()
 	    
 	    title must beEqualTo("Twitter / Authorize an application").ignoreSpace.ignoreCase
+	   Thread.sleep(10*1000)
 	   
 	    driver.findElementByCssSelector("form#oauth_form input#username_or_email").sendKeys("dmontgomery@163.com")
 	    driver.findElementByCssSelector("form#oauth_form input#password").sendKeys("123456a")
+	    Thread.sleep(1*1000)
 	    driver.findElementByCssSelector("form#oauth_form").submit()
 	    Thread.sleep(10*1000)
-	    driver.get("http://www.diandidian.com/home")
+	   
 	    val status = driver.findElementByCssSelector("div.account div.user-info span")
 	    println( status.getText() )
 	    val txt = status.getText()
@@ -56,7 +58,7 @@ driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	    txt  must  contain("wuhao")
 	    
 	    
-	    driver.close()
+	    driver.quit()
 	    
 	  }
 	}

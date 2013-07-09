@@ -109,8 +109,11 @@ object LoginTwitter extends Controller with MongoController {
                   if (jsobjList.isEmpty) {
                     newAccount( t , twitterId)	
                   } else {
-                   val userId = (jsobjList.head \ "userId").as[String]
-                    existsAccount(userId)
+                    val userId = (jsobjList.head \ "userId" ).as[String]
+                   val  name = (jsobjList.head \ "profile" \"name").as[String]
+                   val  avatar = (jsobjList.head \ "profile" \"avatar").as[String]
+                   Redirect(routes.Home.index()).withSession("userId"->userId , "username" -> name, "avatar" -> avatar)
+                   
                   }
                 }
               }
@@ -215,7 +218,38 @@ object LoginTwitter extends Controller with MongoController {
     log.debug("profile=" + profile )
     val name =  profile.getName()
     val avatar = profile.getProfileImageURL()
-    Redirect(routes.Home.index()).withSession("username" -> name, "avatar" -> avatar)
+    
+    if(name !=""){
+            //save to  mongodb
+	            val userId = BSONObjectID.generate.stringify
+	            val userJsval = Json.obj(
+	              "_id" -> userId,
+	              "username" -> "",
+	              "email" -> "",
+	              "password" -> "",
+	              "avatar" -> "")
+	              
+	              userCollection.save ( userJsval)
+	              
+	              
+	            val twitterUserJsval = Json.obj(
+	              "twitterId" -> twitterId,
+	              "userId" -> userId,
+	              "token" -> reqToken.token,
+	              "secret" -> reqToken.secret,
+	              "profile" ->  Json.obj(
+	            		  "name" -> name,
+	            		  "avatar" -> avatar 
+	              ))
+	
+	            userTwitterCollection.save(twitterUserJsval)
+	            Redirect(routes.Home.index()).withSession("userId" -> userId, "username" -> name, "avatar" -> avatar)
+
+            }else{
+              
+              Ok("ERROR profile= "  + profile.toString)
+            }
+    
 
     
   }
