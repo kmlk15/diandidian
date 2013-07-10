@@ -10,7 +10,9 @@
 		<div id="user-sign" @if( session.get("username")==None) {  class="not-signin"}else{ class="signin"}   >
 				<div class="account">
 					<div class="user-info">
+						@if(session.get("avatar").getOrElse("")!=""){
 						<img src='@session.get("avatar").getOrElse("")' width="32" height="32" alt="" />
+						}
 						<span>
 						@if( session.get("username")==None){
 							<a href='/login/'>登录</a>
