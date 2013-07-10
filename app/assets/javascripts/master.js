@@ -95,7 +95,7 @@ $(function() {
 	
 	
 	//home page to add to bag, you should change to use backend to add
-	$("#attractions-list ul li .add-bag").on('click',function(e) {
+	$("#attractions-list").on('click',"ul li .add-bag", function(e) {
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
@@ -110,11 +110,20 @@ $(function() {
 	})
 	
 	//home page delete from bag, you should change to use backend to delete
-	$("#my-bag .accordion .accordion div ul li table td.del a").on('click',function() {
+	$("#my-bag .accordion .accordion div ul ").on('click',"li table td.del a",function() {
 		var $itemDel = $(this).parents("li");
 		var $ul = $(this).parents("ul");
 		$itemDel.remove();
 		updateBagCount($ul);
+		
+		// DETAIL PAGE 
+		if( $("#attraction-detal .user-content .col.col3 span.added").length > 0 ){
+			var e = $("#attraction-detal .user-content .col.col3 span.added")
+			e.text("加入背包")
+			e.removeClass("added")
+			e.addClass("add-bag")
+		}
+		
 		return false;
 	});
 	
@@ -127,7 +136,7 @@ $(function() {
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
-		var titleText = $("#attraction-detal .user-content .col.col2 .title h2").text();
+		var titleText = $("#attraction-detal   h2").text();
 		var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del"><a href="#"></a></td></tr></table></li>';
 		$ul.append(itemHtml);
 		updateBagCount($ul);
