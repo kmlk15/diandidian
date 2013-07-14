@@ -10,4 +10,7 @@ object mongoService extends MongodbServiceComponentImpl
 object userRegistry extends UserServiceComponentImpl
 
 
+object LoginServiceRegistry extends LoginServiceComponentImpl
+
+
 

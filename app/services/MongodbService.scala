@@ -26,7 +26,7 @@ package object mongoContext {
 import mongoContext._
 trait MongodbServiceComponent {
 
-  def getMongoService[T <: AnyRef](collection: String)(implicit manifest: Manifest[T]): MongodbService[T]
+  def getMongoService[T <: AnyRef](collection: String, dbname: String= "topo")(implicit manifest: Manifest[T]): MongodbService[T]
 
   trait MongodbService[T <: AnyRef] {
     def list(): List[T]
@@ -42,8 +42,8 @@ trait MongodbServiceComponent {
 }
 trait MongodbServiceComponentImpl extends MongodbServiceComponent {
 
-  override def getMongoService[T <: AnyRef](collection: String)(implicit manifest: Manifest[T]): MongodbService[T] = new MongodbService[T] {
-    val mongoDB = MongoConnection()("topo")
+  override def getMongoService[T <: AnyRef](collection: String , dbname: String= "topo")(implicit manifest: Manifest[T]): MongodbService[T] = new MongodbService[T] {
+    val mongoDB = MongoConnection()( dbname )
     val col = mongoDB(collection)
 
     override def list(): List[T] = {
