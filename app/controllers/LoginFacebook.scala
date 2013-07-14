@@ -157,7 +157,7 @@ object LoginFacebook extends Controller with MongoController {
 
           }
 
-          //Ok("access_token="+ access_token +"\texpires=" + expires)
+         
 
         }
 
@@ -168,7 +168,7 @@ object LoginFacebook extends Controller with MongoController {
   private def newAccount(userinfoJson: play.api.libs.json.JsValue, facebookId: String, access_token: String, expires: String): play.api.mvc.PlainResult = {
 
     log.debug(Json.prettyPrint(userinfoJson))
-    val first_name = ((userinfoJson \ "first_name").asOpt[String]).getOrElse("")
+  
     val name = (userinfoJson \ "name").asOpt[String].getOrElse("")
     val avatar = "https://graph.facebook.com/" + facebookId + "/picture"
 

@@ -13,9 +13,6 @@ GET    /detail/json/:name          controllers.Detail.viewJson(name: String)
 GET    /login/					controllers.Login.login()
 GET    /login/logout					controllers.Login.logout()
 
-GET		/login/user/registerForm		controllers.Login.registerForm()
-POST	/login/user/register			controllers.Login.register()
-
 
 GET    /login/weibo					controllers.LoginWeibo.weibo()
 GET    /login/callback/weibo  				 controllers.LoginWeibo.weiboCallback()
@@ -27,7 +24,6 @@ GET    /login/callback/twitter  				 controllers.LoginTwitter.twitterCallback()
 GET    /login/facebook					controllers.LoginFacebook.facebook()
 GET    /login/callback/facebook  				 controllers.LoginFacebook.facebookCallback()
 
-GET   /login/user/avatar/:id            controllers.Login.getAttachment(id: String) 
 
 
 GET     /test                       controllers.api.LocationEndpoints.test
