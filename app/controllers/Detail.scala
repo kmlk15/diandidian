@@ -2,15 +2,17 @@ package controllers
 
 import play.api.Logger
 import play.api.libs.json
-import play.api.libs.json.Json.toJsFieldJsValueWrapper
+
 import play.api.mvc.Action
 import play.api.mvc.Controller
-import play.modules.reactivemongo.MongoController
-import play.modules.reactivemongo.json.collection.JSONCollection
+import sjson.json.JsonSerialization
+import dispatch.classic.json.JsValue
 
-object Detail extends Controller with MongoController {
 
-  def jsoncollection: JSONCollection = db.collection[JSONCollection]("location")
+object Detail extends Controller   {
+
+ val locationService = base.locationRegistry.locationService
+ 
 
   def view(name: String ) = Action { implicit request =>{
     Logger.debug("name=" + name )
@@ -26,14 +28,17 @@ object Detail extends Controller with MongoController {
      * 需要将 数据保存到 mongodb 中
      *
      */
-    Async {
-      val builder = jsoncollection.find (json.Json.obj("name" -> name))
-      val cursor = builder.cursor[json.JsValue]
-      cursor.headOption.map {
-        case Some(location) => { Ok( location ) }
-        case None => { NotFound }
-      }
+    locationService.getByName(name) match{
+       case Some(location) => {
+       
+         val str = JsValue.toJson(JsonSerialization.tojson(location))
+         
+         Ok(  json.Json.parse(str)  ) 
+         }
+       case None => { NotFound }
     }
+    
+    
   }
   
 }

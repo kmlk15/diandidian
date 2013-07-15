@@ -1,7 +1,7 @@
 package services
 
 import models.v2._
-import play.modules.reactivemongo.MongoController
+
 import base.mongoService
 import com.mongodb.casbah.commons.MongoDBObject
 import org.bson.types.ObjectId
@@ -96,7 +96,7 @@ trait LoginServiceComponentImpl extends LoginServiceComponent {
            */
           val w1 = twitterUser.copy(userId = w.userId)
           val q = MongoDBObject()
-          q.put("weiboId", w1.twitterId)
+          q.put("twitterId", w1.twitterId)
           twitterMongoClient.update(q, w1, false, false, WriteConcern.Normal)
           w1
         }
@@ -134,7 +134,7 @@ trait LoginServiceComponentImpl extends LoginServiceComponent {
            */
           val w1 = facebookUser.copy(userId = w.userId)
           val q = MongoDBObject()
-          q.put("weiboId", w1.facebookId)
+          q.put("facebookId", w1.facebookId)
           facebookMongoClient.update(q, w1, false, false, WriteConcern.Normal)
           w1
         }

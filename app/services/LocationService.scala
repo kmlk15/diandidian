@@ -14,6 +14,8 @@ trait LocationServiceComponent {
 
     def getById(id: String): Location
 
+    def getByName(name: String): Option[Location]
+    
     def getBySlug(slug: String): Option[Location]
 
     def save(obj: Location)
@@ -40,7 +42,17 @@ trait LocationServiceComponentImpl extends LocationServiceComponent {
        val q = MongoDBObject()
       mongoClient.findOne(q)
     }
-
+    
+	def getByName(name: String): Option[Location] ={
+    	val q = MongoDBObject()
+    	q.put("name", name)
+    	try{
+    		Some( mongoClient.findOne(q) )
+    	}catch{
+    	  case ex:Exception =>  None
+    	}
+	  
+	}
     override def getBySlug(slug: String): Option[Location] = {
       null
     }
