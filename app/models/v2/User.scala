@@ -11,3 +11,5 @@ case class WeiboUser( weiboId: String = "" , userId: String = "" ,screenName: St
 case class TwitterUser( twitterId: String = "" , userId: String = "" ,screenName: String="" , avatar: String = ""  ,
     token: String="{}" , profile: String = "{}"  )
     
+case class FacebookUser( facebookId: String = "" , userId: String = "" ,screenName: String="" , avatar: String = ""  ,
+    token: String="{}" , profile: String = "{}"  )

@@ -15,7 +15,7 @@ class LoginServiceTest extends Specification {
   "Login Service " should {
 
   
-    "WeiboUser Collection CRUD" in new WithApplication {
+    "WeiboUser Collection CRU" in new WithApplication {
 
       val mongoDB = MongoConnection()("mytestxx")
       val col = mongoDB("weibouser")
@@ -40,6 +40,56 @@ class LoginServiceTest extends Specification {
       
     }
 
+    "TwitterUser Collection CRU" in new WithApplication {
+
+      val mongoDB = MongoConnection()("mytestxx")
+      val col = mongoDB("twitteruser")
+      col.drop()
+
+      val loginService = LL.loginService
+      val twitterId = "my twitter test id"
+      val w1 = TwitterUser(twitterId = twitterId)
+      val w2 = loginService.saveTwitterUser(w1)
+      w2.userId !== ""
+
+      val w3 = loginService.getTwitterUser(twitterId)
+      w3 must beSome
+
+      w3.get === w2
+
+      
+      val w4 = TwitterUser(twitterId = twitterId , screenName="new Name")
+      val w5 =  loginService.saveTwitterUser(w4)
+      w2.userId  === w5.userId
+      w2.screenName !== w5.screenName
+      
+    }
+
+     "FacebookUser Collection CRU" in new WithApplication {
+
+      val mongoDB = MongoConnection()("mytestxx")
+      val col = mongoDB("facebookuser")
+      col.drop()
+
+      val loginService = LL.loginService
+      val facebookId = "my facebooke test id"
+      val w1 = FacebookUser(facebookId = facebookId)
+      val w2 = loginService.saveFacebookUser(w1)
+      w2.userId !== ""
+
+      val w3 = loginService.getFacebookUser(facebookId)
+      w3 must beSome
+
+      w3.get === w2
+
+      
+      val w4 = FacebookUser(facebookId = facebookId , screenName="new facebook Name")
+      val w5 =  loginService.saveFacebookUser(w4)
+      w2.userId  === w5.userId
+      w2.screenName !== w5.screenName
+      
+    }
+     
   }
 
 }

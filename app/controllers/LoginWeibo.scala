@@ -63,13 +63,11 @@ object LoginWeibo extends Controller {
             case Some(weiboId) => {
              
               loginService.getWeiboUser(weiboId)  match {
-                case None => {
-                  newAccount(accesstokenJson, weiboId)
-                }
-                case Some(weiboUser) => {
-                  Redirect(routes.Home.index()).withSession(
+                case None =>  newAccount(accesstokenJson, weiboId)
+                 
+                case Some(weiboUser) => Redirect(routes.Home.index()).withSession(
                     "userId" -> weiboUser.userId, "username" -> weiboUser.screenName, "avatar" -> weiboUser.avatar)
-                }
+                
               }
             }
           }
