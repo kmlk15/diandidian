@@ -15,7 +15,6 @@ object ApplicationBuild extends Build {
     "org.twitter4j" % "twitter4j-core" % "3.0.3" ,
     "org.seleniumhq.selenium" % "selenium-java" % "2.33.0" % "test",
     "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test",
-    "org.reactivemongo" %% "play2-reactivemongo" % "0.9",
     "org.mongodb" % "casbah_2.10" % "2.5.0",
     "net.debasishg" % "sjson_2.10" % "0.19",
     "com.novus" % "salat-core_2.10" % "1.9.2-SNAPSHOT"
