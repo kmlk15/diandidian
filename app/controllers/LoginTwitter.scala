@@ -51,29 +51,37 @@ object LoginTwitter extends Controller {
 
   def twitter() = Action { request =>
     request.getQueryString("oauth_verifier").map { verifier =>
-      val tokenPair = sessionTokenPair(request).get
-      // We got the verifier; now get the access token, store it and back to index
-      TWITTER.retrieveAccessToken(tokenPair, verifier) match {
-        case Right(t) => {
-          // We received the authorized tokens in the OAuth object - store it before we proceed
-
-          log.debug("Right(t)=" + t)
-          // 获取 token 后， 返回到首页
-          t.token.split("-") match {
-            case x: Array[String] if x.length == 2 => {
-              val twitterId = x(0)
-              log.debug("twitterId=" + twitterId)
-               
-              loginService.getTwitterUser(twitterId) match {
-                case None => newAccount(t, twitterId)
-                case Some(twitterUser) => Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar)
-              }
-            }
-            case _ => Ok("can not get userid from " + t)
-          }
-        }
-        case Left(e) => throw e
-      }
+       sessionTokenPair(request) match{
+         case None => {
+           log.error("ERROR get sessionTokenPair")
+            Ok("ERROR get sessionTokenPair")
+         }
+         case Some( tokenPair ) => {
+	      // We got the verifier; now get the access token, store it and back to index
+	      TWITTER.retrieveAccessToken(tokenPair, verifier) match {
+	        case Right(t) => {
+	          // We received the authorized tokens in the OAuth object - store it before we proceed
+	
+	          log.debug("Right(t)=" + t)
+	          // 获取 token 后， 返回到首页
+	          t.token.split("-") match {
+	            case x: Array[String] if x.length == 2 => {
+	              val twitterId = x(0)
+	              log.debug("twitterId=" + twitterId)
+	               
+	              loginService.getTwitterUser(twitterId) match {
+	                case None => newAccount(t, twitterId)
+	                case Some(twitterUser) => Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar)
+	              }
+	            }
+	            case _ => Ok("can not get userid from " + t)
+	          }
+	        }
+	        case Left(e) => throw e
+	      }
+         }
+       }
+     
     }.getOrElse(
 
       TWITTER.retrieveRequestToken(callbackurl) match {
