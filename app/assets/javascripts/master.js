@@ -161,6 +161,8 @@ $(function() {
 		$("#shadow-divide").height($(document).height());
 	});
 	
+	$("#avatarimg").imgr({ radius:"16px"});
+	
 })
 
 
