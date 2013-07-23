@@ -77,7 +77,11 @@ object LoginTwitter extends Controller {
 	            case _ => Ok("can not get userid from " + t)
 	          }
 	        }
-	        case Left(e) => throw e
+	        case Left(e) => {
+	          log.error(e.getMessage(), e)
+	          Ok("ERROR=" + e.getMessage())
+	          
+	        }
 	      }
          }
        }
@@ -90,7 +94,10 @@ object LoginTwitter extends Controller {
           // We received the unauthorized tokens in the OAuth object - store it before we proceed
           Redirect(TWITTER.redirectUrl(t.token)).withSession("token" -> t.token, "secret" -> t.secret)
         }
-        case Left(e) => throw e
+        case Left(e) => { 
+          log.error(e.getMessage(), e)
+          Ok("ERROR=" + e.getMessage()) 
+          }
       })
   }
 
@@ -102,7 +109,7 @@ object LoginTwitter extends Controller {
     log.debug(oauth_verifier)
     
     //Ok( oauth_verifier)
-    if(oauth_verifier==""){
+    if(oauth_verifier != ""){
     	Redirect(routes.LoginTwitter.twitter.toString(), Map("oauth_verifier" -> Seq(oauth_verifier)))
     }else{
         log.info("User denied")
