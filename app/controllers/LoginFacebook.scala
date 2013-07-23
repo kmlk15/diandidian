@@ -14,7 +14,7 @@ import play.api.mvc.Controller
 
 
 object LoginFacebook extends Controller   {
-  val log = LoggerFactory.getLogger(LoginTwitter.getClass())
+  val log = LoggerFactory.getLogger(LoginFacebook.getClass())
 
   val loginService = base.LoginServiceRegistry.loginService
   
