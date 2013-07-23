@@ -100,8 +100,15 @@ object LoginTwitter extends Controller {
     val oauth_verifier = request.getQueryString("oauth_verifier").getOrElse("")
 
     log.debug(oauth_verifier)
+    
     //Ok( oauth_verifier)
-    Redirect(routes.LoginTwitter.twitter.toString(), Map("oauth_verifier" -> Seq(oauth_verifier)))
+    if(oauth_verifier==""){
+    	Redirect(routes.LoginTwitter.twitter.toString(), Map("oauth_verifier" -> Seq(oauth_verifier)))
+    }else{
+        log.info("User denied")
+        Redirect( routes.Home.index())
+    }
+    
 
   }
 

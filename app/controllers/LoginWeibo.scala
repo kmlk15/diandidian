@@ -37,6 +37,10 @@ object LoginWeibo extends Controller {
   def weiboCallback() = Action { implicit request =>
 
     val code = request.getQueryString("code").getOrElse("")
+    if(code == ""){
+       log.info("User denied")
+        Redirect( routes.Home.index())
+    }else{
     val accessTokenUrl = "https://api.weibo.com/oauth2/access_token"
     val queryString = Map(
       "client_id" -> Seq(sinaappkey),
@@ -73,6 +77,7 @@ object LoginWeibo extends Controller {
           }
         }
       }
+    }
     }
   }
 
