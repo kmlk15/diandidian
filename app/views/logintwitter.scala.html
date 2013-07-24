@@ -1,0 +1,11 @@
+@(nexturl: String )(implicit session: Session)
+<html>
+<head>
+<script>
+window.location.replace("@nexturl");
+</script>
+</head>
+<body>
+<a href="@nexturl">@nexturl</a>
+</body>
+</html>

@@ -49,7 +49,7 @@ object LoginTwitter extends Controller {
 
   val TWITTER = OAuthSupportProxy(twitterServiceInfo, false, proxy)
 
-  def twitter() = Action { request =>
+  def twitter() = Action { implicit request =>
     request.getQueryString("oauth_verifier").map { verifier =>
        sessionTokenPair(request) match{
          case None => {
@@ -57,6 +57,7 @@ object LoginTwitter extends Controller {
             Ok("ERROR get sessionTokenPair")
          }
          case Some( tokenPair ) => {
+           log.debug( "tokenPair=" + tokenPair)
 	      // We got the verifier; now get the access token, store it and back to index
 	      TWITTER.retrieveAccessToken(tokenPair, verifier) match {
 	        case Right(t) => {
@@ -70,8 +71,15 @@ object LoginTwitter extends Controller {
 	              log.debug("twitterId=" + twitterId)
 	               
 	              loginService.getTwitterUser(twitterId) match {
-	                case None => newAccount(t, twitterId)
-	                case Some(twitterUser) => Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar)
+	                case None => {
+	                  log.debug("第一次登录的用户")
+	                  newAccount(t, twitterId)
+	                }
+	                case Some(twitterUser) => {
+	                  log.debug("已有用户登录 twitterUser= " + twitterUser)
+	                	Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar)
+	                }
+	                
 	              }
 	            }
 	            case _ => Ok("can not get userid from " + t)
@@ -92,7 +100,9 @@ object LoginTwitter extends Controller {
         case Right(t) => {
           log.debug(" Right(t) =" + t )
           // We received the unauthorized tokens in the OAuth object - store it before we proceed
-          Redirect(TWITTER.redirectUrl(t.token)).withSession("token" -> t.token, "secret" -> t.secret)
+          log.debug( "TWITTER.redirectUrl(t.token) = " + TWITTER.redirectUrl(t.token))
+          
+          Ok(views.html.logintwitter( TWITTER.redirectUrl(t.token))) .withSession("mytoken" -> t.token, "mysecret" -> t.secret)
         }
         case Left(e) => { 
           log.error(e.getMessage(), e)
@@ -121,8 +131,8 @@ object LoginTwitter extends Controller {
 
   def sessionTokenPair(implicit request: RequestHeader): Option[RequestToken] = {
     for {
-      token <- request.session.get("token")
-      secret <- request.session.get("secret")
+      token <- request.session.get("mytoken")
+      secret <- request.session.get("mysecret")
     } yield {
       RequestToken(token, secret)
     }

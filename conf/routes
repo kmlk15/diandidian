@@ -39,5 +39,7 @@ GET    /logout                      controllers.api.UserEndpoints.logout
 
 GET /sessiontest						controllers.SessionView.index()
 
+GET /sessiontest2						controllers.SessionView.index2()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

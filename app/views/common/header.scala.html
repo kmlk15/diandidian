@@ -4,7 +4,7 @@
 				<div class="account">
 					<div class="user-info">
 						@if(session.get("avatar").getOrElse("")!=""){
-							<img src='@session.get("avatar").getOrElse("")' width="32" height="32" alt="" id="avatarimg"/>
+							<img src='@session.get("avatar").getOrElse("")' width="36" height="36" alt="" id="avatarimg"/>
 						}
 						<span>
 						@if( session.get("username")==None){
