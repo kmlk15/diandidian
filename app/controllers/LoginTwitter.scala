@@ -101,8 +101,8 @@ object LoginTwitter extends Controller {
           log.debug(" Right(t) =" + t )
           // We received the unauthorized tokens in the OAuth object - store it before we proceed
           log.debug( "TWITTER.redirectUrl(t.token) = " + TWITTER.redirectUrl(t.token))
-          
-          Ok(views.html.logintwitter( TWITTER.redirectUrl(t.token))) .withSession("mytoken" -> t.token, "mysecret" -> t.secret)
+  Redirect(TWITTER.redirectUrl(t.token)).withSession("mytoken" -> t.token, "mysecret" -> t.secret)        
+//          Ok(views.html.logintwitter( TWITTER.redirectUrl(t.token))) .withSession("mytoken" -> t.token, "mysecret" -> t.secret)
         }
         case Left(e) => { 
           log.error(e.getMessage(), e)
