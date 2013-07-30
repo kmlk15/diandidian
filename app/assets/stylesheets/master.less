@@ -1,6 +1,9 @@
 /* Less CSS Variable */
+@bodyBg:#f7f7f7;
 @white: #ffffff;
 @black: #000000;
+@green:#00a651;
+@blue:#00aeef;
 @textGrey: #3c3c3c;
 @textGrey2: #3f3f3f;
 @textGrey3: #3b3b3b;
@@ -13,10 +16,10 @@
 @searchLabelColor: #828282;
 @accountMenuBorderColor: #9b9b9b;
 @attractionListBottomBg: #e5e1e1;
-@myBagHeaderBg: #56230d;
+@myBagBg: #e6e6e6;
 @myBagBorderColor: #8a8a8a;
 @myBagItemHeaderBg: #e3d0c8;
-@myBagItemBorderColor: #716864;
+@myBagItemBorderColor: #00aeef;
 @myBagItemDashSeparateColor: #c2c2c2;
 @myBagItemBg: #f0eaea;
 @galleryBorderColor: #4b4b4b;
@@ -50,8 +53,8 @@
 body {
 	margin: 0;
 	padding: 0;
-	background: @white;
-	font-family: "STHeiti", arial, sans-serif;
+	background: @bodyBg;
+	font-family:"微软雅黑", "STHeiti", arial, sans-serif;
 	font-size: 12px;
 	font-weight: 400;
 	color: @textGrey;
@@ -70,8 +73,8 @@ img {
 h1, h2, h3, h4 {
 	margin: 0;
 	padding: 0;
-	font-family: "STHeiti";
-	font-weight: 700;
+	font-family: "微软雅黑","STHeiti";
+	font-weight: 500;
 	color: @black;
 }
 h1 {
@@ -145,53 +148,57 @@ ul, ol {
 	overflow: auto;
 	float: right;
 	width: 302px;
-	padding-top: 30px;
+	padding-top: 75px;
 	position: fixed;
 	top: 60px;
 	right: 0;
+	border-left:1px @scrollColor solid;
 }
 #shadow-divide {
 	position: absolute;
-	top: 0;
+	top: 40px;
 	right: 302px;
-	width: 8px;
+	width: 1px;
 	height: 100%;
-	background: url(/assets/images/divider-shadow.png) repeat-y;
+	/*background: url(/assets/images/divider-shadow.png) repeat-y;*/
+	background: #c6c6c6;
 	z-index: 100;
 }
 /* header */
 #header {
 	overflow: visible;
-	height: 60px;
+	height: 90px;
 	width: 100% !important;
 	min-width: 1200px;
-	background: @red;
+	background: @bodyBg;
+	border-top:5px @green solid;
 }
 #top-nav {
 	margin-right: 310px;
 	.logo {
 		display: block;
 		float: left;
-		margin: 15px 0 0 20px;
+		margin: 0 0 0 20px;
 	}
 	.dropdown {
 		float: left;
 		margin-left: 49px;
+		margin-top: 16px;
 		span {
 			display: block;
 			padding: 0 55px 0 12px;
 			height: 60px;
-			background: url(/assets/images/drop-triangle-white.png) 100px 50% no-repeat;
+			background: url(/assets/images/drop-triangle-blue.png) 90px 60% no-repeat;
 			line-height: 60px;
 			font-size: 23px;
-			font-weight: 700;
-			color: @white;
+			font-weight: 300;
+			color: @blue;
 			cursor: pointer;
 		}
 		&:hover {
 			background-color: @greyDropDownHoverBg;
 			span {
-				background: url(/assets/images/drop-triangle-black.png) 100px 50% no-repeat;
+				background: url(/assets/images/drop-triangle-black.png) 90px 60% no-repeat;
 				color: @textGrey3;
 			}
 			ul {
@@ -206,7 +213,7 @@ ul, ol {
 				height: 37px;
 				line-height: 37px;
 				font-size: 20px;
-				font-weight: 700;
+				font-weight: 300;
 				color: @textGrey3;
 				cursor: pointer;
 				&:hover {
@@ -221,7 +228,7 @@ ul, ol {
 #search-address-wrap {
 	position: relative;
 	float: right;
-	margin: 15px 20px 0 0;
+	margin: 35px 20px 0 0;
 	.token-input-list-facebook {
 		width: 234px;
 		padding-right: 30px;
@@ -230,7 +237,7 @@ ul, ol {
 	}
 	label {
 		position: absolute;
-		top: 6px;
+		top: 3px;
 		left: 4px;
 		font-size: 15px;
 		color: @searchLabelColor;
@@ -244,17 +251,19 @@ ul, ol {
 #user-sign {
 	float: right;
 	width: 302px;
+	border-left:1px @scrollColor solid;
+	height: 70px;
+	margin-top:20px;
 	&.not-signin {
 		a {
 			display: block;
 			float: left;
 			margin-left: 23px;
-			padding: 0 10px 0 42px;
-			height: 60px;
-			background: url(/assets/images/weibo_icon.png) 10px 50% no-repeat;
+			padding: 0 10px 0 52px;
+			background: url(/assets/images/weibo_logo.png) 10px 50% no-repeat;
 			line-height: 60px;
 			font-size: 18px;
-			color: @white;
+			color: @textGrey;
 			&:hover {
 				background-color: @greyDropDownHoverBg;
 				color: @textGrey3;
@@ -267,36 +276,46 @@ ul, ol {
 		.account {
 			float: left;
 			margin-left: 23px;
+			border: 1px solid @bodyBg;
+			border-radius:0px 0px 8px 8px;
 			&:hover {
 				background-color: @greyDropDownHoverBg;
+				border: 1px solid @myBagBorderColor;
 				.user-info {
 					color: @textGrey;
 				}
 				ul {
 					display: block;
+					margin-top:5px;
 				}
 			}
 			.user-info {
 				padding: 6px 10px 0 10px;
-				height: 54px;
 				line-height: normal;
 				font-size: 13px;
-				color: @white;
+				color: @textGrey;
 				cursor: pointer;
 				img {
 					display: block;
-					margin: 0 auto 2px auto;
+					margin: 0;
 				}
 				span {
-					text-align: center;
+
+				}
+				span.username{
+					position: relative;
+					top:-10px;
+					left:10px;
+					margin-right:10px;
+					font-size: 18px;
 				}
 			}
 			ul {
 				display: none;
 				li {
-					padding-left: 10px;
-					height: 23px;
-					line-height: 23px;
+					text-align:center;					
+					height: 30px;
+					line-height: 30px;
 					border-top: 1px dashed @accountMenuBorderColor;
 					&:hover {
 						background: @greyTopDropHoverBg;
@@ -306,8 +325,8 @@ ul, ol {
 					}
 					a {
 						display: block;
-						font-size: 12px;
-						color: @textGrey;
+						font-size:16px;
+						color: @blue;
 						&:hover {
 							text-decoration: none;
 						}
@@ -321,10 +340,10 @@ ul, ol {
 #attractions-list {
 	margin: 0 auto;
 	h2 {
-		padding: 30px 0 7px 10px;
-		background: @white;
+		padding: 0px 0 10px 10px;
+		background: @bodyBg;
 		font-size: 23px;
-		color: @textGrey3;
+		color: @blue;		
 	}
 	ul {
 		li {
@@ -334,7 +353,7 @@ ul, ol {
 			height: 307px;
 			width: 266px;
 			.rounded-corners(0, 10px, 10px, 0);
-			box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+			/*box-shadow: 2px 2px 2px rgba(0,0,0,0.5);*/
 			img {
 				display: block;	
 				.rounded-corners(0, 10px, 0, 0);
@@ -402,7 +421,7 @@ ul, ol {
 				position: absolute;
 				top: 12px;
 				height: 31px;
-				padding-top: 14px;
+				padding-top: 10px;
 				font-size: 17px;
 				color: @white;
 				cursor: pointer;
@@ -428,6 +447,10 @@ ul, ol {
 				padding-left: 35px;
 				width: 84px;
 				background: url(/assets/images/sprite.png) 0 -666px no-repeat;
+				a {
+					color: @white;
+					text-decoration: none;
+				}
 				&:hover {
 					background: url(/assets/images/sprite.png) 0 -571px no-repeat;
 					text-decoration: none;
@@ -439,29 +462,32 @@ ul, ol {
 /* my-bag */
 #my-bag {
 	margin: 0 auto;
-	width: 250px;
+	padding:0 8px;
+	width: 234px;
+	background: @myBagBg;
+	border: 1px solid @myBagBorderColor;
+	.rounded-corners(0, 8px, 8px, 0);
 	h2 {
-		height: 32px;
-		line-height: 32px;
-		padding-left: 12px;
-		background: @myBagHeaderBg;
-		font-size: 17px;
-		color: @white;
-		.rounded-corners(0, 7px, 0, 0);
+		height: 38px;
+		line-height: 38px;
+		padding-left: 0px;
+		font-size: 20px;
+		color: @blue;
+		font-weight:500;
+		border-bottom:1px solid @myBagItemBorderColor;
 	}
 	.accordion {
-		border: 1px solid @myBagBorderColor;
+		
 		.accordion-header {
 			margin: 0;
 			padding: 0 0 0 26px;
-			height: 25px;
-			line-height: 25px;
-			background: @myBagItemHeaderBg url(/assets/images/accordion-head-icon.png) 11px 50% no-repeat;
+			height: 30px;
+			line-height: 30px;
+			background: url(/assets/images/accordion-head-icon.png) 11px 50% no-repeat;
 			border-top: 1px solid @myBagItemBorderColor;
-			border-bottom: 1px solid @myBagItemBorderColor;
 			font-weight: normal;
-			font-size: 15px;
-			color: @textGrey;
+			color: @blue;
+			font-size: 15px;			
 			cursor: pointer;
 			&.state-active {
 				border-bottom: none;
@@ -472,7 +498,13 @@ ul, ol {
 			.accordion-header {
 				border-bottom: none;
 				border-top: 1px dashed @myBagItemDashSeparateColor;
-				background-color: @myBagItemBg;
+				background: url(/assets/images/accordion-iteam-icon.png) 11px 50% no-repeat;	
+				color: @textGrey;
+				
+				&.state-active {
+					border-bottom: none;
+					background-image: url(/assets/images/accordion-iteam-icon-active.png);
+				}	
 				a {
 					span {
 						
@@ -528,7 +560,6 @@ ul, ol {
 		.accordion-content {
 			display: none;
 			border: none;
-			background: @myBagItemBg;
 		}
 		ul {
 			border-top: 1px dashed @myBagItemDashSeparateColor;
@@ -581,18 +612,19 @@ ul, ol {
 #attraction-detal {
 	margin: 0 auto;
 	padding: 14px 0 0 0;
-	width: 842px;
+	width: 840px;
+	background: @white;
 	border: 1px solid @myBagItemDashSeparateColor;
 	.rounded-corners(0, 8px, 8px, 0);
-	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+	/*box-shadow: 2px 2px 2px rgba(0,0,0,0.5);*/
 	.breadcrumbs {
 		margin-bottom: 8px;
 		padding: 0 0 0 30px;
-		font-weight: bold;
+		font-weight: 300;
 		font-size: 23px;
-		color: @textGrey2;
+		color: @blue;
 		a {
-			color: @textGrey2;
+			color: @blue;
 		}
 	}
 	.gallery {
@@ -715,7 +747,7 @@ ul, ol {
 					display: block;
 					float: right;
 					margin-right: -10px;
-					padding-top: 14px;
+					padding-top: 10px;
 					padding-left: 35px;
 					width: 84px;
 					height: 31px;

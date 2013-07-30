@@ -2,7 +2,7 @@
 FOR LOGIN ONLY
 ---------------------*/
 body {
-	font-family: "STHeiti", arial, sans-serif;
+	font-family: "微软雅黑","STHeiti", arial, sans-serif;
 	background:#e9e9e9;
 	font-size: 12px;
 	font-weight: 400;
@@ -36,7 +36,7 @@ html {
 	position:relative;
 	width:100%;
 	height:60px;
-	background: #dd3e31;
+	border-top:5px #00a651 solid;
 	margin-bottom: 30px;
 }
 #topBox {

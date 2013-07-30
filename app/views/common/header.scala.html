@@ -6,14 +6,14 @@
 						@if(session.get("avatar").getOrElse("")!=""){
 							<img src='@session.get("avatar").getOrElse("")' width="36" height="36" alt="" id="avatarimg"/>
 						}
-						<span>
+						
 						@if( session.get("username")==None){
-							<a href='/login/'>登录</a>
+							<span><a href='/login/'>登录</a></span>
 						}else{
-							@session.get("username").getOrElse("") &nbsp; 
+							<span class="username">@session.get("username").getOrElse("")</span>
 						}
 						
-						</span>
+						
 					</div><!-- end user-info -->
 					<ul>
 						<li>@if( session.get("username")==None){
@@ -28,7 +28,7 @@
 			</div><!-- end user-sign -->
 			
 			<div id="top-nav" class="clearfix">
-				<a class="logo" href="/"><img src='@routes.Assets.at("images/logo.png")' width="107" height="34" alt="点地点" /></a>
+				<a class="logo" href="/"><img src='@routes.Assets.at("images/comingsoon_img/logo_dian.png")' width="156" height="88" alt="点地点" /></a>
 				<div class="dropdown">
 					<span>目的地</span>
 					<ul>

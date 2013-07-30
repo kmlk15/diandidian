@@ -19,7 +19,7 @@
 						@if( session.get("username")==None){
 							<a href='/login/'>登录</a>
 						}else{
-							@session.get("username").getOrElse("") &nbsp;   
+							<span class="username">@session.get("username").getOrElse("")</span>
 						}
 						
 						</span>
@@ -38,7 +38,7 @@
 			
 		
 		<div id="top-nav" class="clearfix">
-			<a class="logo" href="/"><img src="/assets/images/logo.png" width="107" height="34" alt="点地点" /></a>
+			<a class="logo" href="/"><img src="/assets/images/comingsoon_img/logo_dian.png" width="156" height="88" alt="点地点" /></a>
 			<div class="dropdown">
 				<span>目的地</span>
 				<ul>
@@ -52,7 +52,7 @@
 			</div>
 		</div><!-- end top-nav -->
 	</div><!-- end header -->
-	<div id="shadow-divide"></div>
+	<!-- <div id="shadow-divide"></div> -->
 	<div id="content">
 		<div id="sidebar">
 			<div id="my-bag">
