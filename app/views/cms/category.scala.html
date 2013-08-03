@@ -1,0 +1,23 @@
+@( categroyList : List[models.v2.Category])(implicit session: Session)
+
+@import helper._
+
+@script={
+ 
+ 
+
+
+}
+@views.html.cms.main(  "CMS Category List " , script){
+
+<p><a href="@controllers.cms.routes.Categories.add" >Add Category</a></p>
+			<table width="100%">
+			@for( category  <- categroyList ){
+			<tr>
+				<td>@category.name</td><td>@category.enName</td><td>@category.level</td>
+				<td><a href="@controllers.cms.routes.Categories.edit( category.id )">Edit</a></td>
+				<td><a href="@controllers.cms.routes.Categories.del( category.id )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
+			</tr>
+			}
+			</table>
+}

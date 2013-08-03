@@ -1,6 +1,7 @@
 package services
 
 import models.v2.PhotoUser
+import models.v2.Category
 import base.mongoService
 import com.mongodb.casbah.commons.MongoDBObject
 import org.bson.types.ObjectId
@@ -29,6 +30,15 @@ trait CmsServiceComponent {
 
     def getPhotoUsers( ) : List[ PhotoUser ]
      
+    
+    def saveCategory( category: Category): Option[Category]
+    def updateCategory( category: Category): Option[Category]
+    def getCategoryList( ) : List[ Category ]
+    
+    def delCategoryById(id: String): Int
+   
+     def getCategoryById(id: String): Option[Category]
+    
   }
 }
 
@@ -39,7 +49,7 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
   val dbname = "topo"
   override val cmsService = new CmsService {
     lazy val photoUserMongoClient = mongoService.getMongoService[PhotoUser]("photouser", dbname)
-    
+    lazy val categoryMongoClient = mongoService.getMongoService[Category]("category", dbname)
     /**
      * 如果 已经存在 该 userId ， 则不覆盖，
      * 需要客户端 明确调用  update 覆盖 
@@ -48,8 +58,8 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       
       getPhotoUserByUserId( user.userId) match{
         case None => {
-           val userId = new ObjectId().toString
-	       val w1 = user.copy(id = userId)
+           val id = new ObjectId().toString
+	       val w1 = user.copy(id = id)
 	       photoUserMongoClient.insert(w1)
 	       Some(w1)
         }
@@ -107,7 +117,7 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
 	          photoUserMongoClient.update(q, w1, false, false, WriteConcern.Normal)
 	    	      Some(w1)
     	      }else{
-    	        //存在同样id， 并且不是自己 
+    	        //存在同样 userid， 并且不是自己 
     	        None
     	      }
     	    }
@@ -122,7 +132,63 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       
     }
     
+   
+    def saveCategory( category: Category): Option[Category] ={
+      getCategoryByName( category.name) match{
+        case None =>{
+            val id = new ObjectId().toString
+            val cat = category.copy( id = id )
+            categoryMongoClient.insert(  cat )
+          Some( cat )
+        }
+        case Some( c ) => None
+      }
+      
+    }
     
+    def updateCategory( category: Category): Option[Category] ={
+      
+      getCategoryById( category.id) match {
+        case None => None
+        case Some( c ) => {
+        	    val cbyName = getCategoryByName(category.name)  
+        	    if( cbyName == None ||  cbyName.get == c ){
+            val q = MongoDBObject()
+	          q.put("_id", c.id)
+	         categoryMongoClient.update(q, category, false, false, WriteConcern.Normal)
+	    	      Some(category)
+        	    }else{
+        	      //不允许 重名 
+        	      None
+        	    }
+        }
+      }
+      
+    }
+    
+    def getCategoryList( ) : List[ Category ] ={
+      val q = MongoDBObject()
+      categoryMongoClient.find( q  )
+    }
+    
+    def delCategoryById(id: String): Int ={
+      val q = MongoDBObject()
+      q.put("_id" , id )
+      categoryMongoClient.delete(q, WriteConcern.Normal)
+      
+    }
+   
+     def getCategoryById(id: String): Option[Category] ={
+       val q = MongoDBObject()
+      q.put("_id" , id )
+      categoryMongoClient.find(q).headOption
+     }
+     
+    def getCategoryByName(name: String): Option[Category] ={
+       val q = MongoDBObject()
+      q.put("name" , name )
+      categoryMongoClient.find(q).headOption
+     } 
     
     
   }

@@ -1,0 +1,39 @@
+@(id: Option[String], form: Form[models.v2.Category], msg: String ="")(implicit session: Session)
+
+@title = @{ if(  id == None) "CMS Category Add" else  "CMS Category Edit"  }
+
+@import helper.twitterBootstrap._
+
+
+
+@script={
+
+}
+
+
+@views.html.cms.main( title.toString  ){
+
+<div class="row">
+  <div class="span8">
+  @if( msg != "") { <h2>@msg</h2> }
+    <h2>
+    @if(!id.isDefined) {
+      Add
+    } else {
+      Edit
+    } an Category</h2>
+    
+@helper.form(action = (if(!id.isDefined) controllers.cms.routes.Categories.save  else controllers.cms.routes.Categories.update( id.get )) , 'class -> "form-horizontal") {
+    @helper.inputText(form("name"))
+    @helper.inputText(form("enName"))
+    
+    @helper.inputText(form("level"))
+    
+    <div class="form-actions">
+      <input class="btn btn-primary" type="submit">
+    </div>
+  
+}
+ </div>
+  </div>
+}
