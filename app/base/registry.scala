@@ -13,4 +13,4 @@ object userRegistry extends UserServiceComponentImpl
 object LoginServiceRegistry extends LoginServiceComponentImpl
 
 
-
+object CmsServiceRegistry extends CmsServiceComponentImpl
