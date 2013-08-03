@@ -15,7 +15,7 @@ trait CmsServiceComponent {
 
   trait CmsService {
 
-    def savePhotoUser(user: PhotoUser): PhotoUser
+    def savePhotoUser(user: PhotoUser): Option[PhotoUser]
     
 	def updatePhotoUser(user: PhotoUser): Option[PhotoUser]
     
@@ -44,16 +44,16 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
      * 如果 已经存在 该 userId ， 则不覆盖，
      * 需要客户端 明确调用  update 覆盖 
      */
-    def savePhotoUser(user: PhotoUser): PhotoUser = {
+    def savePhotoUser(user: PhotoUser): Option[PhotoUser] = {
       
       getPhotoUserByUserId( user.userId) match{
         case None => {
            val userId = new ObjectId().toString
 	       val w1 = user.copy(id = userId)
 	       photoUserMongoClient.insert(w1)
-	       w1
+	       Some(w1)
         }
-        case Some( uu ) => uu 
+        case Some( uu ) => None  
       }
     }
 
@@ -99,11 +99,17 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
     	  getPhotoUserById ( user.id ) match{
     	    case None => None
     	    case Some( uu) =>{ 
-    	      val w1 = uu.copy(  userName = user.userName , userId = user.userId )
-          val q = MongoDBObject()
-          q.put("_id", w1.id)
-          photoUserMongoClient.update(q, w1, false, false, WriteConcern.Normal)
-    	      Some(w1)
+    	      val uu2 = getPhotoUserByUserId( user.userId) 
+    	      if( uu2== None || uu== uu2.get){
+	    	      val w1 = uu.copy(  userName = user.userName , userId = user.userId )
+	          val q = MongoDBObject()
+	          q.put("_id", w1.id)
+	          photoUserMongoClient.update(q, w1, false, false, WriteConcern.Normal)
+	    	      Some(w1)
+    	      }else{
+    	        //存在同样id， 并且不是自己 
+    	        None
+    	      }
     	    }
     	  }
     	  

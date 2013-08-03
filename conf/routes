@@ -40,9 +40,10 @@ GET    /logout                      controllers.api.UserEndpoints.logout
 # cms admin
 GET    /cms/user               		controllers.cms.Users.list 
 
-
+GET  /cms/user/add				controllers.cms.Users.add()
 POST /cms/user/save				controllers.cms.Users.save()
-POST /cms/user/update			controllers.cms.Users.update()
+GET /cms/user/edit/:id				controllers.cms.Users.edit( id )
+POST /cms/user/update/:id			controllers.cms.Users.update( id )
 GET   /cms/user/del/:id			controllers.cms.Users.del( id )
 GET   /cms/user/get/id/:id 			controllers.cms.Users.get( id )
 

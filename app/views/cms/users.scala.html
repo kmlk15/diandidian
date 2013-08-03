@@ -1,0 +1,23 @@
+@(users: List[models.v2.PhotoUser])(implicit session: Session)
+
+@import helper._
+
+@script={
+ 
+ 
+
+
+}
+@views.html.cms.main(  "CMS User List " , script){
+
+<p><a href="@controllers.cms.routes.Users.add" >Add User</a></p>
+			<table>
+			@for(user <- users ){
+			<tr>
+				<td>@user.userName</td><td>@user.userId</td>
+				<td><a href="@controllers.cms.routes.Users.edit( user.id )">Edit</a></td>
+				<td><a href="@controllers.cms.routes.Users.del( user.id )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
+			</tr>
+			}
+			</table>
+}

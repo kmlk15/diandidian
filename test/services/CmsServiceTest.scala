@@ -32,10 +32,10 @@ class CmsServiceTest extends Specification{
         
         val user = PhotoUser("", userId , userName)
         
-        val user2 = service.savePhotoUser(user)
+        val user2 = service.savePhotoUser(user).get
         user2.userName === user.userName
         user2.id  !== user.id
-        
+       
         
         
         val user3 = service.getPhotoUserById( user2.id )

@@ -1,0 +1,48 @@
+@(title: String, script:Html = Html("") )(maincontent: Html)(implicit session: Session)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <meta http-equiv="keywords" content="" />
+        <meta http-equiv="description" content="" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta property="wb:webmaster" content="f3852a8744503c7a" />
+
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")" />
+		 <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap-responsive.css")" />  
+  		<script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")" ></script>
+  		
+  		
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" ></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-scrolltofixed-min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.tokeninput.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.mousewheel.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.jscrollpane.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")"></script>
+       
+
+         
+        @script
+        
+    </head>
+    <body>
+       	<div id="container">
+		<div id="header">
+			 
+		</div><!-- end header -->
+		<!-- <div id="shadow-divide"></div> -->
+		<div id="content">
+			<div id="sidebar">
+				 
+			</div><!-- end sidebar -->
+			<div id="main">
+			@maincontent
+			</div> <!-- end main -->
+		</div><!--  end content -->
+	</div><!--  end container -->
+    </body>
+</html>
