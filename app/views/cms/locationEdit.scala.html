@@ -1,0 +1,90 @@
+@(id: Option[String], form: Form[models.LocationForm], msg: String ="")(implicit session: Session)
+
+@title = @{ if(  id == None) "CMS Location Add" else  "CMS Location Edit"  }
+
+@import helper.twitterBootstrap._
+
+
+
+@script={
+
+}
+
+
+@views.html.cms.main( title.toString  ){
+
+<div class="row">
+  <div class="span8">
+  @if( msg != "") { <h2>@msg</h2> }
+    <h2>
+    @if(!id.isDefined) {
+      Add
+    } else {
+      Edit
+    } an Locatoin</h2>
+    
+@helper.form(action = (if(!id.isDefined) controllers.cms.routes.Locations.save  else controllers.cms.routes.Locations.update( id.get )) , 'class -> "form-horizontal") {
+    <input type="hidden" name="phone.fax"  value="" />
+     <input type="hidden" name="address.postalCode"  value="" />
+    <input type="hidden" name="admission.adults"  value="0.0" />
+    
+    @helper.inputText(form("name"))
+   
+    @helper.inputText(form("address.street"))
+    @helper.inputText(form("address.district"))
+    @helper.inputText(form("address.city"))
+     @helper.inputText(form("address.stateProvince"))
+     @helper.inputText(form("address.country"))
+
+     @helper.inputText(form("phone.general"))
+      
+     
+     @helper.inputText(form("url"))
+     @helper.inputText(form("address.latitude"))
+     @helper.inputText(form("address.longitude"))
+     
+      @helper.inputText(form("hours.monday.open"))
+      @helper.inputText(form("hours.monday.close"))
+     
+     @helper.inputText(form("hours.tuesday.open"))
+      @helper.inputText(form("hours.tuesday.close"))
+      
+       @helper.inputText(form("hours.wednesday.open"))
+      @helper.inputText(form("hours.wednesday.close"))
+      
+      @helper.inputText(form("hours.thursday.open"))
+      @helper.inputText(form("hours.thursday.close"))
+      
+      @helper.inputText(form("hours.friday.open"))
+      @helper.inputText(form("hours.friday.close"))
+      
+      
+     @helper.inputText(form("hours.saturday.open"))
+      @helper.inputText(form("hours.saturday.close"))
+      
+      @helper.inputText(form("hours.sunday.open"))
+      @helper.inputText(form("hours.sunday.close"))
+      
+     @helper.inputText(form("hours.holiday.open"))
+      @helper.inputText(form("hours.holiday.close"))
+      
+     @helper.inputText(form("admission.currency"))
+     
+     @helper.inputText(form("admission.general"))
+     @helper.inputText(form("admission.children"))
+     @helper.inputText(form("admission.seniors"))
+     @helper.inputText(form("admission.general"))
+     @helper.inputText(form("admission.student"))
+     @helper.select( form("category.level_1") , Seq( "K1"->"v1" )   ) 
+      
+     
+    @helper.textarea(field = form("fact"), args = 'rows -> 3, 'cols -> 50)
+     
+    <div class="form-actions">
+      <input class="btn btn-primary" type="submit">
+    </div>
+  
+}
+ </div>
+  </div>
+}

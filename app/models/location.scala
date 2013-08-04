@@ -57,6 +57,8 @@ case class Location(
   category: Category,
   fact: String)
 
+
+
 object Address {
   implicit val addressFormat = asProduct8("street", "district", "city", "postalCode", "stateProvince", "country", "latitude", "longitude")(Address.apply)(Address.unapply(_).get)
 }  

@@ -53,7 +53,12 @@ GET 		/cms/category/edit/:id			controllers.cms.Categories.edit( id )
 POST 	/cms/category/update/:id		controllers.cms.Categories.update( id )
 GET   	/cms/category/del/:id				controllers.cms.Categories.del( id )
 
-
+GET   	 /cms/location               			controllers.cms.Locations.list 
+GET  	/cms/location/add					controllers.cms.Locations.add()
+POST 	/cms/location/save				controllers.cms.Locations.save()
+GET 		/cms/location/edit/:id			controllers.cms.Locations.edit( id )
+POST 	/cms/location/update/:id		controllers.cms.Locations.update( id )
+GET   	/cms/location/del/:id				controllers.cms.Locations.del( id )
 
 
  
