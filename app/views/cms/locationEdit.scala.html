@@ -24,61 +24,59 @@
     } an Locatoin</h2>
     
 @helper.form(action = (if(!id.isDefined) controllers.cms.routes.Locations.save  else controllers.cms.routes.Locations.update( id.get )) , 'class -> "form-horizontal") {
-    <input type="hidden" name="phone.fax"  value="" />
-     <input type="hidden" name="address.postalCode"  value="" />
-    <input type="hidden" name="admission.adults"  value="0.0" />
+ 
     
-    @helper.inputText(form("name"))
+    @helper.inputText(form("name") , '_label -> "名字")
    
-    @helper.inputText(form("address.street"))
-    @helper.inputText(form("address.district"))
-    @helper.inputText(form("address.city"))
-     @helper.inputText(form("address.stateProvince"))
-     @helper.inputText(form("address.country"))
+    @helper.inputText(form("address.street") , '_label -> "地址"  )
+    @helper.inputText(form("address.district") , '_label -> "区域"  )
+    @helper.inputText(form("address.city") , '_label -> "城市"  )
+     @helper.inputText(form("address.stateProvince") , '_label -> "省市" )
+     @helper.inputText(form("address.country") , '_label -> "国家"  )
 
-     @helper.inputText(form("phone.general"))
+     @helper.inputText(form("phone.general") , '_label -> "电话" )
       
      
-     @helper.inputText(form("url"))
-     @helper.inputText(form("address.latitude"))
-     @helper.inputText(form("address.longitude"))
+     @helper.inputText(form("url") , '_label -> "网址" )
+     @helper.inputText(form("address.latitude")  , '_label -> "latitude" )
+     @helper.inputText(form("address.longitude")  , '_label -> "longitude"  )
      
-      @helper.inputText(form("hours.monday.open"))
-      @helper.inputText(form("hours.monday.close"))
+      @helper.inputText(form("hours.monday.open")   , '_label -> "星期一 开放" )
+      @helper.inputText(form("hours.monday.close")  , '_label -> "关闭" )
      
-     @helper.inputText(form("hours.tuesday.open"))
-      @helper.inputText(form("hours.tuesday.close"))
+     @helper.inputText(form("hours.tuesday.open")  , '_label -> "星期二 开放" )
+      @helper.inputText(form("hours.tuesday.close")  , '_label -> "关闭")
       
-       @helper.inputText(form("hours.wednesday.open"))
-      @helper.inputText(form("hours.wednesday.close"))
+       @helper.inputText(form("hours.wednesday.open")  , '_label -> "星期三 开放" )
+      @helper.inputText(form("hours.wednesday.close")  , '_label -> "关闭")
       
-      @helper.inputText(form("hours.thursday.open"))
-      @helper.inputText(form("hours.thursday.close"))
+      @helper.inputText(form("hours.thursday.open")  , '_label -> "星期四 开放" )
+      @helper.inputText(form("hours.thursday.close")  , '_label -> "关闭")
       
-      @helper.inputText(form("hours.friday.open"))
-      @helper.inputText(form("hours.friday.close"))
+      @helper.inputText(form("hours.friday.open")  , '_label -> "星期五 开放" )
+      @helper.inputText(form("hours.friday.close")  , '_label -> "关闭")
       
       
-     @helper.inputText(form("hours.saturday.open"))
-      @helper.inputText(form("hours.saturday.close"))
+     @helper.inputText(form("hours.saturday.open")  , '_label -> "星期六 开放" )
+      @helper.inputText(form("hours.saturday.close")  , '_label -> "关闭")
       
-      @helper.inputText(form("hours.sunday.open"))
-      @helper.inputText(form("hours.sunday.close"))
+      @helper.inputText(form("hours.sunday.open")  , '_label -> "星期日 开放" )
+      @helper.inputText(form("hours.sunday.close")  , '_label -> "关闭")
       
-     @helper.inputText(form("hours.holiday.open"))
-      @helper.inputText(form("hours.holiday.close"))
+     @helper.inputText(form("hours.holiday.open")  , '_label -> "假日 开放" )
+      @helper.inputText(form("hours.holiday.close")  , '_label -> "关闭")
       
-     @helper.inputText(form("admission.currency"))
+     @helper.inputText(form("admission.currency")  , '_label -> "货币单位" )
      
-     @helper.inputText(form("admission.general"))
-     @helper.inputText(form("admission.children"))
-     @helper.inputText(form("admission.seniors"))
-     @helper.inputText(form("admission.general"))
-     @helper.inputText(form("admission.student"))
-     @helper.select( form("category.level_1") , Seq( "K1"->"v1" )   ) 
+     @helper.inputText(form("admission.general")  , '_label -> "标准" )
+     @helper.inputText(form("admission.children")  , '_label -> "儿童" )
+     @helper.inputText(form("admission.seniors")  , '_label -> "长者" )
+ 
+     @helper.inputText(form("admission.student")  , '_label -> "学生" )
+     @helper.select( form("category.level_1") , Seq( "K1"->"v1" )    , '_label -> "类别"  ) 
       
      
-    @helper.textarea(field = form("fact"), args = 'rows -> 3, 'cols -> 50)
+    @helper.textarea(field = form("fact"), args = 'rows -> 3, 'cols -> 50 , '_label -> "内容")
      
     <div class="form-actions">
       <input class="btn btn-primary" type="submit">

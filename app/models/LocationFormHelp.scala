@@ -41,7 +41,7 @@ object LocationFormHelp {
         "street" -> text,
         "district" -> text,
         "city" -> text,
-        "postalCode" -> text,
+        "postalCode" -> default(text, "" ) ,
         "stateProvince" -> text,
         "country" -> text,
         "latitude" -> default( of[Double], 0.0 ),
@@ -49,7 +49,7 @@ object LocationFormHelp {
 
       "phone" -> mapping(
         "general" -> text,
-        "fax" -> text)(Phone.apply)(Phone.unapply),
+        "fax" -> default(text, "" ) )(Phone.apply)(Phone.unapply),
 
       "admission" -> mapping(
         "currency" -> text,
