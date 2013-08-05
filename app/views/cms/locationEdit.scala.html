@@ -2,7 +2,7 @@
 
 @title = @{ if(  id == None) "CMS Location Add" else  "CMS Location Edit"  }
 
-@import helper.twitterBootstrap._
+@import helper.twitterBootstrapv3._
 
 
 
@@ -12,77 +12,71 @@
 
 
 @views.html.cms.main( title.toString  ){
-
-<div class="row">
-  <div class="span8">
-  @if( msg != "") { <h2>@msg</h2> }
-    <h2>
-    @if(!id.isDefined) {
-      Add
-    } else {
-      Edit
-    } an Locatoin</h2>
+<div class="row" > 
+	<div class="col-lg-offset-2 col-lg-6">
+	  @if( msg != "") { <h2><span class="label label-warning">@msg</span></h2><br/> }
+	  <h2>
+	    @if(!id.isDefined) {添加} else {编辑}  地点 </h2>
+		<br/>
+	</div>
+</div>
+ 
     
 @helper.form(action = (if(!id.isDefined) controllers.cms.routes.Locations.save  else controllers.cms.routes.Locations.update( id.get )) , 'class -> "form-horizontal") {
- 
-    
-    @helper.inputText(form("name") , '_label -> "名字")
-   
-    @helper.inputText(form("address.street") , '_label -> "地址"  )
-    @helper.inputText(form("address.district") , '_label -> "区域"  )
-    @helper.inputText(form("address.city") , '_label -> "城市"  )
-     @helper.inputText(form("address.stateProvince") , '_label -> "省市" )
-     @helper.inputText(form("address.country") , '_label -> "国家"  )
 
-     @helper.inputText(form("phone.general") , '_label -> "电话" )
+    @helper.inputText(form("name") , '_label -> "地点名称" , 'class -> "form-control")
+   @helper.inputText(form("enName") , '_label -> "地点英文名称", 'class -> "form-control")
+    @helper.inputText(form("address.street") , '_label -> "地址" , 'class -> "form-control" )
+    @helper.inputText(form("address.district") , '_label -> "区域"  , 'class -> "form-control")
+    @helper.inputText(form("address.city") , '_label -> "城市" , 'class -> "form-control" )
+     @helper.inputText(form("address.stateProvince") , '_label -> "省市" , 'class -> "form-control")
+     @helper.inputText(form("address.country") , '_label -> "国家" , 'class -> "form-control" )
+
+     @helper.inputText(form("phone.general") , '_label -> "电话", 'class -> "form-control" )
       
      
-     @helper.inputText(form("url") , '_label -> "网址" )
-     @helper.inputText(form("address.latitude")  , '_label -> "latitude" )
-     @helper.inputText(form("address.longitude")  , '_label -> "longitude"  )
+     @helper.inputText(form("url") , '_label -> "网址" , 'class -> "form-control")
+     @helper.inputText(form("address.latitude")  , '_label -> "latitude" , 'class -> "form-control")
+     @helper.inputText(form("address.longitude")  , '_label -> "longitude" , 'class -> "form-control" )
+        <div class="row" > 
+		<div class="col-lg-offset-2 col-lg-6">
+	    	<h3>开放时间</h3>
+	    	<br/>  
+	    </div>
+    </div>
      
-      @helper.inputText(form("hours.monday.open")   , '_label -> "星期一 开放" )
-      @helper.inputText(form("hours.monday.close")  , '_label -> "关闭" )
-     
-     @helper.inputText(form("hours.tuesday.open")  , '_label -> "星期二 开放" )
-      @helper.inputText(form("hours.tuesday.close")  , '_label -> "关闭")
-      
-       @helper.inputText(form("hours.wednesday.open")  , '_label -> "星期三 开放" )
-      @helper.inputText(form("hours.wednesday.close")  , '_label -> "关闭")
-      
-      @helper.inputText(form("hours.thursday.open")  , '_label -> "星期四 开放" )
-      @helper.inputText(form("hours.thursday.close")  , '_label -> "关闭")
-      
-      @helper.inputText(form("hours.friday.open")  , '_label -> "星期五 开放" )
-      @helper.inputText(form("hours.friday.close")  , '_label -> "关闭")
-      
-      
-     @helper.inputText(form("hours.saturday.open")  , '_label -> "星期六 开放" )
-      @helper.inputText(form("hours.saturday.close")  , '_label -> "关闭")
-      
-      @helper.inputText(form("hours.sunday.open")  , '_label -> "星期日 开放" )
-      @helper.inputText(form("hours.sunday.close")  , '_label -> "关闭")
-      
-     @helper.inputText(form("hours.holiday.open")  , '_label -> "假日 开放" )
-      @helper.inputText(form("hours.holiday.close")  , '_label -> "关闭")
-      
-     @helper.inputText(form("admission.currency")  , '_label -> "货币单位" )
-     
-     @helper.inputText(form("admission.general")  , '_label -> "标准" )
-     @helper.inputText(form("admission.children")  , '_label -> "儿童" )
-     @helper.inputText(form("admission.seniors")  , '_label -> "长者" )
+
+	@tags.hoursOpenClose("星期一","monday",form("hours.monday.open"),form("hours.monday.close"))
+	@tags.hoursOpenClose("星期二","tuesday",form("hours.tuesday.open"),form("hours.tuesday.close"))
+	@tags.hoursOpenClose("星期三","wednesday",form("hours.wednesday.open"),form("hours.wednesday.close"))
+	@tags.hoursOpenClose("星期四","thursday",form("hours.thursday.open"),form("hours.thursday.close"))
+	@tags.hoursOpenClose("星期五","friday",form("hours.friday.open"),form("hours.friday.close"))
+	@tags.hoursOpenClose("星期六","saturday",form("hours.saturday.open"),form("hours.saturday.close"))
+	@tags.hoursOpenClose("星期日","sunday",form("hours.sunday.open"),form("hours.sunday.close"))
+ 	@tags.hoursOpenClose("假日","holiday",form("hours.holiday.open"),form("hours.holiday.close"))
  
-     @helper.inputText(form("admission.student")  , '_label -> "学生" )
-     @helper.select( form("category.level_1") , Seq( "K1"->"v1" )    , '_label -> "类别"  ) 
+    <div class="row" > 
+		<div class="col-lg-offset-2 col-lg-6">
+	    	<h3>门票</h3>
+	    	<br/>  
+	    </div>
+    </div>
+     @helper.inputText(form("admission.currency")  , '_label -> "货币单位"  ,  'class -> "form-control"  )
+     
+     @helper.inputText(form("admission.general")  , '_label -> "标准"  ,  'class -> "form-control" )
+     @helper.inputText(form("admission.children")  , '_label -> "儿童"  ,  'class -> "form-control" )
+     @helper.inputText(form("admission.seniors")  , '_label -> "长者"  ,  'class -> "form-control" )
+ 
+     @helper.inputText(form("admission.student")  , '_label -> "学生" ,  'class -> "form-control"  )
+     @helper.select( form("category.level_1") , Seq( "K1"->"v1" )    , '_label -> "类别"  ,  'class -> "form-control"  ) 
       
      
-    @helper.textarea(field = form("fact"), args = 'rows -> 3, 'cols -> 50 , '_label -> "内容")
+    @helper.textarea(field = form("fact"), args = 'rows -> 3, 'cols -> 50 , '_label -> "内容",  'class -> "form-control" )
      
     <div class="form-actions">
       <input class="btn btn-primary" type="submit">
     </div>
   
 }
- </div>
-  </div>
+ 
 }

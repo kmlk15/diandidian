@@ -4,8 +4,10 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
+import play.api.libs.json.Json
 
 case class OpenClose(open: String = "" , close: String = "" )
+
 case class HoursForm(
   monday: OpenClose,
   tuesday: OpenClose,
@@ -18,6 +20,7 @@ case class HoursForm(
 
 case class LocationForm(
   name: String,
+  enName: String ,
   address: Address,
   phone: Phone,
   admission: Admission,
@@ -27,7 +30,7 @@ case class LocationForm(
   fact: String)
   
 object LocationFormHelp {
-  import play.api.libs.json.Json
+  
   import LocationJsonHelp._
   
   implicit val ppenCloseFmt = Json.format[OpenClose]
@@ -37,6 +40,7 @@ object LocationFormHelp {
   val form = Form {
     mapping(
       "name" -> text,
+      "enName" -> text ,
       "address" -> mapping(
         "street" -> text,
         "district" -> text,

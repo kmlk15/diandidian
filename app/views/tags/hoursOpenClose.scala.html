@@ -1,0 +1,11 @@
+@(label: String , name: String , open: play.api.data.Field   , close: play.api.data.Field )
+  <div class="form-group  " id="hours_monday">
+    <label for="hours_@{name}_open" class="col-lg-2 control-label">@label 开放</label>
+    <div class="col-lg-3">
+    <input type="text" id="hours_@{name}_open" name="hours.@{name}.open" value="@open.value"   class="form-control" >
+    </div>
+    <label for="hours_@{name}_close" class="col-lg-1 control-label">关闭</label>
+    <div class="col-lg-2">
+    <input type="text" id="hours_@{name}_close" name="hours.@{name}.close" value="@close.value"  class="form-control" >
+    </div>
+  </div>
