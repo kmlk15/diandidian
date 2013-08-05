@@ -1,23 +1,32 @@
 @( categroyList : List[models.v2.Category])(implicit session: Session)
 
-@import helper._
+ 
 
 @script={
  
+}
  
-
-
-}
-@views.html.cms.main(  "CMS Category List " , script){
-
-<p><a href="@controllers.cms.routes.Categories.add" >Add Category</a></p>
-			<table width="100%">
-			@for( category  <- categroyList ){
-			<tr>
-				<td>@category.name</td><td>@category.enName</td><td>@category.level</td>
-				<td><a href="@controllers.cms.routes.Categories.edit( category.id )">Edit</a></td>
-				<td><a href="@controllers.cms.routes.Categories.del( category.id )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
-			</tr>
-			}
-			</table>
-}
+@views.html.cms.main(  "CMS 类别列表" , script){
+<table   class="table table-hover">
+	<thead>
+	<tr>
+		<th>类别列表</th>
+		<th></th>
+		<th></th>
+		<th></th>
+		<th><a href="@controllers.cms.routes.Categories.add" >加 新</a></th>
+	</tr>
+	</thead>
+	<tbody>
+	@for(category <- categroyList ){
+	<tr>
+		<td class="col-lg-2">@category.name</td>
+		<td class="col-lg-4">@category.enName</td>
+		<td class="col-lg-2">@category.level</td>
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Categories.edit( category.id )">Edit</a></td>
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Categories.del( category.id )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
+	</tr>
+		}
+	</tbody>
+</table>
+}  

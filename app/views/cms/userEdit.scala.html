@@ -2,9 +2,7 @@
 
 @title = @{ if(  id == None) "CMS User Add" else  "CMS User Edit"  }
 
-@import helper.twitterBootstrap._
-
-
+@import helper.twitterBootstrapv3._
 
 @script={
 
@@ -12,25 +10,28 @@
 
 
 @views.html.cms.main( title.toString  ){
-
-<div class="row">
-  <div class="span8">
-  @if( msg != "") { <h2>@msg</h2> }
-    <h2>
-    @if(!id.isDefined) {
-      Add
-    } else {
-      Edit
-    } an User</h2>
+  
+	
+  <div class="row" > 
+	  <div class="col-lg-offset-2 col-lg-6">
+	  @if( msg != "") { <h2><span class="label label-warning">@msg</span></h2><br/> }
+	  <h2>
+	    @if(!id.isDefined) {增加} else {编辑}  用户 </h2>
+	   <br/>
+	  </div>
+  </div>
     
 @helper.form(action = (if(!id.isDefined) controllers.cms.routes.Users.save  else controllers.cms.routes.Users.update( id.get )) , 'class -> "form-horizontal") {
-    @helper.inputText(form("userName"))
-    @helper.inputText(form("userId"))
-    <div class="form-actions">
-      <input class="btn btn-primary" type="submit">
+
+    @helper.inputText(form("userName") , 'class -> "form-control" , '_label -> "用户名称")
+    @helper.inputText(form("userId") , 'class -> "form-control" , '_label -> "用户ID URL" )
+	
+	<div class="row" > 
+	    <div class="form-actions col-lg-offset-2 col-lg-6 ">
+	      <input class="btn btn-primary" type="submit" value="@if(!id.isDefined) {保 存} else {保 存}" >
+	    </div>
     </div>
   
 }
- </div>
-  </div>
+
 }

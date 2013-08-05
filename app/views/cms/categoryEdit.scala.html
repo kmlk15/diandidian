@@ -2,7 +2,7 @@
 
 @title = @{ if(  id == None) "CMS Category Add" else  "CMS Category Edit"  }
 
-@import helper.twitterBootstrap._
+@import helper.twitterBootstrapv3._
 
 
 
@@ -13,27 +13,26 @@
 
 @views.html.cms.main( title.toString  ){
 
-<div class="row">
-  <div class="span8">
-  @if( msg != "") { <h2>@msg</h2> }
-    <h2>
-    @if(!id.isDefined) {
-      Add
-    } else {
-      Edit
-    } an Category</h2>
-    
-@helper.form(action = (if(!id.isDefined) controllers.cms.routes.Categories.save  else controllers.cms.routes.Categories.update( id.get )) , 'class -> "form-horizontal") {
-    @helper.inputText(form("name"))
-    @helper.inputText(form("enName"))
-    
-    @helper.inputText(form("level"))
-    
-    <div class="form-actions">
-      <input class="btn btn-primary" type="submit">
-    </div>
-  
-}
- </div>
+   <div class="row" > 
+	  <div class="col-lg-offset-2 col-lg-6">
+	  @if( msg != "") { <h2><span class="label label-warning">@msg</span></h2><br/> }
+	  <h2>
+	    @if(!id.isDefined) {增加} else {编辑}  类别 </h2>
+	   <br/>
+	  </div>
   </div>
+  
+@helper.form(action = (if(!id.isDefined) controllers.cms.routes.Categories.save  else controllers.cms.routes.Categories.update( id.get )) , 'class -> "form-horizontal") {
+    @helper.inputText(form("name") , 'class -> "form-control" , '_label -> "类别名称")
+    @helper.inputText(form("enName"), 'class -> "form-control" , '_label -> "英文名称")
+    
+    @helper.inputText(form("level"), 'class -> "form-control" , '_label -> "级别")
+    
+    <div class="row" > 
+	    <div class="form-actions col-lg-offset-2 col-lg-6 ">
+      <input class="btn btn-primary" type="submit" value="@if(!id.isDefined) {保 存} else {保 存}">
+    </div>
+  </div>
+}
+ 
 }
