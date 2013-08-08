@@ -1,4 +1,4 @@
-@(id: Option[String], form: Form[models.LocationForm], msg: String ="")(implicit session: Session)
+@(id: Option[String], form: Form[models.LocationForm], msg: String ="")(implicit categoryList:List[models.v2.Category], session: Session)
 
 @title = @{ if(  id == None) "CMS Location Add" else  "CMS Location Edit"  }
 
@@ -68,7 +68,8 @@
      @helper.inputText(form("admission.seniors")  , '_label -> "长者"  ,  'class -> "form-control" )
  
      @helper.inputText(form("admission.student")  , '_label -> "学生" ,  'class -> "form-control"  )
-     @helper.select( form("category.level_1") , Seq( "K1"->"v1" )    , '_label -> "类别"  ,  'class -> "form-control"  ) 
+     
+     @helper.select( form("category.level_1") ,  categoryList.map(c => (c.id -> (c.level +":"+ c.name+"-"+c.enName) ))    , '_label -> "类别"  ,  'class -> "form-control"  ) 
       
      
     @helper.textarea(field = form("fact"), args = 'rows -> 3, 'cols -> 50 , '_label -> "内容",  'class -> "form-control" )

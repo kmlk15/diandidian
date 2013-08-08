@@ -177,7 +177,7 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
     def getCategoryList(): List[Category] = {
       val q = MongoDBObject()
       val lista = categoryMongoClient.find(q)
-      lista.sortBy( (c:Category) => c.name )
+      lista.sortBy( (c:Category) => ( c.level , c.name ) )
     }
 
     def delCategoryById(id: String): Int = {

@@ -1,0 +1,31 @@
+@( locationList : List[models.LocationForm])(implicit session: Session)
+
+ 
+
+@script={
+ 
+}
+ 
+@views.html.cms.main(  "CMS 地点列表" , script){
+<table   class="table table-hover">
+	<thead>
+	<tr>
+		<th>类别列表</th>
+		<th></th>
+		<th></th>
+		<th><a href="@controllers.cms.routes.Locations.add" >加 新</a></th>
+	</tr>
+	</thead>
+	<tbody>
+	@for(location <- locationList ){
+	<tr>
+		<td class="col-lg-2">@location.name</td>
+		<td class="col-lg-4">@location.enName</td>
+		 
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Locations.edit( location.id.get )">Edit</a></td>
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Locations.del( location.id.get )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
+	</tr>
+		}
+	</tbody>
+</table>
+}  
