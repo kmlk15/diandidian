@@ -133,5 +133,50 @@ class CmsServiceTest extends Specification{
       
      }
      
+     "Location  CRUD" in new WithApplication {
+    	 import models.LocationForm
+    	 
+      val mongoDB = MongoConnection()("mytestxx")
+      val col = mongoDB("locationform")
+      col.drop()
+
+      val service = LL.cmsService
+      val name1 = "locatoin 1 "
+      val name2 = "location 2"
+       
+      service.getLocationById("not exist") === None
+       
+      val location1 = LocationForm (id=None, name = name1)
+      val location2Option = service.saveLocation(location1) 
+      location2Option must beSome
+      val location2 = location2Option.get
+      location2.id must beSome
+      location2.name ===  name1 
+      
+      val location3 = LocationForm( name = name1)
+      service.saveLocation(location3) must beNone
+      
+      val location4 = LocationForm( name = name2)
+      val location5Option =  service.saveLocation(location4)
+      location5Option must beSome
+      val location5 = location5Option.get
+      
+     
+      val location6 = service.getLocationByName( name2).get 
+      location6 === location5 
+      
+      
+      val location7 = location6.copy( name="new name")
+      val location8 = service.updateLocation(location7).get
+      location8.id ==== location7.id
+      
+      val location9 = location6.copy( name = name1 )
+      
+      service.updateLocation(location9) must beNone
+      
+      service.delLocationById( location2.id.get) === 1 
+      
+      
+       }
   }
 }

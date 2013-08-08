@@ -1,5 +1,6 @@
 package services
 
+import models.LocationForm
 import models.v2.PhotoUser
 import models.v2.Category
 import base.mongoService
@@ -37,6 +38,16 @@ trait CmsServiceComponent {
 
     def getCategoryById(id: String): Option[Category]
 
+    
+    def saveLocation(location: LocationForm): Option[LocationForm]
+    def updateLocation(location: LocationForm): Option[LocationForm]
+    def getLocationList(): List[LocationForm]
+
+    def delLocationById(id: String): Int
+
+    def getLocationById(id: String): Option[LocationForm]
+    
+    
   }
 }
 
@@ -48,6 +59,9 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
   override val cmsService = new CmsService {
     lazy val photoUserMongoClient = mongoService.getMongoService[PhotoUser]("photouser", dbname)
     lazy val categoryMongoClient = mongoService.getMongoService[Category]("category", dbname)
+    
+    lazy val locationMongoClient = mongoService.getMongoService[LocationForm]("locationform", dbname)
+    
     /**
      * 如果 已经存在 该 userId ， 则不覆盖，
      * 需要客户端 明确调用  update 覆盖
@@ -185,6 +199,72 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       categoryMongoClient.find(q).headOption
     }
 
+    
+    def saveLocation(location: LocationForm): Option[LocationForm] ={
+      
+       getLocationByName(location.name) match {
+        case None => {
+          val id = new ObjectId().toString
+          val location2 = location.copy(id = Some(id) )
+          locationMongoClient.insert(location2)
+          Some(location2)
+        }
+        case Some(c) => None
+      }
+       
+      
+    }
+    
+    def updateLocation(location: LocationForm): Option[LocationForm] ={
+      
+     getLocationById(location.id.getOrElse("")) match {
+        case None => None
+        case Some(c) => {
+          val cbyName = getLocationByName(location.name)
+          if (cbyName == None || cbyName.get == c) {
+            val q = MongoDBObject()
+            q.put("_id", c.id)
+            locationMongoClient.update(q, location, false, false, WriteConcern.Normal)
+            Some(location)
+          } else {
+            //不允许 重名 
+            None
+          }
+        }
+      }
+      
+    }
+    
+    def getLocationList(): List[LocationForm] ={
+       val q = MongoDBObject()
+       val lista =locationMongoClient.find(q)
+       lista.sortBy( (location:LocationForm) => location.name )
+    }
+
+    
+    def delLocationById(id: String): Int ={
+       val q = MongoDBObject()
+      q.put("_id", id)
+      locationMongoClient.delete(q, WriteConcern.Normal)
+    }
+
+    def getLocationById(id: String): Option[LocationForm] ={
+      
+      val q = MongoDBObject()
+      q.put("_id", id)
+      locationMongoClient.find(q).headOption
+      
+    }
+    
+     def getLocationByName(name: String): Option[LocationForm] ={
+      
+      val q = MongoDBObject()
+      q.put("name", name)
+      locationMongoClient.find(q).headOption
+      
+    }
+        
+    
   }
 
 }
