@@ -1,6 +1,7 @@
 package services
 
 import models.LocationForm
+import models.Photo
 import models.v2.PhotoUser
 import models.v2.Category
 import base.mongoService
@@ -48,6 +49,15 @@ trait CmsServiceComponent {
     def getLocationById(id: String): Option[LocationForm]
     
     
+    def savePhoto(photo: Photo): Option[Photo]
+    def updatePhoto(photo: Photo): Option[Photo]
+    def getPhotoList(locationId: String): List[Photo]
+
+    def delPhotoById(id: String): Int
+
+    def getPhotoById(id: String): Option[Photo]
+    
+    
   }
 }
 
@@ -61,7 +71,7 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
     lazy val categoryMongoClient = mongoService.getMongoService[Category]("category", dbname)
     
     lazy val locationMongoClient = mongoService.getMongoService[LocationForm]("locationform", dbname)
-    
+    lazy val photoMongoClient = mongoService.getMongoService[Photo]("photo", dbname)
     /**
      * 如果 已经存在 该 userId ， 则不覆盖，
      * 需要客户端 明确调用  update 覆盖
@@ -263,7 +273,57 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       locationMongoClient.find(q).headOption
       
     }
-        
+
+     
+    
+    def savePhoto(photo: Photo): Option[Photo] ={
+      val id = new ObjectId().toString
+      val photo2 = photo.copy( id = Some( id ))
+      photoMongoClient.insert ( photo2 )
+      Some( photo2 )
+    }
+
+    def updatePhoto(photo: Photo): Option[Photo] = {
+      photo.id match {
+        case None => None
+        case Some(idStr) => {
+          getPhotoById(idStr) match {
+            case None => None
+            case Some(p) => {
+              val q = MongoDBObject()
+              q.put("_id", idStr)
+              photoMongoClient.update(q, photo, false, false, WriteConcern.Normal)
+              Some(photo)
+            }
+          }
+        }
+      }
+
+    }
+    
+    def getPhotoList(locationId: String ): List[Photo] ={
+      
+      val q = MongoDBObject()
+      q.put("locationId", locationId)
+      photoMongoClient.find(q)
+      
+    }
+
+    def delPhotoById(id: String): Int = {
+      val q = MongoDBObject()
+      q.put("_id", id)
+      photoMongoClient.delete(q, WriteConcern.Normal)
+    }
+
+    def getPhotoById(id: String): Option[Photo] ={
+       val q = MongoDBObject()
+      q.put("_id", id)
+      photoMongoClient.find(q).headOption
+      
+    }
+    
+         
+         
     
   }
 

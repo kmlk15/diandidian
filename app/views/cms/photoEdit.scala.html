@@ -1,0 +1,43 @@
+@( id: Option[String],form: Form[models.Photo] , msg: String="")(implicit location: LocationForm , userList: List[models.v2.PhotoUser] , session: Session )
+
+@title = @{ if(  id == None) "CMS Photo Add" else  "CMS Photo Edit"  }
+
+@import helper.twitterBootstrapv3._
+
+
+
+@script={
+
+}
+
+
+@views.html.cms.main( title.toString  ){
+
+  <div class="row" > 
+	  <div class="col-lg-offset-2 col-lg-6">
+	  @if( msg != "") { <h2><span class="label label-warning">@msg</span></h2><br/> }
+	  <h2>
+	    @if(!id.isDefined) {增加} else {编辑}  Photo </h2>
+	   <br/>
+	  </div>
+  </div>
+    
+@helper.form(action = (if(!id.isDefined) controllers.cms.routes.Photos.save  else controllers.cms.routes.Photos.update( id.get )) , 'class -> "form-horizontal") {
+
+    @helper.inputText(form("locationId") , 'class -> "form-control" , '_label -> "locationId")
+    @helper.select(form("userId") , userList.map( u=> u.id -> u.userName ) , 'class -> "form-control" , '_label -> "用户" )
+  
+    @helper.inputText(form("imgsrc") ,  'class -> "form-control" , '_label -> "上传照片" )
+    @helper.inputText(form("imgurl") , 'class -> "form-control" , '_label -> "链接照片URL")
+    @helper.textarea(field = form("brief"), args = 'rows -> 3, 'cols -> 50 , '_label -> "描述",  'class -> "form-control" )
+
+
+	
+	<div class="row" > 
+	    <div class="form-actions col-lg-offset-2 col-lg-6 ">
+	      <input class="btn btn-primary" type="submit" value="@if(!id.isDefined) {保 存} else {保 存}" >
+	    </div>
+    </div>
+  
+}
+}

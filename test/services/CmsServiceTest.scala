@@ -178,5 +178,52 @@ class CmsServiceTest extends Specification{
       
       
        }
+     
+     "Picture  CRUD" in new WithApplication {
+    	 import models.Photo
+    	 import models.LocationForm
+    	 
+      val mongoDB = MongoConnection()("mytestxx")
+      val col = mongoDB("pciture")
+      col.drop()
+
+      val service = LL.cmsService
+      service.getPhotoById("not exist") must beNone
+      
+      val photoUser =service.savePhotoUser(PhotoUser(userName="photUser" , userId="http://www.diandidian.com")).get
+      
+      val location =service.saveLocation( LocationForm( name="testlocation")).get
+      val imgsrc="/tmp/x.jpg"
+      val imgurl="http://www.diandidian.com/"
+       val brief = "this is brief"
+
+      val picture = Photo(
+        locationId = location.id.get,
+        userId = photoUser.id,
+        imgsrc = imgsrc,
+        imgurl = imgurl,
+        brief = brief)
+        
+      val picture2 = service.savePicture(picture).get
+      picture2.id must beSome
+      
+      val picture3 = service.getPhotoById( picture2.id.get ).get
+      picture2 === picture3 
+      
+      val pictureList = service.getPhotoList(location.id.get)
+      pictureList.size === 1 
+      pictureList === List( picture2 )
+      
+      service.updatePicture(picture) must beNone
+        
+      
+     val picture4 = service.updatePhoto( picture2.copy( imgsrc ="new imgsrc")).get
+     picture4.id === picture2.id
+     picture4.imgurl === imgurl
+     
+     service.delPhotoById(  picture2.id.get) === 1 
+     
+     }
+       
   }
 }

@@ -37,7 +37,8 @@ object LocationFormHelp {
   implicit val ppenCloseFmt = Json.format[OpenClose]
   implicit val hoursFormFmt  = Json.format[HoursForm]
  implicit val locationFormFmt = Json.format[LocationForm]
- 
+
+  
   val form = Form {
     mapping(
         "id" -> optional(of[String] verifying pattern(
@@ -89,4 +90,32 @@ object LocationFormHelp {
 
   }
 
+}
+
+/**
+ * 1 管理上传的 picture
+ * 2 用户上传的 picture
+ */
+case class Photo(id: Option[String]=None , locationId: String ="", userId: String="" , 
+    imgsrc: String="", imgurl: String="", brief: String="" , uploadtype: String="admin")
+
+object PhotoHelp{
+  
+   implicit val pictureFmt = Json.format[Photo]
+   val form = Form {
+    mapping(
+        "id" -> optional(of[String] verifying pattern(
+        """[a-fA-F0-9]{24}""".r,
+        "constraint.objectId",
+        "error.objectId")),
+        
+      "locationId" -> text,
+      "userId" -> text ,
+      "imgsrc" -> text,
+      "imgurl" -> text,
+      "brief" -> text,
+      "uploadtype" -> text 
+      )( Photo.apply )( Photo.unapply)
+   }
+   
 }
