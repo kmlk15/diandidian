@@ -97,7 +97,7 @@ object LocationFormHelp {
  * 2 用户上传的 picture
  */
 case class Photo(id: Option[String]=None , locationId: String ="", userId: String="" , 
-    imgsrc: String="", imgurl: String="", brief: String="" , uploadtype: String="admin")
+    imgsrc: String="", imgurl: String="", brief: String="" , uploadtype: String="admin" , atHomepage:Boolean = false )
 
 object PhotoHelp{
   
@@ -111,10 +111,11 @@ object PhotoHelp{
         
       "locationId" -> text,
       "userId" -> text ,
-      "imgsrc" -> text,
+      "imgsrc" -> default(text ,"") ,
       "imgurl" -> text,
       "brief" -> text,
-      "uploadtype" -> text 
+      "uploadtype" -> default(text,"admin") ,
+      "atHomepage" -> default(boolean, false)
       )( Photo.apply )( Photo.unapply)
    }
    

@@ -1,5 +1,6 @@
 package controllers.cms
 
+import java.io.File
 import play.api.libs.json
 import play.api.mvc.Action
 import play.api.mvc.Controller
@@ -46,12 +47,85 @@ object Photos  extends Controller {
       case Some( location ) =>{
         implicit val userList = service.getPhotoUsers()
         implicit val locationImpl = location
-        Ok( views.html.cms.photoEdit(None , PhotoHelp.form))
+        Ok( views.html.cms.photoEdit(None , PhotoHelp.form.fill(  Photo( locationId = locationId ))))
       }
     }
   }
   
-  def save() = TODO
+  /**
+   * 调用 convert 命令， 对图像进行 resize
+   * 精确的大小
+   */
+    
+  def resize( from : String, to: String , w:Int , h:Int )={
+    import scala.sys.process._
+    val file = new File(from)
+    if (file.exists()) {
+      /**
+       * convert -resize  1280x768   $img    1280.png ;
+       */
+      Seq("convert", from , "-resize", w+"x"+h + "^", "-gravity", "center" ,"-extent",  w+"x"+h ,  to ).! == 0
+  }
+ }
+  
+   /**
+    * 可以处理成一个边 ， 保持比例
+    */
+  def resize1( from : String, to: String , w:Int , h:Int )={
+    import scala.sys.process._
+    val file = new File(from)
+    if (file.exists()) {
+      /**
+       * convert -resize  1280x768   $img    1280.png ;
+       */
+      Seq("convert", from , "-resize", w+"x"+h ,    to ).! == 0
+  }
+ }
+  
+  
+  def save(locationId: String) = Action(parse.multipartFormData){implicit request =>
+    PhotoHelp.form.bindFromRequest.fold(
+      errors =>{
+        implicit val userList = service.getPhotoUsers()
+        implicit val locationImpl =  location( locationId ).get
+        log.debug( "errors={}", errors )
+        Ok(views.html.cms.photoEdit(None, errors) ) 
+      },
+      photo => { 
+         val filename: String = request.body.file("imgsrc").map{picture =>
+          import java.io.File
+          import org.apache.commons.io.FilenameUtils
+          import org.bson.types.ObjectId
+          val filename = new ObjectId().toString.reverse  +"."+ FilenameUtils.getExtension( picture.filename )
+          val contentType = picture.contentType
+          picture.ref.moveTo(new File("/tmp/"+ filename ))
+          if( photo.atHomepage){
+           //创建  for home page 
+            val home = "266_" + filename
+           resize("/tmp/"+ filename , "/tmp/"+ home , 266,262)
+             
+         }
+          
+           // 大图和小图
+           val large = "780_" + filename
+           resize("/tmp/"+ filename , "/tmp/"+ large , 780,435)
+            val small = "102_" + filename 
+           resize("/tmp/"+ filename , "/tmp/"+ small , 102,57)
+           //将图片保存到 s3 
+           /**
+            * 这里 可能会很慢， 特别是在 测试环境中
+            */
+      
+          
+          filename
+         }.getOrElse("")
+         
+        
+        Ok( Json.prettyPrint( Json.toJson(photo.copy(imgsrc = filename )))) 
+        
+        }
+      )
+  }
   
   def edit(id: String) = TODO
   

@@ -22,12 +22,13 @@
 	  </div>
   </div>
     
-@helper.form(action = (if(!id.isDefined) controllers.cms.routes.Photos.save  else controllers.cms.routes.Photos.update( id.get )) , 'class -> "form-horizontal") {
+@helper.form(action = (if(!id.isDefined) controllers.cms.routes.Photos.save( location.id.get )  else controllers.cms.routes.Photos.update( id.get )) , 'class -> "form-horizontal", 'enctype -> "multipart/form-data") {
 
-    @helper.inputText(form("locationId") , 'class -> "form-control" , '_label -> "locationId")
+    @helper.inputText(form("locationId") , 'class -> "form-control" , '_label -> "地点" ,'readonly -> "true" )
     @helper.select(form("userId") , userList.map( u=> u.id -> u.userName ) , 'class -> "form-control" , '_label -> "用户" )
-  
-    @helper.inputText(form("imgsrc") ,  'class -> "form-control" , '_label -> "上传照片" )
+	
+	@helper.checkbox( form("atHomepage"), 'class -> "form-control" , '_label -> "显示在首页上")  
+    @helper.inputFile(form("imgsrc") ,  'class -> "form-control" , '_label -> "上传照片" )
     @helper.inputText(form("imgurl") , 'class -> "form-control" , '_label -> "链接照片URL")
     @helper.textarea(field = form("brief"), args = 'rows -> 3, 'cols -> 50 , '_label -> "描述",  'class -> "form-control" )
 
