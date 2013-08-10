@@ -1,4 +1,4 @@
-@( id: Option[String],form: Form[models.Photo] , msg: String="")(implicit location: LocationForm , userList: List[models.v2.PhotoUser] , session: Session )
+@( id: Option[String],form: Form[models.Photo] , msg: String="" , imgsrc: String = "")(implicit location: LocationForm , userList: List[models.v2.PhotoUser] , session: Session )
 
 @title = @{ if(  id == None) "CMS Photo Add" else  "CMS Photo Edit"  }
 
@@ -28,6 +28,19 @@
     @helper.select(form("userId") , userList.map( u=> u.id -> u.userName ) , 'class -> "form-control" , '_label -> "用户" )
 	
 	@helper.checkbox( form("atHomepage"), 'class -> "form-control" , '_label -> "显示在首页上")  
+	@if( imgsrc != ""){
+	 
+	 <div class="form-group  " id="imgsrc_field">
+    <label for="imgsrc" class="col-lg-2 control-label">已经上传的照片</label>
+    <div class="col-lg-6">
+    	
+    <img src="/assets/tmp/102_@imgsrc">
+
+     
+    </div>
+  </div>
+  
+	}
     @helper.inputFile(form("imgsrc") ,  'class -> "form-control" , '_label -> "上传照片" )
     @helper.inputText(form("imgurl") , 'class -> "form-control" , '_label -> "链接照片URL")
     @helper.textarea(field = form("brief"), args = 'rows -> 3, 'cols -> 50 , '_label -> "描述",  'class -> "form-control" )

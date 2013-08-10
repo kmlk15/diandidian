@@ -10,9 +10,11 @@
 <table   class="table table-hover">
 	<thead>
 	<tr>
-		<th>类别列表</th>
+		<th>地点列表</th>
 		<th></th>
 		<th></th>
+		<th></th>
+		
 		<th><a href="@controllers.cms.routes.Locations.add" >加 新</a></th>
 	</tr>
 	</thead>
@@ -26,6 +28,7 @@
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Locations.del( location.id.get )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
 
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Photos.add( location.id.get )">Add Photo</a></td>
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Photos.list( location.id.get )">List Photo</a></td>
 
 	</tr>
 		}

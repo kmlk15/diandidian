@@ -179,7 +179,7 @@ class CmsServiceTest extends Specification{
       
        }
      
-     "Picture  CRUD" in new WithApplication {
+     "Photo  CRUD" in new WithApplication {
     	 import models.Photo
     	 import models.LocationForm
     	 
@@ -204,7 +204,7 @@ class CmsServiceTest extends Specification{
         imgurl = imgurl,
         brief = brief)
         
-      val picture2 = service.savePicture(picture).get
+      val picture2 = service.savePhoto(picture).get
       picture2.id must beSome
       
       val picture3 = service.getPhotoById( picture2.id.get ).get
@@ -214,7 +214,7 @@ class CmsServiceTest extends Specification{
       pictureList.size === 1 
       pictureList === List( picture2 )
       
-      service.updatePicture(picture) must beNone
+      service.updatePhoto(picture) must beNone
         
       
      val picture4 = service.updatePhoto( picture2.copy( imgsrc ="new imgsrc")).get

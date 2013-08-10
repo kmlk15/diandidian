@@ -1,0 +1,36 @@
+@( locationId: String  , photoList : List[models.Photo])(implicit session: Session)
+
+ 
+
+@script={
+ 
+}
+ 
+@views.html.cms.main(  "CMS 地点 照片列表" , script){
+<table   class="table table-hover">
+	<thead>
+	<tr>
+		<th>照片列表</th>
+		<th></th>
+		<th>imgsrc</th>
+		 
+		<th><a href="@controllers.cms.routes.Photos.add( locationId)" >加 新</a></th>
+		<th><a href="@controllers.cms.routes.Locations.list" >返回地点列表</a></th>
+	</tr>
+	</thead>
+	<tbody>
+	@for(photo <- photoList ){
+	<tr>
+		<td class="col-lg-2"></td>
+		<td class="col-lg-2">@photo.imgsrc</td>
+		<td class="col-lg-2"><img src="/assets/tmp/102_@photo.imgsrc" /> </td>
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Photos.edit( photo.id.get )">Edit</a></td>
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Photos.del( photo.id.get )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
+
+	 
+
+	</tr>
+		}
+	</tbody>
+</table>
+}  

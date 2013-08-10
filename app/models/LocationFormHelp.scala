@@ -28,7 +28,9 @@ case class LocationForm(
   hours: HoursForm = HoursForm(),
   url: String = "" ,
   category: Category = Category(level_1="", level_2="" ),
-  fact: String = "" )
+  fact: String = "",
+  photo: String = ""  
+)
   
 object LocationFormHelp {
   
@@ -86,7 +88,10 @@ object LocationFormHelp {
         "level_1" -> text,
         "level_2" -> default(text,"")  )(Category.apply)(Category.unapply),
 
-      "fact" -> text)(LocationForm.apply)(LocationForm.unapply)
+      "fact" -> text,
+      "photo" -> default(text , "")
+      
+    )(LocationForm.apply)(LocationForm.unapply)
 
   }
 
