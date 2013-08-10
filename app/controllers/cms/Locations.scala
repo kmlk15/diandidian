@@ -62,17 +62,22 @@ object Locations extends Controller {
   }
 
   def update(id: String) = Action { implicit request =>
-  	implicit val cList = categoryList
-    LocationFormHelp.form.bindFromRequest.fold(
-      errors => Ok(views.html.cms.locationEdit(Some(id), errors)),
-      location => {
+    service.getLocationById(id) match {
+      case None => NotFound
+      case Some(orignLocation) => {
+        implicit val cList = categoryList
+        LocationFormHelp.form.bindFromRequest.fold(
+          errors => Ok(views.html.cms.locationEdit(Some(id), errors)),
+          location => {
+        	  	val updateLocation =  location.copy( id =orignLocation.id , photo = orignLocation.photo )
+            service.updateLocation( updateLocation ) match {
+              case None => Ok(views.html.cms.locationEdit(Some(id), LocationFormHelp.form.fill(location), "同样 名字的地点已经存在"))
+              case Some(user) => Redirect(routes.Locations.list)
+            }
 
-        service.updateLocation(location.copy(id = Some(id))) match {
-          case None => Ok(views.html.cms.locationEdit(Some(id), LocationFormHelp.form.fill(location), "同样 名字的地点已经存在"))
-          case Some(user) => Redirect(routes.Locations.list)
-        }
-
-      })
+          })
+      }
+    }
   }
 
   def del(id: String) = Action {

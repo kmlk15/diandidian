@@ -164,14 +164,22 @@ object Photos extends Controller {
           },
           photo => {
             val filename: String = request.body.file("imgsrc").map { parseFile(_, photo.atHomepage) }.getOrElse("")
-
-            if( filename != "" ){
+            
+            
+           val updatePhoto  =  if( filename != "" ){
               removeFile(originPhoto)
-              if( photo.atHomepage){
-                service.updateLocation(locationImpl.copy(photo = "266_" + filename))
+             if( photo.atHomepage){
+             		service.updateLocation(locationImpl.copy(photo = "266_" + filename))
               }
+              photo.copy(imgsrc = filename , id = originPhoto.id )
+            }else{
+              if( photo.atHomepage){
+             		service.updateLocation(locationImpl.copy(photo = "266_" + originPhoto.imgsrc   ))
+              }
+               
+              photo.copy( id = originPhoto.id , imgsrc =originPhoto.imgsrc )
             }
-            val updatePhoto = photo.copy(imgsrc = filename , id = originPhoto.id )
+            
             log.debug("updatePhoto={}", updatePhoto )
             val photo2 = service.updatePhoto ( updatePhoto )
 
