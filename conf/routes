@@ -38,6 +38,12 @@ GET    /weiboLogin/:weiboId         controllers.api.UserEndpoints.loginWithWeibo
 GET    /logout                      controllers.api.UserEndpoints.logout
 
 # cms admin
+GET		/cms/auth/login			controllers.cms.Auth.login
+POST	/cms/auth/login			controllers.cms.Auth.loginPost
+GET     /cms/auth/logout			controllers.cms.Auth.logout
+GET     /cms/auth/loginTest			controllers.cms.Auth.loginTest
+
+
 GET   	 /cms/user               			controllers.cms.Users.list 
 GET  	/cms/user/add					controllers.cms.Users.add()
 POST 	/cms/user/save				controllers.cms.Users.save()

@@ -1,0 +1,50 @@
+@()(implicit session: Session)
+
+
+
+@import helper.twitterBootstrapv3._
+
+@script={
+
+}
+
+
+@views.html.cms.main( "CMS Login"    ){
+  
+	
+  <div class="row" > 
+	  <div class="col-lg-offset-2 col-lg-6">
+	 
+	  <h2>CMS Login </h2>
+	   <br/>
+	  </div>
+  </div>
+    
+@helper.form(action = controllers.cms.routes.Auth.loginPost  , 'class -> "form-horizontal"   ) {
+
+
+  <div class="form-group  " id="name_field">
+    <label for="name" class="col-lg-2 control-label">用户名：</label>
+    <div class="col-lg-6">
+    <input type="text" id="name" name="name" value="diandidian" class="form-control">
+    </div>
+  </div>
+  
+  <div class="form-group  " id="passwd_field">
+    <label for="passwd" class="col-lg-2 control-label">密码</label>
+    <div class="col-lg-6">
+    <input type="text" id="passwd" name="passwd" value="" class="form-control">
+    </div>
+  </div>
+  
+     
+	
+	<div class="row" > 
+	    <div class="form-actions col-lg-offset-2 col-lg-6 ">
+	      <input class="btn btn-primary" type="submit" value="登 陆" >
+	    </div>
+    </div>
+  
+}
+
+}

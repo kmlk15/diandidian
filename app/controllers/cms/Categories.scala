@@ -11,26 +11,26 @@ import org.slf4j.LoggerFactory
 import models.v2.CategoryHelp
 import models.v2.Category
 
-object Categories extends Controller {
+object Categories extends Controller  with AuthTrait {
 
   val log = LoggerFactory.getLogger(Category.getClass())
 
   val service = base.CmsServiceRegistry.cmsService
 
-  def list() = Action { implicit request =>
+  def list() = isAuthenticated { username => implicit request => 
     val list = service.getCategoryList
 
     Ok(views.html.cms.category(list))
 
   }
 
-  def add() = Action { implicit request =>
+  def add() = isAuthenticated { username => implicit request =>
 
     Ok(views.html.cms.categoryEdit(None, CategoryHelp.form)(session))
 
   }
 
-  def edit(id: String) = Action { implicit request =>
+  def edit(id: String) =isAuthenticated { username => implicit request =>
     service.getCategoryById(id) match {
       case None => NotFound
       case Some(category) => Ok(views.html.cms.categoryEdit(Some(category.id), CategoryHelp.form.fill(category))(session))
@@ -38,7 +38,7 @@ object Categories extends Controller {
 
   }
 
-  def save() = Action { implicit request =>
+  def save() = isAuthenticated { username => implicit request =>
 
     CategoryHelp.form.bindFromRequest.fold(
       errors => Ok(views.html.cms.categoryEdit(None, errors)),
@@ -52,7 +52,7 @@ object Categories extends Controller {
 
   }
 
-  def update(id: String) = Action { implicit request =>
+  def update(id: String) = isAuthenticated { username => implicit request =>
     CategoryHelp.form.bindFromRequest.fold(
       errors => Ok(views.html.cms.categoryEdit(Some(id), errors)),
       category => {
@@ -65,7 +65,7 @@ object Categories extends Controller {
       })
   }
 
-  def del(id: String) = Action {
+  def del(id: String) =isAuthenticated { username => implicit request =>
 
     service.delCategoryById(id)
 

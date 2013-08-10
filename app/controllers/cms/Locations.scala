@@ -16,7 +16,7 @@ import models.LocationForm
 import models.Location
 import play.api.libs.json.Json
 
-object Locations extends Controller {
+object Locations extends Controller  with AuthTrait  {
 
   val log = LoggerFactory.getLogger(Locations.getClass())
 
@@ -24,19 +24,19 @@ object Locations extends Controller {
   
   def categoryList = service.getCategoryList
   
-  def list() = Action { implicit request =>
+  def list() =  isAuthenticated { username => implicit request =>
   val list = service.getLocationList
     Ok(views.html.cms.locations( list ) )
 
   }
 
-  def add() = Action { implicit request =>
+  def add() =  isAuthenticated { username => implicit request =>
   	implicit val cList = categoryList
     Ok(views.html.cms.locationEdit(None, form))
 
   }
 
-  def save = Action { implicit request =>
+  def save = isAuthenticated { username =>implicit request =>
   	implicit val cList = categoryList
     LocationFormHelp.form.bindFromRequest.fold(
       errors => {
@@ -53,7 +53,7 @@ object Locations extends Controller {
 
   }
 
-  def edit(id: String) = Action { implicit request =>
+  def edit(id: String) =  isAuthenticated { username => implicit request =>
     implicit val cList = categoryList
     service.getLocationById(id) match {
       case None => NotFound
@@ -61,7 +61,7 @@ object Locations extends Controller {
     }
   }
 
-  def update(id: String) = Action { implicit request =>
+  def update(id: String) =  isAuthenticated { username => implicit request =>
     service.getLocationById(id) match {
       case None => NotFound
       case Some(orignLocation) => {
@@ -80,7 +80,7 @@ object Locations extends Controller {
     }
   }
 
-  def del(id: String) = Action {
+  def del(id: String) =  isAuthenticated { username =>implicit request =>
 
     service.delLocationById(id)
     Redirect(routes.Locations.list)

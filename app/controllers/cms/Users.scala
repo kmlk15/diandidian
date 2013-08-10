@@ -11,26 +11,25 @@ import org.slf4j.LoggerFactory
 import models.v2.PhotoUserHelp
 import models.v2.PhotoUser
 
-object Users extends Controller {
+object Users extends Controller with AuthTrait {
 
   val log = LoggerFactory.getLogger(Users.getClass())
 
   val service = base.CmsServiceRegistry.cmsService
 
-  def list() = Action { implicit request =>
+  def list() = isAuthenticated { username => implicit request =>
     val users = service.getPhotoUsers
 
     Ok(views.html.cms.users(users))
 
   }
 
-  def add() = Action { implicit request =>
-
+  def add() = isAuthenticated { username => implicit request =>
     Ok(views.html.cms.userEdit(None, PhotoUserHelp.form)(session))
 
   }
 
-  def edit(id: String) = Action { implicit request =>
+  def edit(id: String) =isAuthenticated { username => implicit request =>
     service.getPhotoUserById(id) match {
       case None => NotFound
       case Some(user) => Ok(views.html.cms.userEdit(Some(user.id), PhotoUserHelp.form.fill(user))(session))
@@ -38,7 +37,7 @@ object Users extends Controller {
 
   }
 
-  def save() = Action { implicit request =>
+  def save() = isAuthenticated { username => implicit request =>
 
     PhotoUserHelp.form.bindFromRequest.fold(
       errors => Ok(views.html.cms.userEdit(None, errors)),
@@ -52,7 +51,7 @@ object Users extends Controller {
 
   }
 
-  def update(id: String) = Action { implicit request =>
+  def update(id: String) = isAuthenticated { username => implicit request =>
     PhotoUserHelp.form.bindFromRequest.fold(
       errors => Ok(views.html.cms.userEdit(Some(id), errors)),
       user => {
@@ -65,26 +64,26 @@ object Users extends Controller {
       })
   }
 
-  def del(id: String) = Action {
+  def del(id: String) = isAuthenticated { username => implicit request =>
     val user = service.getPhotoUserById(id)
     service.delPhotoUserById(id)
     //outJson(user)
     Redirect(routes.Users.list)
   }
 
-  def get(id: String) = Action {
+  def get(id: String) = isAuthenticated { username => implicit request =>
     val user = service.getPhotoUserById(id)
     outJson(user)
 
   }
 
-  def getByuserName(userName: String) = Action {
+  def getByuserName(userName: String) =isAuthenticated { username => implicit request =>
     val user = service.getPhotoUserByUserName(userName)
     outJson(user)
 
   }
 
-  def getByuserId(userId: String) = Action {
+  def getByuserId(userId: String) =isAuthenticated { username => implicit request =>
     val user = service.getPhotoUserByUserId(userId)
     outJson(user)
   }

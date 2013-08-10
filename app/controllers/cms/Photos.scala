@@ -2,12 +2,12 @@ package controllers.cms
 
 import java.io.File
 import play.api.libs.json
-import play.api.mvc.Action
-import play.api.mvc.Controller
+import play.api.mvc._
+ 
 import play.api.mvc.MultipartFormData.FilePart
 import play.api.libs.Files.TemporaryFile
-import sjson.json.JsonSerialization
-import dispatch.classic.json.JsValue
+
+
 import play.api.libs.json.Json
 import org.slf4j.LoggerFactory
 import models.Photo
@@ -17,7 +17,7 @@ import models.v2.PhotoUser
 import play.api.libs.json.Json
 import models.LocationForm
 
-object Photos extends Controller {
+object Photos extends Controller  with AuthTrait {
 
   val log = LoggerFactory.getLogger(Locations.getClass())
 
@@ -27,7 +27,7 @@ object Photos extends Controller {
 
   def location(locationId: String) = service.getLocationById(locationId)
 
-  def list(locationId: String) = Action { implicit request =>
+  def list(locationId: String) = isAuthenticated { username => implicit request =>
     location(locationId) match {
       case None => NotFound
       case Some(location) => {
@@ -40,7 +40,7 @@ object Photos extends Controller {
 
   }
 
-  def add(locationId: String) = Action { implicit request =>
+  def add(locationId: String) = isAuthenticated { username => implicit request =>
     location(locationId) match {
       case None => NotFound
       case Some(location) => {
@@ -84,7 +84,7 @@ object Photos extends Controller {
   val pathprefix = new File("public/tmp/").getAbsolutePath() + "/"
   log.debug("pathprefix={}", pathprefix)
 
-  def save(locationId: String) = Action(parse.multipartFormData) { implicit request =>
+  def save(locationId: String) = isAuthenticated { username => implicit request =>
     implicit val userList = service.getPhotoUsers()
     implicit val locationImpl = location(locationId).get
 
@@ -95,7 +95,11 @@ object Photos extends Controller {
         Ok(views.html.cms.photoEdit(None, errors))
       },
       photo => {
-        val filename: String = request.body.file("imgsrc").map { parseFile(_, photo.atHomepage) }.getOrElse("")
+     
+        val filename: String =  request.body.asMultipartFormData.flatMap( data =>data.file(  "imgsrc").map{ parseFile(_, photo.atHomepage) }).getOrElse("")
+        
+       
+        
         if (photo.atHomepage && filename != "") {
           service.updateLocation(locationImpl.copy(photo = "266_" + filename))
         }
@@ -136,7 +140,7 @@ object Photos extends Controller {
 
   }
 
-  def edit(id: String) = Action { implicit request =>
+  def edit(id: String) =  isAuthenticated { username => implicit request =>
     service.getPhotoById(id) match {
       case None => NotFound
       case Some(photo) => {
@@ -148,7 +152,7 @@ object Photos extends Controller {
     }
   }
 
-  def update(id: String) = Action(parse.multipartFormData) { implicit request =>
+  def update(id: String) = isAuthenticated { username => implicit request =>
     service.getPhotoById(id) match {
       case None => NotFound
       case Some(originPhoto) => {
@@ -163,9 +167,8 @@ object Photos extends Controller {
             Ok(views.html.cms.photoEdit(None, errors))
           },
           photo => {
-            val filename: String = request.body.file("imgsrc").map { parseFile(_, photo.atHomepage) }.getOrElse("")
-            
-            
+           val filename: String =  request.body.asMultipartFormData.flatMap( data =>data.file(  "imgsrc").map{ parseFile(_, photo.atHomepage) }).getOrElse("")
+
            val updatePhoto  =  if( filename != "" ){
               removeFile(originPhoto)
              if( photo.atHomepage){
@@ -204,7 +207,7 @@ object Photos extends Controller {
 
   }
 
-  def del(id: String) = Action {
+  def del(id: String) = isAuthenticated { username => implicit request =>
     val photo = service.getPhotoById(id)
     photo match {
       case None => NotFound
