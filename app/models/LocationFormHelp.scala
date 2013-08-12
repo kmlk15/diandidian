@@ -5,7 +5,8 @@ import play.api.data.Forms._
 import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
 import play.api.libs.json.Json
-
+import scala.collection.mutable
+ 
 case class OpenClose(open: String = "" , close: String = "" )
 
 case class HoursForm(
@@ -16,7 +17,78 @@ case class HoursForm(
   friday: OpenClose = OpenClose(),
   saturday: OpenClose = OpenClose(),
   sunday: OpenClose = OpenClose(),
-  holiday: OpenClose = OpenClose())
+  holiday: OpenClose = OpenClose()
+  
+ 
+
+)
+object HoursFormHelp{
+  
+   /**
+   * 合并相同的时间
+   * 以  monday 为基准
+   * 通过  值 合并 分组
+   */
+  def view(hours: HoursForm ) ={
+     
+     val map = mutable.Map[OpenClose, String]()
+      
+     val opencloseBuffer = mutable.ArrayBuffer[OpenClose]()
+     if( !opencloseBuffer.contains( hours.monday )){
+       opencloseBuffer.append(  hours.monday)
+     }
+     
+     if( !opencloseBuffer.contains( hours.tuesday )){
+       opencloseBuffer.append(  hours.tuesday)
+     }
+     
+     if( !opencloseBuffer.contains( hours.wednesday )){
+       opencloseBuffer.append(  hours.wednesday)
+     }
+     
+     if( !opencloseBuffer.contains( hours.thursday )){
+       opencloseBuffer.append(  hours.thursday)
+     }
+     
+     if( !opencloseBuffer.contains( hours.friday )){
+       opencloseBuffer.append(  hours.friday)
+     }
+     
+     
+     val listA: List[String] =  if(opencloseBuffer.size == 1){
+    	 	List( "周一~周五: " +  hours.monday.open +"-" + hours.monday.close )
+     }else{
+      
+        val m1 =  opencloseBuffer.map( openclose =>{
+            openclose -> mutable.ArrayBuffer[String]()
+          }).toMap
+          
+          m1.get( hours.monday).map( buf=> buf.append("周一"))
+          m1.get( hours.tuesday).map( buf=> buf.append("周二"))
+          m1.get( hours.wednesday).map( buf=> buf.append("周三"))           
+          m1.get( hours.thursday).map( buf=> buf.append("周四"))         
+          m1.get( hours.friday).map( buf=> buf.append("周五"))
+          
+          val buf  = opencloseBuffer.map( openclose =>{ openclose -> m1.get( openclose).map(buf=> buf.mkString(",")) }).
+          map( kv => kv._2.getOrElse("") + ": " + kv._1.open +"-" + kv._1.close  )
+
+          buf.toList
+     }
+     
+    val listB =  if( hours.saturday == hours.sunday){
+      List ( "周六,周日: " + hours.saturday.open +"-"  + hours.saturday.close)
+      
+    }else{
+      List ( "周六: " + hours.saturday.open +"-"  + hours.saturday.close ,
+           "周日: " + hours.sunday.open +"-"  + hours.sunday.close 
+      )
+      
+    }
+     
+    listA ++ listB ++ List( "假日: " + hours.holiday.open +"-"  + hours.holiday.close )
+  }
+}
+
 
 case class LocationForm(
   id: Option[String] = None, 
