@@ -29,8 +29,13 @@ object LocationEndpoints extends Controller {
     Ok(JsValue.toJson(tojson(ph)))
   }
 
-  def location=Action{
-    val locations = ls.list() map {location =>
+  def location=Action{ implicit request =>
+    
+    val city = request.getQueryString("city").getOrElse("")
+    val district = request.getQueryString("district").getOrElse("")
+    val locationsList  = if( city!="" && district  !=""){ ls.list(city , district)}else if(city != ""){ ls.list(city)}else{ ls.list()}
+    
+    val locations = locationsList map {location =>
       JsValue.toJson(tojson(location))
     }
     val response = "[" + locations.mkString(",") + "]"
