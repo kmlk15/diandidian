@@ -30,7 +30,7 @@ object LocationEndpoints extends Controller {
   }
 
   def location=Action{
-    val locations = ls.list map {location =>
+    val locations = ls.list() map {location =>
       JsValue.toJson(tojson(location))
     }
     val response = "[" + locations.mkString(",") + "]"

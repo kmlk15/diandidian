@@ -48,7 +48,8 @@ trait MongodbServiceComponentImpl extends MongodbServiceComponent {
 
     override def list(): List[T] = {
       col.find(MongoDBObject()).toList.map(item => {
-        println(item); grater[T].asObject(item)
+        //println(item);
+        grater[T].asObject(item)
       })
     }
     override def find(q: DBObject): List[T] = {
