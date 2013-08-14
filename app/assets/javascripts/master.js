@@ -75,18 +75,20 @@ $(function() {
 	
 	
 	//token input
-	$("#search-address").tokenInput([
-                {id: 7, name: "香港"},
-                {id: 11, name: "澳门"},
-                {id: 13, name: "JavaScript JavaScript"}
-            ],{ theme: "facebook"});
+	$("#search-address").tokenInput( "/locationsearch",{ theme: "facebook"});
      
 	$("#search-address-wrap #token-input-search-address").focus(function(e) {
+		//alert("focus")
 		$("#search-address-wrap label").hide();
 	}).blur(function(e) {
 		var val = $("#search-address").tokenInput("get");
 		if(val == "") {
 			$("#search-address-wrap label").show();
+		}else{
+			// 这里是 需要 实际处理 搜索结果的， 考虑采用页面 跳转的方式
+			// 将 id  作为 参数传递
+			
+			//alert( "val=" + JSON.stringify(val ) )
 		}
 	});
 	$("#search-address-wrap label").click(function(e) {

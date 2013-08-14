@@ -29,7 +29,7 @@ GET    /login/callback/facebook  				 controllers.LoginFacebook.facebookCallback
 GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example
 GET     /location                    controllers.api.LocationEndpoints.location
-
+GET     /locationsearch                    controllers.api.LocationEndpoints.search
 # login page 
 POST    /register                   controllers.api.UserEndpoints.saveUser
 GET    /fbLogin/:fbid               controllers.api.UserEndpoints.loginWithFB(fbid)

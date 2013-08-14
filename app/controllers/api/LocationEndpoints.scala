@@ -14,9 +14,10 @@ import com.mongodb.util.JSON
 import com.mongodb.DBObject
 import com.mongodb.BasicDBList
 import com.mongodb.BasicDBObject
+import org.slf4j.LoggerFactory
 
 object LocationEndpoints extends Controller {
-
+	val log = LoggerFactory.getLogger(LocationEndpoints.getClass())
   val ls = locationRegistry locationService
 
   /*
@@ -40,6 +41,29 @@ object LocationEndpoints extends Controller {
     }
     val response = "[" + locations.mkString(",") + "]"
     Ok(response).as("application/json")
+  }
+  def search = Action{ implicit request =>
+     import play.api.libs.json.Json
+    val q= request.getQueryString("q").getOrElse("")
+    if( q==""){
+      val jsVal =  Json.arr( )
+      Ok(jsVal)
+    }else{
+      /**
+       * 这里要实现 具体的 搜索逻辑 
+       */
+      log.debug("search q={}",q)
+      val jsVal =  Json.arr(
+    		  Json.obj("id" -> "1" , "name" -> "texta" ),
+    		  Json.obj("id" -> "2" , "name" -> "aaaa" ),
+    		  Json.obj("id" -> "3" , "name" -> "bbbb"),
+    		  
+    		  Json.obj("id" -> "7" , "name" -> "香港1"),
+    		  Json.obj("id" -> "8" , "name" -> "香港2"),
+    		  Json.obj("id" -> "11" , "name" -> "澳门")
+      )
+      Ok(jsVal)
+    }
   }
   
   def example = Action {

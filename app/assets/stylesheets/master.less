@@ -9,8 +9,9 @@
 @textGrey3: #3b3b3b;
 @textGrey4: #575757;
 @red: #dd3e31;
-@greyDropDownHoverBg: #e4e4e4;
-@greyDashBorder: #888888;
+@greyDropDownHoverBg: #e6e6e6;
+@greyDropDownBorder: #999999;
+@greyDashBorder: #8f8f8f;
 @greyTopDropHoverBg: #7f7e7e;
 @searchBorderColor: #5b5b5b;
 @searchLabelColor: #828282;
@@ -147,8 +148,8 @@ ul, ol {
 #sidebar {
 	overflow: auto;
 	float: right;
-	width: 302px;
-	padding-top: 75px;
+	width: 309px;
+	padding-top: 94px;
 	position: fixed;
 	top: 60px;
 	right: 0;
@@ -178,28 +179,33 @@ ul, ol {
 	.logo {
 		display: block;
 		float: left;
-		margin: 0 0 0 20px;
+		margin: 16px 0 0 30px;
 	}
 	.dropdown {
 		float: left;
-		margin-left: 49px;
-		margin-top: 16px;
+		margin-left: 100px;
+		margin-top: 32px;
 		span {
 			display: block;
-			padding: 0 55px 0 12px;
-			height: 60px;
-			background: url(/assets/images/drop-triangle-blue.png) 90px 60% no-repeat;
-			line-height: 60px;
+			padding: 0 12px 0 12px;
+			height: 42px;
+			background: url(/assets/images/drop-triangle-blue.png) 91px 55% no-repeat;
+			border:1px @bodyBg solid;
+			width:93px;
+			line-height: 40px;
 			font-size: 23px;
 			font-weight: 300;
 			color: @blue;
 			cursor: pointer;
 		}
 		&:hover {
-			background-color: @greyDropDownHoverBg;
 			span {
-				background: url(/assets/images/drop-triangle-black.png) 90px 60% no-repeat;
-				color: @textGrey3;
+				position: absolute;
+				z-index: 10;
+				background: @greyDropDownHoverBg url(/assets/images/drop-triangle-blue.png) 91px 55% no-repeat;
+				color: @blue;				
+				border: 1px @greyDropDownBorder solid;
+				border-bottom: 1px dashed @greyDashBorder;
 			}
 			ul {
 				display: block;
@@ -207,7 +213,11 @@ ul, ol {
 		}
 		ul {
 			display: none;
-			border-top: 1px dashed @greyDashBorder;
+			margin-top:43px;
+			border:1px @greyDropDownBorder solid;
+			background:@greyDropDownHoverBg;
+			min-width:260px;
+			border-radius:0px 0px 6px 6px;
 			li {
 				padding: 0 0 0 12px;
 				height: 37px;
@@ -228,7 +238,7 @@ ul, ol {
 #search-address-wrap {
 	position: relative;
 	float: right;
-	margin: 35px 20px 0 0;
+	margin: 40px 30px 0 0;
 	.token-input-list-facebook {
 		width: 234px;
 		padding-right: 30px;
@@ -250,23 +260,23 @@ ul, ol {
 }
 #user-sign {
 	float: right;
-	width: 302px;
+	width: 309px;
 	border-left:1px @scrollColor solid;
 	height: 70px;
-	margin-top:20px;
+	margin-top:23px;
 	&.not-signin {
 		a {
 			display: block;
 			float: left;
-			margin-left: 23px;
-			padding: 0 10px 0 52px;
-			background: url(/assets/images/weibo_logo.png) 10px 50% no-repeat;
+			margin-left: 29px;
+			width:126px;
+			text-align:center;
 			line-height: 60px;
-			font-size: 18px;
-			color: @textGrey;
+			font-size: 23px;
+			color: @blue;
 			&:hover {
 				background-color: @greyDropDownHoverBg;
-				color: @textGrey3;
+				color: @blue;
 				text-decoration: none;
 			}
 		}
@@ -275,7 +285,7 @@ ul, ol {
 	&.signin {
 		.account {
 			float: left;
-			margin-left: 23px;
+			margin-left: 29px;
 			border: 1px solid @bodyBg;
 			border-radius:0px 0px 8px 8px;
 			&:hover {
@@ -340,7 +350,7 @@ ul, ol {
 #attractions-list {
 	margin: 0 auto;
 	h2 {
-		padding: 0px 0 10px 10px;
+		padding: 17px 0 12px 6px;
 		background: @bodyBg;
 		font-size: 23px;
 		color: @blue;		
@@ -349,7 +359,7 @@ ul, ol {
 		li {
 			position: relative;
 			float: left;
-			margin: 0 10px 20px 10px;
+			margin: 0 8px 20px 8px;
 			height: 307px;
 			width: 266px;
 			.rounded-corners(0, 10px, 10px, 0);
