@@ -31,7 +31,10 @@ class LocationServiceTest  extends Specification {
       
       val  cityc = "旧金山"  ; val sizec = 13;
       
-      val districtA="d1"; val districtB="d2" ; val districtC = "d3"
+      val level_1 =" 公园"
+    val level_2 = "植物园公园"
+      
+        val districtA="d1"; val districtB="d2" ; val districtC = "d3"
        val districtList = List("d1","d2","d3" )
         
      
@@ -41,12 +44,16 @@ class LocationServiceTest  extends Specification {
       cityaList.foreach{ location => locationService.save(location )}
       
       val citybList =  for( i <- 1 to sizeb )yield {
-        defaultLocation.copy( name="b1" +"_" + i  , address =defaultAddress.copy( city= cityb)  )
+        defaultLocation.copy( name="b1" +"_" + i  , 
+            address =defaultAddress.copy( city= cityb, district =districtList( i % districtList.size )  )  ,
+           category = defaultCategory.copy(  level_1 = level_1 , level_2 = level_2 ) 
+            
+        )
       }
       citybList.foreach{ location => locationService.save(location )}
       
        val citycList =  for( i <- 1 to sizec )yield {
-        defaultLocation.copy( name="c1" +"_" + i  , address =defaultAddress.copy( city= cityc)  )
+        defaultLocation.copy( name="c1" +"_" + i  , address =defaultAddress.copy( city= cityc)  , category = defaultCategory.copy(  level_1 = level_1 )  )
       }
       citycList.foreach{ location => locationService.save(location )} 
       
@@ -64,7 +71,7 @@ class LocationServiceTest  extends Specification {
       
       
       val districtListA = locationService.list( citya , districtList(0 ))
-      districtListA.size ===( 1 to sizea ).filter( x=> x % districtList.size == 0)  .size
+      districtListA.size === ( 1 to sizea ).filter( x=> x % districtList.size == 0)  .size
       districtListA(0).name === "a1_3"
       
       val districtListB = locationService.list( citya , districtList( 1 ))
@@ -74,6 +81,29 @@ class LocationServiceTest  extends Specification {
        val districtListC = locationService.list( cityc , districtList( 0 ))
        districtListC.size === 0 
        
+       
+       val searchAList  = locationService.search("香")
+       searchAList.size === sizea
+       
+       val searchBList  = locationService.search("")
+       searchBList.size === 0
+       
+        val searchCList  = locationService.search(cityb)
+       searchCList.size === sizeb
+       
+        val searchDList  = locationService.search(districtList(0 ))
+       searchDList.size ===  ( ( 1 to sizea ).filter( x=> x % districtList.size == 0)  .size +  ( 1 to sizeb ).filter( x=> x % districtList.size == 0)  .size)
+       
+       val searchEList  = locationService.search( "a1_3")
+       searchEList.size === 1 
+       
+       
+       val searchFList =  locationService.search(  level_1)
+       searchFList.size === (sizeb + sizec)
+       
+       
+       val searchGList =  locationService.search(  level_2)
+       searchGList.size === (  sizeb)
        
     }
 }
