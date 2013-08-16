@@ -2,17 +2,21 @@ package controllers
 
 import play.api.Logger
 import play.api.libs.json
-
 import play.api.mvc.Action
 import play.api.mvc.Controller
-import sjson.json.JsonSerialization
-import dispatch.classic.json.JsValue
+import models.LocationJsonHelp.locationFmt
+import models.LocationFormHelp.locationFormFmt
+import play.api.libs.json.Json
+import org.slf4j.LoggerFactory
 
 
 object Detail extends Controller   {
-
- val locationService = base.locationRegistry.locationService
+	val log = LoggerFactory.getLogger(Detail.getClass())
+	//val locationService = base.locationRegistry.locationService
  
+      val locationService = base.locationFormRegistry.locationService
+   // val locationService = locationRegistry.locationService
+      
 
   def view(name: String ) = Action { implicit request =>{
     Logger.debug("name=" + name )
@@ -30,10 +34,23 @@ object Detail extends Controller   {
      */
     locationService.getByName(name) match{
        case Some(location) => {
-       
-         val str = JsValue.toJson(JsonSerialization.tojson(location))
+         val jsVal  = Json.toJson( location).as[ json.JsObject]
+        val path =   json.JsPath \ "pictures"
+         if(  path(jsVal) .isEmpty   ){
+          val jsVal2 =  jsVal.++ (  Json.obj( "pictures" ->
+          Json.obj( "thumbnail" -> Json.toJson( List[String]()) ,   
+            "planning" ->  ("http://diandidian.s3-us-west-1.amazonaws.com/" + location.photo.replace("266_", "780_" ) )  ) 
+              ) )
+           log.debug( Json.prettyPrint( jsVal2))
+           Ok( jsVal2 ) 
+         }else{
+           log.debug( Json.prettyPrint( jsVal))
+           log.debug( Json.prettyPrint( jsVal \ "pictures"))
+             Ok( jsVal )
+         }
          
-         Ok(  json.Json.parse(str)  ) 
+         
+         
          }
        case None => { NotFound }
     }

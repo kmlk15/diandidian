@@ -88,7 +88,7 @@ $(function() {
 			// 这里是 需要 实际处理 搜索结果的， 考虑采用页面 跳转的方式
 			// 将 id  作为 参数传递
 			
-			//alert( "val=" + JSON.stringify(val ) )
+			alert( "val=" + JSON.stringify(val ) )
 		}
 	});
 	$("#search-address-wrap label").click(function(e) {

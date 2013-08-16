@@ -5,6 +5,8 @@ import services.MongodbServiceComponentImpl
 
 object locationRegistry extends LocationServiceComponentImpl 
 
+object locationFormRegistry extends LocationFormServiceComponentImpl 
+
 object mongoService extends MongodbServiceComponentImpl
 
 object userRegistry extends UserServiceComponentImpl

@@ -1,17 +1,24 @@
 function loadHomeAttractions() {
 	$.getJSON("/location", null, function(json){
 		var attractionListHtml = '';
+		 
 		if (json.length > 0) {
 			attractionListHtml += '<h2>中国 &gt; 香港</h2><ul class="clearfix">';
-			
+		 
 			$.each(json, function(index, item){
+				 
 				var attractionHtml = '';
 				attractionHtml += '<li>';
-				if(item.pictures.planning) {
-					attractionHtml += '<img src="' + item.pictures.planning + '" width="266" height="262" alt="" />';
+//				if(item.pictures && item.pictures.planning) {
+//					attractionHtml += '<img src="' + item.pictures.planning + '" width="266" height="262" alt="" />';
+//				} else {
+//					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="266" height="262" alt="" />';//default image here
+//				}
+				if(item.photo) {
+				attractionHtml += '<img src="http://diandidian.s3-us-west-1.amazonaws.com/' + item.photo + '" width="266" height="262" alt="" />';
 				} else {
 					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="266" height="262" alt="" />';//default image here
-				}
+				}				 
 				attractionHtml += '<div class="title">';
 				attractionHtml += '<h3>'+item.name+'</h3>';
 				attractionHtml += '<span>'+item.address.city+': '+item.address.district+'</span>';
@@ -28,6 +35,7 @@ function loadHomeAttractions() {
 				attractionHtml += '<span class="detail"><a href="/detail/view/' +  item.name + '">详情</a></span >';
 				attractionHtml += '</li>';
 				attractionListHtml += attractionHtml;
+				 
 			});
 			attractionListHtml += '</ul>';
 		}

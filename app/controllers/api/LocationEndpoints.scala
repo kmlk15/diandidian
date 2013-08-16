@@ -15,11 +15,15 @@ import com.mongodb.DBObject
 import com.mongodb.BasicDBList
 import com.mongodb.BasicDBObject
 import org.slf4j.LoggerFactory
+import models.LocationJsonHelp.locationFmt
+import models.LocationFormHelp.locationFormFmt
+import play.api.libs.json.Json
+
 
 object LocationEndpoints extends Controller {
 	val log = LoggerFactory.getLogger(LocationEndpoints.getClass())
-  val ls = locationRegistry locationService
-
+     val ls = locationFormRegistry.locationService
+   // val ls = locationRegistry.locationService
   /*
    * Test of converting json string into object and back to json string by using sjson
    */
@@ -37,10 +41,10 @@ object LocationEndpoints extends Controller {
     val locationsList  = if( city!="" && district  !=""){ ls.list(city , district)}else if(city != ""){ ls.list(city)}else{ ls.list()}
     
     val locations = locationsList map {location =>
-      JsValue.toJson(tojson(location))
+      Json.toJson( location)
     }
-    val response = "[" + locations.mkString(",") + "]"
-    Ok(response).as("application/json")
+    Ok( Json.toJson( locations) )
+    
   }
   def search = Action{ implicit request =>
      import play.api.libs.json.Json
