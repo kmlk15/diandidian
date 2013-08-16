@@ -207,28 +207,51 @@ ul, ol {
 				border: 1px @greyDropDownBorder solid;
 				border-bottom: 1px dashed @greyDashBorder;
 			}
-			ul {
+			div {
 				display: block;
+				position: absolute;
 			}
 		}
-		ul {
+		div {
 			display: none;
 			margin-top:43px;
+			padding: 8px 11px 2px 15px;
 			border:1px @greyDropDownBorder solid;
 			background:@greyDropDownHoverBg;
-			min-width:260px;
+			min-width:240px;
 			border-radius:0px 0px 6px 6px;
-			li {
-				padding: 0 0 0 12px;
-				height: 37px;
-				line-height: 37px;
+			overflow:auto;
+			zoom:1;
+			dl {
 				font-size: 20px;
+				line-height: 28px;
 				font-weight: 300;
 				color: @textGrey3;
 				cursor: pointer;
-				&:hover {
-					background: @greyTopDropHoverBg;
-					color: @white;
+				overflow:auto;
+				zoom:1;
+				margin:0;
+				padding:0 0 2px 0;
+				dt {
+					float: left;
+					width: 65px;
+					text-align: right;
+					padding:0;
+					margin:0;
+				}
+				dd {
+					float: left;
+					min-width: 155px;
+					max-width: 428px;
+					padding:0;
+					margin:0 0 0 20px;
+					a{
+						color: #369edb;
+						padding:0 15px 0 0;
+						&:hover {
+							text-decoration: underline;
+						}
+					}
 				}
 			}
 		}
@@ -241,21 +264,21 @@ ul, ol {
 	margin: 40px 30px 0 0;
 	.token-input-list-facebook {
 		width: 234px;
-		padding-right: 30px;
+		padding: 2px 30px 2px 0;
 		border: 1px solid @searchBorderColor;
-		background: @white url(/assets/images/search-icon.png) 97% 4px no-repeat;
+		background: @white url(/assets/images/search-icon.png) 97% 5px no-repeat;
 	}
 	label {
 		position: absolute;
-		top: 3px;
-		left: 4px;
+		top: 5px;
+		left: 11px;
 		font-size: 15px;
 		color: @searchLabelColor;
 		cursor: text;
 	}
 }
 .token-input-dropdown-facebook {
-	width: 262px !important;
+	width: 264px !important;
 	z-index: 999 !important;
 }
 #user-sign {
@@ -269,6 +292,7 @@ ul, ol {
 			display: block;
 			float: left;
 			margin-left: 29px;
+			border:1px @bodyBg solid;
 			width:126px;
 			text-align:center;
 			line-height: 60px;
@@ -276,6 +300,7 @@ ul, ol {
 			color: @blue;
 			&:hover {
 				background-color: @greyDropDownHoverBg;
+				border:1px @greyDashBorder solid;
 				color: @blue;
 				text-decoration: none;
 			}
@@ -329,6 +354,7 @@ ul, ol {
 					border-top: 1px dashed @accountMenuBorderColor;
 					&:hover {
 						background: @greyTopDropHoverBg;
+						.rounded-corners(0, 0, 6px, 6px);
 						a {
 							color: @white;
 						}
@@ -438,7 +464,7 @@ ul, ol {
 			}
 			.add-bag, .added-bag {
 				left: 18px;
-				padding-left: 35px;
+				padding-left: 36px;
 				width: 84px;
 			}
 			.add-bag {
@@ -446,6 +472,7 @@ ul, ol {
 				&:hover {
 					background: url(/assets/images/sprite.png) 0 0 no-repeat;
 					text-decoration: none;
+					color:@blue;
 				}
 			}
 			.added-bag {
@@ -454,7 +481,7 @@ ul, ol {
 			}
 			.detail {
 				right: 18px;
-				padding-left: 35px;
+				padding-left: 27px;
 				width: 84px;
 				background: url(/assets/images/sprite.png) 0 -666px no-repeat;
 				a {
@@ -464,6 +491,9 @@ ul, ol {
 				&:hover {
 					background: url(/assets/images/sprite.png) 0 -571px no-repeat;
 					text-decoration: none;
+					a {
+						color: @blue;
+					}
 				}
 			}
 		}
@@ -500,7 +530,7 @@ ul, ol {
 			font-size: 15px;			
 			cursor: pointer;
 			&.state-active {
-				border-bottom: none;
+				border-bottom: 1px dashed @myBagBorderColor;
 				background-image: url(/assets/images/accordion-head-icon-active.png);
 			}
 		}
@@ -563,6 +593,7 @@ ul, ol {
 					&:hover {
 						background: url(/assets/images/sprite.png) 0 -363px no-repeat;
 						text-decoration: none;
+						color: @textGrey4;
 					}
 				}
 			}
@@ -769,6 +800,7 @@ ul, ol {
 						background: url(/assets/images/sprite.png) 0 -95px no-repeat;
 						&:hover {
 							background: url(/assets/images/sprite.png) 0 0 no-repeat;
+							color:@blue;
 						}
 						&.added {
 							background: url(/assets/images/sprite.png) 0 -190px no-repeat;
@@ -779,6 +811,7 @@ ul, ol {
 						background: url(/assets/images/sprite.png) 0 -856px no-repeat;
 						&:hover {
 							background: url(/assets/images/sprite.png) 0 -761px no-repeat;
+							color:@textGrey4;
 						}
 					}
 				}
