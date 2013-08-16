@@ -48,7 +48,7 @@ object LocationEndpoints extends Controller {
   }
   def search = Action{ implicit request =>
      import play.api.libs.json.Json
-    val q= request.getQueryString("q").getOrElse("")
+    val q= request.getQueryString("q").getOrElse("").trim()
     if( q==""){
       val jsVal =  Json.arr( )
       Ok(jsVal)
@@ -56,17 +56,11 @@ object LocationEndpoints extends Controller {
       /**
        * 这里要实现 具体的 搜索逻辑 
        */
-      log.debug("search q={}",q)
-      val jsVal =  Json.arr(
-    		  Json.obj("id" -> "1" , "name" -> "texta" ),
-    		  Json.obj("id" -> "2" , "name" -> "aaaa" ),
-    		  Json.obj("id" -> "3" , "name" -> "bbbb"),
-    		  
-    		  Json.obj("id" -> "7" , "name" -> "香港1"),
-    		  Json.obj("id" -> "8" , "name" -> "香港2"),
-    		  Json.obj("id" -> "11" , "name" -> "澳门")
-      )
-      Ok(jsVal)
+      log.debug("search q='{}'",q)
+      val locationList =  ls.search( q )
+      locationList.map( location => Json.obj("id" -> location.id , "name" -> location.name))
+      log.debug( Json.prettyPrint(  Json.toJson( locationList )) )
+      Ok( Json.toJson( locationList ))
     }
   }
   
