@@ -69,7 +69,7 @@
  
      @helper.inputText(form("admission.student")  , '_label -> "学生" ,  'class -> "form-control"  )
      
-     @helper.select( form("category.level_1") ,  categoryList.map(c => (c.id -> (  ( {"-" * ( c.level-1) * 2    } ) + c.level +":"+ c.name+"-"+c.enName) ))    , '_label -> "类别"  ,  'class -> "form-control"     ) 
+     @helper.select( form("category.categoryId") ,  categoryList.map(c => (c.id -> (  ( {"-" * ( c.level-1) * 2    } ) + c.level +":"+ c.name+"-"+c.enName) ))    , '_label -> "类别"  ,  'class -> "form-control"     ) 
       
      
     @helper.textarea(field = form("fact"), args = 'rows -> 3, 'cols -> 50 , '_label -> "内容",  'class -> "form-control" )
