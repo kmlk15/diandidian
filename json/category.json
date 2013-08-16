@@ -1,0 +1,9 @@
+{ "_id" : "520deb73036479c94fef8dff", "name" : "建筑", "enName" : "建筑", "level" : 1, "parentId" : "" }
+{ "_id" : "520deb84036479c94fef8e00", "name" : "公园", "enName" : "公园", "level" : 1, "parentId" : "" }
+{ "_id" : "520deb8f036479c94fef8e01", "name" : "景点", "enName" : "景点", "level" : 1, "parentId" : "" }
+{ "_id" : "520debb6036479c94fef8e02", "name" : "花园公园", "enName" : "花园公园", "level" : 2, "parentId" : "520deb84036479c94fef8e00" }
+{ "_id" : "520debc5036479c94fef8e03", "name" : "主题公园", "enName" : "主题公园", "level" : 2, "parentId" : "520deb84036479c94fef8e00" }
+{ "_id" : "520debd7036479c94fef8e04", "name" : "历史遗址", "enName" : "历史遗址", "level" : 2, "parentId" : "520deb8f036479c94fef8e01" }
+{ "_id" : "520debe3036479c94fef8e05", "name" : "摩天大楼", "enName" : "摩天大楼", "level" : 2, "parentId" : "520deb73036479c94fef8dff" }
+{ "_id" : "520debef036479c94fef8e06", "name" : "塔楼", "enName" : "塔楼", "level" : 2, "parentId" : "520deb73036479c94fef8dff" }
+{ "_id" : "520df0b0036489ea7af624ba", "name" : "test level3", "enName" : "test level3", "level" : 3, "parentId" : "520debef036479c94fef8e06" }
