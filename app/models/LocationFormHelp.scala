@@ -88,7 +88,12 @@ object HoursFormHelp{
     listA ++ listB ++ List( "假日: " + hours.holiday.open +"-"  + hours.holiday.close )
   }
 }
-
+case class CategoryForm(
+    categoryId: String = "",
+  level_1: String = "",
+  level_2: String ="" )  
+  
+  
 
 case class LocationForm(
   id: Option[String] = None, 
@@ -99,7 +104,7 @@ case class LocationForm(
   admission: Admission = Admission (currency="", general=0.0, adults=0.0 , children=0.0, student=0.0 , seniors=0.0 ),
   hours: HoursForm = HoursForm(),
   url: String = "" ,
-  category: Category = Category(level_1="", level_2="" ),
+  category: CategoryForm = CategoryForm(categoryId  = ""  , level_1="", level_2="" ),
   fact: String = "",
   photo: String = ""  
 )
@@ -110,6 +115,7 @@ object LocationFormHelp {
   
   implicit val ppenCloseFmt = Json.format[OpenClose]
   implicit val hoursFormFmt  = Json.format[HoursForm]
+  implicit val categoryForm  = Json.format[CategoryForm]
  implicit val locationFormFmt = Json.format[LocationForm]
 
   
@@ -157,8 +163,9 @@ object LocationFormHelp {
       "url" -> text,
 
       "category" -> mapping(
-        "level_1" -> text,
-        "level_2" -> default(text,"")  )(Category.apply)(Category.unapply),
+          "categoryId" -> text ,
+        "level_1" -> default(text,"") ,
+        "level_2" -> default(text,"")  )(CategoryForm.apply)(CategoryForm.unapply),
 
       "fact" -> text,
       "photo" -> default(text , "")
