@@ -1,4 +1,4 @@
-@(id: Option[String], form: Form[models.v2.Category], msg: String ="")(implicit session: Session)
+@(id: Option[String], form: Form[models.v2.Category], msg: String ="")(implicit categoryList:List[models.v2.Category], session: Session)
 
 @title = @{ if(  id == None) "CMS Category Add" else  "CMS Category Edit"  }
 
@@ -26,6 +26,7 @@
     @helper.inputText(form("name") , 'class -> "form-control" , '_label -> "类别名称")
     @helper.inputText(form("enName"), 'class -> "form-control" , '_label -> "英文名称")
     
+    @helper.select(form("parentId"), Seq("" -> "请选择父分类"   ) ++ categoryList.map(c => (c.id ->  ( ( {"-" * ( c.level-1) * 2    } ) + c.level +":"+ c.name+"-"+c.enName)  )  ) , 'class -> "form-control" , '_label -> "父分类" )
     @helper.inputText(form("level"), 'class -> "form-control" , '_label -> "级别")
     
     <div class="row" > 

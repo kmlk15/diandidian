@@ -20,8 +20,8 @@
 	<tbody>
 	@for(category <- categroyList ){
 	<tr>
-		<td class="col-lg-2">@category.name</td>
-		<td class="col-lg-4">@category.enName</td>
+		<td class="col-lg-2">@Html( {"&nbsp;" * ( category.level-1) * 2    } ) @category.name</td>
+		<td class="col-lg-5">@Html( {"&nbsp;" * ( category.level-1) * 2    } ) @category.enName</td>
 		<td class="col-lg-2">@category.level</td>
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Categories.edit( category.id )">Edit</a></td>
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Categories.del( category.id )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>

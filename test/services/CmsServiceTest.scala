@@ -67,6 +67,10 @@ class CmsServiceTest extends Specification{
         val deletedUser = service.getPhotoUserById( user2.id )
         deletedUser  === None 
         
+      
+         
+         
+         
         
     }
     
@@ -131,6 +135,19 @@ class CmsServiceTest extends Specification{
       val c40a = service.updateCategory( c40 )
       c40a must beSome
       
+         col.drop()
+      val a01 = service.saveCategory( Category(name="A01") ).get
+      val b02 = service.saveCategory( Category(name="B02") ).get
+      
+      val a0101 = service.saveCategory( Category(name="A0101", parentId = a01.id ) ).get
+      val a0102 = service.saveCategory( Category(name="A0102", parentId = a01.id ) ).get
+      
+      val b0201 = service.saveCategory( Category(name="B0201", parentId = b02.id ) ).get
+        
+      val  cTree = service.getCategoryList( "" )
+      cTree.size ===  5
+      
+         
      }
      
      "Location  CRUD" in new WithApplication {

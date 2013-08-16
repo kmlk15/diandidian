@@ -22,7 +22,7 @@ object Locations extends Controller  with AuthTrait  {
 
   val service = base.CmsServiceRegistry.cmsService
   
-  def categoryList = service.getCategoryList
+  def categoryList = service.getCategoryList( )
   
   def list() =  isAuthenticated { username => implicit request =>
   val list = service.getLocationList

@@ -33,7 +33,7 @@ trait CmsServiceComponent {
 
     def saveCategory(category: Category): Option[Category]
     def updateCategory(category: Category): Option[Category]
-    def getCategoryList(): List[Category]
+    def getCategoryList( parent: String ="" ): List[Category]
 
     def delCategoryById(id: String): Int
 
@@ -184,10 +184,13 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
 
     }
 
-    def getCategoryList(): List[Category] = {
-      val q = MongoDBObject()
+    def getCategoryList(parent: String =""  ): List[Category] = {
+      val q = MongoDBObject( "parentId" -> parent )
+      
       val lista = categoryMongoClient.find(q)
-      lista.sortBy( (c:Category) => ( c.level , c.name ) )
+      val listb = lista.map( parent => parent :: getCategoryList( parent.id ) )
+      
+       listb.flatten 
     }
 
     def delCategoryById(id: String): Int = {
