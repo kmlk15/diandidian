@@ -1,9 +1,9 @@
-function loadHomeAttractions() {
-	$.getJSON("/location", null, function(json){
+function loadHomeAttractions( query) {
+	$.getJSON("/location", query, function(json){
 		var attractionListHtml = '';
 		 
 		if (json.length > 0) {
-			attractionListHtml += '<h2>中国 &gt; 香港</h2><ul class="clearfix">';
+			attractionListHtml += '<h2>' + query.country + ' &gt; ' + query.city+'</h2><ul class="clearfix">';
 		 
 			$.each(json, function(index, item){
 				 
@@ -38,6 +38,8 @@ function loadHomeAttractions() {
 				 
 			});
 			attractionListHtml += '</ul>';
+		}else{
+			 
 		}
 		
 		$("#attractions-list").html(attractionListHtml);
@@ -51,5 +53,8 @@ function loadHomeAttractions() {
 }
 
 $(function() {
-	loadHomeAttractions();
+ 
+	var url = $.url();
+	var query = url.param()
+	loadHomeAttractions( query );
 })
