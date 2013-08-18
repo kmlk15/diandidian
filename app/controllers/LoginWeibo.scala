@@ -70,7 +70,8 @@ object LoginWeibo extends Controller {
                 case None =>  newAccount(accesstokenJson, weiboId)
                  
                 case Some(weiboUser) => Redirect(routes.Home.index()).withSession(
-                    "userId" -> weiboUser.userId, "username" -> weiboUser.screenName, "avatar" -> weiboUser.avatar)
+                    "userId" -> weiboUser.userId, "username" -> weiboUser.screenName, 
+                    "avatar" -> weiboUser.avatar , "usertype"-> "weibo")
                 
               }
             }
@@ -111,7 +112,8 @@ object LoginWeibo extends Controller {
               if (screenName != "") {
                 val w = WeiboUser(weiboId = weiboId, userId = "", screenName = screenName, avatar = avatar, token = Json.stringify(accesstokenJson), profile = Json.stringify(userinfoJson))
                 val w2 =  loginService.saveWeiboUser(w)
-                Redirect(routes.Home.index()).withSession("userId" -> w2.userId, "username" -> screenName, "avatar" -> avatar)
+                Redirect(routes.Home.index()).withSession("userId" -> w2.userId,
+                    "username" -> screenName, "avatar" -> avatar , "usertype"-> "weibo")
               } else {
                 Ok("error screenname is empty")
               }

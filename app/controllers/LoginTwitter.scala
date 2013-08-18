@@ -77,7 +77,8 @@ object LoginTwitter extends Controller {
 	                }
 	                case Some(twitterUser) => {
 	                  log.debug("已有用户登录 twitterUser= " + twitterUser)
-	                	Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar)
+	                	Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, 
+	                	    "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar , "usertype"-> "twitter")
 	                }
 	                
 	              }
@@ -161,7 +162,8 @@ object LoginTwitter extends Controller {
         avatar = avatar,
         token = Json.stringify(Json.obj("token" -> reqToken.token, "secret" -> reqToken.secret)),
         profile = Json.stringify(Json.obj("name" -> name, "avatar" -> avatar))))
-      Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar)
+      Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, 
+          "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar , "usertype"-> "twitter")
     } else {
       Ok("ERROR profile= " + profile.toString)
     }

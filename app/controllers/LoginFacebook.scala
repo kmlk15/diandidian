@@ -105,7 +105,7 @@ object LoginFacebook extends Controller   {
                  loginService.getFacebookUser(facebookId) match{
                    case None =>  newAccount(myjson, facebookId, access_token, expires)
                    case Some(facebookUser) => Redirect(routes.Home.index()).withSession("userId" -> facebookUser.userId,
-                       "username" -> facebookUser.screenName, "avatar" -> facebookUser.avatar)
+                       "username" -> facebookUser.screenName, "avatar" -> facebookUser.avatar, "usertype"-> "facebook")
                  }
                 }
               }
@@ -128,6 +128,7 @@ object LoginFacebook extends Controller   {
        token = Json.stringify( Json.obj("token"-> access_token , "expires"-> expires )),
        profile  = Json.stringify(userinfoJson)
        ))
-    Redirect(routes.Home.index()).withSession("userId" ->facebookUser.userId, "username" -> facebookUser.screenName, "avatar" -> facebookUser.avatar)
+    Redirect(routes.Home.index()).withSession("userId" ->facebookUser.userId, 
+        "username" -> facebookUser.screenName, "avatar" -> facebookUser.avatar, "usertype"-> "facebook")
   }
 }
