@@ -1,0 +1,66 @@
+@(title: String, script:Html = Html("") )(maincontent: Html)(implicit session: Session)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <meta http-equiv="keywords" content="" />
+        <meta http-equiv="description" content="" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta property="wb:webmaster" content="f3852a8744503c7a" />
+
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")" />
+ 	    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/master.css")" media="screen">
+		  
+		  
+  		
+  		
+  		
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" ></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-scrolltofixed-min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.tokeninput.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.mousewheel.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.jscrollpane.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")"></script>
+       	<script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")" ></script>
+
+         
+        @script
+        
+    </head>
+    <body>
+       	<div id="container"  >
+		<div id="header" >
+			 	<div id="top-nav" class="clearfix">
+			<a class="logo" href="/"><img src="/assets/images/comingsoon_img/logo_dian.png" width="156" height="88" alt="点地点" /></a>
+			</div><!-- end top-nav -->
+		</div><!-- end header -->
+		<!-- <div id="shadow-divide"></div> -->
+		<div id="content" class="row">
+			<div id="leftsidebar"   class="col-lg-1" >
+			<h1><img src='@session.get("avatar").getOrElse("")' width="36" height="36" alt="" id="avatarimg"/>@session.get("username")</h1>
+			<br/>
+				 <ul>
+				 @if(session.get("userId")!=None){
+				 
+				 <li><h3>地点</h3><br/></li>
+				 
+				 }else{
+				 <li><h3><a href="/login">Login</a></h3><br/></li>
+				 }
+				 </ul>
+			</div><!-- end leftsidebar -->
+			<div id="main" class="col-lg-6">
+			 
+			 
+			@maincontent
+			 
+			
+			</div> <!-- end main -->
+		</div><!--  end content -->
+	</div><!--  end container -->
+    </body>
+</html>

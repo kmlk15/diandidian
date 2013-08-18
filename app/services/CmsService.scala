@@ -33,13 +33,12 @@ trait CmsServiceComponent {
 
     def saveCategory(category: Category): Option[Category]
     def updateCategory(category: Category): Option[Category]
-    def getCategoryList( parent: String ="" ): List[Category]
+    def getCategoryList(parent: String = ""): List[Category]
 
     def delCategoryById(id: String): Int
 
     def getCategoryById(id: String): Option[Category]
 
-    
     def saveLocation(location: LocationForm): Option[LocationForm]
     def updateLocation(location: LocationForm): Option[LocationForm]
     def getLocationList(): List[LocationForm]
@@ -47,17 +46,19 @@ trait CmsServiceComponent {
     def delLocationById(id: String): Int
 
     def getLocationById(id: String): Option[LocationForm]
-    
-    
+
     def savePhoto(photo: Photo): Option[Photo]
+
     def updatePhoto(photo: Photo): Option[Photo]
+
     def getPhotoList(locationId: String): List[Photo]
+
+    def getPhotoListByUserId(userId: String): List[Photo]
 
     def delPhotoById(id: String): Int
 
     def getPhotoById(id: String): Option[Photo]
-    
-    
+
   }
 }
 
@@ -69,7 +70,7 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
   override val cmsService = new CmsService {
     lazy val photoUserMongoClient = mongoService.getMongoService[PhotoUser]("photouser", dbname)
     lazy val categoryMongoClient = mongoService.getMongoService[Category]("category", dbname)
-    
+
     lazy val locationMongoClient = mongoService.getMongoService[LocationForm]("locationform", dbname)
     lazy val photoMongoClient = mongoService.getMongoService[Photo]("photo", dbname)
     /**
@@ -147,8 +148,8 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
     def getPhotoUsers(): List[PhotoUser] = {
       val q = MongoDBObject()
 
-      val lista  =  photoUserMongoClient.find(q)
-      lista.sortBy( (u: PhotoUser) => u.userName )
+      val lista = photoUserMongoClient.find(q)
+      lista.sortBy((u: PhotoUser) => u.userName)
     }
 
     def saveCategory(category: Category): Option[Category] = {
@@ -184,13 +185,13 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
 
     }
 
-    def getCategoryList(parent: String =""  ): List[Category] = {
-      val q = MongoDBObject( "parentId" -> parent )
-      
+    def getCategoryList(parent: String = ""): List[Category] = {
+      val q = MongoDBObject("parentId" -> parent)
+
       val lista = categoryMongoClient.find(q)
-      val listb = lista.map( parent => parent :: getCategoryList( parent.id ) )
-      
-       listb.flatten 
+      val listb = lista.map(parent => parent :: getCategoryList(parent.id))
+
+      listb.flatten
     }
 
     def delCategoryById(id: String): Int = {
@@ -212,25 +213,23 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       categoryMongoClient.find(q).headOption
     }
 
-    
-    def saveLocation(location: LocationForm): Option[LocationForm] ={
-      
-       getLocationByName(location.name) match {
+    def saveLocation(location: LocationForm): Option[LocationForm] = {
+
+      getLocationByName(location.name) match {
         case None => {
           val id = new ObjectId().toString
-          val location2 = location.copy(id = Some(id) )
+          val location2 = location.copy(id = Some(id))
           locationMongoClient.insert(location2)
           Some(location2)
         }
         case Some(c) => None
       }
-       
-      
+
     }
-    
-    def updateLocation(location: LocationForm): Option[LocationForm] ={
-      
-     getLocationById(location.id.getOrElse("")) match {
+
+    def updateLocation(location: LocationForm): Option[LocationForm] = {
+
+      getLocationById(location.id.getOrElse("")) match {
         case None => None
         case Some(c) => {
           val cbyName = getLocationByName(location.name)
@@ -245,45 +244,42 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
           }
         }
       }
-      
-    }
-    
-    def getLocationList(): List[LocationForm] ={
-       val q = MongoDBObject()
-       val lista =locationMongoClient.find(q)
-       lista.sortBy( (location:LocationForm) => location.name )
+
     }
 
-    
-    def delLocationById(id: String): Int ={
-       val q = MongoDBObject()
+    def getLocationList(): List[LocationForm] = {
+      val q = MongoDBObject()
+      val lista = locationMongoClient.find(q)
+      lista.sortBy((location: LocationForm) => location.name)
+    }
+
+    def delLocationById(id: String): Int = {
+      val q = MongoDBObject()
       q.put("_id", id)
       locationMongoClient.delete(q, WriteConcern.Normal)
     }
 
-    def getLocationById(id: String): Option[LocationForm] ={
-      
+    def getLocationById(id: String): Option[LocationForm] = {
+
       val q = MongoDBObject()
       q.put("_id", id)
       locationMongoClient.find(q).headOption
-      
+
     }
-    
-     def getLocationByName(name: String): Option[LocationForm] ={
-      
+
+    def getLocationByName(name: String): Option[LocationForm] = {
+
       val q = MongoDBObject()
       q.put("name", name)
       locationMongoClient.find(q).headOption
-      
+
     }
 
-     
-    
-    def savePhoto(photo: Photo): Option[Photo] ={
+    def savePhoto(photo: Photo): Option[Photo] = {
       val id = new ObjectId().toString
-      val photo2 = photo.copy( id = Some( id ))
-      photoMongoClient.insert ( photo2 )
-      Some( photo2 )
+      val photo2 = photo.copy(id = Some(id))
+      photoMongoClient.insert(photo2)
+      Some(photo2)
     }
 
     def updatePhoto(photo: Photo): Option[Photo] = {
@@ -303,13 +299,21 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       }
 
     }
-    
-    def getPhotoList(locationId: String ): List[Photo] ={
-      
+
+    def getPhotoList(locationId: String): List[Photo] = {
+
       val q = MongoDBObject()
       q.put("locationId", locationId)
       photoMongoClient.find(q)
-      
+
+    }
+
+    def getPhotoListByUserId(userId: String): List[Photo] = {
+
+      val q = MongoDBObject()
+      q.put("userId", userId)
+      photoMongoClient.find(q)
+
     }
 
     def delPhotoById(id: String): Int = {
@@ -318,16 +322,13 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       photoMongoClient.delete(q, WriteConcern.Normal)
     }
 
-    def getPhotoById(id: String): Option[Photo] ={
-       val q = MongoDBObject()
+    def getPhotoById(id: String): Option[Photo] = {
+      val q = MongoDBObject()
       q.put("_id", id)
       photoMongoClient.find(q).headOption
-      
+
     }
-    
-         
-         
-    
+
   }
 
 }

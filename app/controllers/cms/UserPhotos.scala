@@ -16,28 +16,33 @@ import models.v2.PhotoUser
 import play.api.libs.json.Json
 import models.LocationForm
 
-object Photos extends Controller with AuthTrait  with services.FileUploadService{
+object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait with services.FileUploadService {
 
   val log = LoggerFactory.getLogger(Locations.getClass())
 
   val service = base.CmsServiceRegistry.cmsService
- 
+   
+  
 
-  def photoUserList = service.getPhotoUsers()
+  def userId( session :Session) = session.get("userId").getOrElse("")
+  
+  def avatar( session: Session ) = session.get("avatar").getOrElse("")
+  
+  def usertype( session: Session ) = session.get("userType").getOrElse("")
+  
 
   def location(locationId: String) = service.getLocationById(locationId)
 
-  def list(locationId: String) = isAuthenticated { username =>
+  def list() = isAuthenticated { username =>
     implicit request =>
-      location(locationId) match {
-        case None => NotFound
-        case Some(location) => {
-          val list = service.getPhotoList(locationId)
+      
+        
+          val list = service.getPhotoListByUserId(  userId(session) )
           //Ok( Json.toJson(list))
 
-          Ok(views.html.cms.photos(locationId, list))
-        }
-      }
+          Ok(views.html.cms.uesrPhotos( list))
+       
+      
 
   }
 
@@ -46,23 +51,27 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
       location(locationId) match {
         case None => NotFound
         case Some(location) => {
-          implicit val userList = service.getPhotoUsers()
+          
           implicit val locationImpl = location
-          Ok(views.html.cms.photoEdit(None, PhotoHelp.form.fill(Photo(locationId = locationId))))
+          Ok(views.html.cms.userPhotoEdit(None, PhotoHelp.form.fill(Photo(locationId = locationId))))
         }
       }
   }
 
+ 
+
+ 
+
   def save(locationId: String) = isAuthenticated { username =>
     implicit request =>
-      implicit val userList = service.getPhotoUsers()
+     
       implicit val locationImpl = location(locationId).get
 
       PhotoHelp.form.bindFromRequest.fold(
         errors => {
 
           log.debug("errors={}", errors)
-          Ok(views.html.cms.photoEdit(None, errors))
+          Ok(views.html.cms.userPhotoEdit(None, errors))
         },
         photo => {
 
@@ -71,48 +80,48 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
           if (photo.atHomepage && filename != "") {
             service.updateLocation(locationImpl.copy(photo = "266_" + filename))
           }
-          val photo2 = service.savePhoto(photo.copy(imgsrc = filename))
+          val photo2 = service.savePhoto(photo.copy(imgsrc = filename , userId = userId(session ) , username = username,
+          avatar =avatar( session) , atHomepage = false  , uploadtype= usertype( session)    )    )
 
           //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
-          Redirect(routes.Photos.list(locationId))
+          Redirect(routes.UserPhotos.list())
         })
   }
-
-
 
   def edit(id: String) = isAuthenticated { username =>
     implicit request =>
       service.getPhotoById(id) match {
-        case None => NotFound
-        case Some(photo) => {
-          implicit val userList = service.getPhotoUsers()
+        
+        case Some(photo)  if( photo.userId == userId( session) )=> {
+        
           implicit val locationImpl = location(photo.locationId).get
 
-          Ok(views.html.cms.photoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "", imgsrc = photo.imgsrc))
+          Ok(views.html.cms.userPhotoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "", imgsrc = photo.imgsrc))
         }
+        case _  => NotFound
       }
   }
 
   def update(id: String) = isAuthenticated { username =>
     implicit request =>
       service.getPhotoById(id) match {
-        case None => NotFound
-        case Some(originPhoto) => {
+      
+        case Some(originPhoto) if ( originPhoto.userId == userId( session))=> {
           val locationId = originPhoto.locationId
 
-          implicit val userList = service.getPhotoUsers()
+         
           implicit val locationImpl = location(locationId).get
 
           PhotoHelp.form.bindFromRequest.fold(
             errors => {
               log.debug("errors={}", errors)
-              Ok(views.html.cms.photoEdit(None, errors))
+              Ok(views.html.cms.userPhotoEdit(None, errors))
             },
             photo => {
               val filename: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseFile(_, photo.atHomepage) }).getOrElse("")
 
               val updatePhoto = if (filename != "") {
-                removeFile(originPhoto.imgsrc ,originPhoto.atHomepage )
+                removeFile(originPhoto.imgsrc ,  originPhoto.atHomepage)
                 if (photo.atHomepage) {
                   service.updateLocation(locationImpl.copy(photo = "266_" + filename))
                 }
@@ -126,41 +135,36 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
               }
 
               log.debug("updatePhoto={}", updatePhoto)
-              val photo2 = service.updatePhoto(updatePhoto)
+              
+              val photo2 = service.updatePhoto(updatePhoto.copy(  userId = userId(session ) , username = username,
+          avatar =avatar( session) , atHomepage = false  , uploadtype= usertype( session)  ))
 
               //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
-              Redirect(routes.Photos.list(locationId))
+              Redirect(routes.UserPhotos.list())
             })
 
         }
+          case _ => NotFound
       }
 
   }
 
-
-
  
+
+
 
   def del(id: String) = isAuthenticated { username =>
     implicit request =>
       val photo = service.getPhotoById(id)
       photo match {
-        case None => NotFound
-        case Some(p) => {
-          if (p.atHomepage) {
-            val locationTmp = location(p.locationId).get
-            if (locationTmp != None && locationTmp.photo.contains(p.imgsrc)) {
-              service.updateLocation(locationTmp.copy(photo = ""))
-            }
-          }
+        case Some(p) if( p.userId  == userId( session ) ) => {
           if (service.delPhotoById(id) == 1) {
             //删除实际的文件
-
             removeFile(p.imgsrc , p.atHomepage)
           }
-
-          Redirect(routes.Photos.list(p.locationId))
+          Redirect(routes.UserPhotos.list())
         }
+          case _ => NotFound
       }
   }
 

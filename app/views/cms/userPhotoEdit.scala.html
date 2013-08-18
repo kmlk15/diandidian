@@ -1,4 +1,4 @@
-@( id: Option[String],form: Form[models.Photo] , msg: String="" , imgsrc: String = "")(implicit location: LocationForm , userList: List[models.v2.PhotoUser] , session: Session )
+@( id: Option[String],form: Form[models.Photo] , msg: String="" , imgsrc: String = "")(implicit location: LocationForm ,  session: Session )
 
 @title = @{ if(  id == None) "CMS Photo Add" else  "CMS Photo Edit"  }
 
@@ -11,7 +11,7 @@
 }
 
 
-@views.html.cms.main( title.toString  ){
+@views.html.cms.usermain( title.toString  ){
 
   <div class="row" > 
 	  <div class="col-lg-offset-2 col-lg-6">
@@ -22,13 +22,12 @@
 	  </div>
   </div>
     
-@helper.form(action = (if(!id.isDefined) controllers.cms.routes.Photos.save( location.id.get )  else controllers.cms.routes.Photos.update( id.get )) , 'class -> "form-horizontal", 'enctype -> "multipart/form-data") {
-<input type="hidden"  name="uploadtype"  value="admin"  />
-
-     @helper.inputText(form("locationId") , 'class -> "form-control" , '_label -> "地点" ,'readonly -> "true" )
-    @helper.select(form("userId") , userList.map( u=> u.id -> u.userName ) , 'class -> "form-control" , '_label -> "用户" )
+@helper.form(action = (if(!id.isDefined) controllers.cms.routes.UserPhotos.save( location.id.get )  else controllers.cms.routes.UserPhotos.update( id.get )) , 'class -> "form-horizontal", 'enctype -> "multipart/form-data") {
+<input type="hidden"   name="userId"   value ='@session.get("userId").getOrElse("")' />
+    @helper.inputText(form("locationId") , 'class -> "form-control" , '_label -> "地点" ,'readonly -> "true" )
+   
 	
-	@helper.checkbox( form("atHomepage"), 'class -> "form-control" , '_label -> "显示在首页上")  
+	
 	@if( imgsrc != ""){
 	 
 	 <div class="form-group  " id="imgsrc_field">

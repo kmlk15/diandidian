@@ -58,7 +58,7 @@ var detailname = "@name";
 						</div>
 						<div class="col col3">
 							<span class="add-bag">加入背包</span>
-							<span class="upload-photo">上传照片</span>
+							<span class="upload-photo">@if( session.get("userId").getOrElse("")!=""){<a href="" data-bind="{attr: { href: addPhotohref }}" >上传照片</a>}else{ 上传照片 } </span>
 						</div>
 					</div><!-- end user-content -->
 					<div class="basic-info">

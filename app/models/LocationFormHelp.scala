@@ -177,11 +177,11 @@ object LocationFormHelp {
 }
 
 /**
- * 1 管理上传的 picture
+ * 1 管理员上传的 picture
  * 2 用户上传的 picture
  */
-case class Photo(id: Option[String]=None , locationId: String ="", userId: String="" , 
-    imgsrc: String="", imgurl: String="", brief: String="" , uploadtype: String="admin" , atHomepage:Boolean = false )
+case class Photo(id: Option[String]=None , locationId: String ="", userId: String="" , username:String = "" , avatar: String ="",
+    imgsrc: String="", imgurl: String="", brief: String="" , uploadtype: String="" , atHomepage:Boolean = false )
 
 object PhotoHelp{
   
@@ -195,10 +195,12 @@ object PhotoHelp{
         
       "locationId" -> text,
       "userId" -> text ,
+      "username" -> default(text , ""),
+      "avatar" -> default(text ,""),
       "imgsrc" -> default(text ,"") ,
       "imgurl" -> text,
       "brief" -> text,
-      "uploadtype" -> default(text,"admin") ,
+      "uploadtype" -> default(text,"") ,
       "atHomepage" -> default(boolean, false)
       )( Photo.apply )( Photo.unapply)
    }

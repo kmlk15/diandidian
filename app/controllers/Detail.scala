@@ -45,7 +45,8 @@ object Detail extends Controller   {
                "&city=" +URLEncoder .encode(location.address.city, "utf-8")  ),
            "districthref" -> ("/home?country="+ URLEncoder .encode(location.address.country, "utf-8") + 
                "&city=" +URLEncoder .encode(location.address.city, "utf-8")  +
-               "&district=" + URLEncoder .encode(location.address.district, "utf-8")  )
+               "&district=" + URLEncoder .encode(location.address.district, "utf-8")  ),
+           "addPhotohref" -> ( "/cms/userphoto/add/" + location.id.get)
           
           ) )
            log.debug( Json.prettyPrint( jsVal2))
