@@ -3,7 +3,13 @@ function loadHomeAttractions( query) {
 		var attractionListHtml = '';
 		 
 		if (json.length > 0) {
-			attractionListHtml += '<h2>' + query.country + ' &gt; ' + query.city+'</h2><ul class="clearfix">';
+			 //alert( query.country == null )
+			if( query.country == null && query.city==null){
+				attractionListHtml += '<h2>  </h2>';
+			}else{
+				attractionListHtml += '<h2>' + query.country + ' &gt;' + query.city+'</h2>';
+			}
+			attractionListHtml += '<ul class="clearfix">';
 		 
 			$.each(json, function(index, item){
 				 
@@ -39,7 +45,9 @@ function loadHomeAttractions( query) {
 			});
 			attractionListHtml += '</ul>';
 		}else{
-			 
+//			attractionListHtml += '<h2>' + query.country + ' &gt;' + query.city+'</h2>';
+//			attractionListHtml += '<ul class="clearfix">';
+//			attractionListHtml += '</ul>';
 		}
 		
 		$("#attractions-list").html(attractionListHtml);

@@ -24,7 +24,7 @@ var detailname = "@name";
 			</div><!-- end sidebar -->
 			<div id="main">
 				<div id="attraction-detal">
-					<div class="breadcrumbs"><a href="#"><span data-bind="text: address.city" ></span></a> &gt; <a href="#"><span data-bind="text: address.district" ></span></a> &gt; <a href="#"><span data-bind="text: name" ></span></a></div>
+					<div class="breadcrumbs"><a href="" data-bind="{attr: { href: cityhref}}"><span data-bind="text: address.city" ></span></a> &gt; <a href=""   data-bind="{attr: { href: districthref}}" ><span data-bind="text: address.district" ></span></a> &gt; <a href="#"><span data-bind="text: name" ></span></a></div>
 					<div class="gallery">
 						<img class="detail" src="" width="780" height="435" alt=""   data-bind="attr: { src: pictures.planning, alt: name }"  />
 						<div class="thumbnails">

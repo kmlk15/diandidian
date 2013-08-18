@@ -8,6 +8,7 @@ import models.LocationJsonHelp.locationFmt
 import models.LocationFormHelp.locationFormFmt
 import play.api.libs.json.Json
 import org.slf4j.LoggerFactory
+import java.net.URLEncoder
 
 
 object Detail extends Controller   {
@@ -39,8 +40,14 @@ object Detail extends Controller   {
          if(  path(jsVal) .isEmpty   ){
           val jsVal2 =  jsVal.++ (  Json.obj( "pictures" ->
           Json.obj( "thumbnail" -> Json.toJson( List[String]()) ,   
-            "planning" ->  ("http://diandidian.s3-us-west-1.amazonaws.com/" + location.photo.replace("266_", "780_" ) )  ) 
-              ) )
+            "planning" ->  ("http://diandidian.s3-us-west-1.amazonaws.com/" + location.photo.replace("266_", "780_" ) )  ) ,
+           "cityhref" -> ("/home?country="+ URLEncoder .encode(location.address.country, "utf-8") + 
+               "&city=" +URLEncoder .encode(location.address.city, "utf-8")  ),
+           "districthref" -> ("/home?country="+ URLEncoder .encode(location.address.country, "utf-8") + 
+               "&city=" +URLEncoder .encode(location.address.city, "utf-8")  +
+               "&district=" + URLEncoder .encode(location.address.district, "utf-8")  )
+          
+          ) )
            log.debug( Json.prettyPrint( jsVal2))
            Ok( jsVal2 ) 
          }else{

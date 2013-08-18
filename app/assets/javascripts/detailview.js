@@ -13,6 +13,7 @@ $(function() {
 			//  
 			 
 			 var viewModel = ko.mapping.fromJS( json );
+			 
 			 ko.applyBindings(viewModel)
 		});
 		
