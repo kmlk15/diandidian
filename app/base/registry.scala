@@ -16,3 +16,6 @@ object LoginServiceRegistry extends LoginServiceComponentImpl
 
 
 object CmsServiceRegistry extends CmsServiceComponentImpl
+
+
+object BagServiceRegistry extends BagServiceComponentImpl

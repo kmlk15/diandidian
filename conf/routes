@@ -24,6 +24,12 @@ GET    /login/callback/twitter  				 controllers.LoginTwitter.twitterCallback()
 GET    /login/facebook					controllers.LoginFacebook.facebook()
 GET    /login/callback/facebook  				 controllers.LoginFacebook.facebookCallback()
 
+GET    /bag/add		controllers.Bags.add(locationName)
+
+GET   /bag/del				controllers.Bags.del( locationName )
+
+GET  /bag/get									controllers.Bags.get()
+
 
 
 GET     /test                       controllers.api.LocationEndpoints.test

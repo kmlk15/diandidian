@@ -107,6 +107,8 @@ $(function() {
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
 		var titleText = $(this).prevAll(".title").find("h3").text();
+		var locationName = titleText.trim()
+		$.getJSON("/bag/add",{locationName:locationName} , function( data ) { alert( data )})
 		var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del"><a href="#"></a></td></tr></table></li>';
 		$ul.append(itemHtml);
 		updateBagCount($ul);
