@@ -52,7 +52,9 @@ trait CmsServiceComponent {
     def updatePhoto(photo: Photo): Option[Photo]
 
     def getPhotoList(locationId: String): List[Photo]
-
+    
+    def getAdminUploadPhotoList(locationId: String): List[Photo] 
+    
     def getPhotoListByUserId(userId: String): List[Photo]
 
     def delPhotoById(id: String): Int
@@ -308,6 +310,16 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
 
     }
 
+    def getAdminUploadPhotoList(locationId: String): List[Photo] = {
+
+      val q = MongoDBObject()
+      q.put("locationId", locationId)
+      q.put("uploadtype" , "admin" )
+      photoMongoClient.find(q)
+
+    }
+      
+    
     def getPhotoListByUserId(userId: String): List[Photo] = {
 
       val q = MongoDBObject()

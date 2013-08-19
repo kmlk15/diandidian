@@ -32,7 +32,7 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
       location(locationId) match {
         case None => NotFound
         case Some(location) => {
-          val list = service.getPhotoList(locationId)
+          val list = service.getAdminUploadPhotoList(locationId)
           //Ok( Json.toJson(list))
 
           Ok(views.html.cms.photos(locationId, list))
@@ -71,7 +71,11 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
           if (photo.atHomepage && filename != "") {
             service.updateLocation(locationImpl.copy(photo = "266_" + filename))
           }
-          val photo2 = service.savePhoto(photo.copy(imgsrc = filename))
+           val photoUser = service.getPhotoUserById(   photo.userId).getOrElse( PhotoUser())
+          val photo2 = service.savePhoto(photo.copy(imgsrc = filename ,
+               username = photoUser.userName ,
+               avatar =  photoUser.userId   
+          ))
 
           //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
           Redirect(routes.Photos.list(locationId))
@@ -101,6 +105,9 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
           val locationId = originPhoto.locationId
 
           implicit val userList = service.getPhotoUsers()
+          
+
+                     
           implicit val locationImpl = location(locationId).get
 
           PhotoHelp.form.bindFromRequest.fold(
@@ -110,7 +117,7 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
             },
             photo => {
               val filename: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseFile(_, photo.atHomepage) }).getOrElse("")
-
+            	
               val updatePhoto = if (filename != "") {
                 removeFile(originPhoto.imgsrc ,originPhoto.atHomepage )
                 if (photo.atHomepage) {
@@ -124,9 +131,13 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
 
                 photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc)
               }
+              val photoUser = service.getPhotoUserById( photo.userId).getOrElse( PhotoUser())
 
-              log.debug("updatePhoto={}", updatePhoto)
-              val photo2 = service.updatePhoto(updatePhoto)
+              	val updatePhoto2 = updatePhoto.copy( username = photoUser.userName , avatar =  photoUser.userId    )
+
+              log.debug("updatePhoto={}", updatePhoto2)
+              
+              val photo2 = service.updatePhoto(updatePhoto2)
 
               //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
               Redirect(routes.Photos.list(locationId))

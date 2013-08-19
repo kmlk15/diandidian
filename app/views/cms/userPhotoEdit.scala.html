@@ -24,8 +24,14 @@
     
 @helper.form(action = (if(!id.isDefined) controllers.cms.routes.UserPhotos.save( location.id.get )  else controllers.cms.routes.UserPhotos.update( id.get )) , 'class -> "form-horizontal", 'enctype -> "multipart/form-data") {
 <input type="hidden"   name="userId"   value ='@session.get("userId").getOrElse("")' />
-    @helper.inputText(form("locationId") , 'class -> "form-control" , '_label -> "地点" ,'readonly -> "true" )
-   
+<input type="hidden"  name="locationId"  value="@location.id.get"  />
+
+  <div class="form-group  " id="locationName_field">
+    <label for="locationId" class="col-lg-2 control-label">地点</label>
+    <div class="col-lg-6">
+    <input type="text" id="locationName" name="locationName" value="@location.name" class="form-control" readonly="true">
+    </div>
+  </div>   
 	
 	
 	@if( imgsrc != ""){
