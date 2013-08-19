@@ -38,7 +38,19 @@ object LocationEndpoints extends Controller {
     
     val city = request.getQueryString("city").getOrElse("")
     val district = request.getQueryString("district").getOrElse("")
-    val locationsList  = if( city!="" && district  !=""){ ls.list(city , district)}else if(city != ""){ ls.list(city)}else{ ls.list()}
+    val ids = request.getQueryString("ids").getOrElse("")
+    val locationsList = if (city != "" && district != "") {
+      ls.list(city, district)
+    } else if (city != "") {
+      ls.list(city)
+    } else if( ids != "" ){
+      log.debug( "ids={}", ids )
+      val idsArr = ids.split(",")
+      idsArr.toSet.flatMap( ( id: String ) =>  ls.getById( id) )
+      
+    } else {
+      ls.list()
+    }
     
     val locations = locationsList map {location =>
       Json.toJson( location)

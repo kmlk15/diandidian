@@ -19,7 +19,7 @@ trait LocationServiceComponent {
     
     def search(q: String): List[Location]
     
-    def getById(id: String): Location
+    def getById(id: String): Option[ Location ]
 
     def getByName(name: String): Option[Location]
 
@@ -79,9 +79,10 @@ trait LocationServiceComponentImpl extends LocationServiceComponent {
      }
    }
    
-     def getById(id: String): Location = {
+     def getById(id: String): Option[ Location ] = {
       val q = MongoDBObject()
-      mongoClient.findOne(q)
+      q.put("_id" , id )
+      mongoClient.find(q).headOption
     }
 
     def getByName(name: String): Option[Location] = {

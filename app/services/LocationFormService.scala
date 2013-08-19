@@ -20,7 +20,7 @@ trait LocationFormServiceComponent {
     
     def search(q: String): List[LocationForm]
     
-    def getById(id: String): LocationForm
+    def getById(id: String): Option[ LocationForm ]
 
     def getByName(name: String): Option[LocationForm]
 
@@ -80,9 +80,10 @@ trait LocationFormServiceComponentImpl extends LocationFormServiceComponent {
      }
    }
    
-     def getById(id: String): LocationForm = {
-      val q = MongoDBObject()
-      mongoClient.findOne(q)
+     def getById(id: String): Option[ LocationForm ] = {
+      val q = MongoDBObject(  )
+      q.put("_id" , id )
+      mongoClient.find(q).headOption
     }
 
     def getByName(name: String): Option[LocationForm] = {
