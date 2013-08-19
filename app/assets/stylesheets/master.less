@@ -149,7 +149,7 @@ ul, ol {
 	overflow: auto;
 	float: right;
 	width: 309px;
-	padding-top: 94px;
+	padding-top: 64px;
 	position: fixed;
 	top: 60px;
 	right: 0;
@@ -536,8 +536,9 @@ ul, ol {
 		}
 		.accordion {
 			.accordion-header {
+				margin-top: -1px;
 				border-bottom: none;
-				border-top: 1px dashed @myBagItemDashSeparateColor;
+				border-top: 1px dashed @greyDashBorder;
 				background: url(/assets/images/accordion-iteam-icon.png) 11px 50% no-repeat;	
 				color: @textGrey;
 				
@@ -651,9 +652,9 @@ ul, ol {
 	}
 }
 #attraction-detal {
-	margin: 0 auto;
+	margin: 30px auto 10px  auto;
 	padding: 14px 0 0 0;
-	width: 840px;
+	width: 828px;
 	background: @white;
 	border: 1px solid @myBagItemDashSeparateColor;
 	.rounded-corners(0, 8px, 8px, 0);
