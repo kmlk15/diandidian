@@ -10,6 +10,7 @@ import play.api.mvc.Request
 import models.LocationForm
 import play.api.mvc.Cookie
 import org.bson.types.ObjectId
+import models.BagHelp.bagFmt
 
 /**
  *
@@ -43,7 +44,7 @@ object Bags extends Controller {
   val locationService = base.locationFormRegistry.locationService
 
   val bagIdCookieName = "tmpbagId"
-    
+
   def add(locationName: String) = Action { implicit request =>
     def userAdd(location: LocationForm): json.JsObject = {
 
@@ -52,45 +53,46 @@ object Bags extends Controller {
       result
     }
 
-    def anonymousAdd(location: LocationForm):(String, json.JsObject) = {
-        val statusName = ""
-    	val planName = ""
-       val (bagId , flag ) = request.cookies.get(bagIdCookieName) match {
-        case None => 
+    def anonymousAdd(location: LocationForm): (String, json.JsObject) = {
+      val typ = "anonymous"
+      val statusName = ""
+      val planName = ""
+      val (bagId, flag) = request.cookies.get(bagIdCookieName) match {
+        case None =>
           val bagId = (new ObjectId()).toString()
-          
+
           //如何 写cookie?
-         
-        (bagId ,   bagService.addLocation( bagId ,statusName, planName, location) )
-          
+
+          (bagId, bagService.addLocation(bagId, typ, statusName, planName, location))
+
         case Some(bagIdcookie) =>
-          val bagId  = getBagId(bagIdcookie)
-         (bagId , bagService.addLocation(bagId, statusName,planName, location) )
-    	}
-    	
-    	if (flag) {
-            val data = Json.obj("name" -> location.name, "id" -> location.id.get)
-            val result = Json.obj("success" -> true, "data" -> data)
-            (bagId  , result )
-          } else {
-            val result = Json.obj("success" -> false, "msg" -> "")
-             (bagId  , result )
-          }
+          val bagId = getBagId(bagIdcookie)
+          (bagId, bagService.addLocation(bagId, typ, statusName, planName, location))
+      }
+
+      if (flag) {
+        val data = Json.obj("name" -> location.name, "id" -> location.id.get)
+        val result = Json.obj("success" -> true, "data" -> data)
+        (bagId, result)
+      } else {
+        val result = Json.obj("success" -> false, "msg" -> "")
+        (bagId, result)
+      }
 
     }
 
-      locationService.getByName(locationName) match {
-      case None => Ok ( Json.obj("success" -> false, "msg" -> "该地点不存在") )
+    locationService.getByName(locationName) match {
+      case None => Ok(Json.obj("success" -> false, "msg" -> "该地点不存在"))
       case Some(location) => {
         session.get("userId") match {
           case None =>
-            val( bagId , result ) = anonymousAdd(location)
-            Ok( result ).withCookies( Cookie( bagIdCookieName, cookieVal( bagId)) )
-          case Some(userId) => Ok ( userAdd(location) )
+            val (bagId, result) = anonymousAdd(location)
+            Ok(result).withCookies(Cookie(bagIdCookieName, cookieVal(bagId)))
+          case Some(userId) => Ok(userAdd(location))
         }
       }
     }
-    
+
   }
 
   /**
@@ -116,12 +118,12 @@ object Bags extends Controller {
     }
 
     def anonymousDel(location: LocationForm): json.JsObject = {
-    		val statusName = ""
-      request.cookies.get( bagIdCookieName) match {
+      val statusName = ""
+      request.cookies.get(bagIdCookieName) match {
         case None => Json.obj("success" -> false, "msg" -> "数据不存在")
         case Some(bagIdcookie) =>
           val planName = ""
-          bagService.removeLocation(getBagId(bagIdcookie),statusName, planName, location)
+          bagService.removeLocation(getBagId(bagIdcookie), statusName, planName, location)
 
           val data = Json.obj("name" -> location.name, "id" -> location.id.get)
           val result = Json.obj("success" -> true, "data" -> data)
@@ -143,8 +145,28 @@ object Bags extends Controller {
   }
 
   def get() = Action { implicit request =>
-    val locationNameList = (1 to 10).map(i => "location" + i).toList
-    Ok(Json.toJson(locationNameList))
+    val bagId: String = session.get("userId") match {
+      case Some(userId) => userId
+      case None => request.cookies.get(bagIdCookieName) match {
+        case None => ""
+        case Some(cookie) => getBagId(cookie)
+      }
+    }
+
+      bagService.get(bagId) match{
+        case None =>  Ok( views.html.bagEmpty ( ))
+        case Some( bag ) if (bag.typ == "user" )=>  Ok( views.html.bagUser( bag))
+        case Some( bag ) => Ok( views.html.bagAnonymous( bag ))
+        
+      }
+      
+    // 返回  JSON 数据
+    // 由页面的脚本 去处理吗？
+    // 还是 这里 直接 生成  html 片段？
+    // 直接 生成 便于 测试， 不需要 讨厌的  js 生成 html 代码
+   
+    
+
   }
 
 }

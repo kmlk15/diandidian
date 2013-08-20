@@ -1,0 +1,44 @@
+@( bag: models.Bag)
+@( ) 
+@script={
+ 
+
+}
+@main( "empty" , script){
+
+	<div id="content">
+		<div id="sidebar">
+<div id="my-bag">
+					<h2>我的背包:</h2>
+ 				<div class="accordion">
+ 				@for( statusTuple <- bag.map ){
+						 <h3 class="accordion-header"   style="display:none">@statusTuple._2.name</h3>
+						<div class="accordion accordion-content">
+						@for( planTuple <- statusTuple._2.map ){
+							<h4 class="accordion-header"    style="display:none" >@planTuple._2.name</h4>
+							<div class="accordion-content clearfix">
+								<ul>
+								@for( simpleLocation <- planTuple._2.list   ){
+								<li> 
+								<table cellpadding="0" cellspacing="0">
+								<tbody><tr>
+								<td>@simpleLocation.name</td>
+								<td class="del"><a href="#" id="@simpleLocation.id"></a></td>
+								</tr></tbody></table>
+								</li>
+								}
+								</ul>
+								 
+							</div>
+							} 
+						</div>
+					 }
+ 
+					</div><!-- end accordion -->
+				</div><!-- end my-bag -->
+</div>
+<div id="main">
+@bag
+</div>
+</div>
+}
