@@ -26,7 +26,7 @@ GET    /login/callback/facebook  				 controllers.LoginFacebook.facebookCallback
 
 GET    /bag/add		controllers.Bags.add(locationName)
 
-GET   /bag/del				controllers.Bags.del( locationName )
+GET   /bag/del				controllers.Bags.del( locationId )
 
 GET  /bag/get									controllers.Bags.get()
 

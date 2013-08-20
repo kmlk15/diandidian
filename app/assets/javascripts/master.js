@@ -103,35 +103,56 @@ $(function() {
 	
 	//home page to add to bag, you should change to use backend to add
 	$("#attractions-list").on('click',"ul li .add-bag", function(e) {
+		var thistag = this 
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
 		var titleText = $(this).prevAll(".title").find("h3").text();
 		var locationName = titleText.trim()
-		$.getJSON("/bag/add",{locationName:locationName} , function( data ) { alert( data )})
-		var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del"><a href="#"></a></td></tr></table></li>';
-		$ul.append(itemHtml);
-		updateBagCount($ul);
-		//searchBagItem($ul,'');
-		$(this).next(".added-bag").css("display", "block");
-		$(this).css("display", "none");
+		$.getJSON("/bag/add",{locationName:locationName} , function( result ) { 
+			if( result.success){
+				var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del" ><a href="#"  id="' + result.data.id +'"></a></td></tr></table></li>';
+				$ul.append(itemHtml);
+				updateBagCount($ul);
+				//searchBagItem($ul,'');
+				$(thistag).next(".added-bag").css("display", "block");
+				$(thistag).css("display", "none");
+			}else{
+				alert( result.msg )
+			}
+		})
+		
 		return false;
 	})
 	
 	//home page delete from bag, you should change to use backend to delete
 	$("#my-bag .accordion .accordion div ul ").on('click',"li table td.del a",function() {
-		var $itemDel = $(this).parents("li");
-		var $ul = $(this).parents("ul");
-		$itemDel.remove();
-		updateBagCount($ul);
+		var atag = this
+		var locationId = $(this).attr( "id")
+		 $.getJSON("/bag/del", {locationId: locationId} , function (result){
+			 if( result.success){
+				
+				 var $itemDel = $(atag).parents("li");
+					var $ul = $(atag).parents("ul");
+					$itemDel.remove();
+					updateBagCount($ul);
+					
+					// DETAIL PAGE 
+					if( $("#attraction-detal .user-content .col.col3 span.added").length > 0 ){
+						var e = $("#attraction-detal .user-content .col.col3 span.added")
+						e.text("加入背包")
+						e.removeClass("added")
+						e.addClass("add-bag")
+					}
+					
+			 }else{
+				 alert( result.msg)
+				 
+			 }
+			 
+		 })
 		
-		// DETAIL PAGE 
-		if( $("#attraction-detal .user-content .col.col3 span.added").length > 0 ){
-			var e = $("#attraction-detal .user-content .col.col3 span.added")
-			e.text("加入背包")
-			e.removeClass("added")
-			e.addClass("add-bag")
-		}
+		
 		
 		return false;
 	});
@@ -145,12 +166,25 @@ $(function() {
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
 		$ul = $($ul[0]);
-		var titleText = $("#attraction-detal   h2").text();
-		var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del"><a href="#"></a></td></tr></table></li>';
-		$ul.append(itemHtml);
-		updateBagCount($ul);
-		$(this).text("已在背包");
-		$(this).addClass("added");
+		var titleText = $("span#locationName").text();
+		var locationName = titleText.trim() 
+		var thistag = this
+		$.getJSON("/bag/add",{locationName:locationName} , function( result ) { 
+			if( result.success){
+				var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del" ><a href="#"  id="' + result.data.id +'"></a></td></tr></table></li>';
+				$ul.append(itemHtml);
+				updateBagCount($ul);
+				//searchBagItem($ul,'');
+				$(thistag).text("已在背包");
+				$(thistag).addClass("added");
+				
+			}else{
+				alert( result.msg )
+			}
+		})
+		
+		 
+		
 		return false;
 	});
 	

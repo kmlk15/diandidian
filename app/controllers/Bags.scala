@@ -12,18 +12,30 @@ import java.net.URLEncoder
 object Bags  extends Controller  {
 	val log = LoggerFactory.getLogger(Bags.getClass())
 	val  bagService = base.BagServiceRegistry.bagService
-	
+	val locationService = base.locationFormRegistry.locationService
  
 	def add( locationName: String ) = Action{ implicit request =>
+	   locationService.getByName( locationName) match{
+	    case None =>   Ok( Json.obj("success"->false, "msg"-> "该地点不存在" ) )
+	    case Some( location ) =>{
+	      val data = Json.obj("name" -> locationName , "id" -> location.id.get)
+	      val result = Json.obj( "success"->true , "data" -> data )
+	      Ok( result)
+	    }
+	  }
 	  
-	  val result = Json.obj(  "name" -> locationName)
-	  Ok( result)
+	 
 	}
 	
-	def del(locationName: String )  =  Action{ implicit request =>
-	  
-	  val result = Json.obj(  "name" -> locationName)
-	  Ok( result)
+	def del(locationId: String )  =  Action{ implicit request =>
+	  locationService.getById( locationId) match{
+	    case None =>   Ok( Json.obj("success"->false, "msg"-> "该地点不存在" ) )
+	     case Some( location ) =>{
+	      val data = Json.obj("name" -> location.name , "id" -> location.id.get)
+	      val result = Json.obj( "success"->true , "data" -> data )
+	      Ok( result)
+	    }
+	  }
 	}
 	
 	def get() = Action{ implicit request =>
