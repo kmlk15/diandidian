@@ -59,9 +59,16 @@ class BagServiceTest extends Specification {
 
       val locationlist2 = bag2.map.get(statusName).get.map.get(planName).get.list
       locationlist2.size === 2
-
+      
       locationlist2(0) === SimpleLocation(location2.id.get, location2.name, location2.enName)
-
+      
+      service.addLocation(bagId, typ, statusName, planName, location2)
+      
+      val locationlist22 = service.get(bagId).get.map.get(statusName).get.map.get(planName).get.list
+      locationlist22.size === 2
+      
+      
+      
       val removereuslt = service.removeLocation(bagId, statusName, planName, location1)
       removereuslt === true
 
