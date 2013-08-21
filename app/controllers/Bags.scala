@@ -13,6 +13,8 @@ import org.bson.types.ObjectId
 import models.BagHelp.bagFmt
 import models.BagHelp.defaultPlanName
 import models.BagHelp.defaultStatusName
+import models.Bag
+import play.api.mvc.Session
 
 /**
  *
@@ -50,6 +52,12 @@ object Bags extends Controller {
   def add(locationName: String) = Action { implicit request =>
     def userAdd(location: LocationForm): json.JsObject = {
 
+        val bagId = getBagId( session)
+      val statusName = defaultStatusName // TODO , 这个实际上是需要传递的 
+      val planName = defaultPlanName  // TODO 这个实际也是需要传递的
+      val typ="user"
+      bagService.addLocation(bagId, typ, statusName, planName, location)
+      
       val data = Json.obj("name" -> location.name, "id" -> location.id.get)
       val result = Json.obj("success" -> true, "data" -> data)
       result
@@ -89,7 +97,7 @@ object Bags extends Controller {
         session.get("userId") match {
           case None =>
             val (bagId, result) = anonymousAdd(location)
-            Ok(result).withCookies(Cookie(bagIdCookieName, cookieVal(bagId)))
+            Ok(result).withCookies(Cookie(bagIdCookieName, cookieVal(bagId) , Some(30*24*3600) ))
           case Some(userId) => Ok(userAdd(location))
         }
       }
@@ -100,8 +108,11 @@ object Bags extends Controller {
   /**
    * 这里需要做 安全认证
    */
-  def getBagId(cookie: Cookie) = {
+  def getBagId(cookie: Cookie) : String  = {
     cookie.value
+  }
+  def getBagId( session: Session ) : String ={
+    session.get("userId").getOrElse("")
   }
   /**
    * 需要增加 cookie 加密
@@ -113,7 +124,10 @@ object Bags extends Controller {
   def del(locationId: String) = Action { implicit request =>
 
     def userDel(location: LocationForm): json.JsObject = {
-
+      val bagId = getBagId( session)
+      val statusName = defaultStatusName // TODO , 这个实际上是需要传递的 
+      val planName = defaultPlanName  // TODO 这个实际也是需要传递的
+    		bagService.removeLocation(bagId, statusName, planName, location)
       val data = Json.obj("name" -> location.name, "id" -> location.id.get)
       val result = Json.obj("success" -> true, "data" -> data)
       result
@@ -147,16 +161,60 @@ object Bags extends Controller {
     Ok(result)
   }
 
+  /**
+   * 登陆状态 需要检测 是否  cookie 中有数据， 
+   * 是否有 在未登陆状态下 的背包数据， 如果有， 需要在 这里进行合并！
+   * 合并后，删除 cookie 中的数据 
+   */
   def get() = Action { implicit request =>
-    val bagId: String = session.get("userId") match {
-      case Some(userId) => userId
-      case None => request.cookies.get(bagIdCookieName) match {
-        case None => ""
-        case Some(cookie) => getBagId(cookie)
+    
+   val anonymousBagOption :Option[Bag]=  request.cookies.get(bagIdCookieName) match {
+        case None => None 
+        case Some(cookie) =>bagService.get ( getBagId(cookie) )
       }
+    
+    val bagOption  :Option[Bag] = session.get("userId") match {
+      case Some(userId) => {
+        bagService.get (userId ) match{
+          case None =>{  
+            anonymousBagOption match{
+              case None => anonymousBagOption
+              case Some(anonymousBag ) =>
+                bagService.del(anonymousBag.id )
+                bagService.save( anonymousBag.copy( id = userId ,  typ = "user") )
+            }
+            }
+          case Some( userBag)   => anonymousBagOption match{
+            case None => Some( userBag )
+            case Some( anonymousBag ) =>
+               //userBag ,   anonymousBag 都有内容 ， 需要进行合并
+            val typ="user"
+              
+              for{
+                bag <- anonymousBagOption
+                status <-  bag.map
+               plan <-  status._2.map
+               location <- plan._2.list
+              }{
+            	  bagService.addLocation(userId, typ, defaultStatusName, defaultPlanName,
+            			  LocationForm( id =Some( location.id) , name = location.name , enName = location.enName )
+            	  )
+              }
+             //清空 anonymousBag 的数据 
+              bagService.del( anonymousBag.id )
+              /**
+               * 如何 清除  cookie ? 
+               */
+              bagService.get( userId)
+          }
+         }
+       
+      }
+      case None => anonymousBagOption
+       
     }
 
-      bagService.get(bagId) match{
+     bagOption match{
         case None =>  Ok( views.html.bagEmpty ( ))
         case Some(bag) if( bag.isEmpty) => Ok( views.html.bagEmpty ( ))
         case Some( bag ) if (bag.typ == "user" )=>  Ok( views.html.bagUser( bag))

@@ -20,6 +20,10 @@ trait BagServiceComponent {
     def removeLocation(bagId: String, statusName: String, planName: String, location: LocationForm): Boolean
 
     def get(bagId: String): Option[Bag]
+    
+    def del( bagId: String ): Int
+    
+     def save( bag: Bag ):Option[Bag] 
   }
 
 }
@@ -53,7 +57,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
                   Plan(planName, List(simpleLocation))
                 case Some(plan) =>
                   if (plan.list.exists(tmp => tmp.id == simpleLocation.id)) {
-                    log.debug("重复 添加 location , 在 程序 正常的情况下， 不会进入到 这里 ")
+                    log.debug("重复 添加 location ,在合并 未登录用户 的数据  时， 会出现这种情况 ")
                     plan
                   } else {
                     val newList = simpleLocation :: plan.list
@@ -96,6 +100,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
                     log.debug(" simplelocation    不存在 ")
                     false
                   } else {
+                    log.debug(" 删除 location={}",simpleLocation )
                     val newplan = plan.copy(list = newList)
                     val newStatus = status.copy(map = status.map + (newplan.name -> newplan))
                     val newBag = bag.copy(map = bag.map + (statusName -> newStatus))
@@ -117,6 +122,16 @@ trait BagServiceComponentImpl extends BagServiceComponent {
       Some(bag)
 
     }
+    
+    def save( bag: Bag ):Option[Bag] ={
+      get( bag.id) match{
+        case None => 
+           bagsMongoClient.insert(bag)
+           Some( bag )
+        case Some( existBag) => None
+      }
+      
+    }
     def get(bagId: String): Option[Bag] = {
       if (bagId.trim() == "") {
         None
@@ -125,6 +140,13 @@ trait BagServiceComponentImpl extends BagServiceComponent {
         q.put("_id", bagId)
         bagsMongoClient.find(q).headOption
       }
+    }
+    
+    def del( bagId: String ): Int ={
+      
+        val q = MongoDBObject()
+        q.put("_id", bagId)
+        bagsMongoClient.delete(q, WriteConcern.Normal)
     }
   }
 }

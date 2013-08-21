@@ -133,6 +133,13 @@ $(function() {
 		var thistag = this
 		$.getJSON("/bag/add",{locationName:locationName} , function( result ) { 
 			if( result.success){
+				var needremove = $("#needremove", $ul) 
+				if( needremove.length !=0){
+					needremove.remove();
+					$("#my-bag .accordion h3").show() ;
+					$("#my-bag .accordion h4").show() ;
+				} 
+				
 				var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del" ><a href="#"  id="' + result.data.id +'"></a></td></tr></table></li>';
 				$ul.append(itemHtml);
 				updateBagCount($ul);
