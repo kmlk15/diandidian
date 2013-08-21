@@ -57,21 +57,7 @@ $(function() {
 	$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
 	
 	
-	//sidebar accordion
-	//initial state
-	var $initialOpenHeader = $("#sidebar .accordion .accordion-header:nth-child(1)");
-	$initialOpenHeader.addClass("state-active");
-	$initialOpenHeader.next(".accordion-content").show();
-	$("#sidebar .accordion .accordion-header").click(function(e) {
-		var $clickedHeader = $(this);
-		var $headerNextContent = $clickedHeader.next(".accordion-content");
-		if($headerNextContent.is(":visible")) {
-			$clickedHeader.removeClass("state-active");
-		} else {
-			$clickedHeader.addClass("state-active");
-		}
-		$headerNextContent.slideToggle(200);
-	});
+
 	
 	
 	//token input
@@ -113,10 +99,17 @@ $(function() {
 			if( result.success){
 				var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del" ><a href="#"  id="' + result.data.id +'"></a></td></tr></table></li>';
 				$ul.append(itemHtml);
-				updateBagCount($ul);
+				
 				//searchBagItem($ul,'');
 				$(thistag).next(".added-bag").css("display", "block");
 				$(thistag).css("display", "none");
+				var needremove = $("#needremove", $ul) 
+				if( needremove.length !=0){
+					needremove.remove();
+					$("#my-bag .accordion h3").show() ;
+					$("#my-bag .accordion h4").show() ;
+				} 
+				updateBagCount($ul);
 			}else{
 				alert( result.msg )
 			}
@@ -125,38 +118,7 @@ $(function() {
 		return false;
 	})
 	
-	//home page delete from bag, you should change to use backend to delete
-	$("#my-bag .accordion .accordion div ul ").on('click',"li table td.del a",function() {
-		var atag = this
-		var locationId = $(this).attr( "id")
-		 $.getJSON("/bag/del", {locationId: locationId} , function (result){
-			 if( result.success){
-				
-				 var $itemDel = $(atag).parents("li");
-					var $ul = $(atag).parents("ul");
-					$itemDel.remove();
-					updateBagCount($ul);
-					
-					// DETAIL PAGE 
-					if( $("#attraction-detal .user-content .col.col3 span.added").length > 0 ){
-						var e = $("#attraction-detal .user-content .col.col3 span.added")
-						e.text("加入背包")
-						e.removeClass("added")
-						e.addClass("add-bag")
-					}
-					
-			 }else{
-				 alert( result.msg)
-				 
-			 }
-			 
-		 })
-		
-		
-		
-		return false;
-	});
-	
+
 	
 	//detail page to add to bag, you should change to use backend to add, add you should avoid duplicate items
 	$("#attraction-detal .user-content .col.col3 span.add-bag").click(function(e) {

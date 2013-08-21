@@ -8,6 +8,7 @@ import models._
 import models.LocationJsonHelp._
 import org.bson.types.ObjectId
 import org.slf4j.LoggerFactory
+import models.BagHelp._
 
 class BagServiceTest extends Specification {
   val log = LoggerFactory.getLogger(classOf[BagServiceTest])
@@ -31,8 +32,9 @@ class BagServiceTest extends Specification {
       val service = LL.bagService
       val bagId = (new ObjectId()).toString
       val typ= "user"
-      val statusName = ""
-      val planName = ""
+      val statusName =  defaultStatusName
+      val planName =  defaultPlanName
+      
       val result = service.addLocation(bagId, typ, statusName, planName, location1)
 
       result === true
@@ -42,7 +44,7 @@ class BagServiceTest extends Specification {
       log.debug("bag={}", bag)
       bag.id === bagId
 
-      val status = bag.map("")
+      val status = bag.map( statusName)
       val plan = status.map(planName)
       val locationlist = plan.list
 

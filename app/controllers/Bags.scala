@@ -11,6 +11,8 @@ import models.LocationForm
 import play.api.mvc.Cookie
 import org.bson.types.ObjectId
 import models.BagHelp.bagFmt
+import models.BagHelp.defaultPlanName
+import models.BagHelp.defaultStatusName
 
 /**
  *
@@ -55,8 +57,8 @@ object Bags extends Controller {
 
     def anonymousAdd(location: LocationForm): (String, json.JsObject) = {
       val typ = "anonymous"
-      val statusName = ""
-      val planName = ""
+      val statusName =  defaultStatusName
+      val planName =defaultPlanName
       val (bagId, flag) = request.cookies.get(bagIdCookieName) match {
         case None =>
           val bagId = (new ObjectId()).toString()
@@ -118,13 +120,14 @@ object Bags extends Controller {
     }
 
     def anonymousDel(location: LocationForm): json.JsObject = {
-      val statusName = ""
+       val typ = "anonymous"
+       val statusName =  defaultStatusName
+       val planName =defaultPlanName
+      
       request.cookies.get(bagIdCookieName) match {
         case None => Json.obj("success" -> false, "msg" -> "数据不存在")
         case Some(bagIdcookie) =>
-          val planName = ""
           bagService.removeLocation(getBagId(bagIdcookie), statusName, planName, location)
-
           val data = Json.obj("name" -> location.name, "id" -> location.id.get)
           val result = Json.obj("success" -> true, "data" -> data)
           result
@@ -155,6 +158,7 @@ object Bags extends Controller {
 
       bagService.get(bagId) match{
         case None =>  Ok( views.html.bagEmpty ( ))
+        case Some(bag) if( bag.isEmpty) => Ok( views.html.bagEmpty ( ))
         case Some( bag ) if (bag.typ == "user" )=>  Ok( views.html.bagUser( bag))
         case Some( bag ) => Ok( views.html.bagAnonymous( bag ))
         
