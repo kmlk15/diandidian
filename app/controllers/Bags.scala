@@ -13,6 +13,7 @@ import org.bson.types.ObjectId
 import models.BagHelp.bagFmt
 import models.BagHelp.defaultPlanName
 import models.BagHelp.defaultStatusName
+import models.BagHelp.bagUpdateFromtoform
 import models.Bag
 import play.api.mvc.Session
 
@@ -162,8 +163,11 @@ object Bags extends Controller {
   }
 
   /**
+   * 这里 直接 生成  html 页面， 通过 bag.js 的 loadBag 方法， 获取到html 片段，并更新页面
+   * 生成的html 页面可以 独立调试  bag 操作有关的功能
+   * 
    * 登陆状态 需要检测 是否  cookie 中有数据， 
-   * 是否有 在未登陆状态下 的背包数据， 如果有， 需要在 这里进行合并！
+   * 是否 在未登陆状态下 增加了locatin ， 如果有， 需要在 这里进行合并！
    * 合并后，删除 cookie 中的数据 
    */
   def get() = Action { implicit request =>
@@ -213,22 +217,79 @@ object Bags extends Controller {
       case None => anonymousBagOption
        
     }
-
+        val mock =  request.getQueryString("mock").getOrElse("")
      bagOption match{
         case None =>  Ok( views.html.bagEmpty ( ))
         case Some(bag) if( bag.isEmpty) => Ok( views.html.bagEmpty ( ))
+        case Some( bag ) if (mock != "") => Ok( views.html.bagMock (  bag ))  // 用于mock
         case Some( bag ) if (bag.typ == "user" )=>  Ok( views.html.bagUser( bag))
         case Some( bag ) => Ok( views.html.bagAnonymous( bag ))
         
       }
-      
-    // 返回  JSON 数据
-    // 由页面的脚本 去处理吗？
-    // 还是 这里 直接 生成  html 片段？
-    // 直接 生成 便于 测试， 不需要 讨厌的  js 生成 html 代码
+
    
     
 
   }
 
+  /**
+   * bag 的更新
+   *  实际是 元组 (statusName , planName)  的 3 种改变
+   *  (statusName , planName) 可以唯一确定一个 地点集合， 如果存在 重名，如何处理？ 提示用户合并吗?
+   *  是否还需要用户 地点集合  分裂 ？这个操作 用户 可以通过 组合 + -  完成 （ 估计意义不大）
+   *  (statusName , planName)  -> (statusName , planName') 修改 plan 名字， 如从  "背包" -> "香港背包"
+   *  (statusName , planName)  -> (statusName' , planName) 修改 status 状态， 计划中 -> 准备去 -> 已去过
+   *  (statusName , planName)  -> (statusName' , planName') 2个都修改， 一般是不可能的， 也不需要这样的操作 ; 
+   *
+   * 如何保证只修改自己的？
+   * 以后 实际上 一次只修改个 plan
+   * 返回修改后的Bag?
+   * 或者 重新加载一次？
+   *
+   */
+  def update() = Action { implicit request =>
+    session.get("userId") match {
+      case Some(userId) => {
+        bagService.get(userId) match {
+          case Some(bag) =>
+            bagUpdateFromtoform.bindFromRequest().fold(
+              errors => { Ok("输入错误") },
+              change => {
+            	  val s = System.currentTimeMillis()
+                val fromMap = bag.map
+                
+                val fromstatus = fromMap.get(change.fromStatus).get
+                val tostatus = fromMap.get(change.toStatus).get
+                val fromplan = fromstatus.map.get(change.fromPlan).get
+                val toplan = fromplan.copy(name = change.toPlan)
+                //从原来的 status 中移除
+                val fromstatusChanged: models.Status = fromstatus.copy(  map = fromstatus.map - change.fromPlan )
+                //更新到 新的 status 中， 注意，这里有个问题， toplan.name 可能和已经存在的冲突？
+                val toStatusChanged = tostatus.copy( map = tostatus.map + ( toplan.name -> toplan ) )
+                
+                val toMap: Map[String, models.Status] = (fromMap - change.fromStatus - change.toStatus) +
+                	(change.toStatus -> toStatusChanged) +
+                	(change.fromStatus -> fromstatusChanged)
+                	
+                val tobag = bag.copy(map = toMap)
+                val e1 = System.currentTimeMillis()
+                log.debug("更新bag 时间: ={}" , ( e1 -s ))
+                if(bag != tobag ){
+                    bagService.update(tobag)
+                    tobag
+                  }else{
+                      log.debug(" 没有任何改变")
+                    tobag
+                  }
+            	  val e2 = System.currentTimeMillis()
+                log.debug("更新 bag  到 mongo 时间: ={}" , ( e2 -e1 ))
+                Ok( views.html.bagMock (  tobag )) 
+              })
+          case None => NotFound
+        }
+      }
+      case None => NotFound
+    }
+  }
+  
 }

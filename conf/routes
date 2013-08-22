@@ -26,10 +26,10 @@ GET    /login/callback/facebook  				 controllers.LoginFacebook.facebookCallback
 
 GET    /bag/add		controllers.Bags.add(locationName)
 
-GET   /bag/del				controllers.Bags.del( locationId )
+GET   /bag/del			controllers.Bags.del( locationId )
 
-GET  /bag/get									controllers.Bags.get()
-
+GET  /bag/get			controllers.Bags.get()
+GET  /bag/update		controllers.Bags.update()
 
 
 GET     /test                       controllers.api.LocationEndpoints.test

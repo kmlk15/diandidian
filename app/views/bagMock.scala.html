@@ -1,0 +1,51 @@
+@( bag: models.Bag)(implicit  statusNameList: List[String] = List( "计划中"  ,"准备去","已去过"  ))
+
+ 
+
+@script={
+
+
+} 
+@main( "登录用户 mock" , script){
+
+
+
+
+<div id="content">
+	
+	<div id="main">
+	@bag
+	<hr/>
+	
+@for( statusTuple <- bag.map ){
+	<h2>@statusTuple._2.name</h2>
+	@for( planTuple <- statusTuple._2.map ){
+	<h3>@planTuple._2.name</h3>
+	<form action="/bag/update">
+	<input type="hidden" name="fromStatus" value="@statusTuple._2.name" />
+	<input type="hidden" name="fromPlan" value="@planTuple._2.name" />
+		<select name="toStatus">
+		 @for( s <- statusNameList){
+			 <option value="@s" @if(s==statusTuple._2.name){selected="true"} else {}	>@s</option>
+		 }
+		 </select>
+		 <input type="text" name="toPlan" value="@planTuple._2.name">
+		 <input type="submit"  value="update" />
+		 </form>
+		
+
+		<table border="1">
+		@for( simpleLocation <- planTuple._2.list.reverse ){
+			<tr>
+				<td>@simpleLocation.name</td>
+			</tr>
+		}
+		</table>
+	}
+
+}
+
+	
+	</div>
+</div>
+}
