@@ -122,16 +122,22 @@ object Bags extends Controller {
     bagId
   }
 
-  def del(locationId: String) = Action { implicit request =>
+  def del(locationId: String , statusName: String =defaultStatusName,planName: String=defaultPlanName ) = Action { implicit request =>
 
     def userDel(location: LocationForm): json.JsObject = {
       val bagId = getBagId( session)
-      val statusName = defaultStatusName // TODO , 这个实际上是需要传递的 
-      val planName = defaultPlanName  // TODO 这个实际也是需要传递的
-    		bagService.removeLocation(bagId, statusName, planName, location)
-      val data = Json.obj("name" -> location.name, "id" -> location.id.get)
-      val result = Json.obj("success" -> true, "data" -> data)
+      
+    	val success = bagService.removeLocation(bagId, statusName, planName, location)
+    	if( success ){
+    	   val data = Json.obj("name" -> location.name, "id" -> location.id.get)
+      val result = Json.obj("success" -> success, "data" -> data)
       result
+    	}else{
+    	   val data = Json.obj("name" -> location.name, "id" -> location.id.get)
+      val result = Json.obj("success" -> success, "data" -> data  ,"msg" -> "msg" )
+      result
+    	}
+     
     }
 
     def anonymousDel(location: LocationForm): json.JsObject = {

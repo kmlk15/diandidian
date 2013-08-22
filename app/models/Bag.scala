@@ -82,6 +82,7 @@ object BagHelp {
 }
   
  def removeLocation(bag: Bag, statusName: String, planName: String, simpleLocationList: List[SimpleLocation]) : Bag={
+   log.debug("status={}, plan={} , remove location={}" , statusName, planName , simpleLocationList)
    bag.map.get(statusName) match {
             case None =>
               log.debug("status  不存在 ")
@@ -92,7 +93,8 @@ object BagHelp {
                   log.debug("plan   不存在 ")
                   bag
                 case Some(plan) =>
-                  val newList = plan.list.filterNot(  l => simpleLocationList.contains( l ))
+                  log.debug(" plan.list={}" ,  plan.list )
+                  val newList = plan.list.filter(  location => !simpleLocationList.contains( location ))
 
                   if (newList == plan.list) {
                     log.debug(" simplelocation    不存在 ")

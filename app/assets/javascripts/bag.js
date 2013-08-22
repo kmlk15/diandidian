@@ -29,8 +29,16 @@ $(function() {
 	//home page delete from bag, you should change to use backend to delete
 	$("#my-bag  ").on('click',".accordion .accordion div ul li table td.del a",function() {
 		var atag = this
+		var tdTag =$( atag).parent()
+		//alert( JSON.stringify (tdTag ) ) ;
 		var locationId = $(this).attr( "id")
-		 $.getJSON("/bag/del", {locationId: locationId} , function (result){
+		var statusName =  $("input[name=statusName]" , tdTag).attr("value")
+		var planName =$("input[name=planName]" , tdTag).attr("value")
+		var param =  {locationId: locationId ,statusName: statusName , planName: planName }
+		//alert( JSON.stringify (param ) ) ;
+		//return false;
+		
+		 $.getJSON("/bag/del", param,  function (result){
 			 if( result.success){
 				
 				 var $itemDel = $(atag).parents("li");

@@ -23,7 +23,11 @@
 								<table cellpadding="0" cellspacing="0">
 								<tbody><tr>
 								<td>@simpleLocation.name</td>
-								<td class="del"><a href="#" id="@simpleLocation.id"></a></td>
+								<td class="del">
+								<input type="hidden"  name="statusName"  value="@statusTuple._2.name" />
+								<input type="hidden"  name="planName"  value="@planTuple._2.name" />
+								<a href="#" id="@simpleLocation.id"></a>
+								</td>
 								</tr></tbody></table>
 								</li>
 								}
