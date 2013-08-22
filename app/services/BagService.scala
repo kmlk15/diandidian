@@ -46,30 +46,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
           val bag = Bag(bagId, typ, Map(status.name -> status))
           bagsMongoClient.insert(bag)
         case Some(bag) =>
-          val newStatus = bag.map.get(statusName) match {
-            case None =>
-              log.debug("Status 还没有建立，创建新的 Status ")
-              Status(statusName, Map(planName -> Plan(planName, List(simpleLocation))))
-            case Some(status) =>
-              val newplan = status.map.get(planName) match {
-                case None =>
-                  log.debug("Plan 还没有建立，创建新的 Plan ")
-                  Plan(planName, List(simpleLocation))
-                case Some(plan) =>
-                  if (plan.list.exists(tmp => tmp.id == simpleLocation.id)) {
-                    log.debug("重复 添加 location ,在合并 未登录用户 的数据  时， 会出现这种情况 ")
-                    plan
-                  } else {
-                    val newList = simpleLocation :: plan.list
-                    val newPlan = plan.copy(list = newList)
-                    newPlan
-                  }
-
-              }
-              val newStatus =  status.copy(map = status.map + (newplan.name -> newplan))
-              newStatus
-          }
-          val newBag = bag.copy(map = bag.map + (statusName -> newStatus))
+          val newBag = BagHelp.addLocation(bag, statusName, planName, List( simpleLocation ))
           log.debug("addlocation Bag={}", newBag)
           update(newBag)
       }
@@ -84,33 +61,14 @@ trait BagServiceComponentImpl extends BagServiceComponent {
           log.debug("bag  不存在 ")
           false
         case Some(bag) =>
-          bag.map.get(statusName) match {
-            case None =>
-              log.debug("status  不存在 ")
-              false
-            case Some(status) =>
-              status.map.get(planName) match {
-                case None =>
-                  log.debug("plan   不存在 ")
-                  false
-                case Some(plan) =>
-                  val newList = plan.list.filter(tmp => tmp.id != simpleLocation.id)
-
-                  if (newList == plan.list) {
-                    log.debug(" simplelocation    不存在 ")
-                    false
-                  } else {
-                    log.debug(" 删除 location={}",simpleLocation )
-                    val newplan = plan.copy(list = newList)
-                    val newStatus = status.copy(map = status.map + (newplan.name -> newplan))
-                    val newBag = bag.copy(map = bag.map + (statusName -> newStatus))
-                    log.debug("removelocation bag ={}", newBag)
-                    update(newBag)
-                    true
-                  }
-              }
-
-          }
+        val newBag =   BagHelp.removeLocation(bag, statusName, planName, List(simpleLocation))
+           if( newBag == bag ){
+             false
+           }else{
+               update(newBag)
+                true
+           }
+         
       }
 
     }

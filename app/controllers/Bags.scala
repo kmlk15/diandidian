@@ -222,7 +222,7 @@ object Bags extends Controller {
         case None =>  Ok( views.html.bagEmpty ( ))
         case Some(bag) if( bag.isEmpty) => Ok( views.html.bagEmpty ( ))
         case Some( bag ) if (mock != "") => Ok( views.html.bagMock (  bag ))  // 用于mock
-        case Some( bag ) if (bag.typ == "user" )=>  Ok( views.html.bagUser( bag))
+        case Some( bag ) if ( getBagId( session) != "" )=>  Ok( views.html.bagUser( bag))
         case Some( bag ) => Ok( views.html.bagAnonymous( bag ))
         
       }
@@ -256,22 +256,7 @@ object Bags extends Controller {
               errors => { Ok("输入错误") },
               change => {
             	  val s = System.currentTimeMillis()
-                val fromMap = bag.map
-                
-                val fromstatus = fromMap.get(change.fromStatus).get
-                val tostatus = fromMap.get(change.toStatus).get
-                val fromplan = fromstatus.map.get(change.fromPlan).get
-                val toplan = fromplan.copy(name = change.toPlan)
-                //从原来的 status 中移除
-                val fromstatusChanged: models.Status = fromstatus.copy(  map = fromstatus.map - change.fromPlan )
-                //更新到 新的 status 中， 注意，这里有个问题， toplan.name 可能和已经存在的冲突？
-                val toStatusChanged = tostatus.copy( map = tostatus.map + ( toplan.name -> toplan ) )
-                
-                val toMap: Map[String, models.Status] = (fromMap - change.fromStatus - change.toStatus) +
-                	(change.toStatus -> toStatusChanged) +
-                	(change.fromStatus -> fromstatusChanged)
-                	
-                val tobag = bag.copy(map = toMap)
+                val tobag = models.BagHelp.update(bag, change)
                 val e1 = System.currentTimeMillis()
                 log.debug("更新bag 时间: ={}" , ( e1 -s ))
                 if(bag != tobag ){
@@ -283,7 +268,8 @@ object Bags extends Controller {
                   }
             	  val e2 = System.currentTimeMillis()
                 log.debug("更新 bag  到 mongo 时间: ={}" , ( e2 -e1 ))
-                Ok( views.html.bagMock (  tobag )) 
+                Redirect( "/bag/get?mock=mock")
+                //Ok( views.html.bagMock (  tobag )) 
               })
           case None => NotFound
         }

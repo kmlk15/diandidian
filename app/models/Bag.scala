@@ -4,6 +4,8 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
+import org.slf4j.LoggerFactory
+
 
 /**
  * SimpleLocation ,  根据 planning 的需求 可能要 有时间数据 和 顺序。
@@ -45,6 +47,7 @@ object BagHelp {
   implicit  val statusFmt = Json.format[Status]
   implicit  val bagFmt = Json.format[Bag]
   
+  val log = LoggerFactory.getLogger(BagHelp.getClass())
   val defaultPlanName = "背包"
   val defaultStatusName = "计划中"
 
@@ -56,6 +59,67 @@ object BagHelp {
       "toPlan" -> text)(BagUpdateFromto.apply)(BagUpdateFromto.unapply)
   }
 
+  def addLocation(bag: Bag, statusName: String, planName: String, simpleLocationList: List[ SimpleLocation]) : Bag={
+    val newStatus = bag.map.get(statusName) match {
+            case None =>
+              log.debug("Status 还没有建立，创建新的 Status ")
+              Status(statusName, Map(planName -> Plan(planName, simpleLocationList)))
+            case Some(status) =>
+              val newplan = status.map.get(planName) match {
+                case None =>
+                  log.debug("Plan 还没有建立，创建新的 Plan ")
+                  Plan(planName, simpleLocationList )
+                case Some(plan) =>
+                    val newList =( simpleLocationList ::: plan.list ) .distinct
+                    val newPlan = plan.copy(list = newList)
+                    newPlan
+               }
+              val newStatus =  status.copy(map = status.map + (newplan.name -> newplan))
+              newStatus
+          }
+          val newBag = bag.copy(map = bag.map + (statusName -> newStatus))
+          newBag
+}
+  
+ def removeLocation(bag: Bag, statusName: String, planName: String, simpleLocationList: List[SimpleLocation]) : Bag={
+   bag.map.get(statusName) match {
+            case None =>
+              log.debug("status  不存在 ")
+              bag
+            case Some(status) =>
+              status.map.get(planName) match {
+                case None =>
+                  log.debug("plan   不存在 ")
+                  bag
+                case Some(plan) =>
+                  val newList = plan.list.filterNot(  l => simpleLocationList.contains( l ))
+
+                  if (newList == plan.list) {
+                    log.debug(" simplelocation    不存在 ")
+                    bag
+                  } else {
+                    log.debug(" 删除 location={}",simpleLocationList )
+                    val newplan = plan.copy(list = newList)
+                  val newStatus =   if( newplan.list.isEmpty){
+                      status.copy(map = status.map - newplan.name )
+                    }else{
+                       status.copy(map = status.map + (newplan.name -> newplan))
+                    }
+                    
+                    val newBag = if(newStatus.map.isEmpty ) {
+                      bag.copy(map = bag.map -  statusName)
+                    }else{
+                      bag.copy(map = bag.map + (statusName -> newStatus))
+                    }
+                    log.debug("removelocation bag ={}", newBag)
+                    newBag
+                  }
+              }
+
+          }
+ }
+  
+  
   /**
    * 这个方式实际是
    * removelocation 
@@ -71,27 +135,31 @@ object BagHelp {
       fromstatus <- fromMap.get(change.fromStatus)
       fromplan <- fromstatus.map.get(change.fromPlan)
     }yield{
+    val addList = fromplan.list
+    val removeList = fromplan.list
+    val bag1 = removeLocation( bag , change.fromStatus,change.fromPlan , removeList)
+    val bag2 = addLocation( bag1 , change.toStatus,change.toPlan , addList )
     
-    
-    val toplan = fromplan.copy(name = change.toPlan)
-    //从原来的 status 中移除
-    val fromstatusChanged: models.Status = fromstatus.copy(map = fromstatus.map - change.fromPlan)
-    //更新到 新的 status 中， 注意，这里有个问题， toplan.name 可能和已经存在的冲突？
-    val toStatusChanged = if(change.fromStatus == change.toStatus ){
-      fromstatusChanged.copy(map = fromstatusChanged.map + (toplan.name -> toplan))
-    } else{
-       fromMap.get(change.toStatus) match{
-        case None => Status ( name = change.toStatus , Map[String ,Plan](toplan.name -> toplan ))
-        case Some( status ) => status.copy(map = status.map + (toplan.name -> toplan))
-      }
-      
-    }
-    val toMap: Map[String, models.Status] = (fromMap - change.fromStatus - change.toStatus) +
-      (change.fromStatus -> fromstatusChanged) +
-      (change.toStatus -> toStatusChanged)  
-
-    val tobag = bag.copy(map = toMap)
-    tobag
+    bag2 
+//    val toplan = fromplan.copy(name = change.toPlan)
+//    //从原来的 status 中移除
+//    val fromstatusChanged: models.Status = fromstatus.copy(map = fromstatus.map - change.fromPlan)
+//    //更新到 新的 status 中， 注意，这里有个问题， toplan.name 可能和已经存在的冲突？
+//    val toStatusChanged = if(change.fromStatus == change.toStatus ){
+//      fromstatusChanged.copy(map = fromstatusChanged.map + (toplan.name -> toplan))
+//    } else{
+//       fromMap.get(change.toStatus) match{
+//        case None => Status ( name = change.toStatus , Map[String ,Plan](toplan.name -> toplan ))
+//        case Some( status ) => status.copy(map = status.map + (toplan.name -> toplan))
+//      }
+//      
+//    }
+//    val toMap: Map[String, models.Status] = (fromMap - change.fromStatus - change.toStatus) +
+//      (change.fromStatus -> fromstatusChanged) +
+//      (change.toStatus -> toStatusChanged)  
+//
+//    val tobag = bag.copy(map = toMap)
+//    tobag
     
     }
     tobagOption match{

@@ -1,23 +1,26 @@
-@( bag: models.Bag)
+@( bag: models.Bag)(implicit  statusNameList: List[String] = List( "计划中"  ,"准备去","已去过"  ))
 
 
 @script={
  <script type="text/javascript" src="@routes.Assets.at("javascripts/bag.js")"></script>
 
 }
-@main( "登录用户" , script){
 
-	<div id="content">
-		<div id="sidebar">
-<div id="my-bag">
-					<h2>我的背包:</h2>
- 				<div class="accordion">
- 				@for( statusTuple <- bag.map ){
-						 <h3 class="accordion-header"   >@statusTuple._2.name</h3>
-						<div class="accordion accordion-content" style="display:block">
-						@for( planTuple <- statusTuple._2.map ){
+@statusOptionDisplay( statusOption : Option[models.Status])={
+
+@if( statusOption == None){
+
+}else{
+  @statusDisplay( statusOption.get )
+}
+
+}
+@statusDisplay( status: models.Status)={
+<h3 class="accordion-header"   >@status.name</h3>
+						<div class="accordion accordion-content"  >
+						@for( planTuple <- status.map ){
 							<h4 class="accordion-header" >@planTuple._2.name  <span>-</span><small><span>@planTuple._2.list.size</span>个景点</small> </h4>
-							<div class="accordion-content clearfix" style="display:block">
+							<div class="accordion-content clearfix"  >
 								<ul class="open">
 								@for( simpleLocation <- planTuple._2.list.reverse   ){
 								<li> 
@@ -33,8 +36,18 @@
 							</div>
 							} 
 						</div>
-					 }
- 
+
+}
+@main( "登录用户" , script){
+
+	<div id="content">
+		<div id="sidebar">
+<div id="my-bag">
+					<h2>我的背包:</h2>
+ 				<div class="accordion">
+ 				  	@for( key <- statusNameList ){
+						 @statusOptionDisplay( bag.map.get(key)  )
+					    }
 					</div><!-- end accordion -->
 				</div><!-- end my-bag -->
 </div>
