@@ -1,13 +1,12 @@
-$(function() {
 	function loadBag(){
 		$.get("/bag/get", function(data){
-			 
 			var html = $( "div#my-bag " ,$(data)).html() ;
 			$("div#my-bag").html( html )
 			//alert( html );
 		});
-		
 	}
+$(function() {
+
 	
 	loadBag();
 	
