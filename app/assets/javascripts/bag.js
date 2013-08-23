@@ -53,11 +53,13 @@ $(function() {
 		var atag = this
 		var url = $.url( $(atag).attr("href") );
 		var param = url.param()
-		alert( JSON.stringify (param ) ) ;
+		//alert( JSON.stringify (param ) ) ;
 		//return false;
 		
 		 $.getJSON("/bag/del", param,  function (result){
 			 if( result.success){
+				 var  dellocationName = $(atag).parents("td").prev().text();
+
 				 var $itemDel = $(atag).parents("li");
 					var $ul = $(atag).parents("ul");
 					$itemDel.remove();
@@ -66,9 +68,12 @@ $(function() {
 					// DETAIL PAGE 
 					if( $("#attraction-detal .user-content .col.col3 span.added").length > 0 ){
 						var e = $("#attraction-detal .user-content .col.col3 span.added")
-						e.text("加入背包")
-						e.removeClass("added")
-						e.addClass("add-bag")
+						var locationName = $("span#locationName").text();
+						if( dellocationName == locationName  ){
+							e.text("加入背包")
+							e.removeClass("added")
+							e.addClass("add-bag")
+						}
 					}
 			 }else{
 				 alert( result.msg)
@@ -96,9 +101,23 @@ $(function() {
 		//当前的 加上 css  open
 		$("ul", $(atag).parent().next()).addClass("open");
 		
+		//设置 Detail Page 的  addbag 按钮状态
+		var e = $("#attraction-detal .user-content .col.col3 span.add-bag")
+		if( e.length > 0 ){
+			var $ul = $("#my-bag .accordion .accordion div ul.open");//ul to add li
+			$ul = $($ul[0]);
+			var titleText = $("span#locationName").text();
+			if(searchBagItem($ul , titleText)){
+				e.text("已在背包");
+				e.addClass("added");
+			}else{
+				e.text("加入背包");
+				e.removeClass("added");
+				 
+			}
+		}
+			
 		 return false;
-		
-		 
 	});
 	
 	
@@ -118,7 +137,7 @@ $(function() {
 		
 		var param = {locationName:locationName ,statusName:statusName , planName: planName }
 		
-		alert( JSON.stringify (param ) ) ;
+		//alert( JSON.stringify (param ) ) ;
 		//return false;
 		
 		$.getJSON("/bag/add", param , function( result ) { 
@@ -132,7 +151,7 @@ $(function() {
 					var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td>';
 					itemHtml = itemHtml + '<td class="del" ><a href="?locationId='+encodeURI(result.data.id ) +'&statusName='+ encodeURI(statusName)+'&planName='+encodeURI(planName)+'" ></a></td>';
 					itemHtml = itemHtml + '</tr></table></li>';
-					alert(  itemHtml )
+					//alert(  itemHtml )
 					$ul.append(itemHtml);
 				}
 				//searchBagItem($ul,'');
@@ -155,10 +174,17 @@ $(function() {
 		if($(this).hasClass("added")) {
 			return;
 		}
+		
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul.open");//ul to add li
 		$ul = $($ul[0]);
 		var titleText = $("span#locationName").text();
+		if(searchBagItem($ul , titleText)){
+			$(this).text("已在背包");
+			$(this).addClass("added");
+			return;
+		}
+		
 		var locationName = titleText.trim() 
 		var statusName=  window.currentStatusName
 		var planName = window.currentPlanName
@@ -175,7 +201,7 @@ $(function() {
 				} else{
 					
 					var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td>';
-					itemHtml = itemHtml + '<td class="del" ><a href="?locationId='+encodeURI(result.data.id ) +'&statusName='+ encodeURI(statusName)+'&planName='+encodeURI(planName)+' ></a></td>';
+					itemHtml = itemHtml + '<td class="del" ><a href="?locationId='+encodeURI(result.data.id ) +'&statusName='+ encodeURI(statusName)+'&planName='+encodeURI(planName)+'" ></a></td>';
 					itemHtml = itemHtml +'</tr></table></li>';
 					
 					$ul.append(itemHtml);
