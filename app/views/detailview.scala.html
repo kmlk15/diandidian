@@ -68,34 +68,8 @@ var detailname = "@name";
 								<p>
 									地址:  <span data-bind="text: address.street"></span><br />
 									电话:  <span data-bind="text: phone.general"></span><br />
-									开放时间:  
-									<table>
-									<tr>
-									<td> Monday: </td><td><span data-bind="text: hours.monday"></span></td>
-									</tr>
-									<tr>
-									<td> Tuesday: </td><td><span data-bind="text: hours.tuesday"></span></td>
-									</tr>
-									<tr>
-									<td> Wednesday: </td><td><span data-bind="text: hours.wednesday"></span></td>
-									</tr>
-									<tr>
-									<td> Thursday: </td><td><span data-bind="text: hours.thursday"></span></td>
-									</tr>
-									<tr>
-									<td> Friday: </td><td><span data-bind="text: hours.friday"></span></td>
-									</tr>
-									<tr>
-									<td> Saturday: </td><td><span data-bind="text: hours.saturday"></span></td>
-									</tr>
-									<tr>
-									<td> Sunday: </td><td><span data-bind="text: hours.sunday"></span></td>
-									</tr>
-									<tr>
-									<td> Holiday: </td><td><span data-bind="text: hours.holiday"></span></td>
-									
-									</tr>
-									</table>
+									开放时间: <div data-bind="html: opentimetable"></div>
+									 
 								</p>
 							</div>
 							<div class="col col2">

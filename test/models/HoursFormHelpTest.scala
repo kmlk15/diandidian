@@ -11,20 +11,20 @@ val log = LoggerFactory.getLogger( classOf[HoursFormHelpTest])
     
     val hours = HoursForm( openclose , openclose ,openclose ,openclose ,openclose,openclose,openclose,openclose)
     val list =  HoursFormHelp.view(hours)
-    list.foreach(  x=> log.error(x))
+    list.foreach(  x=> log.error("x={}", x ))
     assert ( list.size === 3  )
     
     val oc2 = OpenClose("7:00","14:00")
     val hours2 = HoursForm( openclose , oc2 ,openclose ,openclose ,openclose,openclose,openclose,openclose)
     val list2 = HoursFormHelp.view(hours2)
-     list2.foreach(  x=> log.error(x))
+     list2.foreach(  x=> log.error("x={}", x ))
     assert( list2.size === 4 )
     
     val oc3 = OpenClose("9:00","19:00")
     
     val hours3 = HoursForm( openclose , oc2 ,openclose ,openclose ,openclose,openclose,oc3,openclose)
     val list3 = HoursFormHelp.view(hours3)
-     list3.foreach(  x=> log.error(x))
+     list3.foreach(  x=> log.error("x={}", x ))
     assert( list3.size === 5 )
     
 

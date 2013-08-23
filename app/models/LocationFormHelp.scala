@@ -29,7 +29,7 @@ object HoursFormHelp{
    * 以  monday 为基准
    * 通过  值 合并 分组
    */
-  def view(hours: HoursForm ) ={
+  def view(hours: HoursForm ):List[(String,OpenClose)] ={
      
      val map = mutable.Map[OpenClose, String]()
       
@@ -55,8 +55,8 @@ object HoursFormHelp{
      }
      
      
-     val listA: List[String] =  if(opencloseBuffer.size == 1){
-    	 	List( "周一~周五: " +  hours.monday.open +"-" + hours.monday.close )
+     val listA: List[(String,OpenClose)] =  if(opencloseBuffer.size == 1){
+    	 	List( "周一~周五: " ->   hours.monday )
      }else{
       
         val m1 =  opencloseBuffer.map( openclose =>{
@@ -70,24 +70,40 @@ object HoursFormHelp{
           m1.get( hours.friday).map( buf=> buf.append("周五"))
           
           val buf  = opencloseBuffer.map( openclose =>{ openclose -> m1.get( openclose).map(buf=> buf.mkString(",")) }).
-          map( kv => kv._2.getOrElse("") + ": " + kv._1.open +"-" + kv._1.close  )
+          map( kv => kv._2.getOrElse("") + ": " -> ( kv._1   ))
 
           buf.toList
      }
      
-    val listB =  if( hours.saturday == hours.sunday){
-      List ( "周六,周日: " + hours.saturday.open +"-"  + hours.saturday.close)
+    val listB : List[(String,OpenClose)] =  if( hours.saturday == hours.sunday){
+      List ( "周六,周日: " -> (hours.saturday))
       
     }else{
-      List ( "周六: " + hours.saturday.open +"-"  + hours.saturday.close ,
-           "周日: " + hours.sunday.open +"-"  + hours.sunday.close 
+      List ( "周六: "  ->(  hours.saturday),
+           "周日: " ->( hours.sunday ) 
       )
       
     }
      
-    listA ++ listB ++ List( "假日: " + hours.holiday.open +"-"  + hours.holiday.close )
+    listA ++ listB ++ List( "假日: " -> (hours.holiday ) )
   }
+  
+  
+   def opentimetable(hours: HoursForm ): String = {
+    val trList =  view( hours)
+    val html= 
+      <table border="1" >
+      {
+      trList.map( str => <tr><td>{str._1}</td><td>{str._2.open}</td><td>{str._2.close}</td></tr>)
+      }
+      </table>
+       
+    html.toString
+  }
+   
 }
+
+
 case class CategoryForm(
     categoryId: String = "",
   level_1: String = "",

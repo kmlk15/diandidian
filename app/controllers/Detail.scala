@@ -46,8 +46,8 @@ object Detail extends Controller   {
            "districthref" -> ("/home?country="+ URLEncoder .encode(location.address.country, "utf-8") + 
                "&city=" +URLEncoder .encode(location.address.city, "utf-8")  +
                "&district=" + URLEncoder .encode(location.address.district, "utf-8")  ),
-           "addPhotohref" -> ( "/cms/userphoto/add/" + location.id.get)
-          
+           "addPhotohref" -> ( "/cms/userphoto/add/" + location.id.get) ,
+           "opentimetable" -> models.HoursFormHelp.opentimetable(location.hours ) 
           ) )
            log.debug( Json.prettyPrint( jsVal2))
            Ok( jsVal2 ) 
@@ -66,4 +66,5 @@ object Detail extends Controller   {
     
   }
   
+ 
 }
