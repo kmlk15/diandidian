@@ -23,7 +23,7 @@
 						@for( planTuple <- status.map ){
 							<h4 class="accordion-header" >@planTuple._2.name  <span>-</span><small><span>@planTuple._2.list.size</span>个景点</small> </h4>
 							<div class="accordion-content clearfix"  >
-								<ul class="open">
+								<ul>
 								@for( simpleLocation <- planTuple._2.list.reverse   ){
 								
 								<li> 

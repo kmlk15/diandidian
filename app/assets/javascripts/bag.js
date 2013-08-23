@@ -65,6 +65,84 @@ $(function() {
 		
 		return false;
 	});
+
+	
+	
+	//home page to add to bag, you should change to use backend to add
+	$("#attractions-list").on('click',"ul li .add-bag", function(e) {
+		var thistag = this 
+		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
+		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
+		$ul = $($ul[0]);
+		var titleText = $(this).prevAll(".title").find("h3").text();
+		var locationName = titleText.trim()
+		var statusName= ""
+		var planName = ""
+		var param = {locationName:locationName ,statusName:statusName , planName: planName }
+		
+		//alert( JSON.stringify (param ) ) ;
+		//return false;
+		
+		$.getJSON("/bag/add", param , function( result ) { 
+			if( result.success){
+				var needremove = $("#needremove", $ul) 
+				if( needremove.length !=0){
+					 //重新加载  bag 部分页面
+					 
+					loadBag();
+				}else{ 
+					var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del" ><a href="#"  id="' + result.data.id +'"></a></td></tr></table></li>';
+					$ul.append(itemHtml);
+				}
+				//searchBagItem($ul,'');
+				$(thistag).next(".added-bag").css("display", "block");
+				$(thistag).css("display", "none");
+				
+				updateBagCount($ul);
+			}else{
+				alert( result.msg )
+			}
+		})
+		
+		return false;
+	})
+	
+
+	
+	//detail page to add to bag, you should change to use backend to add, add you should avoid duplicate items
+	$("#attraction-detal .user-content .col.col3 span.add-bag").click(function(e) {
+		if($(this).hasClass("added")) {
+			return;
+		}
+		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
+		var $ul = $("#my-bag .accordion .accordion div ul");//ul to add li
+		$ul = $($ul[0]);
+		var titleText = $("span#locationName").text();
+		var locationName = titleText.trim() 
+		var thistag = this
+		$.getJSON("/bag/add",{locationName:locationName} , function( result ) { 
+			if( result.success){
+				var needremove = $("#needremove", $ul) 
+				if( needremove.length !=0){
+					loadBag();
+				} else{
+					var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td><td class="del" ><a href="#"  id="' + result.data.id +'"></a></td></tr></table></li>';
+					$ul.append(itemHtml);
+					updateBagCount($ul);
+				}
+				//searchBagItem($ul,'');
+				$(thistag).text("已在背包");
+				$(thistag).addClass("added");
+				
+			}else{
+				alert( result.msg )
+			}
+		})
+		
+		 
+		
+		return false;
+	});
 	
 	
 });

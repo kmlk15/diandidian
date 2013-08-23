@@ -41,7 +41,7 @@ class BagHelpTest extends FunSuite {
     val tobag = BagHelp.update(bag, change)
 
     val newbag = createBag(statusName, planName + "new")
-    assert(newbag === tobag)
+    assert(newbag.map.get(statusName).get.map.get(planName + "new") === tobag.map.get(statusName).get.map.get(planName + "new") )
 
   }
 
@@ -63,7 +63,7 @@ class BagHelpTest extends FunSuite {
     val tobag = BagHelp.update(bag, change)
 
     val newbag = createBag("准备去", planName + "new")
-    assert(newbag === tobag)
+    assert(newbag.map.get("准备去").get.map.get(planName + "new") === tobag.map.get("准备去").get.map.get(planName + "new"))
 
   }
 
@@ -104,7 +104,7 @@ class BagHelpTest extends FunSuite {
 
     log.debug("bag={}", bag)
     val e = System.currentTimeMillis()
-    log.error("创建 对象 e-s={}", (e - s))
+    log.error("简单的性能估计 创建 对象 e-s={}", (e - s))
 
     val change = BagUpdateFromto(statusName, planName, "准备去", "exist")
 
@@ -112,7 +112,7 @@ class BagHelpTest extends FunSuite {
 
     log.debug("bag2={}", bag2.map.get("准备去").get.map.get("exist"))
     val e2 = System.currentTimeMillis()
-    log.error("更新 plan  e2-e={}", (e2 - e))
+    log.error("简单的性能估计 更新 plan  e2-e={}", (e2 - e))
 
     assert(true === true)
   }
