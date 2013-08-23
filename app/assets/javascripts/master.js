@@ -113,7 +113,7 @@ function homeAttractionHover() {
 	$("#attractions-list ul li").hover(
 		function(){
 			var addressName = $(this).find(".title h3").text();
-			var $ul = $("#my-bag .accordion .accordion div ul");
+			var $ul = $("#my-bag .accordion .accordion div ul.open");
 			$ul = $($ul[0]);
 			//alert(searchBagItem($ul, addressName));
 			if(!searchBagItem($ul, addressName)) {
@@ -201,14 +201,6 @@ function initDetailGallery() {
 	}
 }
 
-/**
-update bag item account
-*/
-function updateBagCount($ul) {
-	var $countHold = $("#my-bag h4 small span");
-	var count = $ul.find("li").length;
-	$countHold.text(count)
-}
 
 function searchBagItem($ul, name) {
 	var exists = false;

@@ -24,9 +24,7 @@
 								<tbody><tr>
 								<td>@simpleLocation.name</td>
 								<td class="del">
-								<input type="hidden"  name="statusName"  value="@statusTuple._2.name" />
-								<input type="hidden"  name="planName"  value="@planTuple._2.name" />
-								<a href="#" id="@simpleLocation.id"></a>
+								<a href="?locationId=@helper.urlEncode(simpleLocation.id)&statusName=@helper.urlEncode(statusTuple._2.name)&planName=@helper.urlEncode(planTuple._2.name)"  ></a>
 								</td>
 								</tr></tbody></table>
 								</li>

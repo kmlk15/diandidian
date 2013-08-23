@@ -1,6 +1,7 @@
 @( bag: models.Bag)(implicit  statusNameList: List[String] = List( "计划中"  ,"准备去","已去过"  ))
 
-
+@import models.BagHelp.defaultPlanName
+@import models.BagHelp.defaultStatusName
 @script={
  <script type="text/javascript" src="@routes.Assets.at("javascripts/bag.js")"></script>
 
@@ -18,22 +19,21 @@
 
 @statusDisplay( status: models.Status)={
 
-					<h3 class="accordion-header"   >@status.name</h3>
-						<div class="accordion accordion-content"  >
+					<h3 class="accordion-header"   >@status.name </h3>
+						<div class="accordion accordion-content" @if(status.name==defaultStatusName  ){ style="display:block;"} >
 						@for( planTuple <- status.map ){
-							<h4 class="accordion-header" >@planTuple._2.name  <span>-</span><small><span>@planTuple._2.list.size</span>个景点</small> </h4>
-							<div class="accordion-content clearfix"  >
-								<ul>
+							<h4 class="accordion-header" >@planTuple._2.name  <span>-</span>
+							<small><span>@planTuple._2.list.size</span>个景点</small>
+							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)" class="setPlan" style="display:none">添加地点</a> </h4>
+							<div class="accordion-content clearfix  @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ state-active }" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ style="display:block;"}  >
+								<ul @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){class="open"}>
 								@for( simpleLocation <- planTuple._2.list.reverse   ){
-								
 								<li> 
 								<table cellpadding="0" cellspacing="0">
 								<tbody><tr>
 								<td>@simpleLocation.name</td>
 								<td class="del">
-								<input type="hidden"  name="statusName"  value="@status.name" />
-								<input type="hidden"  name="planName"  value="@planTuple._2.name" />
-								<a href="#" id="@simpleLocation.id" ></a>
+								<a href="?locationId=@helper.urlEncode(simpleLocation.id)&statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)"  ></a>
 								</td>
 								</tr></tbody></table>
 								</li>
@@ -50,7 +50,8 @@
 	<div id="content">
 		<div id="sidebar">
 <div id="my-bag">
-					<h2>我的背包:</h2>
+					<h2>我的背包:  </h2>
+					<h3><small><span id="currentStatus"></span> <span id="currentPlan"></span></small></h3>
  				<div class="accordion">
  				  	@for( key <- statusNameList ){
 						 @statusOptionDisplay( bag.map.get(key)  )

@@ -50,18 +50,21 @@ object Bags extends Controller {
 
   val bagIdCookieName = "tmpbagId"
 
-  def add(locationName: String) = Action { implicit request =>
+  def add(locationName: String , statusName: String = defaultStatusName ,planName : String = defaultPlanName ) = Action { implicit request =>
     def userAdd(location: LocationForm): json.JsObject = {
-
-        val bagId = getBagId( session)
-      val statusName = defaultStatusName // TODO , 这个实际上是需要传递的 
-      val planName = defaultPlanName  // TODO 这个实际也是需要传递的
+      val bagId = getBagId( session)
       val typ="user"
-      bagService.addLocation(bagId, typ, statusName, planName, location)
-      
-      val data = Json.obj("name" -> location.name, "id" -> location.id.get)
-      val result = Json.obj("success" -> true, "data" -> data)
-      result
+      val success = bagService.addLocation(bagId, typ, statusName, planName, location)
+      if( success){
+         val data = Json.obj("name" -> location.name, "id" -> location.id.get)
+	      val result = Json.obj("success" -> true, "data" -> data)
+	      result
+      }else{
+         val data = Json.obj("name" -> location.name, "id" -> location.id.get)
+	      val result = Json.obj("success" -> false, "data" -> data , "msg" -> "msg")
+	      result
+      }
+     
     }
 
     def anonymousAdd(location: LocationForm): (String, json.JsObject) = {
