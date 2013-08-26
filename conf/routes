@@ -9,6 +9,7 @@ GET     /home                           controllers.Home.index
  
 GET    /detail/view/:name        controllers.Detail.view( name: String  )
 GET    /detail/json/:name          controllers.Detail.viewJson(name: String)
+GET    /detail/galleryview/:locationId  controllers.Detail.galleryview(locationId: String)
 
 GET    /login/					controllers.Login.login()
 GET    /login/logout					controllers.Login.logout()

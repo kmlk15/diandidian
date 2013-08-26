@@ -13,6 +13,7 @@
 @greyDropDownBorder: #999999;
 @greyDashBorder: #8f8f8f;
 @greyTopDropHoverBg: #7f7e7e;
+@attractions-listImgBorder: #d8d8d8;
 @searchBorderColor: #5b5b5b;
 @searchLabelColor: #828282;
 @accountMenuBorderColor: #9b9b9b;
@@ -215,7 +216,7 @@ ul, ol {
 		div {
 			display: none;
 			margin-top:43px;
-			padding: 8px 11px 2px 0px;
+			padding: 8px 11px 4px 0px;
 			border:1px @greyDropDownBorder solid;
 			background:@greyDropDownHoverBg;
 			min-width:240px;
@@ -223,18 +224,18 @@ ul, ol {
 			overflow:auto;
 			zoom:1;
 			dl {
-				font-size: 20px;
-				line-height: 28px;
+				font-size: 15px;
+				line-height: 20px;
 				font-weight: 300;
 				color: @textGrey3;
 				cursor: pointer;
 				overflow:auto;
 				zoom:1;
 				margin:0;
-				padding:0 0 2px 0;
+				padding:0 0 3px 0;
 				dt {
 					float: left;
-					width: 80px;
+					width: 64px;
 					text-align: right;
 					padding:0;
 					margin:0;
@@ -244,7 +245,7 @@ ul, ol {
 					min-width: 155px;
 					max-width: 428px;
 					padding:0;
-					margin:0 0 0 20px;
+					margin:0 0 0 18px;
 					a{
 						color: #369edb;
 						padding:0 15px 0 0;
@@ -270,9 +271,10 @@ ul, ol {
 	}
 	label {
 		position: absolute;
-		top: 5px;
+		top: 0px;
 		left: 11px;
 		font-size: 15px;
+		line-height: 32px;
 		color: @searchLabelColor;
 		cursor: text;
 	}
@@ -394,14 +396,16 @@ ul, ol {
 			img {
 				display: block;	
 				.rounded-corners(0, 10px, 0, 0);
+				border: 1px solid @attractions-listImgBorder;
+				border-radius: 0 10px 0 0;
 			}
 			.title {
 				overflow: hidden;
 				position: absolute;
 				top: 235px;
-				left: 0;
+				left: 1px;
 				height: 27px;
-				width: 100%;
+				width: 264px;
 				background: url(/assets/images/box-opacity.png);
 				h3 {
 					float: left;
@@ -456,41 +460,41 @@ ul, ol {
 			.add-bag, .added-bag, .detail {
 				display: none;
 				position: absolute;
-				top: 12px;
-				height: 31px;
-				padding-top: 10px;
+				top: 20px;
+				height: 29px;
 				font-size: 17px;
+				line-height: 29px;
 				color: @white;
 				cursor: pointer;
 			}
 			.add-bag, .added-bag {
-				left: 18px;
-				padding-left: 36px;
-				width: 84px;
+				left: 22px;
+				padding-left: 29px;
+				width: 74px;
 			}
 			.add-bag {
-				background: url(/assets/images/sprite.png) 0 -95px no-repeat;
+				background: url(/assets/images/sprite.png) -7px -103px no-repeat;
 				&:hover {
-					background: url(/assets/images/sprite.png) 0 0 no-repeat;
+					background: url(/assets/images/sprite.png) -7px -8px no-repeat;
 					text-decoration: none;
 					color:@blue;
 				}
 			}
 			.added-bag {
-				background: url(/assets/images/sprite.png) 0 -190px no-repeat;
+				background: url(/assets/images/sprite.png) -7px -198px no-repeat;
 				cursor: default;
 			}
 			.detail {
-				right: 18px;
-				padding-left: 27px;
-				width: 84px;
-				background: url(/assets/images/sprite.png) 0 -666px no-repeat;
+				right: 22px;
+				padding-left: 21px;
+				width: 87px;
+				background: url(/assets/images/sprite.png) -7px -674px no-repeat;
 				a {
 					color: @white;
 					text-decoration: none;
 				}
 				&:hover {
-					background: url(/assets/images/sprite.png) 0 -571px no-repeat;
+					background: url(/assets/images/sprite.png) -7px -579px no-repeat;
 					text-decoration: none;
 					a {
 						color: @blue;

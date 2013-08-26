@@ -21,9 +21,9 @@ function loadHomeAttractions( query) {
 //					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="266" height="262" alt="" />';//default image here
 //				}
 				if(item.photo) {
-				attractionHtml += '<img src="http://diandidian.s3-us-west-1.amazonaws.com/' + item.photo + '" width="266" height="262" alt="" />';
+				attractionHtml += '<img src="http://diandidian.s3-us-west-1.amazonaws.com/' + item.photo + '" width="264" height="260" alt="" />';
 				} else {
-					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="266" height="262" alt="" />';//default image here
+					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="264" height="260" alt="" />';//default image here
 				}				 
 				attractionHtml += '<div class="title">';
 				attractionHtml += '<h3>'+item.name+'</h3>';
