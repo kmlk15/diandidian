@@ -8,12 +8,14 @@ $(function() {
 			$("div#gallerycontain").html( htmldata )
 			
 			var galleryContentData = json.galleryContent; 
+			
 			$("div.user-content").prepend( galleryContentData )
+			
 			 var viewModel = ko.mapping.fromJS( json );
 			 ko.applyBindings(viewModel);
 			 
 			 initDetailGallery();
-			 
+			 spanlessmore();
 		});
 		
 		
@@ -51,10 +53,18 @@ function initDetailGallery() {
 		var href = $(this).attr("href");
 		//alert("href=" + href );
 		
+		$("#attraction-detal .user-content  .galleryContent").hide();
+		var id =  $(this).attr("id");
+		//alert(id );
+		var cssselect =  "div#content_" + id ;
+		//alert(  cssselect ) ;
+		$( cssselect ).show();
 		var $detail = $(this).parents(".gallery").children(".detail");
 		$detail.attr("src", href);
 		$ul.find("li.active").removeClass("active");
 		$(this).parent("li").addClass("active");
+		
+		
 		return false;
 	});
 	var moveLeftInterval = null;
@@ -95,4 +105,21 @@ function initDetailGallery() {
 		if (leftWidth > maxLeftWidth) leftWidth = maxLeftWidth;
 		$ul.css("left", "-"+leftWidth+"px");
 	}
+}
+
+function spanlessmore( ){
+	
+	$("#attraction-detal .user-content  .galleryContent  .col2 .content .switch .more").click(function(e) {
+		$(this).parents(".content").find("p span.more").show();
+		$(this).hide();
+		$(this).next(".less").show();
+		$("#shadow-divide").height($(document).height());
+	});
+	$("#attraction-detal .user-content  .galleryContent .col2 .content .switch .less").click(function(e) {
+		$(this).parents(".content").find("p span.more").hide();
+		$(this).hide();
+		$(this).prev(".more").show();
+		$("#shadow-divide").height($(document).height());
+	});
+	
 }
