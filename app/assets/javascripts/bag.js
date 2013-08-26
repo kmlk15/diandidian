@@ -83,7 +83,7 @@ $(function() {
 	});
 
 	
-	//设置 plan
+	//设置 plan , 为 地点的 添加删除 ，准备关联数据  
 	$("#my-bag  ").on('click',".accordion .accordion    a.setPlan",function() {
 		var atag = this
 		var url = $.url( $(atag).attr("href") );
