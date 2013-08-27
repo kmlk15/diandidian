@@ -1,4 +1,4 @@
-@( bag: models.Bag)(implicit  statusNameList: List[String] = List( "计划中"  ,"准备去","已去过"  ))
+@( bag: models.Bag)(implicit  statusNameList: List[String] = List( "计划中"  ,"准备前往","过去背包"  ))
 
 @import models.BagHelp.defaultPlanName
 @import models.BagHelp.defaultStatusName
@@ -24,7 +24,10 @@
 						@for( planTuple <- status.map ){
 							<h4 class="accordion-header" >@planTuple._2.name  <span>-</span>
 							<small><span>@planTuple._2.list.size</span>个景点</small>
-							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)" class="setPlan" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ }else{style="display:none" }>添加地点</a> </h4>
+							@if( status.name != "过去背包" ){
+							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)" class="setPlan" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ }else{style="display:none" }>添加地点</a>
+							}
+							 </h4>
 							<div class="accordion-content clearfix  @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ state-active }" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ style="display:block;"}  >
 								<ul @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){class="open"}>
 								@for( simpleLocation <- planTuple._2.list.reverse   ){
@@ -32,14 +35,18 @@
 								<table cellpadding="0" cellspacing="0">
 								<tbody><tr>
 								<td>@simpleLocation.name</td>
+								@if( status.name != "过去背包" ){
 								<td class="del">
 								<a href="?locationId=@helper.urlEncode(simpleLocation.id)&statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)"  ></a>
 								</td>
+								}
 								</tr></tbody></table>
 								</li>
 								}
 								</ul>
+								@if( status.name != "过去背包" ){
 								 <a href="/plan/?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)">计划行程</a>
+								}
 							</div>
 							} 
 						</div>

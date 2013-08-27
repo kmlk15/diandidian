@@ -17,8 +17,8 @@ case class HoursForm(
   friday: OpenClose = OpenClose(),
   saturday: OpenClose = OpenClose(),
   sunday: OpenClose = OpenClose(),
-  holiday: OpenClose = OpenClose()
-  
+  holiday: OpenClose = OpenClose(),
+  closed: String = ""
  
 
 )
@@ -109,6 +109,15 @@ case class CategoryForm(
   level_1: String = "",
   level_2: String ="" )  
   
+case class AdmissionForm(
+  currency: String = "",
+  general: String = "",
+  adults: String = "",
+  children: String = "",
+  student: String = "",
+  seniors: String = "",
+  free: String = ""
+)
   
 
 case class LocationForm(
@@ -117,7 +126,7 @@ case class LocationForm(
   enName: String = ""  ,
   address: Address = Address(street = "", district = "", city = "", postalCode ="", stateProvince="",country="",latitude=0.0 , longitude=0.0 ),
   phone: Phone = Phone( general="" , fax=""),
-  admission: Admission = Admission (currency="", general=0.0, adults=0.0 , children=0.0, student=0.0 , seniors=0.0 ),
+  admission: AdmissionForm = AdmissionForm (),
   hours: HoursForm = HoursForm(),
   url: String = "" ,
   category: CategoryForm = CategoryForm(categoryId  = ""  , level_1="", level_2="" ),
@@ -132,6 +141,7 @@ object LocationFormHelp {
   implicit val ppenCloseFmt = Json.format[OpenClose]
   implicit val hoursFormFmt  = Json.format[HoursForm]
   implicit val categoryForm  = Json.format[CategoryForm]
+  implicit val admissionForm = Json.format[AdmissionForm]
  implicit val locationFormFmt = Json.format[LocationForm]
 
   
@@ -158,12 +168,14 @@ object LocationFormHelp {
         "fax" -> default(text, "" ) )(Phone.apply)(Phone.unapply),
 
       "admission" -> mapping(
-        "currency" -> text,
-        "general" -> default( of[Double]  ,0.0) ,
-        "adults" -> default( of[Double]  ,0.0),
-        "children" -> default( of[Double]  ,0.0),
-        "student" -> default( of[Double]  ,0.0),
-        "seniors" -> default( of[Double]  ,0.0) )(Admission.apply)(Admission.unapply),
+        "currency" -> default(text,"") ,
+        "general" -> default(text,"") ,
+        "adults" -> default(text,""),
+        "children" -> default(text,""),
+        "student" -> default(text,""),
+        "seniors" ->default(text,""),
+        "free" ->default(text,"")
+      )(AdmissionForm.apply)(AdmissionForm.unapply),
 
       "hours" -> mapping(
         "monday" -> mapping( "open" -> text , "close"-> text)( OpenClose.apply)(OpenClose.unapply) ,
@@ -173,7 +185,9 @@ object LocationFormHelp {
         "friday" -> mapping( "open" -> text , "close"-> text)( OpenClose.apply)(OpenClose.unapply),
         "saturday" -> mapping( "open" -> text , "close"-> text)( OpenClose.apply)(OpenClose.unapply),
         "sunday" -> mapping( "open" -> text , "close"-> text)( OpenClose.apply)(OpenClose.unapply),
-        "holiday" -> mapping( "open" -> text , "close"-> text)( OpenClose.apply)(OpenClose.unapply))
+        "holiday" -> mapping( "open" -> text , "close"-> text)( OpenClose.apply)(OpenClose.unapply),
+         "closed" ->  default(text ,"")
+        )
         (HoursForm.apply)(HoursForm.unapply),
 
       "url" -> text,

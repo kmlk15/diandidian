@@ -507,7 +507,7 @@ ul, ol {
 /* my-bag */
 #my-bag {
 	margin: 0 auto;
-	padding:0 8px;
+	padding:0 8px 2px 8px;
 	width: 234px;
 	background: @myBagBg;
 	border: 1px solid @myBagBorderColor;
@@ -624,6 +624,7 @@ ul, ol {
 						vertical-align: top;
 						padding: 0 10px 0 16px;
 						font-size: 13px;
+						line-height: 16px;
 						&.english {
 							font-family: Verdana, Geneva, sans-serif;
 						}
@@ -635,6 +636,14 @@ ul, ol {
 				}
 				&.last {
 					border-bottom: none;
+				}
+			}
+			
+			&.bagEmpty {
+				border-top: 0;
+				li {
+					border-bottom: 0;
+					padding: 3px 0 6px 0;
 				}
 			}
 		}

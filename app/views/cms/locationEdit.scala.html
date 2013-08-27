@@ -54,20 +54,18 @@
 	@tags.hoursOpenClose("星期六","saturday",form("hours.saturday.open"),form("hours.saturday.close"))
 	@tags.hoursOpenClose("星期日","sunday",form("hours.sunday.open"),form("hours.sunday.close"))
  	@tags.hoursOpenClose("假日","holiday",form("hours.holiday.open"),form("hours.holiday.close"))
- 
+   @helper.inputText(form("hours.closed")  , '_label -> "休馆" ,  'class -> "form-control"  )
+  
     <div class="row" > 
 		<div class="col-lg-offset-2 col-lg-6">
 	    	<h3>门票</h3>
 	    	<br/>  
 	    </div>
     </div>
-     @helper.inputText(form("admission.currency")  , '_label -> "货币单位"  ,  'class -> "form-control"  )
-     
      @helper.inputText(form("admission.general")  , '_label -> "标准"  ,  'class -> "form-control" )
      @helper.inputText(form("admission.children")  , '_label -> "儿童"  ,  'class -> "form-control" )
-     @helper.inputText(form("admission.seniors")  , '_label -> "长者"  ,  'class -> "form-control" )
- 
-     @helper.inputText(form("admission.student")  , '_label -> "学生" ,  'class -> "form-control"  )
+     @helper.inputText(form("admission.seniors")  , '_label -> "长者及学生"  ,  'class -> "form-control" )
+     @helper.inputText(form("admission.free")  , '_label -> "免入场费" ,  'class -> "form-control"  )
      
      @helper.select( form("category.categoryId") ,  categoryList.map(c => (c.id -> (  ( {"-" * ( c.level-1) * 2    } ) + c.level +":"+ c.name+"-"+c.enName) ))    , '_label -> "类别"  ,  'class -> "form-control"     ) 
       

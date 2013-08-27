@@ -58,7 +58,7 @@ object Locations extends Controller  with AuthTrait  {
   	implicit val cList = categoryList
     LocationFormHelp.form.bindFromRequest.fold(
       errors => {
-        log.debug(errors.toString)
+        log.debug("save error={} " , errors)
         Ok(views.html.cms.locationEdit(None, errors))
       },
       locationForm => {
@@ -85,7 +85,10 @@ object Locations extends Controller  with AuthTrait  {
       case Some(orignLocation) => {
         implicit val cList = categoryList
         LocationFormHelp.form.bindFromRequest.fold(
-          errors => Ok(views.html.cms.locationEdit(Some(id), errors)),
+          errors => {
+            log.debug("update error={} " , errors)
+            Ok(views.html.cms.locationEdit(Some(id), errors))
+          },
           location => {
         	  	val updateLocation =if(location.category.categoryId == orignLocation.category.categoryId  ) {
         	  	  location.copy( id =orignLocation.id , photo = orignLocation.photo ,category =  orignLocation.category )
