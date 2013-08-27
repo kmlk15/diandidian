@@ -71,10 +71,10 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
           if (photo.atHomepage && filename != "") {
             service.updateLocation(locationImpl.copy(photo = "266_" + filename))
           }
-           val photoUser = service.getPhotoUserById(   photo.userId).getOrElse( PhotoUser())
+          val photoUser = service.getPhotoUserById(   photo.userId).getOrElse( PhotoUser())
           val photo2 = service.savePhoto(photo.copy(imgsrc = filename ,
                username = photoUser.userName ,
-               avatar =  photoUser.userId   
+               avatar =  photoUser.userId   , atHomepage = ( photo.atHomepage && filename!="")
           ))
 
           //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
