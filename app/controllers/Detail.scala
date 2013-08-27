@@ -203,64 +203,60 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     List(xml)
  
   }
+
+  def displayContent( photo: Photo): scala.xml.Elem = {
+    val  brief = photo.brief
+    if (brief.size > 100) {
+      <div class="content">
+        <p>
+          { brief.substring(0, 100) }
+          <span class="more">	{ brief.substring(100) }</span>
+        </p>
+        <div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
+      </div>
+    } else {
+      <div class="content">
+        <p>
+          { brief }
+        </p>
+      </div>
+    }
+  }
+
+  def displayUser(photo: Photo) = {
+    if (photo.uploadtype == "admin") {
+      <div class="col col1">
+    	<a href={photo.avatar} target="_blank"> {photo.username} </a>
+      </div>
+    } else {
+      <div class="col col1">
+        <img src={ photo.avatar } width="49" height="49" alt={photo.username} />
+      </div>
+    }
+  }
+  
      def galleryContent(photoList: List[Photo] , location : LocationForm ) : List[scala.xml.Elem] = {
        val firstPhoto =   photoList.head
        
         {for( photo <- photoList )yield  {
           if( firstPhoto == photo ){
             <div><div class="galleryContent"  id = { "content_" + photo.id.get }>
-                <div class="col col1">
-                  <img src={photo.avatar}  width="49" height="49" alt="User Icon"/>
-                </div>
+                {displayUser( photo)}
                 <div class="col col2">
                   <div class="title">
                     <h2>{location.name}</h2><span>-  上传图片的时候，不知道 对应的 plann!!! ???</span>
                   </div>
-                {if(photo.brief.size > 100){ 
-                  <div class="content">
-                    <p>
-                    	{photo.brief.substring(0, 100)}
-                      <span class="more">	{photo.brief.substring(100)}</span>
-                    </p>
-                    <div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
-                  </div>
-                    }else{
-                     <div class="content">
-                    <p>
-                    	{photo.brief}
-                    </p>
-                    
-                  </div>
-                    }
-                 }
+                    {displayContent( photo)}
                 </div>
               </div></div>
           }else{
          <div><div class="galleryContent"  style="display:none"   id = { "content_" + photo.id.get }>
-                <div class="col col1">
-                  <img src={photo.avatar}  width="49" height="49" alt="User Icon"/>
-                </div>
+         			{displayUser( photo)}
                 <div class="col col2">
                   <div class="title">
                     <h2>{location.name}</h2><span>-  上传图片的时候，不知道 对应的 plann!!! ???</span>
                   </div>
-                    {if(photo.brief.size > 100){ 
-                  <div class="content">
-                    <p>
-                    	{photo.brief.substring(0, 100)}
-                      <span class="more">	{photo.brief.substring(100)}</span>
-                    </p>
-                    <div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
-                  </div>
-                    }else{
-                     <div class="content">
-                    <p>
-                    	{photo.brief}
-                    </p>
-                    
-                  </div>
-                    }
-                 }
+                    {displayContent( photo)}
                 </div>
               </div></div>
           }
