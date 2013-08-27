@@ -125,7 +125,7 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
                 }
                 photo.copy(imgsrc = filename, id = originPhoto.id)
               } else {
-                if (photo.atHomepage && !originPhoto.atHomepage) {
+                if (photo.atHomepage && !originPhoto.atHomepage && originPhoto.imgsrc!= "") {
 
                   /**
                    * 这里需要处理 有可能还没有生成  atHomePage 需要的图片的情况
@@ -158,8 +158,11 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
                   
                   
                 }
-
-                photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc)
+                if( filename== ""){
+                	photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc , atHomepage = false )
+                }else{
+                  photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc)
+                }
               }
               val photoUser = service.getPhotoUserById( photo.userId).getOrElse( PhotoUser())
 
