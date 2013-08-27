@@ -226,7 +226,7 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
   def displayUser(photo: Photo) = {
     if (photo.uploadtype == "admin") {
       <div class="col col1">
-    	<a href={photo.avatar} target="_blank"> {photo.username} </a>
+    	图片来源: <a href={photo.avatar} target="_blank"> {photo.username} </a>
       </div>
     } else {
       <div class="col col1">

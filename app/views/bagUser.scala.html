@@ -19,7 +19,11 @@
 
 @statusDisplay( status: models.Status)={
 
-					<h3 class="accordion-header"   >@status.name </h3>
+					<h3 class="accordion-header"   >@status.name
+					@if( status.name != "计划中"   ){
+						-@status.map.size个
+					}
+					 </h3>
 						<div class="accordion accordion-content" @if(status.name==defaultStatusName  ){ style="display:block;"} >
 						@for( planTuple <- status.map ){
 							<h4 class="accordion-header" >@planTuple._2.name  <span>-</span>
