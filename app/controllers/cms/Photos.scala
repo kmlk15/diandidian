@@ -158,6 +158,12 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
                   
                   
                 }
+                
+                /**
+               * TODO 取消设置为首页！
+                 */
+                
+                
                 if( originPhoto.imgsrc == ""){
                 	photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc , atHomepage = false )
                 }else{

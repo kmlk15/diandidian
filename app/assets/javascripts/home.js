@@ -21,7 +21,7 @@ function loadHomeAttractions( query) {
 //					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="266" height="262" alt="" />';//default image here
 //				}
 				if(item.photo) {
-				attractionHtml += '<img src="http://diandidian.s3-us-west-1.amazonaws.com/' + item.photo + '" width="264" height="260" alt="" />';
+					attractionHtml += '<img src="http://diandidian.s3-us-west-1.amazonaws.com/' + item.photo + '" width="264" height="260" alt="" />';
 				} else {
 					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="264" height="260" alt="" />';//default image here
 				}				 
@@ -29,13 +29,25 @@ function loadHomeAttractions( query) {
 				attractionHtml += '<h3>'+item.name+'</h3>';
 				attractionHtml += '<span>'+item.address.city+': '+item.address.district+'</span>';
 				attractionHtml += '</div>';
+
 				attractionHtml += '<div class="user">';
-				attractionHtml += '<a href="#"><img src="/assets/images/dummy/user01.png" width="32" height="32" alt="" /></a>';
+				attractionHtml += '<a href="' + +'" target="_blank" >图片来源:</a>';
+				attractionHtml += '';
 				attractionHtml += '<div>';
-				attractionHtml += '<span>照片</span>';
-				attractionHtml += '<p>攻略作者 @ 香港8天的行程</p>';
+				attractionHtml += '<span></span>';
+				attractionHtml += '<p></p>';
 				attractionHtml += '</div>';
 				attractionHtml += '</div>';
+				
+//				attractionHtml += '<div class="user">';
+//				attractionHtml += '<a href="#"><img src="/assets/images/dummy/user01.png" width="32" height="32" alt="" /></a>';
+//				attractionHtml += '<div>';
+//				attractionHtml += '<span>照片</span>';
+//				attractionHtml += '<p>攻略作者 @ 香港8天的行程</p>';
+//				attractionHtml += '</div>';
+//				attractionHtml += '</div>';
+				
+				
 				attractionHtml += '<span class="add-bag">加入背包</span >';
 				attractionHtml += '<span class="added-bag">已在背包</span >';
 				attractionHtml += '<span class="detail"><a href="/detail/view/' + encodeURI(item.name) + '">详情</a></span >';

@@ -215,7 +215,7 @@ case class Photo(id: Option[String]=None , locationId: String ="", userId: Strin
 
 object PhotoHelp{
   
-   implicit val pictureFmt = Json.format[Photo]
+   implicit val photoFmt = Json.format[Photo]
    val form = Form {
     mapping(
         "id" -> optional(of[String] verifying pattern(

@@ -17,12 +17,16 @@ import com.mongodb.BasicDBObject
 import org.slf4j.LoggerFactory
 import models.LocationJsonHelp.locationFmt
 import models.LocationFormHelp.locationFormFmt
+import models.PhotoHelp.photoFmt
 import play.api.libs.json.Json
+import org.apache.commons.lang3.StringUtils
 
 
 object LocationEndpoints extends Controller {
 	val log = LoggerFactory.getLogger(LocationEndpoints.getClass())
      val ls = locationFormRegistry.locationService
+     val cmsService = CmsServiceRegistry.cmsService
+     
    // val ls = locationRegistry.locationService
   /*
    * Test of converting json string into object and back to json string by using sjson
@@ -53,8 +57,23 @@ object LocationEndpoints extends Controller {
     }
     
     val locations = locationsList map {location =>
-      Json.toJson( location)
+     val photo =  if( location.photo.startsWith("266_")){
+    	  val imgsrc = StringUtils.substringAfter( location.photo , "266_" )
+    	  log.debug("imgsrc={}" , imgsrc )
+    	  cmsService.getPhotoByImgsrc(imgsrc) match{
+    	    case None => Photo()
+    	    case Some( photo ) => photo
+    	  }
+      }else{
+        Photo()
+      }
+      
+      Json.obj( "photo" -> Json.toJson( photo ))
+      
+      Json.toJson( location )
     }
+    
+    
     Ok( Json.toJson( locations) )
     
   }
