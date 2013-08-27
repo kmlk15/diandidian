@@ -68,9 +68,9 @@ object LocationEndpoints extends Controller {
         Photo()
       }
       
-      Json.obj( "photo" -> Json.toJson( photo ))
+     
       
-      Json.toJson( location )
+      Json.obj( "photo" -> Json.toJson( photo )) ++ Json.obj("location" -> Json.toJson( location ) )
     }
     
     

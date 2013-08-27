@@ -11,8 +11,8 @@ function loadHomeAttractions( query) {
 			}
 			attractionListHtml += '<ul class="clearfix">';
 		 
-			$.each(json, function(index, item){
-				 
+			$.each(json, function(index, data){
+				var item = data.location ;
 				var attractionHtml = '';
 				attractionHtml += '<li>';
 //				if(item.pictures && item.pictures.planning) {
@@ -29,23 +29,35 @@ function loadHomeAttractions( query) {
 				attractionHtml += '<h3>'+item.name+'</h3>';
 				attractionHtml += '<span>'+item.address.city+': '+item.address.district+'</span>';
 				attractionHtml += '</div>';
+				if( data.photo.uploadtype =="admin"){
+					attractionHtml += '<div class="user">';
+					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
+					attractionHtml += '<br/><p>'+ data.photo.username +'</p>';
+					attractionHtml += '<div>';
+					attractionHtml += '<span></span>';
+					attractionHtml += '<p></p>';
+					attractionHtml += '</div>';
+					attractionHtml += '</div>';
+				}else if(  data.photo.uploadtype =="user" ){
+					attractionHtml += '<div class="user">';
+					attractionHtml += '<a href="#"><img src="' + data.photo.avatar +'" width="32" height="32" alt="" /></a>';
+					attractionHtml += '<div>';
+					attractionHtml += '<span>照片</span>';
+					attractionHtml += '<p>攻略作者 @ 香港8天的行程</p>';
+					attractionHtml += '</div>';
+					attractionHtml += '</div>';					
+				}else{
+					attractionHtml += '<div class="user">';
+					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
+					attractionHtml += '<br/><p>'+ data.photo.username +'</p>';
+					attractionHtml += '<div>';
+					attractionHtml += '<span></span>';
+					attractionHtml += '<p></p>';
+					attractionHtml += '</div>';
+					attractionHtml += '</div>';
+					
+				}
 
-				attractionHtml += '<div class="user">';
-				attractionHtml += '<a href="' + +'" target="_blank" >图片来源:</a>';
-				attractionHtml += '';
-				attractionHtml += '<div>';
-				attractionHtml += '<span></span>';
-				attractionHtml += '<p></p>';
-				attractionHtml += '</div>';
-				attractionHtml += '</div>';
-				
-//				attractionHtml += '<div class="user">';
-//				attractionHtml += '<a href="#"><img src="/assets/images/dummy/user01.png" width="32" height="32" alt="" /></a>';
-//				attractionHtml += '<div>';
-//				attractionHtml += '<span>照片</span>';
-//				attractionHtml += '<p>攻略作者 @ 香港8天的行程</p>';
-//				attractionHtml += '</div>';
-//				attractionHtml += '</div>';
 				
 				
 				attractionHtml += '<span class="add-bag">加入背包</span >';
