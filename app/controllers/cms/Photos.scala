@@ -125,8 +125,38 @@ object Photos extends Controller with AuthTrait  with services.FileUploadService
                 }
                 photo.copy(imgsrc = filename, id = originPhoto.id)
               } else {
-                if (photo.atHomepage) {
-                  service.updateLocation(locationImpl.copy(photo = "266_" + originPhoto.imgsrc))
+                if (photo.atHomepage && !originPhoto.atHomepage) {
+
+                  /**
+                   * 这里需要处理 有可能还没有生成  atHomePage 需要的图片的情况
+                   * 就是原来  atHomepage == false , 在不改变图片的情况下，设置为  atHomepage == true
+                   * 0 判断图片是否存在，
+                   * 1 下载 原图，
+                   * 2 在本地执行 convert
+                   * 3 再上传 图片
+                   */
+                  val filename = "266_" + originPhoto.imgsrc
+                  val (meta, file266) = getObjectAndSavetoLocal(filename)
+                  if (meta == null) {
+                    log.debug("file={}, not at s3", filename)
+                    val (origmeta, file) = getObjectAndSavetoLocal(originPhoto.imgsrc)
+                    if (origmeta != null) {
+                      if (resize(file.getAbsolutePath(), file266.getAbsolutePath(), 266, 262)) {
+                        upload2S3(filename)
+                        service.updateLocation(locationImpl.copy(photo = filename))
+                      }else{
+                        log.error("resize or  upload to s3 error ")
+                      }
+
+                    }else{
+                      log.error("orig photo not exists. {}" , originPhoto.imgsrc )
+                    }
+                  }else{
+                    log.debug("266 缩略图存在 {}",filename )
+                     service.updateLocation(locationImpl.copy(photo = filename))
+                  }
+                  
+                  
                 }
 
                 photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc)

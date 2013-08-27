@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory
 import org.slf4j.Logger
 import play.api.mvc.MultipartFormData.FilePart
 import play.api.libs.Files.TemporaryFile
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.GetObjectRequest
 
 /**
  * 文件 上传和resize
@@ -29,7 +31,7 @@ trait FileUploadService {
    * 精确的大小
    */
 
-  def resize(from: String, to: String, w: Int, h: Int) = {
+  def resize(from: String, to: String, w: Int, h: Int): Boolean = {
     import scala.sys.process._
     val file = new File(from)
     if (file.exists()) {
@@ -37,6 +39,8 @@ trait FileUploadService {
        * convert -resize  1280x768   $img    1280.png ;
        */
       Seq("convert", from, "-resize", w + "x" + h + "^", "-gravity", "center", "-extent", w + "x" + h, to).! == 0
+    }else{
+      false
     }
   }
 
@@ -112,6 +116,14 @@ trait FileUploadService {
     filename
 
   }
+  
+  def getObjectAndSavetoLocal( filename: String  ) : (ObjectMetadata , File)={
+    s3client.getObjectAndSavetoLocal( filename)
+  }
+  
+   def upload2S3(filename: String) = {
+     s3client.upload(filename)
+   }
 }
 
 class AwsS3Client(pathprefix: String = "", useProxy: Boolean = false) {
@@ -146,4 +158,16 @@ class AwsS3Client(pathprefix: String = "", useProxy: Boolean = false) {
     log.debug("remove over")
   }
 
+  def getObjectAndSavetoLocal( filename: String  ) : (ObjectMetadata , File)={
+    log.debug("getObjectSavetoLocal filename={},  ", filename)
+    val req = new GetObjectRequest(bucket, filename )
+    val localFile = new File( pathprefix + filename)
+    val meta = try{ 
+      client.getObject( req , localFile )
+    }catch{
+      case ex:Exception => null
+    }
+    log.debug("getObjectSavetoLocal over")
+    (meta ,  localFile)
+  }
 }

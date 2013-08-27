@@ -70,9 +70,9 @@ object LocationEndpoints extends Controller {
        */
       log.debug("search q='{}'",q)
       val locationList =  ls.search( q )
-      locationList.map( location => Json.obj("id" -> location.id , "name" -> location.name))
-      log.debug( Json.prettyPrint(  Json.toJson( locationList )) )
-      Ok( Json.toJson( locationList ))
+      val idnameList = locationList.map( location => Json.obj("id" -> location.id , "name" -> location.name))
+      log.debug( Json.prettyPrint(  Json.toJson( idnameList )) )
+      Ok( Json.toJson( idnameList ))
     }
   }
   
