@@ -32,7 +32,7 @@ function loadHomeAttractions( query) {
 				if( data.photo.uploadtype =="admin"){
 					attractionHtml += '<div class="user">';
 					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
-					attractionHtml += '<br/><p>'+ data.photo.username +'</p>';
+					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >'+ data.photo.username +'</a>';
 					attractionHtml += '<div>';
 					attractionHtml += '<span></span>';
 					attractionHtml += '<p></p>';
