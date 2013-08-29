@@ -12,10 +12,10 @@
 					<h2>我的背包:</h2>
  				<div class="accordion">
  				@for( statusTuple <- bag.map ){
-						 <h3 class="accordion-header"   >@statusTuple._2.name</h3>
+						 <h3 class="accordion-header  state-active"   >@statusTuple._2.name</h3>
 						<div class="accordion accordion-content" style="display:block">
 						@for( planTuple <- statusTuple._2.map ){
-							<h4 class="accordion-header" >@planTuple._2.name  <span>-</span><small><span>@planTuple._2.list.size</span>个景点</small> </h4>
+							<h4 class="accordion-header  state-active" >@planTuple._2.name  <span>-</span><small><span>@planTuple._2.list.size</span>个景点</small> </h4>
 							<div class="accordion-content clearfix" style="display:block">
 								<ul class="open">
 								@for( simpleLocation <- planTuple._2.list.reverse   ){

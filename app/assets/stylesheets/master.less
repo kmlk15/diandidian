@@ -399,12 +399,34 @@ ul, ol {
 				border: 1px solid @attractions-listImgBorder;
 				border-radius: 0 10px 0 0;
 			}
+			.title2 {
+				overflow: hidden;
+				position: absolute;
+				bottom: 45px;
+				left: 1px;
+				/**height: 47px;**/
+				width: 264px;
+				background: url(/assets/images/box-opacity.png);
+				h3 {
+					float: left;
+					margin: 1px 0 0 10px;
+					line-height: 27px;
+					color: #fff;
+				}
+				span {
+					display: block;
+					float: left;
+					line-height: 16px;
+					margin: 0 0 1px 10px;
+					color: @white;
+				}
+			}
 			.title {
 				overflow: hidden;
 				position: absolute;
 				bottom: 45px;
 				left: 1px;
-				/*height: 27px;*/
+				height: 27px;
 				width: 264px;
 				background: url(/assets/images/box-opacity.png);
 				h3 {
@@ -432,7 +454,7 @@ ul, ol {
 				a {
 					display: block;
 					/**float: left;**/
-					margin: 6px 0 0 10px;
+					margin: 7px 0 0 10px;
 				}
 				div {
 					float: left;
@@ -835,7 +857,7 @@ ul, ol {
 	}
 	.basic-info {
 		padding: 14px 34px 14px 90px;
-		background: @attractionListBottomBg;
+		/**background: @attractionListBottomBg;**/
 		font-size: 13px;
 		line-height: 18px;
 		color: @textGrey;

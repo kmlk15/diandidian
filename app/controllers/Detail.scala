@@ -235,31 +235,45 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     }
   }
   
+  def displayTitle( photo: Photo, location : LocationForm) ={
+    if (photo.uploadtype == "admin") {
+      
+    }else{
+    	<h2>{location.name}</h2><span>-</span>
+    }
+  }
+  def displayContent( photo: Photo , location : LocationForm, isFirst: Boolean  ): scala.xml.Elem = {
+    if( photo.uploadtype == "admin"){
+      
+        <div><div class="galleryContent"  style={if(isFirst){""}else{"display:none"} }   id = { "content_" + photo.id.get }>
+         			<div class="">
+    	图片来源: <a href={photo.avatar} target="_blank"> {photo.username} </a>
+      </div>
+              </div></div>
+              
+                    
+      
+    }else{
+      <div><div class="galleryContent"  style={if(isFirst){""}else{"display:none"} }    id = { "content_" + photo.id.get }>
+         			{displayUser( photo)}
+                <div class="col col2">
+                  <div class="title">
+                    {displayTitle( photo, location )}
+                  </div>
+                    {displayContent( photo)}
+                </div>
+              </div></div>
+      
+    }
+    
+  }
+  
      def galleryContent(photoList: List[Photo] , location : LocationForm ) : List[scala.xml.Elem] = {
        val firstPhoto =   photoList.head
        
         {for( photo <- photoList )yield  {
-          if( firstPhoto == photo ){
-            <div><div class="galleryContent"  id = { "content_" + photo.id.get }>
-                {displayUser( photo)}
-                <div class="col col2">
-                  <div class="title">
-                    <h2>{location.name}</h2><span>-  上传图片的时候，不知道 对应的 plann!!! ???</span>
-                  </div>
-                    {displayContent( photo)}
-                </div>
-              </div></div>
-          }else{
-         <div><div class="galleryContent"  style="display:none"   id = { "content_" + photo.id.get }>
-         			{displayUser( photo)}
-                <div class="col col2">
-                  <div class="title">
-                    <h2>{location.name}</h2><span>-  上传图片的时候，不知道 对应的 plann!!! ???</span>
-                  </div>
-                    {displayContent( photo)}
-                </div>
-              </div></div>
-          }
+          displayContent(photo , location , firstPhoto == photo )
+          
         }
         }
           

@@ -9,7 +9,7 @@ $(function() {
 			
 			var galleryContentData = json.galleryContent; 
 			
-			$("div.user-content").prepend( galleryContentData )
+			//$("div.user-content").prepend( galleryContentData )
 			
 			 var viewModel = ko.mapping.fromJS( json );
 			 ko.applyBindings(viewModel);

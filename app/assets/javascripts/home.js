@@ -25,17 +25,25 @@ function loadHomeAttractions( query) {
 				} else {
 					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="264" height="260" alt="" />';//default image here
 				}				 
-				attractionHtml += '<div class="title">';
-				attractionHtml += '<h3>'+item.name+'</h3>';
-				attractionHtml += '<span>'+item.address.city+': '+item.address.district+'</span>';
-				attractionHtml += '</div>';
+				
+				if( item.name.length > 10 ){
+					attractionHtml += '<div class="title2">';
+					attractionHtml += '<h3>'+item.name+'</h3>';
+					attractionHtml += '<span>'+item.address.city+': '+item.address.district+'</span>';
+					attractionHtml += '</div>';
+				}else{
+					attractionHtml += '<div class="title">';
+					attractionHtml += '<h3>'+item.name+'</h3>';
+					attractionHtml += '<span>'+item.address.city+': '+item.address.district+'</span>';
+					attractionHtml += '</div>';
+				}
+				
 				if( data.photo.uploadtype =="admin"){
 					attractionHtml += '<div class="user">';
 					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
-					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >'+ data.photo.username +'</a>';
+					attractionHtml += ''+ data.photo.username +'';
 					attractionHtml += '<div>';
-					attractionHtml += '<span></span>';
-					attractionHtml += '<p></p>';
+				 
 					attractionHtml += '</div>';
 					attractionHtml += '</div>';
 				}else if(  data.photo.uploadtype =="user" ){

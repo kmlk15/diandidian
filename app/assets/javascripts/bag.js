@@ -119,7 +119,13 @@ $(function() {
 			
 		 return false;
 	});
-	
+	$("#attractions-list").on('click',"ul li .detail", function(e) {
+		
+		var detailurl = $("a" , this).attr("href");
+		//alert(detailurl);
+		window.location = detailurl;
+		return false;
+	});
 	
 	//home page to add to bag, you should change to use backend to add
 	/**
