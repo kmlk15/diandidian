@@ -19,14 +19,14 @@
 
 @statusDisplay( status: models.Status)={
 
-					<h3 class="accordion-header"   >@status.name
-					@if( status.name != "计划中"   ){
+					<h3 class="accordion-header  @if(status.name==defaultStatusName  ){   state-active } "   >@status.name
+					@if( status.name != defaultStatusName   ){
 						-@status.map.size个
 					}
 					 </h3>
 						<div class="accordion accordion-content" @if(status.name==defaultStatusName  ){ style="display:block;"} >
 						@for( planTuple <- status.map ){
-							<h4 class="accordion-header" >@planTuple._2.name  <span>-</span>
+							<h4 class="accordion-header @if(planTuple._2.name==defaultPlanName  ){   state-active } " >@planTuple._2.name  <span>-</span>
 							<small><span>@planTuple._2.list.size</span>个景点</small>
 							@if( status.name != "过去背包" ){
 							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)" class="setPlan" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ }else{style="display:none" }>添加地点</a>

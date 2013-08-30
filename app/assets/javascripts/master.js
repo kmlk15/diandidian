@@ -100,7 +100,7 @@ $(function() {
 function homeAttractionHover() {
 	$("#attractions-list ul li").hover(
 		function(){
-			var addressName = $(this).find(".title h3").text();
+			var addressName = $(this).find(".title h3 , .title2 h3 ").text();
 			var $ul = $("#my-bag .accordion .accordion div ul.open");
 			$ul = $($ul[0]);
 			//alert(searchBagItem($ul, addressName));

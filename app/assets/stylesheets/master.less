@@ -697,7 +697,7 @@ ul, ol {
 	/*box-shadow: 2px 2px 2px rgba(0,0,0,0.5);*/
 	.breadcrumbs {
 		margin-bottom: 8px;
-		padding: 0 0 0 30px;
+		padding: 0 0 0 24px;
 		font-weight: 300;
 		font-size: 23px;
 		color: @blue;
@@ -765,6 +765,41 @@ ul, ol {
 							.opacity(0.45);
 						}
 					}
+				}
+			}
+		}
+	}
+	.detal-sidebar {
+		overflow: none;
+		float: right;
+		width: 120px;
+		margin: 0 24px 0 0;
+		span {
+			display: block;
+			float: right;
+			margin-bottom: 15px;
+			width: 101px;
+			height: 27px;
+			font-size: 17px;
+			color: @white;
+			cursor: pointer;
+			&.add-bag {
+				margin-top: -10px;
+				background: url(/assets/images/sprite.png) 0 -95px no-repeat;
+				&:hover {
+					background: url(/assets/images/sprite.png) 0 0 no-repeat;
+					color:@blue;
+				}
+				&.added {
+					background: url(/assets/images/sprite.png) 0 -190px no-repeat;
+					cursor: default;
+				}
+			}
+			&.upload-photo {
+				background: url(/assets/images/sprite.png) 0 -856px no-repeat;
+				&:hover {
+					background: url(/assets/images/sprite.png) 0 -761px no-repeat;
+					color:@textGrey4;
 				}
 			}
 		}

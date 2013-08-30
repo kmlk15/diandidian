@@ -136,7 +136,7 @@ $(function() {
 		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
 		var $ul = $("#my-bag .accordion .accordion div ul.open");//ul to add li
 		$ul = $($ul[0]);
-		var titleText = $(this).prevAll(".title").find("h3").text();
+		var titleText = $(this).parent("li").find("h3").text();
 		var locationName = titleText.trim()
 		var statusName=  window.currentStatusName
 		var planName = window.currentPlanName
