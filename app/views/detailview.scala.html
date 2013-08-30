@@ -26,7 +26,7 @@ var detailname = "@name";
 			<div id="main">
 				<div id="attraction-detal">
 					<div class="breadcrumbs"><a href="" data-bind="{attr: { href: cityhref}}"><span data-bind="text: address.city" ></span></a> &gt; <a href=""   data-bind="{attr: { href: districthref}}" ><span data-bind="text: address.district" ></span></a> &gt; <a href="#"><span data-bind="text: name" id="locationName"></span></a></div>
-					<div class="gallery" id="gallerycontain" >
+					<div class="gallery clearfix" id="gallerycontain" >
 						
 					</div><!-- end gallery -->
 					
@@ -35,7 +35,7 @@ var detailname = "@name";
 						<span class="add-bag">加入背包</span>
 						<span class="upload-photo">@if( session.get("userId").getOrElse("")!=""){<a href="" data-bind="{attr: { href: addPhotohref }}" >上传照片</a>}else{ 上传照片 } </span>
 					</div>
-					 
+					<div class="detal-text"> 
 					<div class="user-content clearfix">
 						<div class="col col1">
 							<img src="/assets//images/dummy/img18.png" width="49" height="49" alt="User Icon" />
@@ -51,8 +51,7 @@ var detailname = "@name";
 								</p>
 								<div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
 							</div>
-						</div>
-						
+						</div>						
 					</div><!-- end user-content -->
 						
 					
@@ -61,39 +60,47 @@ var detailname = "@name";
 						<div class="row row1 clearfix">
 							<div class="col col1">
 								<p>
-									地址:  <span data-bind="text: address.street"></span><br />
-									电话:  <span data-bind="text: phone.general"></span><br />
-									开放时间: <div data-bind="html: opentimetable"></div>
+									<table>
+									<tr>
+										<td class="labe2">地址:</td>
+										<td><span data-bind="text: address.street"></span></td>
+									</tr>
+									<tr>
+										<td class="labe2">电话:</td>
+										<td><span data-bind="text: phone.general"></span></td>
+									</tr>
+									<tr>
+										<td class="labe2">开放时间:</td>
+										<td><div data-bind="html: opentimetable"></div></td>
+									</tr>
+									</table>
+									  
+									 
 									 
 								</p>
 							</div>
 							<div class="col col2">
 								<table>
 									<tr>
-										<td   valign="top">门票：</td><td>日间入场门票</td>
+										<td rowspan="6"  class="labe3">门票:</td><td colspan="2">日间入场门票</td>
 									</tr>
 									<tr>
-										<td>general</td><td><span  data-bind="text: admission.general  " > </span> <span data-bind="text: admission.currency"></span> </td>
+										<td class="labe4">general</td><td><span  data-bind="text: admission.general  " > </span> <span data-bind="text: admission.currency"></span> </td>
 									</tr>
 									
 									<tr>
-										<td>成人</td><td><span  data-bind="text: admission.adults  " > </span> <span data-bind="text: admission.currency"></span> </td>
+										<td class="labe4">成人</td><td><span  data-bind="text: admission.adults  " > </span> <span data-bind="text: admission.currency"></span> </td>
 									</tr>
 									<tr>
-										<td>小童(3至11岁)</td><td> <span  data-bind="text: admission.children  " > </span> <span data-bind="text: admission.currency"></span> </td>
+										<td class="labe4">小童(3至11岁)</td><td> <span  data-bind="text: admission.children  " > </span> <span data-bind="text: admission.currency"></span> </td>
 									</tr>
 									<tr>
-									<td>student</td>
-									
+									<td class="labe4">student</td>									
 									<td><span  data-bind="text: admission.student  " > </span> <span data-bind="text: admission.currency"></span></td>
 									</tr>
 									<tr>
-									<td>seniors</td>
+									<td class="labe4">seniors</td>
 									<td><span  data-bind="text: admission.seniors " > </span> <span data-bind="text: admission.currency"></span></td>
-									</tr>
-									
-									<tr class="website">
-										<td>网站：</td><td colspan="2"><a href="" target="_blank"  data-bind="text: url"  data-bind="attr:{ href: url }" > </a></td>
 									</tr>
 								</table>
 							</div>
@@ -116,6 +123,18 @@ var detailname = "@name";
 									</td>
 								</tr>
 							</table>
+						</div>
+						<hr />
+						<div class="row row3">
+							<table>
+								<tr>
+									<td class="label">网站:</td>
+									<td>
+										 <a href="" target="_blank"  data-bind="text: url"  data-bind="attr:{ href: url }" > </a>
+									</td>
+								</tr>
+							</table>
+						</div>
 						</div>
 					</div><!-- end basic-info -->
 				</div><!-- end attraction-detail -->

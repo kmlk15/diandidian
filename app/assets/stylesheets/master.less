@@ -773,126 +773,133 @@ ul, ol {
 		overflow: none;
 		float: right;
 		width: 120px;
-		margin: 0 24px 0 0;
+		margin: 15px 24px 0 0;
 		span {
 			display: block;
 			float: right;
 			margin-bottom: 15px;
-			width: 101px;
-			height: 27px;
+			width: 74px;
+			padding-left: 29px;
+			height: 29px;
+			line-height: 29px;
 			font-size: 17px;
 			color: @white;
 			cursor: pointer;
 			&.add-bag {
 				margin-top: -10px;
-				background: url(/assets/images/sprite.png) 0 -95px no-repeat;
+				background: url(/assets/images/sprite.png) -7px -103px no-repeat;
 				&:hover {
-					background: url(/assets/images/sprite.png) 0 0 no-repeat;
+					background: url(/assets/images/sprite.png) -7px -8px no-repeat;
 					color:@blue;
 				}
 				&.added {
-					background: url(/assets/images/sprite.png) 0 -190px no-repeat;
+					background: url(/assets/images/sprite.png) -7px -190px no-repeat;
 					cursor: default;
 				}
 			}
 			&.upload-photo {
-				background: url(/assets/images/sprite.png) 0 -856px no-repeat;
+				background: url(/assets/images/sprite.png) -7px -864px no-repeat;
 				&:hover {
-					background: url(/assets/images/sprite.png) 0 -761px no-repeat;
+					background: url(/assets/images/sprite.png) -7px -769px no-repeat;
 					color:@textGrey4;
 				}
 			}
 		}
 	}
-	.user-content {
-		margin: 0 auto 14px auto;
-		width: 780px;
-		.col {
-			float: left;
-			&.col1 {
-				width: 60px;
-			}
-			&.col2 {
-				padding-right: 15px;
-				width: 585px;
-				border-right: 1px dashed @greyTopDropHoverBg;
-				.title {
-					margin-bottom: 7px;
-					h2 {
-						float: left;
-						font-size: 15px;
-						line-height: 18px;
-						color: @textGrey2;
-					}
-					span {
-						font-size: 12px;
-						line-height: 18px;
-					}
+	.detal-text{
+		margin:20px 145px 20px 24px;
+		border-right: 1px dashed @greyTopDropHoverBg;
+		padding-right: 18px;
+			.user-content {
+			margin: 0 auto 13px auto;
+			.col {
+				float: left;
+				&.col1 {
+					width: 60px;
 				}
-				.content {
-					p {
-						margin: 0;
-						.more {
-							display: none;
-						}
-					}
-					.switch {
-						span {
-							display: block;
+				&.col2 {
+					width: 580px;
+					.title {
+						margin-bottom: 7px;
+						h2 {
 							float: left;
-							padding-right: 13px;
-							color: @red;
-							cursor: pointer;
-							&.more {
-								background: url(/assets/images/red-triangle-dropdown.png) right 50% no-repeat;
-							}
-							&.less {
+							font-size: 15px;
+							line-height: 18px;
+							color: @textGrey2;
+						}
+						span {
+							font-size: 12px;
+							line-height: 18px;
+						}
+					}
+					.content {
+						p {
+							margin: 0;
+							.more {
 								display: none;
-								background: url(/assets/images/red-triangle-up.png) right 50% no-repeat;
+							}
+						}
+						.switch {
+							margin-top:5px;
+							span {
+								display: block;
+								float: left;
+								padding-right: 13px;
+								color: @red;
+								cursor: pointer;
+								&.more {
+									background: url(/assets/images/red-triangle-dropdown.png) right 50% no-repeat;
+								}
+								&.less {
+									display: none;
+									background: url(/assets/images/red-triangle-up.png) right 50% no-repeat;
+								}
 							}
 						}
 					}
 				}
-			}
-			&.col3 {
-				width: 119px;
-				span {
-					display: block;
-					float: right;
-					margin-right: -10px;
-					padding-top: 10px;
-					padding-left: 35px;
-					width: 84px;
-					height: 31px;
-					font-size: 17px;
-					color: @white;
-					cursor: pointer;
-					&.add-bag {
-						margin-top: -10px;
-						background: url(/assets/images/sprite.png) 0 -95px no-repeat;
-						&:hover {
-							background: url(/assets/images/sprite.png) 0 0 no-repeat;
-							color:@blue;
+				&.col3 {
+					width: 119px;
+					span {
+						display: block;
+						float: right;
+						margin-right: -10px;
+						padding-top: 10px;
+						padding-left: 35px;
+						width: 84px;
+						height: 31px;
+						font-size: 17px;
+						color: @white;
+						cursor: pointer;
+						&.add-bag {
+							margin-top: -10px;
+							background: url(/assets/images/sprite.png) 0 -95px no-repeat;
+							&:hover {
+								background: url(/assets/images/sprite.png) 0 0 no-repeat;
+								color:@blue;
+							}
+							&.added {
+								background: url(/assets/images/sprite.png) 0 -190px no-repeat;
+								cursor: default;
+							}
 						}
-						&.added {
-							background: url(/assets/images/sprite.png) 0 -190px no-repeat;
-							cursor: default;
-						}
-					}
-					&.upload-photo {
-						background: url(/assets/images/sprite.png) 0 -856px no-repeat;
-						&:hover {
-							background: url(/assets/images/sprite.png) 0 -761px no-repeat;
-							color:@textGrey4;
+						&.upload-photo {
+							background: url(/assets/images/sprite.png) 0 -856px no-repeat;
+							&:hover {
+								background: url(/assets/images/sprite.png) 0 -761px no-repeat;
+								color:@textGrey4;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
+	
+	
 	.basic-info {
-		padding: 14px 34px 14px 90px;
-		/**background: @attractionListBottomBg;**/
+		margin: 0 0 15px 60px;
+		padding: 13px 0 0 0;
+		border-top: 1px dashed @greyTopDropHoverBg;
 		font-size: 13px;
 		line-height: 18px;
 		color: @textGrey;
@@ -915,13 +922,25 @@ ul, ol {
 			td {
 				padding: 0;
 				border: none;
+				vertical-align: top;
 			}
 		}
 		.row {
 			&.row1 {
 				.col {
 					float: left;
-					width: 359px;
+					width: 50%;
+					table {
+						td.labe2{
+							width: 66px;
+						}
+						td.labe3{
+						width: 35px;
+						}
+						td.labe4{
+						width: 100px;
+						}
+					}
 					&.col1 {
 						p {
 							line-height: 24px;
@@ -951,7 +970,7 @@ ul, ol {
 	}
 }
 
-
+}
 
 /* plan page */
 #top-nav .return-search {
