@@ -2,14 +2,14 @@ $(function() {
 	
 	function loadDetail( name ) {
 		 
-		$.getJSON("/detail/json/" + name , null, function(json){
+		$.getJSON("/detail/json/" +encodeURI( name ) , null, function(json){
 			//  
 			var htmldata = json.gallery ;
 			$("div#gallerycontain").html( htmldata )
 			
 			var galleryContentData = json.galleryContent; 
 			
-			//$("div.user-content").prepend( galleryContentData )
+			$("div.detal-text").prepend( galleryContentData )
 			
 			 var viewModel = ko.mapping.fromJS( json );
 			 ko.applyBindings(viewModel);
@@ -53,7 +53,7 @@ function initDetailGallery() {
 		var href = $(this).attr("href");
 		//alert("href=" + href );
 		
-		$("#attraction-detal .user-content  .galleryContent").hide();
+		$("#attraction-detal .user-content  ").hide();
 		var id =  $(this).attr("id");
 		//alert(id );
 		var cssselect =  "div#content_" + id ;
@@ -109,13 +109,13 @@ function initDetailGallery() {
 
 function spanlessmore( ){
 	
-	$("#attraction-detal .user-content  .galleryContent  .col2 .content .switch .more").click(function(e) {
+	$("#attraction-detal .user-content    .col2 .content .switch .more").click(function(e) {
 		$(this).parents(".content").find("p span.more").show();
 		$(this).hide();
 		$(this).next(".less").show();
 		$("#shadow-divide").height($(document).height());
 	});
-	$("#attraction-detal .user-content  .galleryContent .col2 .content .switch .less").click(function(e) {
+	$("#attraction-detal .user-content   .col2 .content .switch .less").click(function(e) {
 		$(this).parents(".content").find("p span.more").hide();
 		$(this).hide();
 		$(this).prev(".more").show();

@@ -41,10 +41,8 @@ function loadHomeAttractions( query) {
 				if( data.photo.uploadtype =="admin"){
 					attractionHtml += '<div class="user">';
 					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
-					attractionHtml += ''+ data.photo.username +'';
-					attractionHtml += '<div>';
+					attractionHtml += '<span>'+ data.photo.username +'</span>';
 				 
-					attractionHtml += '</div>';
 					attractionHtml += '</div>';
 				}else if(  data.photo.uploadtype =="user" ){
 					attractionHtml += '<div class="user">';

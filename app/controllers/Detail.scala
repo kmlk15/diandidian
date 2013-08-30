@@ -23,14 +23,14 @@ object Detail extends Controller   {
 val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
       
   def view(name: String ) = Action { implicit request =>{
-    Logger.debug("name=" + name )
+    log.debug("name={}"  , name )
     
     Ok( views.html.detailview( name ))
   }
   }
   
   def viewJson(name: String) = Action {
-    Logger.debug("name=" + name)
+    log.debug("name={}"  ,  name)
     /**
      * name 不适合作为主键
      * 需要将 数据保存到 mongodb 中
@@ -148,16 +148,16 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     					 if( photo == firstPhoto  ){
     					   
                       <li class="active" >
-    							<a href={awsbase + "780_"+photo.imgsrc}  id= {photo.id.get} ><img src={awsbase + "102_"+photo.imgsrc}  /></a>
+    							<a href={awsbase + "780_"+photo.imgsrc}  id= {photo.id.get} ><img src={awsbase + "102_"+photo.imgsrc}  width="102"  height="57" /></a>
                       </li>  
     					   
     					 }else if( photo == lastPhoto){
     					 <li class="last" >
-    							<a href={awsbase + "780_"+photo.imgsrc}  id= {photo.id.get} ><img src={awsbase + "102_"+photo.imgsrc}  /></a>
+    							<a href={awsbase + "780_"+photo.imgsrc}  id= {photo.id.get} ><img src={awsbase + "102_"+photo.imgsrc}   width="102"  height="57"  /></a>
                       </li>  
     					 }else{
                       <li >
-    							<a href={awsbase + "780_"+photo.imgsrc} id= {photo.id.get }><img src={awsbase + "102_"+photo.imgsrc}  /></a>
+    							<a href={awsbase + "780_"+photo.imgsrc} id= {photo.id.get }><img src={awsbase + "102_"+photo.imgsrc}   width="102"  height="57"  /></a>
                       </li>  
 
     					 }
@@ -184,21 +184,24 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     def emptyGalleryContent(): List[scala.xml.Elem] = {
       
  
-   val xml = <div><div class="galleryContent" >
-      <div class="col col1">
-        <img src="" width="49" height="49" alt="User Icon"/>
-      </div>
-      <div class="col col2">
-        <div class="title">
-          <h2></h2><span></span>
-        </div>
-        <div class="content">
-          <p>
-          </p>
-          <div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
-        </div>
-      </div>
-    </div></div>
+   val xml = <div>
+					<div class="user-content clearfix">
+						<div class="col col1">
+							
+						</div>
+						<div class="col col2">
+							<div class="title">
+								<h2></h2><span></span>
+							</div>
+							<div class="content">
+								<p>
+									
+								</p>
+								 
+							</div>
+						</div>						
+					</div>
+</div>
      
     List(xml)
  
@@ -223,47 +226,43 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     }
   }
 
-  def displayUser(photo: Photo) = {
-    if (photo.uploadtype == "admin") {
-      <div class="col col1">
-    	图片来源: <a href={photo.avatar} target="_blank"> {photo.username} </a>
-      </div>
-    } else {
-      <div class="col col1">
-        <img src={ photo.avatar } width="49" height="49" alt={photo.username} />
-      </div>
-    }
-  }
+ 
   
-  def displayTitle( photo: Photo, location : LocationForm) ={
-    if (photo.uploadtype == "admin") {
-      
-    }else{
-    	<h2>{location.name}</h2><span>-</span>
-    }
-  }
+ 
+  
   def displayContent( photo: Photo , location : LocationForm, isFirst: Boolean  ): scala.xml.Elem = {
     if( photo.uploadtype == "admin"){
-      
-        <div><div class="galleryContent"  style={if(isFirst){""}else{"display:none"} }   id = { "content_" + photo.id.get }>
-         			<div class="">
-    	图片来源: <a href={photo.avatar} target="_blank"> {photo.username} </a>
+      <div>
+        <div class="user-content clearfix" style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
+          <div class="col col1">
+          </div>
+          <div class="col col2">
+            <div class="title">
+              图片来源:<a href={ photo.avatar } target="_blank"> { photo.username } </a>
+            </div>
+            <div class="content">
+              <p>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-              </div></div>
-              
                     
       
     }else{
-      <div><div class="galleryContent"  style={if(isFirst){""}else{"display:none"} }    id = { "content_" + photo.id.get }>
-         			{displayUser( photo)}
-                <div class="col col2">
-                  <div class="title">
-                    {displayTitle( photo, location )}
-                  </div>
-                    {displayContent( photo)}
-                </div>
-              </div></div>
-      
+      <div>
+        <div class="user-content clearfix" style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
+          <div class="col col1">
+            <img src={ photo.avatar } width="49" height="49" alt={ photo.username }/>
+          </div>
+          <div class="col col2">
+            <div class="title">
+              <h2>{ location.name }</h2><span>-</span>
+            </div>
+            { displayContent(photo) }
+          </div>
+        </div>
+      </div>             
     }
     
   }

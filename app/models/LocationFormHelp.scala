@@ -94,7 +94,7 @@ object HoursFormHelp{
     val html= 
       <table border="1" >
       {
-      trList.map( str => <tr><td>{str._1}</td><td>{str._2.open}</td><td>{str._2.close}</td></tr>)
+      trList.map( str => <tr><td>{str._1}</td><td>{str._2.open} -  {str._2.close}</td></tr>)
       }
       </table>
        

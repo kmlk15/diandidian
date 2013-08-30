@@ -21,6 +21,8 @@
 	
 $(function() {
 	
+$.ajaxSetup({ cache: false });
+
 	window.currentStatusName = "计划中";
 	window.currentPlanName = "背包";
 	
@@ -137,9 +139,11 @@ $(function() {
 		var $ul = $("#my-bag .accordion .accordion div ul.open");//ul to add li
 		$ul = $($ul[0]);
 		var titleText = $(this).parent("li").find("h3").text();
-		var locationName = titleText.trim()
-		var statusName=  window.currentStatusName
-		var planName = window.currentPlanName
+		//var locationName = titleText.trim()
+		var locationName = titleText ; 
+		
+		var statusName=  window.currentStatusName ;
+		var planName = window.currentPlanName;
 		
 		var param = {locationName:locationName ,statusName:statusName , planName: planName }
 		
@@ -151,7 +155,6 @@ $(function() {
 				var needremove = $("#needremove", $ul) 
 				if( needremove.length !=0){
 					 //重新加载  bag 部分页面
-					 
 					loadBag();
 				}else{ 
 					var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td>';
@@ -176,7 +179,7 @@ $(function() {
 
 	
 	//detail page to add to bag, you should change to use backend to add, add you should avoid duplicate items
-	$("#attraction-detal .user-content .col.col3 span.add-bag").click(function(e) {
+	$("#attraction-detal .detal-sidebar  span.add-bag").click(function(e) {
 		if($(this).hasClass("added")) {
 			return;
 		}
@@ -191,9 +194,9 @@ $(function() {
 			return;
 		}
 		
-		var locationName = titleText.trim() 
-		var statusName=  window.currentStatusName
-		var planName = window.currentPlanName
+		var locationName = titleText ; 
+		var statusName=  window.currentStatusName ; 
+		var planName = window.currentPlanName ; 
 		var param = {locationName:locationName ,statusName:statusName , planName: planName }
 		//console.log( JSON.stringify (param ) ) ;
 		//return false;
