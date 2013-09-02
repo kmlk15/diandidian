@@ -86,19 +86,22 @@ $.ajaxSetup({ cache: false });
 
 	
 	//设置 plan , 为 地点的 添加删除 ，准备关联数据  
-	$("#my-bag  ").on('click',".accordion .accordion    a.setPlan",function() {
+	$("#my-bag  ").on('click',".accordion .accordion   .accordion-content  a.setPlan",function() {
 		var atag = this
+		$("a.setPlan").show();
+		$(this).hide();
+		
 		var url = $.url( $(atag).attr("href") );
 		var query = url.param()
 		window.currentStatusName =  query.statusName
 		window.currentPlanName = query.planName
 		var param = query ;
 		 //alert( JSON.stringify (param ) ) ;
-		$("div#my-bag h3  span#currentStatus").html(query.statusName);
-		$("div#my-bag h3  span#currentPlan").html(query.planName);
+		//$("div#my-bag h3  span#currentStatus").html(query.statusName);
+		//$("div#my-bag h3  span#currentPlan").html(query.planName);
 		//将移除 所有 ul 的 css  open
-		 
-		
+		 $("#my-bag  .accordion .accordion  h4.accordion-header").css("color" , "rgb(60, 60, 60)") ; 
+		 $(this).parent().prev().css("color" , "rgb(0, 174, 239)") ;
 		$("#my-bag .accordion .accordion div ul").removeClass("open");
 		//当前的 加上 css  open
 		$("ul", $(atag).parent().next()).addClass("open");

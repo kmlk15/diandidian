@@ -28,9 +28,7 @@
 						@for( planTuple <- status.map ){
 							<h4 class="accordion-header @if(planTuple._2.name==defaultPlanName  ){   state-active } " >@planTuple._2.name  <span>-</span>
 							<small><span>@planTuple._2.list.size</span>个景点</small>
-							@if( status.name != "过去背包" ){
-							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)" class="setPlan" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ }else{style="display:none" }>添加地点</a>
-							}
+							
 							 </h4>
 							<div class="accordion-content clearfix  @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ state-active }" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ style="display:block;"}  >
 								<ul @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){class="open"}>
@@ -49,7 +47,10 @@
 								}
 								</ul>
 								@if( status.name != "过去背包" ){
-								 <a href="/plan/?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)">计划行程</a>
+								 
+							     <a   href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)" class="setPlan" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ }else{style="display:none" }> 编辑</a>
+							 
+								 <a class="plan"  href="/plan/?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)">计划行程</a>
 								}
 							</div>
 							} 
