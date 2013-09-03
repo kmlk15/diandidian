@@ -15,6 +15,14 @@ trait BagServiceComponent {
   val bagService: BagService
 
   trait BagService {
+    
+    /**
+     * 创建一个空的背包， 这里 实际时得到一个合适的名字
+     * 只有 statusName == defaultStatus  下 可以创建
+     * 名字规律 “背包” “背包1” “背包2” 。。。
+     */
+     def createNewplan( bagId: String ):String 
+     
     def addLocation(bagId: String, typ: String, statusName: String, planName: String, location: LocationForm): Boolean
 
     def removeLocation(bagId: String, statusName: String, planName: String, location: LocationForm): Boolean
@@ -35,7 +43,33 @@ trait BagServiceComponentImpl extends BagServiceComponent {
   val dbname = "topo"
   override val bagService = new BagService {
     lazy val bagsMongoClient = mongoService.getMongoService[Bag]("bags", dbname)
-
+    		
+    
+     def createNewplan( bagId: String ):String ={
+      get(bagId) match {
+        case None =>{
+          log.error("整个 背包不存在")
+           BagHelp.defaultPlanName
+        }
+      case Some( bag ) => {
+          bag.map.get( BagHelp.defaultStatusName  ) match{
+          case None =>
+            log.error("status 不存在 ")
+           BagHelp.defaultPlanName
+          case Some( status ) =>
+            val planmap  = status.map
+            var i = 0 
+            var bagname = BagHelp.defaultPlanName ; 
+            while( planmap.get( bagname) != None){
+              i = i +1 
+              bagname = BagHelp.defaultPlanName  + i 
+            }
+            bagname
+        }
+      }
+      }
+    }
+ 
     def addLocation(bagId: String, typ: String, statusName: String, planName: String, location: LocationForm): Boolean = {
       val simpleLocation = SimpleLocation(location.id.get, location.name, location.enName)
       get(bagId) match {

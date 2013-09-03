@@ -22,6 +22,8 @@
 					<h3 class="accordion-header  @if(status.name==defaultStatusName  ){   state-active } "   >@status.name
 					@if( status.name != defaultStatusName   ){
 						-@status.map.size个
+					}else{
+					    <a href="#" class="addNewPlan" >加新背包</a>
 					}
 					 </h3>
 						<div class="accordion accordion-content" @if(status.name==defaultStatusName  ){ style="display:block;"} >
@@ -48,7 +50,7 @@
 								</ul>
 								@if( status.name != "过去背包" ){
 								 
-							     <a   href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)" class="setPlan" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ }else{style="display:none" }> 编辑</a>
+							     <a   href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)" class="setPlan" @if(status.name==defaultStatusName && planTuple._2.name== defaultPlanName ){ }else{  }> 编辑</a>
 							 
 								 <a class="plan"  href="/plan/?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(planTuple._2.name)">计划行程</a>
 								}

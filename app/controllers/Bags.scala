@@ -242,6 +242,18 @@ object Bags extends Controller {
   }
 
   /**
+   * 得到可用的 新的背包的名字 
+   */
+  def createNewplan() = Action  {implicit request =>
+    val bagId = getBagId(session)
+    
+   val planName =  bagService.createNewplan(bagId)
+   val jsobj = Json.obj( "success" -> true , "data" -> Json.obj("planName" -> planName , "statusName" -> defaultStatusName ) )
+   Ok( jsobj)
+   
+  }
+  
+  /**
    * bag 的更新
    *  实际是 元组 (statusName , planName)  的 3 种改变
    *  (statusName , planName) 可以唯一确定一个 地点集合， 如果存在 重名，如何处理？ 提示用户合并吗?

@@ -22,7 +22,7 @@
 $(function() {
 	
 $.ajaxSetup({ cache: false });
-
+	 
 	window.currentStatusName = "计划中";
 	window.currentPlanName = "背包";
 	
@@ -104,7 +104,8 @@ $.ajaxSetup({ cache: false });
 		 $(this).parent().prev().css("color" , "rgb(0, 174, 239)") ;
 		$("#my-bag .accordion .accordion div ul").removeClass("open");
 		//当前的 加上 css  open
-		$("ul", $(atag).parent().next()).addClass("open");
+		//alert( $(atag).parent().html()) ;
+		$("ul", $(atag).parent()).addClass("open");
 		
 		//设置 Detail Page 的  addbag 按钮状态
 		var e = $("#attraction-detal .user-content .col.col3 span.add-bag")
@@ -163,7 +164,7 @@ $.ajaxSetup({ cache: false });
 					var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td>';
 					itemHtml = itemHtml + '<td class="del" ><a href="?locationId='+encodeURI(result.data.id ) +'&statusName='+ encodeURI(statusName)+'&planName='+encodeURI(planName)+'" ></a></td>';
 					itemHtml = itemHtml + '</tr></table></li>';
-					//alert(  itemHtml )
+					//alert(  itemHtml ) ;
 					$ul.append(itemHtml);
 				}
 				//searchBagItem($ul,'');
@@ -233,5 +234,41 @@ $.ajaxSetup({ cache: false });
 		return false;
 	});
 	
+	//addNewPlan 添加新的背包
+	$("div#my-bag" ).on("click" , "a.addNewPlan"  , function(){
+		var thistag = this;
+		$.getJSON("/bag/createNewplan" , function(result){ 
+			
+			$("#my-bag .accordion .accordion div ul").removeClass("open");
+			
+		var planName = result.data.planName ; 
+		var statusName  =   result.data.statusName  ; 
+		
+		window.currentStatusName  = statusName ;
+		window.currentPlanName = planName ;
+		
+		var html= '';
+		html += '<div class="accordion accordion-content" style="display:block;">';
+		html +='<h4 class="accordion-header state-active" style="color:rgb(0, 174, 239)">'+ planName +'<span>-</span>';
+		html += '<small><span>0</span>个景点</small>'
+		html +='</h4>' ;
+		html += '<div class="accordion-content clearfix   state-active" style="display: block;">';
+		html +='<ul class="open">';	
+		html +='</ul>';
+		html +='<a href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'" class="setPlan"> 编辑</a>';
+		html +=' <a class="plan" href="/plan/?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'">计划行程</a>';
+		html +='</div>';
+		html += '</div>';
+		
+	    //alert( html );
+	
+        //alert(  $( this ).parent(). html() ) ; 
+		
+		
+	    $( thistag ).parent(). after( html ) ;
+		});
+		return false;
+		
+	});
 	
 });
