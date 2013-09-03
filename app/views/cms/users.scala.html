@@ -9,7 +9,7 @@
 	<tr>
 		<th>用户列表</th>
 		<th></th>
-		<th></th>
+		 
 		<th><a href="@controllers.cms.routes.Users.add" >Add User</a></th>
 	</tr>
 	</thead>
@@ -17,7 +17,7 @@
 	@for(user <- users ){
 	<tr>
 		<td class="col-lg-2">@user.userName</td>
-		<td class="col-lg-6">@user.userId</td>
+		 
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Users.edit( user.id )">Edit</a></td>
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Users.del( user.id )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
 	</tr>

@@ -33,7 +33,7 @@ object PhotoUserHelp {
         "constraint.objectId",
         "error.objectId")),
         "userName" -> nonEmptyText , 
-        "userId" -> nonEmptyText
+        "userId" -> default(text,"")
       
       ){ 
 	  	(id , userName , userId) =>  

@@ -24,7 +24,7 @@
 @helper.form(action = (if(!id.isDefined) controllers.cms.routes.Users.save  else controllers.cms.routes.Users.update( id.get )) , 'class -> "form-horizontal") {
 
     @helper.inputText(form("userName") , 'class -> "form-control" , '_label -> "用户名称")
-    @helper.inputText(form("userId") , 'class -> "form-control" , '_label -> "用户ID URL" )
+     
 	
 	<div class="row" > 
 	    <div class="form-actions col-lg-offset-2 col-lg-6 ">
