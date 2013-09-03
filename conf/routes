@@ -31,7 +31,7 @@ GET   /bag/del			controllers.Bags.del( locationId, statusName , planName  )
 
 GET  /bag/get			controllers.Bags.get()
 GET  /bag/update		controllers.Bags.update()
-
+GET  /bag/createNewplan     controllers.Bags.createNewplan()
 
 GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example

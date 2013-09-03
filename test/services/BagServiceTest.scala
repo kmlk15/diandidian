@@ -82,6 +82,31 @@ class BagServiceTest extends Specification {
       service.removeLocation(bagId, statusName, planName, location1) === false 
       
     }
+    
+    "createNewplan test"  in new WithApplication {
+
+      val mongoDB = MongoConnection()("mytestxx")
+      val col = mongoDB("bags")
+      col.drop()
+
+      val location1 = LocationForm(id = Some("1"), name = "l1", enName = "l1en")
+      val location2 = LocationForm(id = Some("2"), name = "l2", enName = "l2en")
+
+      val service = LL.bagService
+      val bagId = (new ObjectId()).toString
+      val typ= "user"
+      val statusName =  defaultStatusName
+      val planName =  defaultPlanName
+      
+      service.createNewplan(bagId) === defaultPlanName
+      
+      val result = service.addLocation(bagId, typ, statusName, planName, location1)
+      
+      service.createNewplan(bagId) === defaultPlanName +"1"
+      
+      service.createNewplan(bagId) === defaultPlanName +"1"
+    }
   }
 
+ 
 }
