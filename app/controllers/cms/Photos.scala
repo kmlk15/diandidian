@@ -65,9 +65,15 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
         photo => {
          val id = new ObjectId().toString
          val imgId = id 
-          val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage, imgId) }).getOrElse("")
-
-          if (photo.atHomepage && extension != "") {
+         val homepageExtension: String = request.body.asMultipartFormData.flatMap(data => data.file("homepageimgsrc").map { parseHomePageFile(_,  imgId) }).getOrElse("")
+         val detailpageextension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage && homepageExtension== "" , imgId) }).getOrElse("")
+        if( homepageExtension !="" && detailpageextension!="" && detailpageextension!=homepageExtension){
+          log.error(" 2张图片都上传了， 但是 后缀名不一样 homepageExtension={}, detailpageextension={}" ,homepageExtension,detailpageextension,"" )
+        }
+         val extension = if(detailpageextension !="") detailpageextension else  homepageExtension
+          log.debug("extension={}" ,extension )
+          
+          if (photo.atHomepage && ( extension!= "") ) {
             service.updateLocation(locationImpl.copy(photo = PhotoHelp.homepageImg(imgId, extension)))
           }
           val photoUser = service.getPhotoUserById(photo.userId).getOrElse(PhotoUser())
@@ -112,8 +118,27 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
             },
             photo => {
               val imgId =  id
-              val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage,imgId) }).getOrElse("")
+              
+              /**
+               * 1 只上传了  homepage img  这个 只更新了 266/193 图片， 不会有其他影响
+               * 2 只上传了 detailpage img， 这个 需要判断 是否 需要生成 266/193 的图片， 这个 有点  难
+               * 生成 266 图片的 条件， 原来的 266 不存在， 而且当前 atHomePage == true， 才需要生成 266 的图片
+               * 这里的问题时， 如果有266的图片， 如果想 替换成 Detail 的图片， 必须 自己 重新上传。
+               * 
+               * 3 都上传了 这个 最简单， 
+               * 4 都没有传 这个也可以， 
+               * 
+               * 这2个  extension 必须一样，
+               */
+               val homepageExtension: String = request.body.asMultipartFormData.flatMap(data => data.file("homepageimgsrc").map { parseHomePageFile(_,  imgId) }).getOrElse("")
+        
+              val detailpageextension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage && homepageExtension=="",imgId) }).getOrElse("")
 
+               if( homepageExtension !="" && detailpageextension!="" && detailpageextension!=homepageExtension){
+            	   		log.error(" 2张图片都上传了， 但是 后缀名不一样 homepageExtension={}, detailpageextension={}" ,homepageExtension,detailpageextension,"" )
+               }
+               val extension = if(detailpageextension !="") detailpageextension else  homepageExtension
+            		 log.debug("extension={}" ,extension )
               val updatePhoto = if (extension != "") {
                  
                 if (photo.atHomepage) {

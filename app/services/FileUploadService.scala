@@ -96,7 +96,7 @@ trait FileUploadService {
   }
 
   /**
-   * 这里需要考虑 是处理 哪一张图片
+   *  处理普通的图片
    * 
    */
   def parseDetailPageFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String): String = {
@@ -139,7 +139,38 @@ trait FileUploadService {
 
   }
   
-  
+   /**
+   *  处理普通的图片
+   * 
+   */
+  def parseHomePageFile(picture: FilePart[TemporaryFile],  imgId:String): String = {
+
+    import java.io.File
+    import org.apache.commons.io.FilenameUtils
+    import org.bson.types.ObjectId
+     
+    val extension = FilenameUtils.getExtension(picture.filename)
+    val filename =   PhotoHelp.homepageOrignImg(imgId, extension)
+    
+    log.debug("img filename={}", filename)
+     
+    picture.ref.moveTo(new File(pathprefix + filename) , true)
+    
+      //创建  for home page 
+      val home =  PhotoHelp.homepageImg(imgId, extension)
+      
+      resize(pathprefix + filename, pathprefix + home, PhotoHelp.homepageImgsize)
+      upload2S3(home )
+      
+      val plan = PhotoHelp.planpageImg(imgId, extension)
+      
+      resize(pathprefix + filename, pathprefix + plan, PhotoHelp.planpageImgsize)
+     upload2S3(plan )
+
+        
+    extension
+
+  }
   
   def getObjectAndSavetoLocal( filename: String  ) : (ObjectMetadata , File)={
     s3client.getObjectAndSavetoLocal( filename)
