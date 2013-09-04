@@ -94,7 +94,12 @@ object BagHelp {
                   bag
                 case Some(plan) =>
                   log.debug(" plan.list={}" ,  plan.list )
-                  val newList = plan.list.filter(  location => !simpleLocationList.contains( location ))
+                    /**
+                     * 存在 名字改变的情况，
+                     * 所以这里要根据  id 来比较
+                     */
+                  val simpleLocationIdList = simpleLocationList.map( location => location.id)
+                  val newList = plan.list.filter(  location => !simpleLocationIdList.contains( location.id ))
 
                   if (newList == plan.list && !plan.list.isEmpty) {
                     log.debug(" simplelocation    不存在 ")
