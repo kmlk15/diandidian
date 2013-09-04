@@ -74,13 +74,12 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
           Ok(views.html.cms.userPhotoEdit(None, errors))
         },
         photo => {
-
-          val filename: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseFile(_, photo.atHomepage) }).getOrElse("")
-
-          if (photo.atHomepage && filename != "") {
-            service.updateLocation(locationImpl.copy(photo = "266_" + filename))
-          }
-          val photo2 = service.savePhoto(photo.copy(imgsrc = filename , userId = userId(session ) , username = username,
+         import  org.bson.types.ObjectId
+          val id = new ObjectId().toString
+         val imgId = id 
+          val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage, imgId) }).getOrElse("")
+ 
+          val photo2 = service.savePhoto(photo.copy(id = Some(id),imgId = imgId ,extension=extension, userId = userId(session ) , username = username,
           avatar =avatar( session) , atHomepage = false  , uploadtype= usertype( session)    )    )
 
           //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
@@ -96,7 +95,7 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
         
           implicit val locationImpl = location(photo.locationId).get
 
-          Ok(views.html.cms.userPhotoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "", imgsrc = photo.imgsrc))
+          Ok(views.html.cms.userPhotoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "", imgsrc = photo.detailpagesmallImg))
         }
         case _  => NotFound
       }
@@ -118,20 +117,13 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
               Ok(views.html.cms.userPhotoEdit(None, errors))
             },
             photo => {
-              val filename: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseFile(_, photo.atHomepage) }).getOrElse("")
+               val imgId =  id
+              val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage ,imgId) }).getOrElse("")
 
-              val updatePhoto = if (filename != "") {
-                removeFile(originPhoto.imgsrc ,  originPhoto.atHomepage)
-                if (photo.atHomepage) {
-                  service.updateLocation(locationImpl.copy(photo = "266_" + filename))
-                }
-                photo.copy(imgsrc = filename, id = originPhoto.id)
+              val updatePhoto = if (extension != "") {
+                photo.copy(imgId = imgId, extension = extension , id = originPhoto.id)
               } else {
-                if (photo.atHomepage) {
-                  service.updateLocation(locationImpl.copy(photo = "266_" + originPhoto.imgsrc))
-                }
-
-                photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc)
+                photo.copy(id = originPhoto.id, imgId = originPhoto.imgId)
               }
 
               log.debug("updatePhoto={}", updatePhoto)
@@ -160,7 +152,7 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
         case Some(p) if( p.userId  == userId( session ) ) => {
           if (service.delPhotoById(id) == 1) {
             //删除实际的文件
-            removeFile(p.imgsrc , p.atHomepage)
+            removeFile(p.imgId , p.extension , p.atHomepage)
           }
           Redirect(routes.UserPhotos.list())
         }

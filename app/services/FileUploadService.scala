@@ -12,6 +12,7 @@ import play.api.mvc.MultipartFormData.FilePart
 import play.api.libs.Files.TemporaryFile
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.GetObjectRequest
+import models.PhotoHelp
 
 /**
  * 文件 上传和resize
@@ -31,8 +32,10 @@ trait FileUploadService {
    * 精确的大小
    */
 
-  def resize(from: String, to: String, w: Int, h: Int): Boolean = {
+  def resize(from: String, to: String,  wh: (Int,Int) ): Boolean = {
     import scala.sys.process._
+    val (w,h) = wh
+    
     val file = new File(from)
     if (file.exists()) {
       /**
@@ -47,8 +50,9 @@ trait FileUploadService {
   /**
    * 可以处理成一个边 ， 保持比例
    */
-  def resize1(from: String, to: String, w: Int, h: Int) = {
+  def resize1(from: String, to: String,wh: (Int,Int) ) = {
     import scala.sys.process._
+    val (w,h) = wh
     val file = new File(from)
     if (file.exists()) {
       /**
@@ -58,64 +62,83 @@ trait FileUploadService {
     }
   }
 
-  def upload2S3(filename: String, atHomepage: Boolean) = {
-    s3client.upload(filename)
-    s3client.upload("780_" + filename)
-    s3client.upload("102_" + filename)
+  def upload2S3(imgId:String,extension:String, atHomepage: Boolean) = {
+    
+    s3client.upload( PhotoHelp.detailpageOrignImg(imgId, extension) )
+    s3client.upload( PhotoHelp.detailpageImg(imgId, extension))
+    s3client.upload( PhotoHelp.detailpagesmallImg(imgId, extension) )
     if (atHomepage) {
-      s3client.upload("266_" + filename)
+      s3client.upload( PhotoHelp.homepageImg(imgId, extension)  )
+      s3client.upload( PhotoHelp.planpageImg(imgId, extension)  )
     }
   }
 
-  def removeFile(filename: String, atHomepage: Boolean) = {
+  
+  def removeFile(imgId:String,extension:String, atHomepage: Boolean) = {
 
-    new File(pathprefix + filename).delete()
-    new File(pathprefix + "780_" + filename).delete()
-    new File(pathprefix + "102_" + filename).delete()
+    new File(pathprefix + PhotoHelp.detailpageOrignImg(imgId, extension)).delete()
+    new File(pathprefix + PhotoHelp.detailpageImg(imgId, extension)).delete()
+    new File(pathprefix + PhotoHelp.detailpagesmallImg(imgId, extension)).delete()
     if (atHomepage) {
-      new File(pathprefix + "266_" + filename).delete()
+      new File(pathprefix + PhotoHelp.homepageImg(imgId, extension)).delete()
+      new File(pathprefix + PhotoHelp.planpageImg(imgId, extension)).delete()
     }
-    log.debug(" remove file to s3 , filename=" + filename)
-    s3client.remove(filename)
-    s3client.remove("780_" + filename)
-    s3client.remove("102_" + filename)
+    log.debug(" remove file to s3 , imgId=" + imgId)
+    s3client.remove(PhotoHelp.detailpageOrignImg(imgId, extension))
+    s3client.remove(PhotoHelp.detailpageImg(imgId, extension))
+    s3client.remove(PhotoHelp.detailpagesmallImg(imgId, extension))
     if (atHomepage) {
-      s3client.remove("266_" + filename)
+      s3client.remove(PhotoHelp.homepageImg(imgId, extension))
+      s3client.remove(PhotoHelp.planpageImg(imgId, extension))
     }
     log.debug(" remove file to s3 , over")
   }
 
-  def parseFile(picture: FilePart[TemporaryFile], atHomepage: Boolean): String = {
+  /**
+   * 这里需要考虑 是处理 哪一张图片
+   * 
+   */
+  def parseDetailPageFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String): String = {
 
     import java.io.File
     import org.apache.commons.io.FilenameUtils
     import org.bson.types.ObjectId
-    val filename = new ObjectId().toString.reverse + "." + FilenameUtils.getExtension(picture.filename)
+     
+    val extension = FilenameUtils.getExtension(picture.filename)
+    val filename =   PhotoHelp.detailpageOrignImg(imgId, extension)
+    
     log.debug("img filename={}", filename)
-    val contentType = picture.contentType
+     
     picture.ref.moveTo(new File(pathprefix + filename))
     if (atHomepage) {
       //创建  for home page 
-      val home = "266_" + filename
-      resize(pathprefix + filename, pathprefix + home, 266, 262)
-
+      val home =  PhotoHelp.homepageImg(imgId, extension)
+      
+      resize(pathprefix + filename, pathprefix + home, PhotoHelp.homepageImgsize)
+      
+      val plan = PhotoHelp.planpageImg(imgId, extension)
+      
+      resize(pathprefix + filename, pathprefix + plan, PhotoHelp.planpageImgsize)
     }
 
     // 大图和小图
-    val large = "780_" + filename
-    resize(pathprefix + filename, pathprefix + large, 780, 435)
-    val small = "102_" + filename
-    resize(pathprefix + filename, pathprefix + small, 102, 57)
+    val large = PhotoHelp.detailpageImg(imgId, extension)
+    resize(pathprefix + filename, pathprefix + large, PhotoHelp.detailPageImgsize  )
+    val small =  PhotoHelp.detailpagesmallImg(imgId, extension)
+    resize(pathprefix + filename, pathprefix + small,  PhotoHelp.detailPagesmallImgsize)
     //将图片保存到 s3 
     /**
      * 这里 可能会很慢， 特别是在 测试环境中
      */
     log.debug(" upload file to s3 , filename=" + filename)
-    upload2S3(filename, atHomepage)
+    upload2S3( imgId , extension,  atHomepage)
     log.debug(" upload file to s3 , over")
-    filename
+    
+    extension
 
   }
+  
+  
   
   def getObjectAndSavetoLocal( filename: String  ) : (ObjectMetadata , File)={
     s3client.getObjectAndSavetoLocal( filename)

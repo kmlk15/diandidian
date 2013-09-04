@@ -22,8 +22,8 @@
 	@for(photo <- photoList ){
 	<tr>
 		<td class="col-lg-2"></td>
-		<td class="col-lg-2">@photo.imgsrc</td>
-		<td class="col-lg-2"><img src="http://diandidian.s3-us-west-1.amazonaws.com/102_@photo.imgsrc" /> </td>
+		<td class="col-lg-2">@photo.imgId</td>
+		<td class="col-lg-2"><img src="http://diandidian.s3-us-west-1.amazonaws.com/@photo.detailpagesmallImg" /> </td>
 		<td class="col-lg-1"><a href="@controllers.cms.routes.UserPhotos.del( photo.id.get )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
 
 	 

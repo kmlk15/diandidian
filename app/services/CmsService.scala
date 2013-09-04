@@ -280,10 +280,10 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
     }
 
     def savePhoto(photo: Photo): Option[Photo] = {
-      val id = new ObjectId().toString
-      val photo2 = photo.copy(id = Some(id))
-      photoMongoClient.insert(photo2)
-      Some(photo2)
+      
+      
+      photoMongoClient.insert(photo)
+      Some(photo)
     }
 
     def updatePhoto(photo: Photo): Option[Photo] = {

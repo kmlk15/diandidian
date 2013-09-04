@@ -3,10 +3,8 @@ package controllers.cms
 import java.io.File
 import play.api.libs.json
 import play.api.mvc._
-
 import play.api.mvc.MultipartFormData.FilePart
 import play.api.libs.Files.TemporaryFile
-
 import play.api.libs.json.Json
 import org.slf4j.LoggerFactory
 import models.Photo
@@ -15,6 +13,7 @@ import models.PhotoHelp._
 import models.v2.PhotoUser
 import play.api.libs.json.Json
 import models.LocationForm
+import org.bson.types.ObjectId
 
 object Photos extends Controller with AuthTrait with services.FileUploadService {
 
@@ -64,16 +63,17 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
           Ok(views.html.cms.photoEdit(None, errors))
         },
         photo => {
+         val id = new ObjectId().toString
+         val imgId = id 
+          val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage, imgId) }).getOrElse("")
 
-          val filename: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseFile(_, photo.atHomepage) }).getOrElse("")
-
-          if (photo.atHomepage && filename != "") {
-            service.updateLocation(locationImpl.copy(photo = "266_" + filename))
+          if (photo.atHomepage && extension != "") {
+            service.updateLocation(locationImpl.copy(photo = PhotoHelp.homepageImg(imgId, extension)))
           }
           val photoUser = service.getPhotoUserById(photo.userId).getOrElse(PhotoUser())
-          val photo2 = service.savePhoto(photo.copy(imgsrc = filename,
+          val photo2 = service.savePhoto(photo.copy(id = Some(id), imgId = imgId, extension=extension,
             username = photoUser.userName,
-            avatar = photoUser.userId, atHomepage = (photo.atHomepage && filename != "")))
+            avatar = photoUser.userId, atHomepage = (photo.atHomepage && extension != "")))
 
           //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
           Redirect(routes.Photos.list(locationId))
@@ -88,7 +88,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
           implicit val userList = service.getPhotoUsers()
           implicit val locationImpl = location(photo.locationId).get
 
-          Ok(views.html.cms.photoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "", imgsrc = photo.imgsrc))
+          Ok(views.html.cms.photoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "", imgsrc = photo.detailpagesmallImg))
         }
       }
   }
@@ -110,16 +110,17 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
               Ok(views.html.cms.photoEdit(None, errors))
             },
             photo => {
-              val filename: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseFile(_, photo.atHomepage) }).getOrElse("")
+              val imgId =  id
+              val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage,imgId) }).getOrElse("")
 
-              val updatePhoto = if (filename != "") {
-                removeFile(originPhoto.imgsrc, originPhoto.atHomepage)
+              val updatePhoto = if (extension != "") {
+                 
                 if (photo.atHomepage) {
-                  service.updateLocation(locationImpl.copy(photo = "266_" + filename))
+                  service.updateLocation(locationImpl.copy(photo =  PhotoHelp.homepageImg(imgId, extension)))
                 }
-                photo.copy(imgsrc = filename, id = originPhoto.id)
+                photo.copy(extension = extension, id = originPhoto.id)
               } else {
-                if (photo.atHomepage && !originPhoto.atHomepage && originPhoto.imgsrc != "") {
+                if (photo.atHomepage && !originPhoto.atHomepage && originPhoto.imgId != "") {
 
                   /**
                    * 这里需要处理 有可能还没有生成  atHomePage 需要的图片的情况
@@ -129,13 +130,19 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
                    * 2 在本地执行 convert
                    * 3 再上传 图片
                    */
-                  val filename = "266_" + originPhoto.imgsrc
+                  val filename = originPhoto.homepageImg
                   val (meta, file266) = getObjectAndSavetoLocal(filename)
                   if (meta == null) {
                     log.debug("file={}, not at s3", filename)
-                    val (origmeta, file) = getObjectAndSavetoLocal(originPhoto.imgsrc)
+                    val (origmeta, file) = getObjectAndSavetoLocal(originPhoto.detailPageOrignImg)
                     if (origmeta != null) {
-                      if (resize(file.getAbsolutePath(), file266.getAbsolutePath(), 266, 262)) {
+                      if (resize(file.getAbsolutePath(), file266.getAbsolutePath(), PhotoHelp.homepageImgsize)) {
+                        upload2S3(filename)
+                        service.updateLocation(locationImpl.copy(photo = filename))
+                      } else {
+                        log.error("resize or  upload to s3 error ")
+                      }
+                      if (resize(file.getAbsolutePath(), pathprefix + photo.planpageImg, PhotoHelp.planpageImgsize)) {
                         upload2S3(filename)
                         service.updateLocation(locationImpl.copy(photo = filename))
                       } else {
@@ -143,7 +150,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
                       }
 
                     } else {
-                      log.error("orig photo not exists. {}", originPhoto.imgsrc)
+                      log.error("orig photo not exists. {}", originPhoto.imgId)
                     }
                   } else {
                     log.debug("266 缩略图存在 {}", filename)
@@ -152,10 +159,10 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
 
                 }
 
-                if (originPhoto.imgsrc == "") {
-                  photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc, atHomepage = false)
+                if (originPhoto.imgId == "none") {
+                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId, atHomepage = false)
                 } else {
-                  photo.copy(id = originPhoto.id, imgsrc = originPhoto.imgsrc)
+                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId)
                 }
               }
 
@@ -165,7 +172,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
                *  2 原来是设置为首页的
                *  3 location 的首页图片确实是  这个 photo 设置的
                */
-              if (!photo.atHomepage && originPhoto.atHomepage && locationImpl.photo == originPhoto.imgsrc) {
+              if (!photo.atHomepage && originPhoto.atHomepage && locationImpl.photo == originPhoto.homepageImg) {
                 service.updateLocation(locationImpl.copy(photo = ""))
               }
 
@@ -194,14 +201,14 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
         case Some(p) => {
           if (p.atHomepage) {
             val locationTmp = location(p.locationId).get
-            if (locationTmp != None && locationTmp.photo.contains(p.imgsrc)) {
+            if (locationTmp != None && locationTmp.photo.contains(p.homepageImg)) {
               service.updateLocation(locationTmp.copy(photo = ""))
             }
           }
           if (service.delPhotoById(id) == 1) {
             //删除实际的文件
 
-            removeFile(p.imgsrc, p.atHomepage)
+            removeFile(p.imgId,p.extension, p.atHomepage)
           }
 
           Redirect(routes.Photos.list(p.locationId))

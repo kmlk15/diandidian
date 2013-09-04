@@ -209,11 +209,49 @@ object LocationFormHelp {
 /**
  * 1 管理员上传的 picture
  * 2 用户上传的 picture
+ * 2013-09-04 
+ * 
+ * imgDetailPage  详细页面大图   780x435 
+ * imgDetailPageSmall       DetailPage 页面的小图  102x57
+ * imgHomePage    HomePage  图片  266x262
+ * imgPlanPage    PlanPage 图片   193x190 
+ * 
+ * 有规则的保存图片  原图id  HomePage原图  780_  102_ 266_ 193_ 
+ * 
+ * 用户上传的，只有  780_ 102_  这2种
  */
 case class Photo(id: Option[String]=None , locationId: String ="", userId: String="" , username:String = "" , avatar: String ="",
-    imgsrc: String="", imgurl: String="", brief: String="" , uploadtype: String="" , atHomepage:Boolean = false )
+   imgId:String="none",   extension: String = "jpg" , imgurl: String="", brief: String="" , uploadtype: String="" , atHomepage:Boolean = false ){
+
+  val  detailPageOrignImg = imgId + "."+ extension
+  val  homepageOrignImg =  "home_" + imgId + "."+ extension
+  val  homepageImg = "266_" + imgId +"."+ extension
+  val  planpageImg = "193_" + imgId +"."+ extension
+  val  detailpageImg = "780_" + imgId +"."+ extension
+  val  detailpagesmallImg = "102_" + imgId +"."+ extension
+  
+
+  
+  
+  
+}
 
 object PhotoHelp{
+  
+  
+  def  detailpageOrignImg(imgId: String , extension: String) = imgId + "."+ extension
+  def  homepageOrignImg(imgId: String , extension: String)  =  "home_" + imgId + "."+ extension
+  def  homepageImg(imgId: String , extension: String)  = "266_" + imgId +"."+ extension
+  def  planpageImg(imgId: String , extension: String)  = "193_" + imgId +"."+ extension
+  def  detailpageImg(imgId: String , extension: String)  = "780_" + imgId +"."+ extension
+  def  detailpagesmallImg(imgId: String , extension: String)  = "102_" + imgId +"."+ extension
+  
+  
+  val homepageImgsize = ( 266,262)
+  val planpageImgsize = ( 193,190)
+  val detailPageImgsize = ( 780, 435)
+  val detailPagesmallImgsize = ( 102 , 57)
+  
   
    implicit val photoFmt = Json.format[Photo]
    val form = Form {
@@ -227,7 +265,8 @@ object PhotoHelp{
       "userId" -> text ,
       "username" -> default(text , ""),
       "avatar" -> default(text ,""),
-      "imgsrc" -> default(text ,"") ,
+      "imgId" -> default(text ,"") ,
+       "extension" -> default(text ,"") ,
       "imgurl" -> text,
       "brief" -> text,
       "uploadtype" -> default(text,"") ,

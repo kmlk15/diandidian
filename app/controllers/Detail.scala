@@ -138,7 +138,7 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
      val lastPhoto = photoList.reverse.head
  
     val xml = <div class="gallery">
-                <img class="detail" src={awsbase + "780_"+firstPhoto.imgsrc} width="780" height="435" alt={location.name}/>
+                <img class="detail" src={awsbase +  firstPhoto.detailpageImg} width="780" height="435" alt={location.name}/>
                 <div class="thumbnails">
                   <span class="arrow left-arrow"><img src="/assets/images/left-arrow.png" width="10" height="12"/></span>
                   <span class="arrow right-arrow"><img src="/assets/images/right-arrow.png" width="10" height="12"/></span>
@@ -148,16 +148,16 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     					 if( photo == firstPhoto  ){
     					   
                       <li class="active" >
-    							<a href={awsbase + "780_"+photo.imgsrc}  id= {photo.id.get} ><img src={awsbase + "102_"+photo.imgsrc}  width="102"  height="57" /></a>
+    							<a href={awsbase +  photo.detailpageImg}  id= {photo.id.get} ><img src={awsbase +  photo.detailpagesmallImg}  width="102"  height="57" /></a>
                       </li>  
     					   
     					 }else if( photo == lastPhoto){
     					 <li class="last" >
-    							<a href={awsbase + "780_"+photo.imgsrc}  id= {photo.id.get} ><img src={awsbase + "102_"+photo.imgsrc}   width="102"  height="57"  /></a>
+    							<a href={awsbase +  photo.detailpageImg}  id= {photo.id.get} ><img src={awsbase + photo.detailpagesmallImg}   width="102"  height="57"  /></a>
                       </li>  
     					 }else{
                       <li >
-    							<a href={awsbase + "780_"+photo.imgsrc} id= {photo.id.get }><img src={awsbase + "102_"+photo.imgsrc}   width="102"  height="57"  /></a>
+    							<a href={awsbase +  photo.detailpageImg} id= {photo.id.get }><img src={awsbase +  photo.detailpagesmallImg }   width="102"  height="57"  /></a>
                       </li>  
 
     					 }

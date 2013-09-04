@@ -211,13 +211,15 @@ class CmsServiceTest extends Specification{
       
       val location =service.saveLocation( LocationForm( name="testlocation")).get
       val imgsrc="/tmp/x.jpg"
+        val extension = "jpg"
       val imgurl="http://www.diandidian.com/"
        val brief = "this is brief"
 
       val picture = Photo(
         locationId = location.id.get,
         userId = photoUser.id,
-        imgsrc = imgsrc,
+        imgId = imgsrc,
+         extension = extension,
         imgurl = imgurl,
         brief = brief)
         
@@ -234,7 +236,7 @@ class CmsServiceTest extends Specification{
       service.updatePhoto(picture) must beNone
         
       
-     val picture4 = service.updatePhoto( picture2.copy( imgsrc ="new imgsrc")).get
+     val picture4 = service.updatePhoto( picture2.copy( imgId ="new imgsrc")).get
      picture4.id === picture2.id
      picture4.imgurl === imgurl
      
