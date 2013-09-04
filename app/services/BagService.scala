@@ -46,16 +46,18 @@ trait BagServiceComponentImpl extends BagServiceComponent {
     		
     
      def createNewplan( bagId: String ):String ={
-      get(bagId) match {
+      
+     val newPlanname =  get(bagId) match {
         case None =>{
           log.error("整个 背包不存在")
-           BagHelp.defaultPlanName
+           ""
+            
         }
-      case Some( bag ) => {
-          bag.map.get( BagHelp.defaultStatusName  ) match{
+       case Some( bag ) => {
+         val planName = bag.map.get( BagHelp.defaultStatusName  ) match{
           case None =>
             log.error("status 不存在 ")
-           BagHelp.defaultPlanName
+            BagHelp.defaultPlanName
           case Some( status ) =>
             val planmap  = status.map
             var i = 0 
@@ -66,8 +68,20 @@ trait BagServiceComponentImpl extends BagServiceComponent {
             }
             bagname
         }
+         val newBag = BagHelp.addLocation(bag, BagHelp.defaultStatusName, planName, List(  ))
+         update(newBag)
+         
+         planName
       }
+      
+      
+       
       }
+     //更新 mongo
+     
+     
+     
+     newPlanname
     }
  
     def addLocation(bagId: String, typ: String, statusName: String, planName: String, location: LocationForm): Boolean = {

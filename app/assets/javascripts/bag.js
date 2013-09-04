@@ -239,8 +239,9 @@ $.ajaxSetup({ cache: false });
 		var thistag = this;
 		$.getJSON("/bag/createNewplan" , function(result){ 
 			
-			$("#my-bag .accordion .accordion div ul").removeClass("open");
-			
+		$("#my-bag .accordion .accordion div ul").removeClass("open");
+		$("#my-bag  .accordion .accordion  h4.accordion-header").css("color" , "rgb(60, 60, 60)") ; 
+		
 		var planName = result.data.planName ; 
 		var statusName  =   result.data.statusName  ; 
 		

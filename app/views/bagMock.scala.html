@@ -19,30 +19,34 @@
 	
 @for( statusTuple <- bag.map ){
 	<h2>@statusTuple._2.name</h2>
-	@for( planTuple <- statusTuple._2.map ){
-	<h3>@planTuple._2.name</h3>
+
+@defining( statusTuple._2.map.keySet.toList.sorted) { keylist =>
+	@for( key <- keylist ; plan <- statusTuple._2.map.get(key)  ){
+	 
+	<h3>@plan.name</h3>
 	<form action="/bag/update">
 	<input type="hidden" name="fromStatus" value="@statusTuple._2.name" />
-	<input type="hidden" name="fromPlan" value="@planTuple._2.name" />
+	<input type="hidden" name="fromPlan" value="@plan.name" />
 		<select name="toStatus">
 		 @for( s <- statusNameList){
 			 <option value="@s" @if(s==statusTuple._2.name){selected="true"} else {}	>@s</option>
 		 }
 		 </select>
-		 <input type="text" name="toPlan" value="@planTuple._2.name">
-		 <input type="submit"  value="update" />
+		 <input type="text" name="toPlan" value="@plan.name">
+		 <input type="submit" name="cmd" value="update" />
+		 <input type="submit" name="cmd" value="delete" />
 		 </form>
 		
 
 		<table border="1">
-		@for( simpleLocation <- planTuple._2.list.reverse ){
+		@for( simpleLocation <- plan.list.reverse ){
 			<tr>
 				<td>@simpleLocation.name</td>
 			</tr>
 		}
 		</table>
 	}
-
+}
 }
 
 	

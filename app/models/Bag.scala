@@ -96,13 +96,14 @@ object BagHelp {
                   log.debug(" plan.list={}" ,  plan.list )
                   val newList = plan.list.filter(  location => !simpleLocationList.contains( location ))
 
-                  if (newList == plan.list) {
+                  if (newList == plan.list && !plan.list.isEmpty) {
                     log.debug(" simplelocation    不存在 ")
                     bag
                   } else {
                     log.debug(" 删除 location={}",simpleLocationList )
                     val newplan = plan.copy(list = newList)
-                  val newStatus =   if( newplan.list.isEmpty && planName!= defaultPlanName){
+                    
+                  val newStatus =   if( newplan.list.isEmpty ){
                       status.copy(map = status.map - newplan.name )
                     }else{
                        status.copy(map = status.map + (newplan.name -> newplan))
@@ -130,7 +131,7 @@ object BagHelp {
    *  需要定义好 removelocation 和 addlocation 再来定义  update 方法！
    *  
    */
-  def update(bag: Bag, change: BagUpdateFromto): Bag = {
+  def update(bag: Bag, change: BagUpdateFromto , isRemove: Boolean = false): Bag = {
     
     val fromMap = bag.map
     val tobagOption = for{
@@ -139,30 +140,16 @@ object BagHelp {
     }yield{
     val addList = fromplan.list
     val removeList = fromplan.list
-    val bag1 = removeLocation( bag , change.fromStatus,change.fromPlan , removeList)
-    val bag2 = addLocation( bag1 , change.toStatus,change.toPlan , addList )
-    
-    bag2 
-//    val toplan = fromplan.copy(name = change.toPlan)
-//    //从原来的 status 中移除
-//    val fromstatusChanged: models.Status = fromstatus.copy(map = fromstatus.map - change.fromPlan)
-//    //更新到 新的 status 中， 注意，这里有个问题， toplan.name 可能和已经存在的冲突？
-//    val toStatusChanged = if(change.fromStatus == change.toStatus ){
-//      fromstatusChanged.copy(map = fromstatusChanged.map + (toplan.name -> toplan))
-//    } else{
-//       fromMap.get(change.toStatus) match{
-//        case None => Status ( name = change.toStatus , Map[String ,Plan](toplan.name -> toplan ))
-//        case Some( status ) => status.copy(map = status.map + (toplan.name -> toplan))
-//      }
-//      
-//    }
-//    val toMap: Map[String, models.Status] = (fromMap - change.fromStatus - change.toStatus) +
-//      (change.fromStatus -> fromstatusChanged) +
-//      (change.toStatus -> toStatusChanged)  
-//
-//    val tobag = bag.copy(map = toMap)
-//    tobag
-    
+    log.debug( "isRemove={}" , isRemove )
+    if( isRemove ){
+   	    val bag1 = removeLocation( bag , change.fromStatus,change.fromPlan , removeList)
+   	     bag1 		
+    }else{
+   	    val bag1 = removeLocation( bag , change.fromStatus,change.fromPlan , removeList)
+   	    val bag2 = addLocation( bag1 , change.toStatus,change.toPlan , addList )
+   	    bag2 
+
+    }
     }
     tobagOption match{
       case None => bag 

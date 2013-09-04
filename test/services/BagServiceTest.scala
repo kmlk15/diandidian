@@ -98,13 +98,13 @@ class BagServiceTest extends Specification {
       val statusName =  defaultStatusName
       val planName =  defaultPlanName
       
-      service.createNewplan(bagId) === defaultPlanName
+      service.createNewplan(bagId) === ""
       
       val result = service.addLocation(bagId, typ, statusName, planName, location1)
       
       service.createNewplan(bagId) === defaultPlanName +"1"
       
-      service.createNewplan(bagId) === defaultPlanName +"1"
+      service.createNewplan(bagId) === defaultPlanName +"2"
     }
   }
 
