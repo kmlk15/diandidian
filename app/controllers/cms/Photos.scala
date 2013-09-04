@@ -79,7 +79,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
           val photoUser = service.getPhotoUserById(photo.userId).getOrElse(PhotoUser())
           val photo2 = service.savePhoto(photo.copy(id = Some(id), imgId = imgId, extension=extension,
             username = photoUser.userName,
-            avatar = photoUser.userId, atHomepage = (photo.atHomepage && extension != "")))
+             atHomepage = (photo.atHomepage && extension != "")))
 
             log.debug("saved photo={}" , photo2 )
           //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
@@ -205,7 +205,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
 
               val photoUser = service.getPhotoUserById(photo.userId).getOrElse(PhotoUser())
 
-              val updatePhoto2 = updatePhoto.copy(username = photoUser.userName, avatar = photoUser.userId)
+              val updatePhoto2 = updatePhoto.copy(username = photoUser.userName)
 
               log.debug("updatePhoto={}", updatePhoto2)
 

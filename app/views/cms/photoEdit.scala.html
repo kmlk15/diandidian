@@ -65,6 +65,9 @@
   
 	
     @helper.inputFile(form("imgsrc") ,  'class -> "form-control" , '_label -> "上传照片" )
+    
+    @helper.inputText(form("avatar") , 'class -> "form-control" , '_label -> "照片URL")
+     
     @helper.inputText(form("imgurl") , 'class -> "form-control" , '_label -> "链接照片URL")
     @helper.textarea(field = form("brief"), args = 'rows -> 3, 'cols -> 50 , '_label -> "描述",  'class -> "form-control" )
 

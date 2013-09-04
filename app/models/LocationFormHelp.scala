@@ -264,7 +264,7 @@ object PhotoHelp{
       "locationId" -> text,
       "userId" -> text ,
       "username" -> default(text , ""),
-      "avatar" -> default(text ,""),
+      "avatar" -> text ,
       "imgId" -> default(text ,"") ,
        "extension" -> default(text ,"") ,
       "imgurl" -> text,
