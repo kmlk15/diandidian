@@ -43,6 +43,7 @@ trait FileUploadService {
        */
       Seq("convert", from, "-resize", w + "x" + h + "^", "-gravity", "center", "-extent", w + "x" + h, to).! == 0
     }else{
+      
       false
     }
   }
@@ -109,7 +110,7 @@ trait FileUploadService {
     
     log.debug("img filename={}", filename)
      
-    picture.ref.moveTo(new File(pathprefix + filename))
+    picture.ref.moveTo(new File(pathprefix + filename) , true)
     if (atHomepage) {
       //创建  for home page 
       val home =  PhotoHelp.homepageImg(imgId, extension)
@@ -172,6 +173,8 @@ class AwsS3Client(pathprefix: String = "", useProxy: Boolean = false) {
       val res = client.putObject(putobj)
       log.debug("upload over")
       res
+    }else{
+      log.error( "文件不存在 {}" ,   file.getAbsolutePath())
     }
   }
 

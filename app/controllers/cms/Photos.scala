@@ -75,6 +75,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
             username = photoUser.userName,
             avatar = photoUser.userId, atHomepage = (photo.atHomepage && extension != "")))
 
+            log.debug("saved photo={}" , photo2 )
           //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
           Redirect(routes.Photos.list(locationId))
         })
@@ -118,7 +119,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
                 if (photo.atHomepage) {
                   service.updateLocation(locationImpl.copy(photo =  PhotoHelp.homepageImg(imgId, extension)))
                 }
-                photo.copy(extension = extension, id = originPhoto.id)
+                photo.copy( imgId=imgId , extension = extension, id = originPhoto.id )
               } else {
                 if (photo.atHomepage && !originPhoto.atHomepage && originPhoto.imgId != "") {
 
@@ -140,13 +141,14 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
                         upload2S3(filename)
                         service.updateLocation(locationImpl.copy(photo = filename))
                       } else {
-                        log.error("resize or  upload to s3 error ")
+                        log.error("resize or  upload homepage image  to s3 error ")
                       }
-                      if (resize(file.getAbsolutePath(), pathprefix + photo.planpageImg, PhotoHelp.planpageImgsize)) {
-                        upload2S3(filename)
-                        service.updateLocation(locationImpl.copy(photo = filename))
+                      
+                      if (resize(file.getAbsolutePath(), pathprefix + originPhoto.planpageImg, PhotoHelp.planpageImgsize)) {
+                        upload2S3( originPhoto.planpageImg)
+                        
                       } else {
-                        log.error("resize or  upload to s3 error ")
+                        log.error("resize or  upload  planpage image  to s3 error ")
                       }
 
                     } else {
@@ -160,9 +162,9 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
                 }
 
                 if (originPhoto.imgId == "none") {
-                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId, atHomepage = false)
+                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId,  extension =originPhoto.extension,  atHomepage = false)
                 } else {
-                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId)
+                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId , extension =originPhoto.extension )
                 }
               }
 
