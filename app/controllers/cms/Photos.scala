@@ -21,6 +21,8 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
 
   val service = base.CmsServiceRegistry.cmsService
 
+
+    
   def photoUserList = service.getPhotoUsers()
 
   def location(locationId: String) = service.getLocationById(locationId)
@@ -63,25 +65,28 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
           Ok(views.html.cms.photoEdit(None, errors))
         },
         photo => {
-         val id = new ObjectId().toString
-         val imgId = id 
-         val homepageExtension: String = request.body.asMultipartFormData.flatMap(data => data.file("homepageimgsrc").map { parseHomePageFile(_,  imgId) }).getOrElse("")
-         val detailpageextension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage && homepageExtension== "" , imgId) }).getOrElse("")
-        if( homepageExtension !="" && detailpageextension!="" && detailpageextension!=homepageExtension){
-          log.error(" 2张图片都上传了， 但是 后缀名不一样 homepageExtension={}, detailpageextension={}" ,homepageExtension,detailpageextension,"" )
-        }
-         val extension = if(detailpageextension !="") detailpageextension else  homepageExtension
-          log.debug("extension={}" ,extension )
+          val id = new ObjectId().toString
+          val imgId = id
+          val homepageExtension: String = request.body.asMultipartFormData.flatMap(data => data.file("homepageimgsrc").map { parseHomePageFile(_, imgId) }).getOrElse(NotUpload)
+          val detailpageextension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage && homepageExtension == NotUpload, imgId) }).getOrElse(NotUpload)
+          if (homepageExtension != NotUpload && detailpageextension != NotUpload && detailpageextension != homepageExtension) {
+            log.error(" 2张图片都上传了， 但是 后缀名不一样 homepageExtension={}, detailpageextension={}", homepageExtension, detailpageextension, "")
+          }
           
-          if (photo.atHomepage && ( extension!= "") ) {
+          val  uploadhistory: String  =   homepageExtension  +","+ detailpageextension +";"  
+          
+          val extension = if (detailpageextension != NotUpload) detailpageextension else homepageExtension
+          log.debug("extension={}", extension)
+
+          if (photo.atHomepage && (extension != NotUpload)) {
             service.updateLocation(locationImpl.copy(photo = PhotoHelp.homepageImg(imgId, extension)))
           }
           val photoUser = service.getPhotoUserById(photo.userId).getOrElse(PhotoUser())
-          val photo2 = service.savePhoto(photo.copy(id = Some(id), imgId = imgId, extension=extension,
+          val photo2 = service.savePhoto(photo.copy(id = Some(id), imgId = imgId, extension = extension,
             username = photoUser.userName,
-             atHomepage = (photo.atHomepage && extension != "")))
+            atHomepage = (photo.atHomepage && extension != NotUpload) , uploadhistory = uploadhistory))
 
-            log.debug("saved photo={}" , photo2 )
+          log.debug("saved photo={}", photo2)
           //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
           Redirect(routes.Photos.list(locationId))
         })
@@ -117,34 +122,40 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
               Ok(views.html.cms.photoEdit(None, errors))
             },
             photo => {
-              val imgId =  id
-              
+              val imgId = id
+
               /**
                * 1 只上传了  homepage img  这个 只更新了 266/193 图片， 不会有其他影响
                * 2 只上传了 detailpage img， 这个 需要判断 是否 需要生成 266/193 的图片， 这个 有点  难
                * 生成 266 图片的 条件， 原来的 266 不存在， 而且当前 atHomePage == true， 才需要生成 266 的图片
                * 这里的问题时， 如果有266的图片， 如果想 替换成 Detail 的图片， 必须 自己 重新上传。
-               * 
-               * 3 都上传了 这个 最简单， 
-               * 4 都没有传 这个也可以， 
-               * 
+               *
+               * 3 都上传了 这个 最简单，
+               * 4 都没有传 这个也可以，
+               *
                * 这2个  extension 必须一样，
                */
-               val homepageExtension: String = request.body.asMultipartFormData.flatMap(data => data.file("homepageimgsrc").map { parseHomePageFile(_,  imgId) }).getOrElse("")
-        
-              val detailpageextension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage && homepageExtension=="",imgId) }).getOrElse("")
+              val homepageExtension: String = request.body.asMultipartFormData.flatMap(data => data.file("homepageimgsrc").map { parseHomePageFile(_, imgId) }).getOrElse(NotUpload)
 
-               if( homepageExtension !="" && detailpageextension!="" && detailpageextension!=homepageExtension){
-            	   		log.error(" 2张图片都上传了， 但是 后缀名不一样 homepageExtension={}, detailpageextension={}" ,homepageExtension,detailpageextension,"" )
-               }
-               val extension = if(detailpageextension !="") detailpageextension else  homepageExtension
-            		 log.debug("extension={}" ,extension )
-              val updatePhoto = if (extension != "") {
-                 
+              	val createHomepageImg = photo.atHomepage && homepageExtension == NotUpload && !PhotoHelp.isHomepageImgupload(originPhoto.uploadhistory)
+               log.debug("createHomepageImg={} , photo.atHomepage={}, homepageExtension={}, PhotoHelp.isHomepageImgupload={}",
+                   createHomepageImg.toString  , photo.atHomepage.toString ,homepageExtension ,  PhotoHelp.isHomepageImgupload(originPhoto.uploadhistory).toString )
+              	val detailpageextension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, createHomepageImg, imgId) }).getOrElse(NotUpload)
+
+              if (homepageExtension != NotUpload && detailpageextension != NotUpload && detailpageextension != homepageExtension) {
+                log.error(" 2张图片都上传了， 但是 后缀名不一样 homepageExtension={}, detailpageextension={}", homepageExtension, detailpageextension, "")
+              }
+              
+              val  uploadhistory: String  =   homepageExtension  +","+ detailpageextension +";"
+              
+              val extension = if (detailpageextension !=NotUpload) detailpageextension else homepageExtension
+              log.debug("extension={}", extension)
+              val updatePhoto = if (extension != NotUpload) {
+
                 if (photo.atHomepage) {
-                  service.updateLocation(locationImpl.copy(photo =  PhotoHelp.homepageImg(imgId, extension)))
+                  service.updateLocation(locationImpl.copy(photo = PhotoHelp.homepageImg(imgId, extension)))
                 }
-                photo.copy( imgId=imgId , extension = extension, id = originPhoto.id )
+                photo.copy(imgId = imgId, extension = extension, id = originPhoto.id)
               } else {
                 if (photo.atHomepage && !originPhoto.atHomepage && originPhoto.imgId != "") {
 
@@ -168,10 +179,10 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
                       } else {
                         log.error("resize or  upload homepage image  to s3 error ")
                       }
-                      
+
                       if (resize(file.getAbsolutePath(), pathprefix + originPhoto.planpageImg, PhotoHelp.planpageImgsize)) {
-                        upload2S3( originPhoto.planpageImg)
-                        
+                        upload2S3(originPhoto.planpageImg)
+
                       } else {
                         log.error("resize or  upload  planpage image  to s3 error ")
                       }
@@ -187,9 +198,9 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
                 }
 
                 if (originPhoto.imgId == "none") {
-                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId,  extension =originPhoto.extension,  atHomepage = false)
+                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId, extension = originPhoto.extension, atHomepage = false)
                 } else {
-                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId , extension =originPhoto.extension )
+                  photo.copy(id = originPhoto.id, imgId = originPhoto.imgId, extension = originPhoto.extension)
                 }
               }
 
@@ -205,7 +216,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
 
               val photoUser = service.getPhotoUserById(photo.userId).getOrElse(PhotoUser())
 
-              val updatePhoto2 = updatePhoto.copy(username = photoUser.userName)
+              val updatePhoto2 = updatePhoto.copy(username = photoUser.userName , uploadhistory= originPhoto.uploadhistory + uploadhistory)
 
               log.debug("updatePhoto={}", updatePhoto2)
 
@@ -235,7 +246,7 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
           if (service.delPhotoById(id) == 1) {
             //删除实际的文件
 
-            removeFile(p.imgId,p.extension, p.atHomepage)
+            removeFile(p.imgId, p.extension, p.atHomepage)
           }
 
           Redirect(routes.Photos.list(p.locationId))

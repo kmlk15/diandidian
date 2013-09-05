@@ -13,7 +13,9 @@ import play.api.libs.Files.TemporaryFile
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.GetObjectRequest
 import models.PhotoHelp
-
+import java.io.File
+import org.apache.commons.io.FilenameUtils
+    
 /**
  * 文件 上传和resize
  */
@@ -26,7 +28,8 @@ trait FileUploadService {
   val proxy = if (System.getenv("http_proxy") != null) true else false
 
   val s3client = new AwsS3Client(pathprefix, proxy)
-
+  
+  val NotUpload =  PhotoHelp.NotUpload
   /**
    * 调用 convert 命令， 对图像进行 resize
    * 精确的大小
@@ -95,17 +98,16 @@ trait FileUploadService {
     log.debug(" remove file to s3 , over")
   }
 
+  val  imageFileExtensionSet = Set("jpg", "jpeg","png")
+  
   /**
    *  处理普通的图片
    * 
    */
   def parseDetailPageFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String): String = {
 
-    import java.io.File
-    import org.apache.commons.io.FilenameUtils
-    import org.bson.types.ObjectId
-     
     val extension = FilenameUtils.getExtension(picture.filename)
+    
     val filename =   PhotoHelp.detailpageOrignImg(imgId, extension)
     
     log.debug("img filename={}", filename)
@@ -140,15 +142,11 @@ trait FileUploadService {
   }
   
    /**
-   *  处理普通的图片
+   *  处理首页的图片
    * 
    */
   def parseHomePageFile(picture: FilePart[TemporaryFile],  imgId:String): String = {
 
-    import java.io.File
-    import org.apache.commons.io.FilenameUtils
-    import org.bson.types.ObjectId
-     
     val extension = FilenameUtils.getExtension(picture.filename)
     val filename =   PhotoHelp.homepageOrignImg(imgId, extension)
     

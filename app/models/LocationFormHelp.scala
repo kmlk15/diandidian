@@ -221,7 +221,7 @@ object LocationFormHelp {
  * 用户上传的，只有  780_ 102_  这2种
  */
 case class Photo(id: Option[String]=None , locationId: String ="", userId: String="" , username:String = "" , avatar: String ="",
-   imgId:String="none",   extension: String = "jpg" , imgurl: String="", brief: String="" , uploadtype: String="" , atHomepage:Boolean = false ){
+   imgId:String="none",   extension: String = "jpg" , uploadhistory: String = "" ,  imgurl: String="", brief: String="" , uploadtype: String="" , atHomepage:Boolean = false ){
 
   val  detailPageOrignImg = imgId + "."+ extension
   val  homepageOrignImg =  "home_" + imgId + "."+ extension
@@ -236,42 +236,60 @@ case class Photo(id: Option[String]=None , locationId: String ="", userId: Strin
   
 }
 
-object PhotoHelp{
+object PhotoHelp {
+
+  def detailpageOrignImg(imgId: String, extension: String) = imgId + "." + extension
+  def homepageOrignImg(imgId: String, extension: String) = "home_" + imgId + "." + extension
+  def homepageImg(imgId: String, extension: String) = "266_" + imgId + "." + extension
+  def planpageImg(imgId: String, extension: String) = "193_" + imgId + "." + extension
+  def detailpageImg(imgId: String, extension: String) = "780_" + imgId + "." + extension
+  def detailpagesmallImg(imgId: String, extension: String) = "102_" + imgId + "." + extension
+  val NotUpload = "NotUpload"
+  /**
+   * 在更新前 计算最后一次 HomePage 图片有没有上传
+   * 历史数据保存如下
+   * h,d;x,x;
+   * h 上传了h
+   * d 上传了d
+   * x  没有上传
+   * 只要有一次上传过，以后都需要 上传 HomepageImg ,才能够更改
+   */
+  def  isHomepageImgupload( uploadhistory: String):Boolean= {
+    
+    uploadhistory.split(";") match{
+      case Array() => false
+      case  x => 
+       x.exists( str => str.split(",") match{
+          case Array(homepageExtension,NotUpload) if( homepageExtension != NotUpload)=> true
+          case _  => false
+        })
+    }
+  }
   
-  
-  def  detailpageOrignImg(imgId: String , extension: String) = imgId + "."+ extension
-  def  homepageOrignImg(imgId: String , extension: String)  =  "home_" + imgId + "."+ extension
-  def  homepageImg(imgId: String , extension: String)  = "266_" + imgId +"."+ extension
-  def  planpageImg(imgId: String , extension: String)  = "193_" + imgId +"."+ extension
-  def  detailpageImg(imgId: String , extension: String)  = "780_" + imgId +"."+ extension
-  def  detailpagesmallImg(imgId: String , extension: String)  = "102_" + imgId +"."+ extension
-  
-  
-  val homepageImgsize = ( 266,262)
-  val planpageImgsize = ( 193,190)
-  val detailPageImgsize = ( 780, 435)
-  val detailPagesmallImgsize = ( 102 , 57)
-  
-  
-   implicit val photoFmt = Json.format[Photo]
-   val form = Form {
+  val homepageImgsize = (266, 262)
+  val planpageImgsize = (193, 190)
+  val detailPageImgsize = (780, 435)
+  val detailPagesmallImgsize = (102, 57)
+
+  implicit val photoFmt = Json.format[Photo]
+  val form = Form {
     mapping(
-        "id" -> optional(of[String] verifying pattern(
+      "id" -> optional(of[String] verifying pattern(
         """[a-fA-F0-9]{24}""".r,
         "constraint.objectId",
         "error.objectId")),
-        
+
       "locationId" -> text,
-      "userId" -> text ,
-      "username" -> default(text , ""),
-      "avatar" -> text ,
-      "imgId" -> default(text ,"") ,
-       "extension" -> default(text ,"") ,
+      "userId" -> text,
+      "username" -> default(text, ""),
+      "avatar" -> text,
+      "imgId" -> default(text, ""),
+      "extension" -> default(text, ""),
+      "uploadhistory" -> default(text, ""),
       "imgurl" -> text,
       "brief" -> text,
-      "uploadtype" -> default(text,"") ,
-      "atHomepage" -> default(boolean, false)
-      )( Photo.apply )( Photo.unapply)
-   }
-   
+      "uploadtype" -> default(text, ""),
+      "atHomepage" -> default(boolean, false))(Photo.apply)(Photo.unapply)
+  }
+
 }

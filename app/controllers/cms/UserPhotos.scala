@@ -76,14 +76,17 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
         photo => {
          import  org.bson.types.ObjectId
           val id = new ObjectId().toString
-         val imgId = id 
-          val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage, imgId) }).getOrElse("")
- 
-          val photo2 = service.savePhoto(photo.copy(id = Some(id),imgId = imgId ,extension=extension, userId = userId(session ) , username = username,
-          avatar =avatar( session) , atHomepage = false  , uploadtype= usertype( session)    )    )
-
-          //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
-          Redirect(routes.UserPhotos.list())
+          val imgId = id 
+          val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage, imgId) }).getOrElse(NotUpload)
+           if( extension == NotUpload){
+              Ok(views.html.cms.userPhotoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "必须上传图片", imgsrc = photo.detailpagesmallImg))
+           }else{
+	          val photo2 = service.savePhoto(photo.copy(id = Some(id),imgId = imgId ,extension=extension, userId = userId(session ) , username = username,
+	          avatar =avatar( session) , atHomepage = false  , uploadtype= usertype( session)    )    )
+	
+	          //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
+	          Redirect(routes.UserPhotos.list())
+           }
         })
   }
 
@@ -117,10 +120,10 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
               Ok(views.html.cms.userPhotoEdit(None, errors))
             },
             photo => {
-               val imgId =  id
-              val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage ,imgId) }).getOrElse("")
+              val imgId =  id
+              val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage ,imgId) }).getOrElse(NotUpload)
 
-              val updatePhoto = if (extension != "") {
+              val updatePhoto = if (extension != NotUpload) {
                 photo.copy(imgId = imgId, extension = extension , id = originPhoto.id)
               } else {
                 photo.copy(id = originPhoto.id, imgId = originPhoto.imgId)
