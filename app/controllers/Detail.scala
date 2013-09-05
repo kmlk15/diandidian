@@ -238,7 +238,7 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
           </div>
           <div class="col col2">
             <div class="title">
-              图片来源:<a href={ photo.avatar } target="_blank"> { photo.username } </a>
+              <a href={ photo.avatar } target="_blank">图片来源</a> : { photo.username } 
             </div>
             <div class="content">
               <p>
