@@ -223,12 +223,12 @@ object LocationFormHelp {
 case class Photo(id: Option[String]=None , locationId: String ="", userId: String="" , username:String = "" , avatar: String ="",
    imgId:String="none",   extension: String = "jpg" , uploadhistory: String = "" ,  imgurl: String="", brief: String="" , uploadtype: String="" , atHomepage:Boolean = false ){
 
-  val  detailPageOrignImg = imgId + "."+ extension
-  val  homepageOrignImg =  "home_" + imgId + "."+ extension
-  val  homepageImg = "266_" + imgId +"."+ extension
-  val  planpageImg = "193_" + imgId +"."+ extension
-  val  detailpageImg = "780_" + imgId +"."+ extension
-  val  detailpagesmallImg = "102_" + imgId +"."+ extension
+  val  detailPageOrignImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else imgId + "."+ extension
+  val  homepageOrignImg = if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "home_" + imgId + "."+ extension
+  val  homepageImg = if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "266_" + imgId +"."+ extension
+  val  planpageImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "193_" + imgId +"."+ extension
+  val  detailpageImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "780_" + imgId +"."+ extension
+  val  detailpagesmallImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "102_" + imgId +"."+ extension
   
 
   
@@ -238,13 +238,16 @@ case class Photo(id: Option[String]=None , locationId: String ="", userId: Strin
 
 object PhotoHelp {
 
+   val NotUpload = "NotUpload"
+   val defaultImg = ""
+  
   def detailpageOrignImg(imgId: String, extension: String) = imgId + "." + extension
   def homepageOrignImg(imgId: String, extension: String) = "home_" + imgId + "." + extension
   def homepageImg(imgId: String, extension: String) = "266_" + imgId + "." + extension
   def planpageImg(imgId: String, extension: String) = "193_" + imgId + "." + extension
   def detailpageImg(imgId: String, extension: String) = "780_" + imgId + "." + extension
   def detailpagesmallImg(imgId: String, extension: String) = "102_" + imgId + "." + extension
-  val NotUpload = "NotUpload"
+  
   /**
    * 在更新前 计算最后一次 HomePage 图片有没有上传
    * 历史数据保存如下
