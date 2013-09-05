@@ -100,13 +100,22 @@ trait FileUploadService {
 
   val  imageFileExtensionSet = Set("jpg", "jpeg","png")
   
-  /**
+   /**
    *  处理普通的图片
    * 
    */
   def parseDetailPageFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String): String = {
-
-    val extension = FilenameUtils.getExtension(picture.filename)
+     val extension = FilenameUtils.getExtension(picture.filename).toLowerCase()
+     if(imageFileExtensionSet.contains(extension) ){
+       parseDetailPageFile(picture ,  atHomepage , imgId , extension)
+     }else{
+       NotUpload
+     }
+  }
+  
+  
+ 
+  private def parseDetailPageFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String ,extension: String ): String = {
     
     val filename =   PhotoHelp.detailpageOrignImg(imgId, extension)
     
@@ -141,11 +150,22 @@ trait FileUploadService {
 
   }
   
+  
+  def parseHomePageFile(picture: FilePart[TemporaryFile],  imgId:String): String = {
+    val extension = FilenameUtils.getExtension(picture.filename).toLowerCase()
+     if(imageFileExtensionSet.contains(extension) ){
+       parseHomePageFile(picture ,  imgId , extension)
+     }else{
+       NotUpload
+     }
+    
+  }
+  
    /**
    *  处理首页的图片
    * 
    */
-  def parseHomePageFile(picture: FilePart[TemporaryFile],  imgId:String): String = {
+  private def parseHomePageFile(picture: FilePart[TemporaryFile],  imgId:String , extension: String ): String = {
 
     val extension = FilenameUtils.getExtension(picture.filename)
     val filename =   PhotoHelp.homepageOrignImg(imgId, extension)
