@@ -253,6 +253,42 @@ object Bags extends Controller {
    
   }
   
+  
+  def updateJson() = Action { implicit request =>
+    session.get("userId") match {
+      case Some(userId) => {
+        bagService.get(userId) match {
+          case Some(bag) =>
+            bagUpdateFromtoform.bindFromRequest().fold(
+              errors => { Ok("输入错误") },
+              change => {
+            	  val s = System.currentTimeMillis()
+            	  val isRemove = if( request.getQueryString("cmd").getOrElse("") == "delete")true else false
+            	  
+                val tobag = models.BagHelp.update(bag, change , isRemove)
+                val e1 = System.currentTimeMillis()
+                log.debug("更新bag 时间: ={}" , ( e1 -s ))
+                if(bag != tobag ){
+                    bagService.update(tobag)
+                    tobag
+                  }else{
+                      log.debug(" 没有任何改变")
+                    tobag
+                  }
+            	  val e2 = System.currentTimeMillis()
+                log.debug("更新 bag  到 mongo 时间: ={}" , ( e2 -e1 ))
+                val data = Json.obj( )
+                val jsval = Json.obj("success"-> true, "data" -> data)	
+                Ok( jsval)
+              })
+          case None => NotFound
+        }
+      }
+      case None => NotFound
+    }
+  }
+  
+  
   /**
    * bag 的更新
    *  实际是 元组 (statusName , planName)  的 3 种改变

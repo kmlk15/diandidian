@@ -38,13 +38,13 @@ $.ajaxSetup({ cache: false });
 		
 		var $clickedHeader = $(this);
 		var $headerNextContent = $clickedHeader.next(".accordion-content");
-		var $setPlanA = $( "a.setPlan" , $clickedHeader) ;
+		 
 		if($headerNextContent.is(":visible")) {
 			$clickedHeader.removeClass("state-active");
-			$setPlanA.hide();
+			 
 		} else {
 			$clickedHeader.addClass("state-active");
-			$setPlanA.show();
+			 
 			
 		}
 		$headerNextContent.slideToggle(200);
@@ -84,12 +84,40 @@ $.ajaxSetup({ cache: false });
 		return false;
 	});
 
+	//删除背包
+	$("#my-bag  ").on('click',".accordion .accordion   h4  a.deletePlan",function() {
+		//是否为空
+		var atag = this
+		var ul = $("ul", $(atag).parent().next())
+		var count = ul.find("li").length;
+		if( count==0  || confirm("不是空的背包，确认要删除吗?")){
+			
+			var url = $.url( $(atag).attr("href") );
+	 		var query = url.param()
+	 		var q = {"fromStatus": query.statusName , "fromPlan":query.planName,"toStatus": query.statusName , "toPlan":query.planName, "cmd":"delete" }
+	 		 
+	 		$.getJSON("/bag/updateJson" ,q , function (result){
+	 			 if( result.success){
+	 				 
+	 				 $(atag).parent().next().remove();
+	 				  
+	 				 $(atag).parent().remove();
+	 				 
+	 				 
+	 			 }
+	 			
+	 		});
+	 		
+		} 
+		
+		return false;
+	});
+	
 	
 	//设置 plan , 为 地点的 添加删除 ，准备关联数据  
-	$("#my-bag  ").on('click',".accordion .accordion   .accordion-content  a.setPlan",function() {
+	$("#my-bag  ").on('click',".accordion .accordion   h4  a.setPlan",function() {
 		var atag = this
-		$("a.setPlan").show();
-		$(this).hide();
+		
 		
 		var url = $.url( $(atag).attr("href") );
 		var query = url.param()
@@ -100,12 +128,15 @@ $.ajaxSetup({ cache: false });
 		//$("div#my-bag h3  span#currentStatus").html(query.statusName);
 		//$("div#my-bag h3  span#currentPlan").html(query.planName);
 		//将移除 所有 ul 的 css  open
-		 $("#my-bag  .accordion .accordion  h4.accordion-header").css("color" , "rgb(60, 60, 60)") ; 
-		 $(this).parent().prev().css("color" , "rgb(0, 174, 239)") ;
+		 $("#my-bag  .accordion .accordion  h4.accordion-header a ").css("color" , "rgb(60, 60, 60)") ; 
+		  
+		 $(this).css("color" , "rgb(0, 174, 239)") ;
+		 $(this).parent().addClass("state-active");
+		 $(this).parent().next().show();
 		$("#my-bag .accordion .accordion div ul").removeClass("open");
 		//当前的 加上 css  open
 		//alert( $(atag).parent().html()) ;
-		$("ul", $(atag).parent()).addClass("open");
+		$("ul", $(atag).parent().next()).addClass("open");
 		
 		//设置 Detail Page 的  addbag 按钮状态
 		var e = $("#attraction-detal .user-content .col.col3 span.add-bag")
@@ -125,6 +156,8 @@ $.ajaxSetup({ cache: false });
 			
 		 return false;
 	});
+	
+		
 	$("#attractions-list").on('click',"ul li .detail", function(e) {
 		
 		var detailurl = $("a" , this).attr("href");
@@ -240,7 +273,7 @@ $.ajaxSetup({ cache: false });
 		$.getJSON("/bag/createNewplan" , function(result){ 
 			
 		$("#my-bag .accordion .accordion div ul").removeClass("open");
-		$("#my-bag  .accordion .accordion  h4.accordion-header").css("color" , "rgb(60, 60, 60)") ; 
+		$("#my-bag  .accordion .accordion  h4.accordion-header a").css("color" , "rgb(60, 60, 60)") ; 
 		
 		var planName = result.data.planName ; 
 		var statusName  =   result.data.statusName  ; 
@@ -250,13 +283,15 @@ $.ajaxSetup({ cache: false });
 		
 		var html= '';
 		html += '<div class="accordion accordion-content" style="display:block;">';
-		html +='<h4 class="accordion-header state-active" style="color:rgb(0, 174, 239)">'+ planName +'<span>-</span>';
-		html += '<small><span>0</span>个景点</small>'
+		html +='<h4 class="accordion-header state-active" >';
+		html +='<a style="color:rgb(0, 174, 239)" href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'"  class="setPlan">'+ planName +'<span>-</span>';
+		html += '<small><span>0</span>个景点</small></a>'
+		html += '<a class="deletePlan" href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'"></a>';
 		html +='</h4>' ;
 		html += '<div class="accordion-content clearfix   state-active" style="display: block;">';
 		html +='<ul class="open">';	
 		html +='</ul>';
-		html +='<a href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'" class="setPlan"> 编辑</a>';
+		html +='';
 		html +=' <a class="plan" href="/plan/?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'">计划行程</a>';
 		html +='</div>';
 		html += '</div>';
