@@ -1,0 +1,30 @@
+@(name: String)(implicit session: Session)
+
+@script={
+<script>
+
+</script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/bag.js")"></script>
+
+
+
+}
+
+@main( name , script){
+
+	<div id="container">
+		<div id="header">
+			@common.header(  session  )
+		</div><!-- end header -->
+		<!-- <div id="shadow-divide"></div> -->
+		<div id="content">
+			<div id="sidebar">
+				 @common.sideBar("")
+			</div><!-- end sidebar -->
+			<div id="main">
+				
+			</div><!-- end main -->
+		</div><!-- end content -->
+	</div><!-- end container -->
+ 
+}

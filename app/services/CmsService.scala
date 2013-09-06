@@ -61,7 +61,7 @@ trait CmsServiceComponent {
 
     def getPhotoById(id: String): Option[Photo]
 
-    def getPhotoByImgsrc(imgsrc: String): Option[Photo]
+    def getPhotoByImgId(imgId: String): Option[Photo]
 
   }
 }
@@ -343,9 +343,9 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
 
     }
 
-    def getPhotoByImgsrc(imgsrc: String): Option[Photo] ={
+    def getPhotoByImgId(imgId: String): Option[Photo] ={
       val q = MongoDBObject()
-      q.put("imgsrc", imgsrc)
+      q.put("imgId", imgId)
       photoMongoClient.find(q).headOption
 
     }

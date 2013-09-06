@@ -5,7 +5,7 @@ import play.api.data.Forms._
 import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
 import org.slf4j.LoggerFactory
-
+import scala.collection.immutable
 
 /**
  * SimpleLocation ,  根据 planning 的需求 可能要 有时间数据 和 顺序。
@@ -14,7 +14,24 @@ import org.slf4j.LoggerFactory
  * status name 的值是有限的  计划中，准备前往，过去背包 ; 缺省名字 计划中
  */
 case class SimpleLocation(id: String="" , name: String ="" , enName: String="" )
-case class Plan( name: String = "背包" ,  list: List[SimpleLocation] = Nil)
+
+/**
+ * list 中 有所有的 simplelocation 
+ * map 中， 是分组后的 simplelocation 
+ * 
+ */
+case class Plan( name: String = "背包" , beginDate:String = "" ,   endDate: String =  "" , 
+    list: List[SimpleLocation] = Nil , map: Map[String , List[SimpleLocation]] = Map())
+
+/**
+ * 用于页面展示时的对象
+ */
+case class PlanView( name: String="" , beginDate:String = "" ,   endDate: String =  "",  
+  list: List[LocationView] = Nil,   map: immutable.SortedMap[String , List[LocationView]] = immutable.SortedMap() )
+    
+case class LocationView( location:LocationForm  , photo:Photo )
+
+
 case class Status( name: String ="计划中", map :Map[String ,Plan] = Map())
 
 case class Bag(id: String = "", typ: String = "", map: Map[String, Status] = Map()) {
@@ -63,12 +80,12 @@ object BagHelp {
     val newStatus = bag.map.get(statusName) match {
             case None =>
               log.debug("Status 还没有建立，创建新的 Status ")
-              Status(statusName, Map(planName -> Plan(planName, simpleLocationList)))
+              Status(statusName, Map(planName -> Plan(name=planName,  list=simpleLocationList)))
             case Some(status) =>
               val newplan = status.map.get(planName) match {
                 case None =>
                   log.debug("Plan 还没有建立，创建新的 Plan ")
-                  Plan(planName, simpleLocationList )
+                  Plan(name=planName, list=simpleLocationList )
                 case Some(plan) =>
                     val newList =( simpleLocationList ::: plan.list ) .distinct
                     val newPlan = plan.copy(list = newList)

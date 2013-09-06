@@ -58,9 +58,9 @@ object LocationEndpoints extends Controller {
     
     val locations = locationsList map {location =>
      val photo =  if( location.photo.startsWith("266_")){
-    	  val imgsrc = StringUtils.substringAfter( location.photo , "266_" )
-    	  log.debug("imgsrc={}" , imgsrc )
-    	  cmsService.getPhotoByImgsrc(imgsrc) match{
+    	  val imgId = StringUtils.substringBetween( location.photo , "266_","." )
+    	  log.debug("imgId={}" , imgId )
+    	  cmsService.getPhotoByImgId(imgId) match{
     	    case None => Photo()
     	    case Some( photo ) => photo
     	  }

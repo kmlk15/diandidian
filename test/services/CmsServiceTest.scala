@@ -216,6 +216,7 @@ class CmsServiceTest extends Specification{
        val brief = "this is brief"
 
       val picture = Photo(
+          id = location.id,
         locationId = location.id.get,
         userId = photoUser.id,
         imgId = imgsrc,
@@ -233,7 +234,7 @@ class CmsServiceTest extends Specification{
       pictureList.size === 1 
       pictureList === List( picture2 )
       
-      service.updatePhoto(picture) must beNone
+     
         
       
      val picture4 = service.updatePhoto( picture2.copy( imgId ="new imgsrc")).get

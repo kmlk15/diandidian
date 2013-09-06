@@ -89,7 +89,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
       get(bagId) match {
         case None =>
           log.debug("bag 还没有建立，创建新的 bag ")
-          val plan = Plan(planName, List(simpleLocation))
+          val plan = Plan(name= planName, list = List(simpleLocation))
           val status = Status(statusName, Map(plan.name -> plan))
           val bag = Bag(bagId, typ, Map(status.name -> status))
           bagsMongoClient.insert(bag)
