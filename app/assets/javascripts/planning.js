@@ -14,6 +14,7 @@ $(function() {
 	
 	
 	$("#plan-attractions-list ul li .bottom").live('mouseenter', function() {
+		 
 		var $hoverCover = $(this).next(".hover-cover");
 		$hoverCover.show();
 		$hoverCover.children(".note-input").hide();

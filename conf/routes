@@ -34,6 +34,11 @@ GET  /bag/update		controllers.Bags.update()
 GET  /bag/createNewplan     controllers.Bags.createNewplan()
 GET  /bag/updateJson      controllers.Bags.updateJson()
 
+
+GET    /plan/                   controllers.Plans.view()
+
+
+
 GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example
 GET     /location                    controllers.api.LocationEndpoints.location
