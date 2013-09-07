@@ -21,16 +21,34 @@ case class SimpleLocation(id: String="" , name: String ="" , enName: String="" )
  * 
  */
 case class Plan( name: String = "背包" , beginDate:String = "" ,   endDate: String =  "" , 
-    list: List[SimpleLocation] = Nil , map: Map[String , List[SimpleLocation]] = Map())
+    list: List[SimpleLocation] = Nil , map: Map[String , String ] = Map())
 
 /**
  * 用于页面展示时的对象
  */
 case class PlanView( name: String="" , beginDate:String = "" ,   endDate: String =  "",  
-  list: List[LocationView] = Nil,   map: immutable.SortedMap[String , List[LocationView]] = immutable.SortedMap() )
+  first: String="" , last: String="" ,  map: immutable.SortedMap[String , List[LocationView]] = immutable.SortedMap() ){
+  val pattern = """t-(\d{4})(\d{2})(\d{2})""".r
+  def getTtitle( cssClassname: String ) : String ={
+    if( cssClassname== "t-00_no-assign"){
+      "尚未安排"
+    }else{
+      pattern.findFirstMatchIn( cssClassname) match{
+        case None => cssClassname
+        case Some( m ) => m.group(2) + "月"+ m.group(3)+"日"
+      }
+    }
+    
+  }
+}
     
 case class LocationView( location:LocationForm  , photo:Photo )
 
+/**
+ * 提交的数据格式
+ * 
+ */
+case class PlanForm( name: String = "" ,  list: List[String] = Nil )
 
 case class Status( name: String ="计划中", map :Map[String ,Plan] = Map())
 
@@ -63,6 +81,8 @@ object BagHelp {
   implicit val planFmt = Json.format[Plan]
   implicit  val statusFmt = Json.format[Status]
   implicit  val bagFmt = Json.format[Bag]
+  implicit  val  planFormFmt = Json.format[PlanForm]
+  
   
   val log = LoggerFactory.getLogger(BagHelp.getClass())
   val defaultPlanName = "背包"

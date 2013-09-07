@@ -33,10 +33,10 @@ GET  /bag/get			controllers.Bags.get()
 GET  /bag/update		controllers.Bags.update()
 GET  /bag/createNewplan     controllers.Bags.createNewplan()
 GET  /bag/updateJson      controllers.Bags.updateJson()
-
+ 
 
 GET    /plan/                   controllers.Plans.view()
-
+POST    /plan/update                   controllers.Plans.update()
 
 
 GET     /test                       controllers.api.LocationEndpoints.test

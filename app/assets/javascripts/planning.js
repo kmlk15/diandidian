@@ -1,5 +1,45 @@
 $(function() {
 	
+	/**
+	 * 提取 页面上的状态， 再 更新到 后端
+	 */
+	$("#mytest").click(function() {
+		// alert("click");
+		var url = $.url(  );
+		var param = url.param()
+		 var startDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker("getDate");
+	    var endDate =  $("#attraction-planning-wrap .end-date .datepicker").datepicker("getDate");
+				
+	 alert("startDate=" + startDate) ;
+	 alert("endDate=" + endDate) ;
+	 
+		var plan = $.map($("#plan-attractions-list h3"), function(val, index) {
+			var name = $(val).attr("class")
+
+			var list = $.map($("li", $(val).next()), function(val, i) {
+				var id = $(val).attr("id")
+				return id;
+			});
+			var one = {
+				"name" : name,
+				"list" : list
+			}
+
+			return one;
+		});
+
+		alert(JSON.stringify(plan));
+
+		var planStr = JSON.stringify(plan);
+		param.data = planStr ;
+		
+		$.post("/plan/update", param , function(result) {
+			alert(JSON.stringify(result))
+		});
+
+		return false;
+
+	});
 	$(window).resize(function(e) {
 		var space = 133;
 		var height = $(this).height()-space;
@@ -61,7 +101,7 @@ $(function() {
 					return;
 				}
 				var durationDay = (endDate.getTime()-startDate.getTime())/(24*60*60*1000);
-				var timeLinkHtml = '<div class="date-line clearfix"><img src="images/time-line-mark.png" width="8" height="11" /><a class="no-sign" href="no-assign">尚未安排</a>';
+				var timeLinkHtml = '<div class="date-line clearfix"><img src="images/time-line-mark.png" width="8" height="11" /><a class="no-sign" href="00_no-assign">尚未安排</a>';
 				var startLoopDate = startDate;
 				var year = startLoopDate.getFullYear();
 				var month = startLoopDate.getMonth()+1;
@@ -148,6 +188,7 @@ function addDroppable() {
 	$("#plan-attractions-list ul").droppable(
 		{
 			drop: function(event, ui) {
+				//alert("drop , event = " + event ) ;
 				var $droppingUl = ui.draggable.parent("ul");
 				ui.draggable.appendTo($(this));
 				if ($droppingUl.find("li").length<=0) {
@@ -202,6 +243,7 @@ function initialTimeLineLink() {
 		 	hoverClass: 'drop-hover',
 			tolerance: "top-left-touch",
 			drop: function(event, ui) {
+				 
 				var $droppingUl = ui.draggable.parent("ul");
 				var href = $(this).attr("href");
 				var dateValue = href.replace(new RegExp("/", "g") ,"");
@@ -217,10 +259,26 @@ function initialTimeLineLink() {
 					var day = dateArr[2];
 					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日</h3><ul class="clearfix"></ul>';
 					if($(this).hasClass("no-sign")) {
-						targetHtml =  '<h3 class="t-'+dateValue+'">尚未安排</h3><ul class="clearfix"></ul>';
+						targetHtml =  '<h3 class="t-'+dateValue+'">尚未安排</h3><ul class="clearfix ui-droppable"></ul>';
 						$("#plan-attractions-list").prepend("<hr />");
 						$("#plan-attractions-list").prepend(targetHtml);
 						$("#plan-attractions-list ul:first").append(ui.draggable);
+						// why return ? 2013-09-07
+						addDroppable();
+						//删除空白的 ul 
+						
+						//remove header if drag to empty
+						if ($droppingUl.find("li").length<=0) {
+							$droppingUl.prev("h3").remove();
+							if($droppingUl.prev("hr").length>0) {
+								$droppingUl.prev("hr").remove();
+							} else if ($droppingUl.next("hr").length>0) {
+								$droppingUl.next("hr").remove();
+								highlightTopDate();
+							}
+							$droppingUl.remove();
+						}
+						
 						return;
 					}
 					var beforeTarget = findDropHeaderPos(dateValue);

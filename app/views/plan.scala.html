@@ -1,4 +1,5 @@
-@(name: String , planview: models.PlanView)
+@(name: String , planview: models.PlanView)(implicit session: Session)
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -30,6 +31,8 @@
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/purl.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/master.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/bag.js")'></script>
+
 <!--[if lt IE 8]>
 <link href="css/ie7.css" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -42,74 +45,12 @@
 <body id="planning">
 	<div id="container">
 		<div id="header">
-			<div id="user-sign" class="signin">
-				<div class="account">
-					<div class="user-info">
-						<img src='@routes.Assets.at("images/dummy/user06.png")' width="32" height="32" alt="" />
-						<span>Puffy 旅游家</span>
-					</div><!-- end user-info -->
-					<ul>
-						<li><a href="#">退出</a></li>
-					</ul>
-				</div><!-- end account -->
-			</div><!-- end user-sign -->
-			
-			<div id="top-nav" class="clearfix">
-				<a class="logo" href="/"><img src="images/logo.png" width="107" height="34" alt="点地点" /></a>
-				<div class="dropdown">
-					<span>目的地</span>
-					<ul>
-						<li>香港</li>
-						<li>澳門</li>
-					</ul>
-				</div>
-				<a class="return-search" href="#">返回搜索</a>
-				<div id="search-address-wrap">
-					<input type="text" name="address" id="search-address" />
-					<label>搜索国家或城市</label>
-				</div>
-			</div><!-- end top-nav -->
+			@common.header(  session  )
 		</div><!-- end header -->
-		<div id="shadow-divide"></div>
+		 
 		<div id="content">
 			<div id="sidebar" class="customized-scroll">
-				<div id="my-bag">
-					<h2>我的背包:</h2>
-					<div class="accordion">
-						<h3 class="accordion-header">计划中:</h3>
-						<div class="accordion accordion-content">
-							<h4 class="accordion-header no-plan">尚未安排<span>-</span><small><span>7</span>个景点</small></h4>
-							<h4 class="accordion-header"><span class="address">旧金山</span>背包<span>-</span><small><span>2</span>个景点</small></h4>
-						</div>
-						<h3 class="accordion-header">准备前往<span>-</span><small>2个</small></h3>
-						<ul class="accordion-content">
-							<li>
-								<table cellpadding="0" cellspacing="0">
-									<tr>
-										<td>纽约背包</td>
-									</tr>
-								</table>
-							</li>
-							<li class="last">
-								<table cellpadding="0" cellspacing="0">
-									<tr>
-										<td>西藏背包</td>
-									</tr>
-								</table>
-							</li>
-						</ul>
-						<h3 class="accordion-header">过去背包<span>-</span><small>1个</small></h3>
-						<ul class="accordion-content">
-							<li class="last">
-								<table cellpadding="0" cellspacing="0">
-									<tr>
-										<td>巴黎背包</td>
-									</tr>
-								</table>
-							</li>
-						</ul>
-					</div><!-- end accordion -->
-				</div><!-- end my-bag -->
+				 @common.sideBar("")
 			</div><!-- end sidebar -->
 			
 			<div id="main">
@@ -124,43 +65,80 @@
 						<div class="datepicker"></div>
 					</div>
 					<div id="attraction-planning">
+					
 						<div id="plan-timeline-wrap">
 							<div id="plan-timeline" class="customized-scroll">
 								<div id="plan-date-input" class="clearfix">
 									<img class="calendar-icon" src='@routes.Assets.at("images/calendar.png")' width="36" height="36" alt="Calendar Icon" />
-									<p>请输入日期</p>
 								</div><!-- end plan-data-input -->
+								<div class="date-line clearfix">
+									<img src='@routes.Assets.at("images/time-line-mark.png")'  width="8" height="11" />
+									<a class="active no-sign" href="00_no-assign">尚未安排</a>
+									<a class="year" href="2012">2012</a>
+									<a href="2012/12/25">12月25日</a>
+									<a href="2012/12/26">26日</a>
+									<a href="2012/12/27">27日</a>
+									<a href="2012/12/28">28日</a>
+									<a href="2012/12/29">29日</a>
+									<a href="2012/12/30">30日</a>
+									<a href="2012/12/31">31日</a>
+									<a class="year" href="2013">2013</a>
+									<a href="2013/01/01">1月1日</a>
+									<a href="2013/01/02">2日</a>
+									<a href="2013/01/03">3日</a>
+									<a href="2013/01/04">4日</a>
+									<a href="2013/01/05">5日</a>
+									<a href="2013/01/06">6日</a>
+									<a href="2013/01/07">7日</a>
+									<a href="2013/01/08">8日</a>
+									<a href="2013/01/09">9日</a>
+									<a href="2013/01/10">10日</a>
+									<a href="2013/01/11">11日</a>
+									<a href="2013/01/12">12日</a>
+									<a href="2013/01/13">13日</a>
+									<a href="2013/01/14">14日</a>
+									<a href="2013/01/15">15日</a>
+									 
+									
+									
+									
+								</div>
 							</div><!-- end plan-timeline -->
 						</div><!-- end plan-timeline-wrap -->
+						
+						
 						<div id="plan-attractions">
 							<div class="header">
 								<div class="plan-name">
 									<input type="text" name="planName" />
 									<label for="planName">请输入行程名称</label>
 								</div><!-- end plan-name -->
+								 
 								<div class="plan-menu">
 									<span>计划完成</span>
 									<ul>
-										<li>保存</li>
+										<li ><a href="#"  id="mytest">保存</a></li>
 										<li class="last">保存+PDF</li>
 									</ul>
 								</div>
 							</div><!-- end header -->
 							<div id="plan-attractions-list-wrap" class="customized-scroll">
 								<div id="plan-attractions-list">
-									<h3 class="t-no-assign active">尚未安排</h3>
-									<ul class="clearfix">
-										<li>
-											<img src='@routes.Assets.at("images/dummy/planning/img01.jpg")' width="200" height="181" alt="" />
-											<div class="bottom">
-												<h4>会议展览中心</h4>
-												<span>香港: 灣仔</span>
-											</div>
-											<div class="hover-cover">
+								 @for( kv <- planview.map  ){
+								   <h3 class="@kv._1  @if(kv._1 == planview.first ) {active } ">@planview.getTtitle( kv._1 ) </h3>
+								   <ul class="clearfix ui-droppable">
+								   @for( locationview <- kv._2){
+								   	<li class="ui-draggable" id="@locationview.location.id">
+								   		<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg"  width="200" height="181"  />
+								   		<div class="bottom">
+												<h4>@locationview.location.name</h4>
+												<span>@locationview.location.address.city: @locationview.location.address.district</span>
+										</div>
+										<div class="hover-cover">
 												<table>
 													<tr>
 														<td class="label">地址:</td>
-														<td>香港九龙尖沙咀梳士巴利道10号</td>
+														<td>@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street </td>
 													</tr>
 													<tr>
 														<td class="label">时间:</td>
@@ -168,220 +146,28 @@
 													</tr>
 													<tr>
 														<td class="label">成人:</td>
-														<td>$300, 儿童:$100</td>
+														<td>@locationview.location.admission.adults, 儿童:@locationview.location.admission.seniors</td>
 													</tr>
 													<tr>
 														<td class="label">电话:</td>
-														<td>(852) 2721 0116</td>
+														<td>@locationview.location.phone.general</td>
 													</tr>
 												</table>
 												<div class="note-input">
-													<textarea>早晨会见麦克</textarea>
+													<textarea></textarea>
 													<span>完成</span>
 												</div>
 												<span class="btn remark">备注</span>
 												<span class="btn detail">详情</span>
-											</div>
-										</li>
-										<li>
-											<img src='@routes.Assets.at("images/dummy/planning/img02.jpg")' width="200" height="181" alt="" />
-											<div class="bottom">
-												<h4>海洋公园</h4>
-												<span>香港: 南区</span>
-											</div>
-											<div class="hover-cover">
-												<table>
-													<tr>
-														<td class="label">地址:</td>
-														<td>香港九龙尖沙咀梳士巴利道10号</td>
-													</tr>
-													<tr>
-														<td class="label">时间:</td>
-														<td>每日上午10时至下午6时, 逢星期六上午10时至晚上8时 逢星期四（公众假期除外）休馆 逢星期三免费入场</td>
-													</tr>
-													<tr>
-														<td class="label">成人:</td>
-														<td>$300, 儿童:$100</td>
-													</tr>
-													<tr>
-														<td class="label">电话:</td>
-														<td>(852) 2721 0116</td>
-													</tr>
-												</table>
-												<div class="note-input">
-													<textarea>早晨会见麦克</textarea>
-													<span>完成</span>
-												</div>
-												<span class="btn remark">备注</span>
-												<span class="btn detail">详情</span>
-											</div>
-										</li>
-										<li>
-											<img src="images/dummy/planning/img03.jpg" width="200" height="181" alt="" />
-											<div class="bottom">
-												<h4>旅遊塔</h4>
-												<span>澳门: 南灣</span>
-											</div>
-											<div class="hover-cover">
-												<table>
-													<tr>
-														<td class="label">地址:</td>
-														<td>香港九龙尖沙咀梳士巴利道10号</td>
-													</tr>
-													<tr>
-														<td class="label">时间:</td>
-														<td>每日上午10时至下午6时, 逢星期六上午10时至晚上8时 逢星期四（公众假期除外）休馆 逢星期三免费入场</td>
-													</tr>
-													<tr>
-														<td class="label">成人:</td>
-														<td>$300, 儿童:$100</td>
-													</tr>
-													<tr>
-														<td class="label">电话:</td>
-														<td>(852) 2721 0116</td>
-													</tr>
-												</table>
-												<div class="note-input">
-													<textarea>早晨会见麦克</textarea>
-													<span>完成</span>
-												</div>
-												<span class="btn remark">备注</span>
-												<span class="btn detail">详情</span>
-											</div>
-										</li>
-										<li>
-											<img src="images/dummy/planning/img04.jpg" width="200" height="181" alt="" />
-											<div class="bottom">
-												<h4>大三巴牌坊</h4>
-												<span>澳门: 大三巴</span>
-											</div>
-											<div class="hover-cover">
-												<table>
-													<tr>
-														<td class="label">地址:</td>
-														<td>香港九龙尖沙咀梳士巴利道10号</td>
-													</tr>
-													<tr>
-														<td class="label">时间:</td>
-														<td>每日上午10时至下午6时, 逢星期六上午10时至晚上8时 逢星期四（公众假期除外）休馆 逢星期三免费入场</td>
-													</tr>
-													<tr>
-														<td class="label">成人:</td>
-														<td>$300, 儿童:$100</td>
-													</tr>
-													<tr>
-														<td class="label">电话:</td>
-														<td>(852) 2721 0116</td>
-													</tr>
-												</table>
-												<div class="note-input">
-													<textarea>早晨会见麦克</textarea>
-													<span>完成</span>
-												</div>
-												<span class="btn remark">备注</span>
-												<span class="btn detail">详情</span>
-											</div>
-										</li>
-										<li>
-											<img src="images/dummy/planning/img05.jpg" width="200" height="181" alt="" />
-											<div class="bottom">
-												<h4>香港岛电车</h4>
-												<span>香港: 香港岛</span>
-											</div>
-											<div class="hover-cover">
-												<table>
-													<tr>
-														<td class="label">地址:</td>
-														<td>香港九龙尖沙咀梳士巴利道10号</td>
-													</tr>
-													<tr>
-														<td class="label">时间:</td>
-														<td>每日上午10时至下午6时, 逢星期六上午10时至晚上8时 逢星期四（公众假期除外）休馆 逢星期三免费入场</td>
-													</tr>
-													<tr>
-														<td class="label">成人:</td>
-														<td>$300, 儿童:$100</td>
-													</tr>
-													<tr>
-														<td class="label">电话:</td>
-														<td>(852) 2721 0116</td>
-													</tr>
-												</table>
-												<div class="note-input">
-													<textarea>早晨会见麦克</textarea>
-													<span>完成</span>
-												</div>
-												<span class="btn remark">备注</span>
-												<span class="btn detail">详情</span>
-											</div>
-										</li>
-										<li>
-											<img src="images/dummy/planning/img06.jpg" width="200" height="181" alt="" />
-											<div class="bottom">
-												<h4>澳门艺术博物馆</h4>
-												<span>澳门: 新口岸</span>
-											</div>
-											<div class="hover-cover">
-												<table>
-													<tr>
-														<td class="label">地址:</td>
-														<td>香港九龙尖沙咀梳士巴利道10号</td>
-													</tr>
-													<tr>
-														<td class="label">时间:</td>
-														<td>每日上午10时至下午6时, 逢星期六上午10时至晚上8时 逢星期四（公众假期除外）休馆 逢星期三免费入场</td>
-													</tr>
-													<tr>
-														<td class="label">成人:</td>
-														<td>$300, 儿童:$100</td>
-													</tr>
-													<tr>
-														<td class="label">电话:</td>
-														<td>(852) 2721 0116</td>
-													</tr>
-												</table>
-												<div class="note-input">
-													<textarea>早晨会见麦克</textarea>
-													<span>完成</span>
-												</div>
-												<span class="btn remark">备注</span>
-												<span class="btn detail">详情</span>
-											</div>
-										</li>
-										<li>
-											<img src="images/dummy/planning/img07.jpg" width="200" height="181" alt="" />
-											<div class="bottom">
-												<h4>香港交易廣場</h4>
-												<span>香港: 中西区</span>
-											</div>
-											<div class="hover-cover">
-												<table>
-													<tr>
-														<td class="label">地址:</td>
-														<td>香港九龙尖沙咀梳士巴利道10号</td>
-													</tr>
-													<tr>
-														<td class="label">时间:</td>
-														<td>每日上午10时至下午6时, 逢星期六上午10时至晚上8时 逢星期四（公众假期除外）休馆 逢星期三免费入场</td>
-													</tr>
-													<tr>
-														<td class="label">成人:</td>
-														<td>$300, 儿童:$100</td>
-													</tr>
-													<tr>
-														<td class="label">电话:</td>
-														<td>(852) 2721 0116</td>
-													</tr>
-												</table>
-												<div class="note-input">
-													<textarea>早晨会见麦克</textarea>
-													<span>完成</span>
-												</div>
-												<span class="btn remark">备注</span>
-												<span class="btn detail">详情</span>
-											</div>
-										</li>
-									</ul>
+											</div>	
+								   	</li>
+								   }
+								   </ul>
+								   @if(kv._1 != planview.last ) {  <hr/>  }
+								    
+								 }
+									
+									
 								</div><!-- end plan-attractions-list -->
 							</div><!-- end plan-attractions-list-wrap -->
 						</div>
@@ -390,5 +176,12 @@
 			</div><!-- end main -->
 		</div><!-- end content -->
 	</div><!-- end container -->
+	@if(planview.map.size >=1){
+	<script language="javaScript">
+	$(function(){
+		addDroppable()
+	});
+	</script>
+	}
 </body>
 </html>
