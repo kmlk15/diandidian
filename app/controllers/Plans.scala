@@ -76,7 +76,7 @@ object Plans extends Controller {
 
                 val first = sortmap.headOption.map(kv => kv._1).getOrElse("")
                 val last = sortmap.lastOption.map(kv => kv._1).getOrElse("")
-                val planview = PlanView(name = plan.name, beginDate = plan.beginDate, endDate = plan.endDate,
+                val planview = PlanView(name = plan.name,  startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap)
 
@@ -93,7 +93,9 @@ object Plans extends Controller {
     val postData = request.body.asFormUrlEncoded
     val statusName = postData.flatMap(m => m.get("statusName").flatMap(seq => seq.headOption)).getOrElse("")
     val planName = postData.flatMap(m => m.get("planName").flatMap(seq => seq.headOption)).getOrElse("")
-
+    val startDate =  postData.flatMap(m => m.get("startDate").flatMap(seq => seq.headOption)).getOrElse("0").toLong
+    val endDate =   postData.flatMap(m => m.get("endDate").flatMap(seq => seq.headOption)).getOrElse("0").toLong
+   
     val data = postData.flatMap(m => m.get("data").flatMap(seq => seq.headOption)).getOrElse("{}")
     val tmpList = Json.parse(data).asOpt[List[PlanForm]].getOrElse(Nil)
     val planFormList = tmpList.filter(p => !p.name.contains("t-00_no-assign")).map(p => p.copy(name = p.name.replace("active", "").trim()))
@@ -126,7 +128,11 @@ object Plans extends Controller {
               }.toMap.filter( kv => !kv._2.isEmpty() )
 
               log.debug("plan ={}", Json.prettyPrint(Json.toJson(plan)))
-              val changedPlan = plan.copy(map = map)
+              val changedPlan = if( startDate > 0 && endDate >0 && endDate >= startDate ){
+                plan.copy(map = map , startDate = startDate , endDate = endDate )
+              } else { 
+                plan.copy(map = map)
+              }
 
               log.debug("changedPlan={}", Json.prettyPrint(Json.toJson(changedPlan)))
 

@@ -20,13 +20,13 @@ case class SimpleLocation(id: String="" , name: String ="" , enName: String="" )
  * map 中， 是分组后的 simplelocation 
  * 
  */
-case class Plan( name: String = "背包" , beginDate:String = "" ,   endDate: String =  "" , 
+case class Plan( name: String = "背包" , startDate:Long =  0L ,   endDate: Long = 0L , 
     list: List[SimpleLocation] = Nil , map: Map[String , String ] = Map())
 
 /**
  * 用于页面展示时的对象
  */
-case class PlanView( name: String="" , beginDate:String = "" ,   endDate: String =  "",  
+case class PlanView( name: String="" , startDate:Long = 0L  ,   endDate: Long  =  0L ,  
   first: String="" , last: String="" ,  map: immutable.SortedMap[String , List[LocationView]] = immutable.SortedMap() ){
   val pattern = """t-(\d{4})(\d{2})(\d{2})""".r
   def getTtitle( cssClassname: String ) : String ={

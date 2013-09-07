@@ -6,12 +6,24 @@ $(function() {
 	$("#mytest").click(function() {
 		// alert("click");
 		var url = $.url(  );
-		var param = url.param()
-		 var startDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker("getDate");
-	    var endDate =  $("#attraction-planning-wrap .end-date .datepicker").datepicker("getDate");
+		var param = url.param() ;
+		 
+	   var startDate = 0;
+	  if( window.planStartDate != null) {
+		  startDate = window.planStartDate.getTime() ;
+	   } 
+		 
+	    var endDate =  0;
+	    if( window.planEndDate !=null ){
+	    		endDate = window.planEndDate.getTime() ;
+	    }
+	    
 				
-	 alert("startDate=" + startDate) ;
-	 alert("endDate=" + endDate) ;
+	 //alert("startDate=" + startDate) ;
+	 // alert("endDate=" + endDate) ;
+	 
+	 param.startDate  = startDate ;
+	 param.endDate = endDate ; 
 	 
 		var plan = $.map($("#plan-attractions-list h3"), function(val, index) {
 			var name = $(val).attr("class")
@@ -28,13 +40,14 @@ $(function() {
 			return one;
 		});
 
-		alert(JSON.stringify(plan));
+		//alert(JSON.stringify(plan));
 
 		var planStr = JSON.stringify(plan);
 		param.data = planStr ;
 		
 		$.post("/plan/update", param , function(result) {
-			alert(JSON.stringify(result))
+			//alert(JSON.stringify(result))
+			alert( result.success);
 		});
 
 		return false;
@@ -78,9 +91,9 @@ $(function() {
 	var planStartDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker(
 		{
 			changeYear: true,
-			yearRange: "-0:+3",
+			yearRange: "-1:+3",
 			changeMonth: true,
-			minDate: 0,
+			//minDate: 0,
 			onSelect: function(dateText, inst) {
 				var startDate = $(this).datepicker("getDate");
 				$("#attraction-planning-wrap .end-date .datepicker").datepicker( "option", "minDate", startDate);
@@ -91,15 +104,18 @@ $(function() {
 	var planEndDate = $("#attraction-planning-wrap .end-date .datepicker").datepicker(
 		{
 			changeYear: true,
-			yearRange: "-0:+3",
+			yearRange: "-1:+3",
 			changeMonth: true,
-			minDate: 0,
+			//minDate: 0,
 			onSelect: function(dateText, inst) {
 				var startDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker("getDate");
 				var endDate = $(this).datepicker("getDate");
 				if (endDate<startDate) {
 					return;
 				}
+				window.planStartDate = startDate;
+				window.planEndDate = endDate;
+				
 				var durationDay = (endDate.getTime()-startDate.getTime())/(24*60*60*1000);
 				var timeLinkHtml = '<div class="date-line clearfix"><img src="images/time-line-mark.png" width="8" height="11" /><a class="no-sign" href="00_no-assign">尚未安排</a>';
 				var startLoopDate = startDate;
