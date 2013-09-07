@@ -73,6 +73,7 @@ case class Bag(id: String = "", typ: String = "", map: Map[String, Status] = Map
 
 case class BagUpdateFromto( fromStatus: String="" , fromPlan: String="" ,toStatus: String="" , toPlan: String="")
 
+
 object BagHelp {
   
   import play.api.libs.json._

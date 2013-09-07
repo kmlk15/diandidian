@@ -116,37 +116,8 @@ $(function() {
 				window.planStartDate = startDate;
 				window.planEndDate = endDate;
 				
-				var durationDay = (endDate.getTime()-startDate.getTime())/(24*60*60*1000);
-				var timeLinkHtml = '<div class="date-line clearfix"><img src="images/time-line-mark.png" width="8" height="11" /><a class="no-sign" href="00_no-assign">尚未安排</a>';
-				var startLoopDate = startDate;
-				var year = startLoopDate.getFullYear();
-				var month = startLoopDate.getMonth()+1;
-				var formatMonth = month<10 ? "0"+month : month;
-				var date = startLoopDate.getDate();
-				var formatDate = date<10 ? "0"+date : date;
-				var loopTimeHtml = '<a class="year" href="'+year+'">'+year+'</a><a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
-				for(var i=0; i<durationDay; i++) {
-					startLoopDate = new Date(startLoopDate.getTime()+(24*60*60*1000));
-					if (year != startLoopDate.getFullYear()) {
-						year = startLoopDate.getFullYear();
-						loopTimeHtml = loopTimeHtml + '<a class="year" href="'+year+'">'+year+'</a>';
-					}
-					date = startLoopDate.getDate();
-					formatDate = date<10 ? "0"+date : date;
-					if (month != (startLoopDate.getMonth()+1)) {
-						month = startLoopDate.getMonth()+1;
-						formatMonth = month<10 ? "0"+month : month;
-						loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
-					} else {
-						loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+date+'日</a>';
-					}
-				}
-				timeLinkHtml = timeLinkHtml + loopTimeHtml + '</div>';
-				$("#plan-date-input p").remove();
-				$("#plan-timeline .date-line").remove();
-				$("#plan-date-input").after(timeLinkHtml);
-				$("#attraction-planning-wrap .date").hide();
-				initialTimeLineLink();
+				createTimeline(startDate , endDate );
+				
 			}
 		}
 	);
@@ -161,6 +132,50 @@ $(function() {
 	
 	initialPlanNameLabel();
 })
+
+function createTimeline( startDate , endDate ){
+	
+	var timeLinkHtml = createTimeLinkHtml(startDate , endDate );
+
+	$("#plan-date-input p").remove();
+	$("#plan-timeline .date-line").remove();
+	$("#plan-date-input").after(timeLinkHtml);
+	$("#attraction-planning-wrap .date").hide();
+	initialTimeLineLink();
+	
+}
+
+function createTimeLinkHtml(startDate , endDate ){
+	
+	var durationDay = (endDate.getTime()-startDate.getTime())/(24*60*60*1000);
+	var timeLinkHtml = '<div class="date-line clearfix"><img src="/assets/images/time-line-mark.png" width="8" height="11" /><a class="no-sign" href="00_no-assign">尚未安排</a>';
+	var startLoopDate = startDate;
+	var year = startLoopDate.getFullYear();
+	var month = startLoopDate.getMonth()+1;
+	var formatMonth = month<10 ? "0"+month : month;
+	var date = startLoopDate.getDate();
+	var formatDate = date<10 ? "0"+date : date;
+	var loopTimeHtml = '<a class="year" href="'+year+'">'+year+'</a><a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
+	for(var i=0; i<durationDay; i++) {
+		startLoopDate = new Date(startLoopDate.getTime()+(24*60*60*1000));
+		if (year != startLoopDate.getFullYear()) {
+			year = startLoopDate.getFullYear();
+			loopTimeHtml = loopTimeHtml + '<a class="year" href="'+year+'">'+year+'</a>';
+		}
+		date = startLoopDate.getDate();
+		formatDate = date<10 ? "0"+date : date;
+		if (month != (startLoopDate.getMonth()+1)) {
+			month = startLoopDate.getMonth()+1;
+			formatMonth = month<10 ? "0"+month : month;
+			loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
+		} else {
+			loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+date+'日</a>';
+		}
+	}
+	timeLinkHtml = timeLinkHtml + loopTimeHtml + '</div>';
+	return timeLinkHtml ;
+}
+
 
 function draggableAttraction() {
 	$("#plan-attractions-list ul li").draggable(

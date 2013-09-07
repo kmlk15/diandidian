@@ -72,39 +72,7 @@
 									<img class="calendar-icon" src='@routes.Assets.at("images/calendar.png")' width="36" height="36" alt="Calendar Icon" />
 									<p>请输入日期</p>
 								</div><!-- end plan-data-input -->
-								<div class="date-line clearfix">
-									<img src='@routes.Assets.at("images/time-line-mark.png")'  width="8" height="11" />
-									<a class="active no-sign" href="00_no-assign">尚未安排</a>
-									
-									<a class="year" href="2012">2012</a>
-									<a href="2012/12/25">12月25日</a>
-									<a href="2012/12/26">26日</a>
-									<a href="2012/12/27">27日</a>
-									<a href="2012/12/28">28日</a>
-									<a href="2012/12/29">29日</a>
-									<a href="2012/12/30">30日</a>
-									<a href="2012/12/31">31日</a>
-									<a class="year" href="2013">2013</a>
-									<a href="2013/01/01">1月1日</a>
-									<a href="2013/01/02">2日</a>
-									<a href="2013/01/03">3日</a>
-									<a href="2013/01/04">4日</a>
-									<a href="2013/01/05">5日</a>
-									<a href="2013/01/06">6日</a>
-									<a href="2013/01/07">7日</a>
-									<a href="2013/01/08">8日</a>
-									<a href="2013/01/09">9日</a>
-									<a href="2013/01/10">10日</a>
-									<a href="2013/01/11">11日</a>
-									<a href="2013/01/12">12日</a>
-									<a href="2013/01/13">13日</a>
-									<a href="2013/01/14">14日</a>
-									<a href="2013/01/15">15日</a>
-									 
-									
-									
-									
-								</div>
+								
 							</div><!-- end plan-timeline -->
 						</div><!-- end plan-timeline-wrap -->
 						
@@ -181,9 +149,17 @@
 	@if(planview.map.size >=1){
 	<script language="javaScript">
 	$(function(){
-		addDroppable()
+		addDroppable();
 	});
 	</script>
+	}
+	@if(planview.startDate > 0  &&  planview.endDate >0 &&  planview.endDate >= planview.startDate){
+	<script language="javaScript">
+	$(function(){
+		createTimeline( new Date( @planview.startDate )   , new Date(@planview.endDate)  );
+	});
+	</script>
+	
 	}
 </body>
 </html>
