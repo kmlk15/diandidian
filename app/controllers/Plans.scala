@@ -58,10 +58,16 @@ object Plans extends Controller {
               case None => Ok("Plan 不存在 ")
               case Some(plan) if (plan.list.isEmpty) => Ok("Plan 为空，请先添加地点")
               case Some(plan) =>
-                val locationViewList = simplelocationList2LocationViewList(plan.list.map(p => p.id))
-
+                
+                val allLocationViewList = simplelocationList2LocationViewList(plan.list)
+                val allLocationViewMap = allLocationViewList.map( view => view.location.id -> view ).toMap
+                
+                log.debug( "allLocationViewList.size={}" , allLocationViewList.size )
+                
                 val locationViewMap: Map[String, List[LocationView]] = plan.map.map { kv =>
-                  kv._1 -> simplelocationList2LocationViewList(kv._2.split(";").toList)
+                  val idList  = kv._2.split(";").toList
+                  log.debug("idList={}",idList )
+                  kv._1 ->  idList.flatMap( id =>allLocationViewMap.get( Some(id) )   )
                 }
                 val tmpSet = plan.map.flatMap(kv => kv._2.split(";")).toSet
 
@@ -69,7 +75,9 @@ object Plans extends Controller {
                 val locationViewMap2 = if (freeLocationList.isEmpty) {
                   locationViewMap
                 } else {
-                  locationViewMap + ("t-00_no-assign" -> simplelocationList2LocationViewList(freeLocationList.map(p => p.id)))
+                  val idList = freeLocationList.map(p => p.id)
+                    log.debug("idList={}",idList )
+                  locationViewMap + ("t-00_no-assign" -> (   idList.flatMap( id =>allLocationViewMap.get( Some(id) )  ) ))
                 }
 
                 val sortmap = immutable.SortedMap[String, List[LocationView]]() ++ locationViewMap2
@@ -89,6 +97,70 @@ object Plans extends Controller {
 
   }
 
+  //更新某一个location 的 note 
+  def updateNote() = Action { implicit request =>
+    val postData = request.body.asFormUrlEncoded
+
+    val statusName = postData.flatMap(m => m.get("statusName").flatMap(seq => seq.headOption)).getOrElse("")
+    val planName = postData.flatMap(m => m.get("planName").flatMap(seq => seq.headOption)).getOrElse("")
+    val locationId = postData.flatMap(m => m.get("locationId").flatMap(seq => seq.headOption)).getOrElse("")
+    val note = postData.flatMap(m => m.get("note").flatMap(seq => seq.headOption)).getOrElse("")
+
+    log.debug( "statusName={},planName={},locationId={},  note={} " ,statusName ,planName ,locationId , note )
+    session.get("userId") match {
+      case None => Redirect(routes.Login.login())
+      case Some(userId) =>
+        val bagId = userId
+        log.debug("bagId={}", bagId)
+        bagService.get(bagId) match {
+          case None =>
+            Ok(Json.obj("success" -> false, "msg" -> "bag 不存在"))
+          case Some(bag) =>
+            val planOption = for {
+              status <- bag.map.get(statusName)
+              plan <- status.map.get(planName)
+            } yield {
+
+             
+              val simplelocationList = plan.list
+              def exists(id: String): Boolean = {
+                simplelocationList.exists(p => p.id == id)
+              }
+              val planlist = plan.list.map { simple =>
+                if (simple.id == locationId) {
+                  simple.copy(note = note)
+                } else {
+                  simple
+                }
+              }
+
+              log.debug("plan ={}", Json.prettyPrint(Json.toJson(plan)))
+
+              val changedPlan = plan.copy(list = planlist)
+
+              log.debug("changedPlan={}", Json.prettyPrint(Json.toJson(changedPlan)))
+
+              val changedStatus = status.copy(map = status.map + (changedPlan.name -> changedPlan))
+
+              log.debug("changedStatus={}", Json.prettyPrint(Json.toJson(changedStatus)))
+
+              val changedBag = bag.copy(map = bag.map + (changedStatus.name -> changedStatus))
+              bagService.update(changedBag) match {
+                case None =>
+                  Ok(Json.obj("success" -> false, "msg" -> "update bag error "))
+                case Some(updatedbag) =>
+                  Ok(Json.obj("success" -> true))
+              }
+
+            }
+
+            planOption.getOrElse(Ok(Json.obj("success" -> false, "msg" -> "plan  不存在")))
+
+        }
+    }
+
+  }
+  
   def update() = Action { implicit request =>
     val postData = request.body.asFormUrlEncoded
     val statusName = postData.flatMap(m => m.get("statusName").flatMap(seq => seq.headOption)).getOrElse("")
@@ -114,7 +186,7 @@ object Plans extends Controller {
               plan <- status.map.get(planName)
             } yield {
 
-              //这里的修改 如何持久化？
+             
               val simplelocationList = plan.list
               def exists(id: String): Boolean = {
                 simplelocationList.exists(p => p.id == id)
@@ -157,10 +229,10 @@ object Plans extends Controller {
 
   }
 
-  def simplelocationList2LocationViewList(list: List[String]) = {
-    val locationList = list.flatMap(id => locationService.getById(id))
-    locationList.map { location =>
-      val photo = if (location.photo.startsWith("266_")) {
+  def simplelocationList2LocationViewList(list: List[SimpleLocation]) : List[LocationView]= {
+     list.flatMap{ simple =>
+          locationService.getById(simple.id).map{ location =>
+         val photo = if (location.photo.startsWith("266_")) {
         val imgId = StringUtils.substringBetween(location.photo, "266_", ".")
         log.debug("imgId={}", imgId)
         cmsService.getPhotoByImgId(imgId) match {
@@ -170,7 +242,10 @@ object Plans extends Controller {
       } else {
         Photo()
       }
-      LocationView(location, photo)
-    }
+      LocationView(location, photo,  simple.note  )
+       }
+       
+     }
+   
   }
 }

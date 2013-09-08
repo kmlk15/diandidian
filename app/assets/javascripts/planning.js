@@ -4,9 +4,9 @@ $(function() {
 	 * 提取 页面上的状态， 再 更新到 后端
 	 */
 	$("#mytest").click(function() {
-		// alert("click");
-		var url = $.url(  );
-		var param = url.param() ;
+		 
+		 
+		var param =getCurrentStatusnamePlanName();
 		 
 	   var startDate = 0;
 	  if( window.planStartDate != null) {
@@ -82,9 +82,23 @@ $(function() {
 		return false;
 	})
 	$("#plan-attractions-list ul li .hover-cover .note-input span").live('click', function() {
-		$(this).parents(".hover-cover").hide();
+	    var param = getCurrentStatusnamePlanName() 
+	    var locationId = $(this).parent().parent().parent().attr("id") ; 
+	    	//alert( locationId) ;
+	    	var note = $("textarea" ,  $(this).parent( )).val()
+	    //	alert( note ) ;
+		
+	    	param.locationId = locationId ;
+	    	param.note = note ;
+	    	$.post("/plan/updateNote" , param , function ( result){
+	    		alert( result.success  );
+	    		$(this).parents(".hover-cover").hide();
+	    	});
+		
+		
 	})
 	$("#plan-attractions-list ul li .hover-cover .note-input").live('click', function() {
+		
 		return false;
 	})
 	
@@ -348,4 +362,10 @@ function highlightTopDate() {
 	var timeLineHref = className.substring(2, 6) + "/" + className.substring(6, 8) + "/" + className.substring(8, 10);
 	var $timeLink = $("#plan-timeline .date-line a[href='"+timeLineHref+"']");
 	$timeLink.trigger("click");
+}
+
+function getCurrentStatusnamePlanName( ) {
+	var url = $.url(  );
+	var param = url.param() ;
+	return   param ; 
 }

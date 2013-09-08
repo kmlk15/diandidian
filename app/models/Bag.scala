@@ -13,7 +13,7 @@ import scala.collection.immutable
  * plan name , 是由用户定义的 缺省名字 "背包"
  * status name 的值是有限的  计划中，准备前往，过去背包 ; 缺省名字 计划中
  */
-case class SimpleLocation(id: String="" , name: String ="" , enName: String="" )
+case class SimpleLocation(id: String="" , name: String ="" , enName: String=""  , note: String = "" )
 
 /**
  * list 中 有所有的 simplelocation 
@@ -42,7 +42,7 @@ case class PlanView( name: String="" , startDate:Long = 0L  ,   endDate: Long  =
   }
 }
     
-case class LocationView( location:LocationForm  , photo:Photo )
+case class LocationView( location:LocationForm=LocationForm()  , photo:Photo=Photo() , note: String = "" )
 
 /**
  * 提交的数据格式
