@@ -148,16 +148,16 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     					 if( photo == firstPhoto  ){
     					   
                       <li class="active" >
-    							<a href={awsbase +  photo.detailpageImg}  id= {photo.id.get} ><img src={awsbase +  photo.detailpagesmallImg}  width="102"  height="57" /></a>
+    							<a href={awsbase +  photo.detailpageImg}  id= {photo.id.get} ><img src={awsbase +  photo.detailpageThumbnailImg}  width="102"  height="57" /></a>
                       </li>  
     					   
     					 }else if( photo == lastPhoto){
     					 <li class="last" >
-    							<a href={awsbase +  photo.detailpageImg}  id= {photo.id.get} ><img src={awsbase + photo.detailpagesmallImg}   width="102"  height="57"  /></a>
+    							<a href={awsbase +  photo.detailpageImg}  id= {photo.id.get} ><img src={awsbase + photo.detailpageThumbnailImg}   width="102"  height="57"  /></a>
                       </li>  
     					 }else{
                       <li >
-    							<a href={awsbase +  photo.detailpageImg} id= {photo.id.get }><img src={awsbase +  photo.detailpagesmallImg }   width="102"  height="57"  /></a>
+    							<a href={awsbase +  photo.detailpageImg} id= {photo.id.get }><img src={awsbase +  photo.detailpageThumbnailImg }   width="102"  height="57"  /></a>
                       </li>  
 
     					 }

@@ -68,9 +68,9 @@ trait FileUploadService {
 
   def upload2S3(imgId:String,extension:String, atHomepage: Boolean) = {
     
-    s3client.upload( PhotoHelp.detailpageOrignImg(imgId, extension) )
+    s3client.upload( PhotoHelp.normalOrignImg(imgId, extension) )
     s3client.upload( PhotoHelp.detailpageImg(imgId, extension))
-    s3client.upload( PhotoHelp.detailpagesmallImg(imgId, extension) )
+    s3client.upload( PhotoHelp.detailpageThumbnailImg(imgId, extension) )
     if (atHomepage) {
       s3client.upload( PhotoHelp.homepageImg(imgId, extension)  )
       s3client.upload( PhotoHelp.planpageImg(imgId, extension)  )
@@ -82,7 +82,7 @@ trait FileUploadService {
 
     new File(pathprefix + PhotoHelp.detailpageOrignImg(imgId, extension)).delete()
     new File(pathprefix + PhotoHelp.detailpageImg(imgId, extension)).delete()
-    new File(pathprefix + PhotoHelp.detailpagesmallImg(imgId, extension)).delete()
+    new File(pathprefix + PhotoHelp.detailpageThumbnailImg(imgId, extension)).delete()
     if (atHomepage) {
       new File(pathprefix + PhotoHelp.homepageImg(imgId, extension)).delete()
       new File(pathprefix + PhotoHelp.planpageImg(imgId, extension)).delete()
@@ -90,7 +90,7 @@ trait FileUploadService {
     log.debug(" remove file to s3 , imgId=" + imgId)
     s3client.remove(PhotoHelp.detailpageOrignImg(imgId, extension))
     s3client.remove(PhotoHelp.detailpageImg(imgId, extension))
-    s3client.remove(PhotoHelp.detailpagesmallImg(imgId, extension))
+    s3client.remove(PhotoHelp.detailpageThumbnailImg(imgId, extension))
     if (atHomepage) {
       s3client.remove(PhotoHelp.homepageImg(imgId, extension))
       s3client.remove(PhotoHelp.planpageImg(imgId, extension))
@@ -104,10 +104,10 @@ trait FileUploadService {
    *  处理普通的图片
    * 
    */
-  def parseDetailPageFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String): String = {
+  def parseNormalFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String): String = {
      val extension = FilenameUtils.getExtension(picture.filename).toLowerCase()
      if(imageFileExtensionSet.contains(extension) ){
-       parseDetailPageFile(picture ,  atHomepage , imgId , extension)
+       parseNormalFile(picture ,  atHomepage , imgId , extension)
      }else{
        NotUpload
      }
@@ -115,9 +115,9 @@ trait FileUploadService {
   
   
  
-  private def parseDetailPageFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String ,extension: String ): String = {
+  private def parseNormalFile(picture: FilePart[TemporaryFile], atHomepage: Boolean , imgId:String ,extension: String ): String = {
     
-    val filename =   PhotoHelp.detailpageOrignImg(imgId, extension)
+    val filename =   PhotoHelp.normalOrignImg(imgId, extension)
     
     log.debug("img filename={}", filename)
      
@@ -136,8 +136,8 @@ trait FileUploadService {
     // 大图和小图
     val large = PhotoHelp.detailpageImg(imgId, extension)
     resize(pathprefix + filename, pathprefix + large, PhotoHelp.detailPageImgsize  )
-    val small =  PhotoHelp.detailpagesmallImg(imgId, extension)
-    resize(pathprefix + filename, pathprefix + small,  PhotoHelp.detailPagesmallImgsize)
+    val thumbnail =  PhotoHelp.detailpageThumbnailImg(imgId, extension)
+    resize(pathprefix + filename, pathprefix + thumbnail,  PhotoHelp.detailpageThumbnailImgsize)
     //将图片保存到 s3 
     /**
      * 这里 可能会很慢， 特别是在 测试环境中
@@ -184,6 +184,45 @@ trait FileUploadService {
       
       resize(pathprefix + filename, pathprefix + plan, PhotoHelp.planpageImgsize)
      upload2S3(plan )
+
+        
+    extension
+
+  }
+  
+  def parseDetailPageFile(picture: FilePart[TemporaryFile],  imgId:String): String = {
+    val extension = FilenameUtils.getExtension(picture.filename).toLowerCase()
+     if(imageFileExtensionSet.contains(extension) ){
+       parseDetailPageFile(picture ,  imgId , extension)
+     }else{
+       NotUpload
+     }
+    
+  }
+  
+   /**
+   *  处理首页的图片
+   * 
+   */
+  private def parseDetailPageFile(picture: FilePart[TemporaryFile],  imgId:String , extension: String ): String = {
+
+    val extension = FilenameUtils.getExtension(picture.filename)
+    val filename =   PhotoHelp.detailpageOrignImg(imgId, extension)
+    
+    log.debug("img filename={}", filename)
+     
+    picture.ref.moveTo(new File(pathprefix + filename) , true)
+    
+      //创建  for detail page 
+      val detail =  PhotoHelp.detailpageImg(imgId, extension)
+      
+      resize(pathprefix + filename, pathprefix + detail, PhotoHelp.detailPageImgsize)
+      upload2S3(detail )
+      
+      val thumbnail = PhotoHelp.detailpageThumbnailImg( imgId, extension)
+      
+      resize(pathprefix + filename, pathprefix + thumbnail, PhotoHelp.detailpageThumbnailImgsize)
+     upload2S3(thumbnail )
 
         
     extension

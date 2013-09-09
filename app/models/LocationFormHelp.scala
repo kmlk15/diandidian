@@ -223,12 +223,18 @@ object LocationFormHelp {
 case class Photo(id: Option[String]=None , locationId: String ="", userId: String="" , username:String = "" , avatar: String ="",
    imgId:String="none",   extension: String = "jpg" , uploadhistory: String = "" ,  imgurl: String="", brief: String="" , uploadtype: String="" , atHomepage:Boolean = false ){
 
-  val  detailPageOrignImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else imgId + "."+ extension
+  /**
+   * 上传的 原始文件 保存的名字 
+   */
+  val  detailPageOrignImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "detail_" +  imgId + "."+ extension
   val  homepageOrignImg = if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "home_" + imgId + "."+ extension
+  val normalOrignImg  = if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else  imgId + "." + extension
+  
+  
   val  homepageImg = if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "266_" + imgId +"."+ extension
   val  planpageImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "193_" + imgId +"."+ extension
   val  detailpageImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "780_" + imgId +"."+ extension
-  val  detailpagesmallImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "102_" + imgId +"."+ extension
+  val  detailpageThumbnailImg =if(extension=="" || extension==PhotoHelp.NotUpload)  PhotoHelp.defaultImg else "102_" + imgId +"."+ extension
   
 
   
@@ -241,12 +247,17 @@ object PhotoHelp {
    val NotUpload = "NotUpload"
    val defaultImg = ""
   
-  def detailpageOrignImg(imgId: String, extension: String) = imgId + "." + extension
+     /**
+   * 上传的 原始文件 保存的名字 
+   */
+  def detailpageOrignImg(imgId: String, extension: String) = "detail_"+imgId + "." + extension
   def homepageOrignImg(imgId: String, extension: String) = "home_" + imgId + "." + extension
+  def normalOrignImg(imgId: String, extension: String) = imgId + "." + extension
+   
   def homepageImg(imgId: String, extension: String) = "266_" + imgId + "." + extension
   def planpageImg(imgId: String, extension: String) = "193_" + imgId + "." + extension
   def detailpageImg(imgId: String, extension: String) = "780_" + imgId + "." + extension
-  def detailpagesmallImg(imgId: String, extension: String) = "102_" + imgId + "." + extension
+  def detailpageThumbnailImg(imgId: String, extension: String) = "102_" + imgId + "." + extension
   
   /**
    * 在更新前 计算最后一次 HomePage 图片有没有上传
@@ -263,7 +274,8 @@ object PhotoHelp {
       case Array() => false
       case  x => 
        x.exists( str => str.split(",") match{
-          case Array(homepageExtension,NotUpload) if( homepageExtension != NotUpload)=> true
+          case Array(homepageExtension,_) if( homepageExtension != NotUpload)=> true
+          case Array(homepageExtension,_,_) if( homepageExtension != NotUpload)=> true
           case _  => false
         })
     }
@@ -272,7 +284,7 @@ object PhotoHelp {
   val homepageImgsize = (266, 262)
   val planpageImgsize = (193, 190)
   val detailPageImgsize = (780, 435)
-  val detailPagesmallImgsize = (102, 57)
+  val detailpageThumbnailImgsize = (102, 57)
 
   implicit val photoFmt = Json.format[Photo]
   val form = Form {

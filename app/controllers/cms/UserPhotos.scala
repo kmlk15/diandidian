@@ -77,9 +77,9 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
          import  org.bson.types.ObjectId
           val id = new ObjectId().toString
           val imgId = id 
-          val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage, imgId) }).getOrElse(NotUpload)
+          val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseNormalFile(_, false, imgId) }).getOrElse(NotUpload)
            if( extension == NotUpload){
-              Ok(views.html.cms.userPhotoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "必须上传图片", imgsrc = photo.detailpagesmallImg))
+              Ok(views.html.cms.userPhotoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "必须上传图片", imgsrc = photo.detailpageThumbnailImg))
            }else{
 	          val photo2 = service.savePhoto(photo.copy(id = Some(id),imgId = imgId ,extension=extension, userId = userId(session ) , username = username,
 	          avatar =avatar( session) , atHomepage = false  , uploadtype= usertype( session)    )    )
@@ -98,7 +98,7 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
         
           implicit val locationImpl = location(photo.locationId).get
 
-          Ok(views.html.cms.userPhotoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "", imgsrc = photo.detailpagesmallImg))
+          Ok(views.html.cms.userPhotoEdit(photo.id, PhotoHelp.form.fill(photo), msg = "", imgsrc = photo.detailpageThumbnailImg))
         }
         case _  => NotFound
       }
@@ -121,7 +121,7 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
             },
             photo => {
               val imgId =  id
-              val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseDetailPageFile(_, photo.atHomepage ,imgId) }).getOrElse(NotUpload)
+              val extension: String = request.body.asMultipartFormData.flatMap(data => data.file("imgsrc").map { parseNormalFile(_, false ,imgId) }).getOrElse(NotUpload)
 
               val updatePhoto = if (extension != NotUpload) {
                 photo.copy(imgId = imgId, extension = extension , id = originPhoto.id)
