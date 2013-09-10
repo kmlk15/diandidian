@@ -11,6 +11,7 @@ import play.api.libs.json.Json
 import org.slf4j.LoggerFactory
 import java.net.URLEncoder
 import models.LocationForm
+import models.AdmissionForm
 
 
 object Detail extends Controller   {
@@ -68,7 +69,8 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
            "opentimetable" -> models.HoursFormHelp.opentimetable(location.hours ) ,
             "galleryview" -> ( "/detail/galleryview/" + location.id.get ),
             "gallery" ->  galleryHtml (  (gallery(  location  )) ),
-             "galleryContent" ->  galleryHtml (  (galleryContent(  location  )) )
+             "galleryContent" ->  galleryHtml (  (galleryContent(  location  )) ) ,
+             "admissionView" ->  admissionView( location.admission)
           ) )
            log.debug( Json.prettyPrint( jsVal2))
            Ok( jsVal2 ) 
@@ -89,6 +91,10 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
   
   def encode( str: String ): String = URLEncoder .encode(str, "utf-8")
 
+  def admissionView( admission: AdmissionForm): String = {
+     val html = views.html.detail.admission( admission )
+     html.toString	 
+  }
   
   def galleryview( locationId: String ) =Action{
     locationService.getById(locationId)match{

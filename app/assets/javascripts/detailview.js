@@ -20,6 +20,14 @@ $(function() {
 		
 		
 	}
+	/**
+	 * TODO
+	 */
+	$("span.upload-photo").click( function( ){
+		alert("upload-photo")
+		
+	});
+	
 	
 	loadDetail(  detailname  );
 	 

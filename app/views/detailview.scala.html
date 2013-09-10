@@ -33,7 +33,7 @@ var detailname = "@name";
 					
 					<div class="detal-sidebar">
 						<span class="add-bag">加入背包</span>
-						<span class="upload-photo">@if( session.get("userId").getOrElse("")!=""){<a href="" data-bind="{attr: { href: addPhotohref }}" >上传照片</a>}else{ 上传照片 } </span>
+						@if( session.get("userId").getOrElse("")!=""){<span class="upload-photo"  >上传照片</span> }else{  } 
 					</div>
 					
 					<div class="detal-text"> 
@@ -78,43 +78,14 @@ var detailname = "@name";
 										<td><div data-bind="html: opentimetable"></div></td>
 									</tr>
 									</table>
-									  
-									 
-									 
 								 
 							</div>
-							<div class="col col2">
-								<table>
-									<tr>
-										<td rowspan="6"  class="labe3">门票:</td><td colspan="2">日间入场门票</td>
-									</tr>
-									<tr>
-										<td class="labe4">标准</td><td><span  data-bind="text: admission.general  " > </span> <span data-bind="text: admission.currency"></span> </td>
-									</tr>
-									
-									<tr>
-										<td class="labe4">儿童</td><td><span  data-bind="text: admission.children  " > </span> <span data-bind="text: admission.currency"></span> </td>
-									</tr>
-									<tr>
-										<td class="labe4">长者及学生</td><td> <span  data-bind="text: admission.seniors  " > </span> <span data-bind="text: admission.currency"></span> </td>
-									</tr>
-									<tr>
-									<td class="labe4">免入场费</td>									
-									<td><span  data-bind="text: admission.free  " > </span> </td>
-									</tr>
-									
-								</table>
+							<div class="col col2"  data-bind="html: admissionView">
+								 
 							</div>
 						</div>
 						<hr />
-						<div class="row row2">
-							<table>
-								<tr><td rowspan="3" class="label">交通:</td><td>城巴: (852) 2873 0818 <a href="http://www.citybus.com.hk" target="_blank">www.citybus.com.hk</a></td></tr>
-								<tr><td>新巴: (852) 2136 8888 <a href="http://www.nwfb.com.hk" target="_blank">www.nwfb.com.hk</a></td></tr>
-								<tr><td>九巴: (852) 2745 4466 <a href="http://www.kmb.com.hk" target="_blank">www.kmb.com.hk</a></td></tr>
-							</table>
-						</div>
-						<hr />
+
 						<div class="row row3">
 							<table>
 								<tr>
