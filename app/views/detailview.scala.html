@@ -3,16 +3,21 @@
 @script={
 <script>
 var detailname = "@name";
-</script>
-<script type="text/javascript" src="@routes.Assets.at("javascripts/bag.js")"></script>
-<script type="text/javascript" src="@routes.Assets.at("javascripts/knockout-2.2.1.js")"></script>
-<script type="text/javascript" src="@routes.Assets.at("javascripts/knockout.mapping-latest.js")"></script>
-<script type="text/javascript" src="@routes.Assets.at("javascripts/detailview.js")"></script>
 
+</script>
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/knockout-2.2.1.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/knockout.mapping-latest.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.magnific-popup.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/bag.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/detailview.js")'></script>
 
 }
+@css={
+<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/magnific-popup.css")'  media="all" />
+}
 
-@main( name , script){
+@main( name , script , css ){
 
 	<div id="container">
 		<div id="header">

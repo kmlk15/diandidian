@@ -1,9 +1,16 @@
 $(function() {
 	
-	function loadDetail( name ) {
+	loadDetail(  detailname  );
+	 
+})
+
+function loadDetail( name ) {
 		 
 		$.getJSON("/detail/json/" +encodeURI( name ) , null, function(json){
 			//  
+			
+			var addPhotohref = json.addPhotohref ; 
+			
 			var htmldata = json.gallery ;
 			$("div#gallerycontain").html( htmldata )
 			
@@ -16,23 +23,19 @@ $(function() {
 			 
 			 initDetailGallery();
 			 spanlessmore();
+			 
+			 $("span.upload-photo").magnificPopup(  {
+					items:{
+						src: addPhotohref, 
+					    type:  "iframe"		
+					}
+				});
+				
+			 
 		});
 		
 		
 	}
-	/**
-	 * TODO
-	 */
-	$("span.upload-photo").click( function( ){
-		alert("upload-photo")
-		
-	});
-	
-	
-	loadDetail(  detailname  );
-	 
-})
-
 
 /**
 detail page gallery

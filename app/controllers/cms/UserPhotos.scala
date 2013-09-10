@@ -60,7 +60,9 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
 
  
 
- 
+  def savetest(locationId: String) = isAuthenticated { username =>  implicit request =>
+    Ok(views.html.cms.userPhotoCallback(   ) )
+  }
 
   def save(locationId: String) = isAuthenticated { username =>
     implicit request =>
@@ -85,7 +87,8 @@ object UserPhotos extends Controller  with  _root_.controllers.UserAuthTrait wit
 	          avatar =avatar( session) , atHomepage = false  , uploadtype= usertype( session)    )    )
 	
 	          //Ok( Json.prettyPrint( Json.toJson( photo2 ))) 
-	          Redirect(routes.UserPhotos.list())
+	           Ok(views.html.cms.userPhotoCallback(   ) )
+	           
            }
         })
   }

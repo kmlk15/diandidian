@@ -13,9 +13,9 @@
 
 @views.html.cms.usermain( title.toString  ){
 
-  <div class="row" > 
-	  <div class="col-lg-offset-2 col-lg-6">
-	  @if( msg != "") { <h2><span class="label label-warning">@msg</span></h2><br/> }
+  <div  > 
+	  <div  >
+	  @if( msg != "") { <h3><span class="label label-warning">@msg</span></h3><br/> }
 	  <h2>
 	    @if(!id.isDefined) {增加} else {编辑}  Photo </h2>
 	   <br/>
@@ -25,39 +25,47 @@
 @helper.form(action = (if(!id.isDefined) controllers.cms.routes.UserPhotos.save( location.id.get )  else controllers.cms.routes.UserPhotos.update( id.get )) , 'class -> "form-horizontal", 'enctype -> "multipart/form-data") {
 <input type="hidden"   name="userId"   value ='@session.get("userId").getOrElse("")' />
 <input type="hidden"  name="locationId"  value="@location.id.get"  />
+<input type="hidden"  name="locationName"  value="@location.name"  />
+<input type="hidden"  name="avatar"  value='@session.get("avatar").getOrElse("")'  />
+<input type="hidden"  name="imgurl"  value=''  />
 
-  <div class="form-group  " id="locationName_field">
-    <label for="locationId" class="col-lg-2 control-label">地点</label>
-    <div class="col-lg-6">
-    <input type="text" id="locationName" name="locationName" value="@location.name" class="form-control" readonly="true">
-    </div>
-  </div>   
+<table border="0"  width="90%">
+<tr>
+<td align="right">地点:</td>
+<td>@location.name</td>
+</tr>
+@if( imgsrc != ""){
+<tr>
+<td></td>
+<td><img src="http://diandidian.s3-us-west-1.amazonaws.com/@imgsrc"></td>
+</tr>
+}
+<tr>
+<td  align="right">上传照片:</td>
+<td>
+<input type="file" id="imgsrc" name="imgsrc"  >
+</td>
+</tr>
+<tr>
+<td align="right">描述:</td>
+<td>
+<textarea id="brief" name="brief" rows="3" cols="50"  ></textarea>
+</td>
+</tr>
+<tr>
+<td>
+
+</td>
+<td><input class="btn btn-primary" type="submit" value="@if(!id.isDefined) {保 存} else {保 存}" ></td>
+</tr>
+
+</table>
+   
 	
 	
-	@if( imgsrc != ""){
-	 
-	 <div class="form-group  " id="imgsrc_field">
-    <label for="imgsrc" class="col-lg-2 control-label">已经上传的照片</label>
-    <div class="col-lg-6">
-    	
-    <img src="http://diandidian.s3-us-west-1.amazonaws.com/@imgsrc">
+ 
 
-     
-    </div>
-  </div>
-  
-	}
-    @helper.inputFile(form("imgsrc") ,  'class -> "form-control" , '_label -> "上传照片" )
-    @helper.inputText(form("imgurl") , 'class -> "form-control" , '_label -> "链接照片URL")
-    @helper.textarea(field = form("brief"), args = 'rows -> 3, 'cols -> 50 , '_label -> "描述",  'class -> "form-control" )
-
-
-	
-	<div class="row" > 
-	    <div class="form-actions col-lg-offset-2 col-lg-6 ">
-	      <input class="btn btn-primary" type="submit" value="@if(!id.isDefined) {保 存} else {保 存}" >
-	    </div>
-    </div>
+ 
   
 }
 }
