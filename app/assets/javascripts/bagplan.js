@@ -26,9 +26,12 @@
 $(function() {
 	
 $.ajaxSetup({ cache: false });
-	 
-	window.currentStatusName = "计划中";
-	window.currentPlanName = "背包";
+
+	var url = $.url();
+	var param = url.param()
+
+	window.currentStatusName = param.statusName;
+	window.currentPlanName = param.planName;
 	
 	loadBag();
 	

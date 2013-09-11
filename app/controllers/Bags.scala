@@ -269,7 +269,7 @@ object Bags extends Controller {
               errors => { Ok("输入错误") },
               change => {
             	  val s = System.currentTimeMillis()
-            	  val isRemove = if( request.getQueryString("cmd").getOrElse("") == "delete")true else false
+            	  val isRemove = if( request.getQueryString("cmd").getOrElse("") == "delete") true else false
             	  
                 val tobag = models.BagHelp.update(bag, change , isRemove)
                 val e1 = System.currentTimeMillis()

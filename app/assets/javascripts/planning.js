@@ -272,28 +272,103 @@ function initialPlanNameLabel() {
 	});
 	
 	$submitcmd.click( function(e){
+		var currentParam  = getCurrentStatusnamePlanName();
 		var newname = $input.val() ;
-		if( newname == planname){
+		console.log("currentParam=" + currentParam.planName ) ;
+		console.log( "newname=" + newname );
+		if(newname == "" ){
 			$submitcmd.hide();
 			$cancelcmd.hide();
-			$input.val( planname );
+			$input.val( currentParam.planName );
 			if( planname == ""){
 				$label.show();
 			}
+			return ;
+		}
+		
+		if( newname == currentParam.planName){
+			$submitcmd.hide();
+			$cancelcmd.hide();
+			$input.val( planname );
 			
+			if( planname == ""){
+				$label.show();
+			}
+			return;
 		}else{
 			
-			window.currentPlanName = newname ; 
+			var existFlag = false ; 
+			//如果 要修改的名字已经存在，则不允许修改
+			$("a.setPlan[href*=planName]").each( function( index) { 
+				 
+				var url = $.url(  $(this).attr("href") );
+				var param = url.param() ;
+				//console.log( JSON.stringify (  param )) ;
+				if( param.statusName == currentParam.statusName && param.planName ==  newname ){
+					existFlag = true; 
+					
+				}
+			});
+			if( existFlag ){
+				alert( "存在同名的背包，" + newname );
+				return ; 
+			}
+			
 			//修改 背包中的 链接
 			//找到 所有的链接
 			//找出 statusName =  , planName =   的 链接
 			//进行相应的更新
-			var param = getCurrentStatusnamePlanName()
+			
 			 
 			
-			alert( $("a[href*=planName]").size()) ; 
+
+			
+	 		var q = {"fromStatus": currentParam.statusName , "fromPlan":currentParam.planName,
+	 				"toStatus": currentParam.statusName , "toPlan":newname, "cmd":"update" }
+	 		
+	 		$.getJSON("/bag/updateJson" ,q , function (result){
+	 			if( result.success ){
+	 				
+//	 				console.log( $("a[href*=planName]").size()) ; 
+//	 				$("a[href*=planName]").each( function( index) { 
+//	 					 
+//	 					var url = $.url(  $(this).attr("href") );
+//	 					var param = url.param() ;
+//	 					console.log( JSON.stringify (  param )) ;
+//	 					if( param.statusName == currentParam.statusName && param.planName ==currentParam.planName ){
+//	 						//需要更新
+//	 						param.planName = newname;
+//	 						var newquery = "?"+$.param( param) ;
+//	 						console.log("newquery=" + newquery );
+//	 						$(this).attr("href" , newquery)
+//	 						
+//	 						if( $(this).attr("class") == "setPlan"){
+//	 							console.log(" replace name ");
+//	 							var htmlstr = $(this).html();
+//	 							htmlstr = htmlstr.replace(  currentParam.planName   ,  newname )
+//	 							$(this).html( htmlstr ) ;
+//	 						}
+//	 					}
+//	 				});
+//	 				window.currentPlanName = newname ; 
+	 				//如果不 reload当前页面，则下次 reload 就会出现   plan 找不到
+	 				var url = $.url(  );
+ 					var param = url.param() ;
+ 					param.planName = newname;
+ 					var newquery = "?"+$.param( param) ;
+ 					window.location = "/plan/" + newquery ;
+ 					
+ 					
+	 			}else{
+	 				alert(result.msg ) ; 
+	 			}
+	 			
+	 		});
 			
 			
+			
+			$submitcmd.hide();
+			$cancelcmd.hide();
 		}
 	});
 	
@@ -411,5 +486,10 @@ function highlightTopDate() {
 function getCurrentStatusnamePlanName( ) {
 	var url = $.url(  );
 	var param = url.param() ;
+	
+	if( window.currentPlanName !=  null ){
+		param.planName = window.currentPlanName ; 
+	}
+	console.log("param.planName=" + param.planName  ) ;
 	return   param ; 
 }
