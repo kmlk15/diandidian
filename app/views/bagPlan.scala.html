@@ -1,0 +1,79 @@
+@( bag: models.Bag , defaultStatusName : String ,defaultPlanName: String  )(implicit  statusNameList: List[String] = List( "计划中"  ,"准备前往","过去背包"  ) 	)
+
+
+@script={
+ <script type="text/javascript" src="@routes.Assets.at("javascripts/bagplan.js")"></script>
+
+}
+
+@statusOptionDisplay( statusOption : Option[models.Status])={
+
+@if( statusOption == None){
+
+}else{
+  @statusDisplay( statusOption.get )
+}
+
+}
+
+@statusDisplay( status: models.Status)={
+
+					<h3 class="accordion-header  @if(status.name==defaultStatusName  ){   state-active } "   >@status.name
+					@if( status.name != defaultStatusName   ){
+						-@status.map.size个
+					}else{
+					   
+					}
+					 </h3>
+						<div class="accordion accordion-content" @if(status.name==defaultStatusName  ){ style="display:block;"} >
+					 
+						@defining( status.map.keySet.toList.sorted) { keylist =>
+						@for( key <- keylist  ; plan <- status.map.get(key)  ){
+							<h4 class="accordion-header @if(plan.name== defaultPlanName  ){   state-active } " ><a @if(status.name==defaultStatusName && plan.name== defaultPlanName ){style="color:rgb(0, 174, 239)"} href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="setPlan">@plan.name  <span>-</span>
+							<small><span>@plan.list.size</span>个景点</small></a>
+							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="deletePlan"></a>
+							 </h4>
+							<div class="accordion-content clearfix  @if(status.name==defaultStatusName && plan.name== defaultPlanName ){ state-active }" @if(status.name==defaultStatusName && plan.name== defaultPlanName ){ style="display:block;"}  >
+								<ul @if(status.name==defaultStatusName && plan.name== defaultPlanName ){class="open"}>
+								@for( simpleLocation <- plan.list.reverse   ){
+								<li> 
+								<table cellpadding="0" cellspacing="0">
+								<tbody><tr>
+								<td>@simpleLocation.name</td>
+								@if( status.name != "过去背包" ){
+								<td class="del">
+								<a href="?locationId=@helper.urlEncode(simpleLocation.id)&statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)"  ></a>
+								</td>
+								}
+								</tr></tbody></table>
+								</li>
+								}
+								</ul>
+								@if( status.name != "过去背包" ){
+								 <a class="plan"  href="/home?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">继续搜索</a>
+								}
+							</div>
+							} 
+							}
+						</div>
+
+}
+@main( "登录用户Plan页面使用xxxx" , script){
+
+	<div id="content">
+		<div id="sidebar">
+<div id="my-bag">
+					<h2>我的背包:  </h2>
+					<h3><small><span id="currentStatus"></span> <span id="currentPlan"></span></small></h3>
+ 				<div class="accordion">
+ 				  	@for( key <- statusNameList ){
+						 @statusOptionDisplay( bag.map.get(key)  )
+					    }
+					</div><!-- end accordion -->
+				</div><!-- end my-bag -->
+</div>
+<div id="main">
+@bag
+</div>
+</div>
+}

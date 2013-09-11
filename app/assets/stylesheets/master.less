@@ -730,6 +730,7 @@ ul, ol {
 	}
 }
 #attraction-detal {
+	position: relative;
 	margin: 60px auto 10px  auto;
 	padding: 14px 0 0 0;
 	width: 840px;
@@ -748,7 +749,8 @@ ul, ol {
 		}
 	}
 	.gallery {
-		margin-bottom: 15px;
+		min-height:507px;
+		margin-bottom: 0px;
 		.detail {
 			display: block;
 			margin: 0 auto;
@@ -812,13 +814,12 @@ ul, ol {
 		}
 	}
 	.detal-sidebar {
-		overflow: none;
-		float: right;
+		position: absolute;
+		top: 585px;
+		left: 707px;
 		width: 120px;
-		margin: 15px 30px 0 0;
 		span {
 			display: block;
-			float: right;
 			margin-bottom: 15px;
 			width: 74px;
 			padding-left: 29px;
@@ -849,12 +850,12 @@ ul, ol {
 		}
 	}
 	.detal-text{
-		margin:20px 145px 20px 30px;
+		margin:15px 145px 20px 30px;
 		border-right: 1px dashed @greyTopDropHoverBg;
 		padding-right: 18px;
 			.user-content {
 			margin: 0 auto 3px 25px;
-			min-height: 36px;
+			min-height: 18px;
 			.col {
 				float: left;
 				&.col1 {
@@ -863,9 +864,7 @@ ul, ol {
 				&.col2 {
 					width: 560px;
 					.title {
-						margin-bottom: 7px;
 						h2 {
-							float: left;
 							font-size: 15px;
 							line-height: 18px;
 							color: @textGrey2;
@@ -1174,7 +1173,7 @@ ul, ol {
 			float: left;
 			position: relative;
 			input {
-				display: block;
+				/* display: block;*/
 				margin: 15px 0 0 0;
 				padding: 0 0 0 6px;
 				height: 23px;

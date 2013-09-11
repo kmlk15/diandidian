@@ -227,10 +227,16 @@ object Bags extends Controller {
        
     }
         val mock =  request.getQueryString("mock").getOrElse("")
+        val plan =  request.getQueryString("plan").getOrElse("")
      bagOption match{
         case None =>  Ok( views.html.bagEmpty ( ))
         case Some(bag) if( bag.isEmpty) => Ok( views.html.bagEmpty ( ))
         case Some( bag ) if (mock != "") => Ok( views.html.bagMock (  bag ))  // 用于mock
+        case Some( bag ) if (plan != "") =>{
+          val openStatusName = request.getQueryString("statusName").getOrElse(  defaultStatusName )
+          val openPlanName = request.getQueryString("planName").getOrElse(  defaultPlanName )
+          Ok( views.html.bagPlan (  bag ,openStatusName ,openPlanName))  // 用于plan page
+        }
         case Some( bag ) if ( getBagId( session) != "" )=>  Ok( views.html.bagUser( bag))
         case Some( bag ) => Ok( views.html.bagAnonymous( bag ))
         

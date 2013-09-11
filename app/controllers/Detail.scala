@@ -247,7 +247,7 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
   def displayContent( photo: Photo , location : LocationForm, isFirst: Boolean  ): scala.xml.Elem = {
     if( photo.uploadtype == "admin"){
       <div>
-        <div class="user-content clearfix" style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
+        <div class="user-content " style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
           <div class="col col1">
           </div>
           <div class="col col2">
@@ -265,18 +265,18 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
       
     }else{
       <div>
-        <div class="user-content clearfix" style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
+        <div class="user-content clearfix " style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
           <div class="col col1">
             <img class="ravatarimg" src={ photo.avatar } width="36" height="36" alt={ photo.username }/>
           </div>
           <div class="col col2">
               {if (photo.brief.trim().isEmpty ){
             <div class="title">
-              <h2>图片来源</h2><span>:</span>
+              <h2>图片来源:</h2>
             </div>
               }else{
 	            <div class="title">
-            	  <h2>{ photo.username }</h2><span>:</span>
+            	  <h2>{ photo.username }:</h2> 
             	  </div>
               }
               }

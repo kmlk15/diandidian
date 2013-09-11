@@ -251,17 +251,61 @@ function addDroppable() {
 }
 
 function initialPlanNameLabel() {
-	var $input = $("#plan-attractions .header .plan-name input");
+	
+	var $input = $("#plan-attractions .header .plan-name input[name=planName]");
+	var $label = $input.next();
+	var $submitcmd = $label.next();
+    var $cancelcmd = $submitcmd.next();
+    
 	if($input.val() != "") {
-		$input.next("label").hide();
+		$label.hide();
 	}
+	var  planname = $input.val() ;
+	
 	$input.focus(function(e) {
-		$(this).next("label").hide();
+		planname = $(this).val() ;
+		$label.hide();
+		$submitcmd.show();
+		$cancelcmd.show();
 	}).blur(function(e) {
-		if($(this).val()=="") {
-			$(this).next("label").show();
+		
+	});
+	
+	$submitcmd.click( function(e){
+		var newname = $input.val() ;
+		if( newname == planname){
+			$submitcmd.hide();
+			$cancelcmd.hide();
+			$input.val( planname );
+			if( planname == ""){
+				$label.show();
+			}
+			
+		}else{
+			
+			window.currentPlanName = newname ; 
+			//修改 背包中的 链接
+			//找到 所有的链接
+			//找出 statusName =  , planName =   的 链接
+			//进行相应的更新
+			var param = getCurrentStatusnamePlanName()
+			 
+			
+			alert( $("a[href*=planName]").size()) ; 
+			
+			
 		}
 	});
+	
+	$cancelcmd.click( function (e){
+		$submitcmd.hide();
+		$cancelcmd.hide();
+		$input.val( planname );
+		if( planname == ""){
+			$label.show();
+		}
+	});
+	
 }
 
 function initialTimeLineLink() {
