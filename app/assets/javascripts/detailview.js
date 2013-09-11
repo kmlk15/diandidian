@@ -16,6 +16,8 @@ function loadDetail( name ) {
 			
 			var galleryContentData = json.galleryContent; 
 			
+			 
+			
 			$("div.detal-text").prepend( galleryContentData )
 			
 			 var viewModel = ko.mapping.fromJS( json );
@@ -30,8 +32,8 @@ function loadDetail( name ) {
 					    type:  "iframe"		
 					}
 				});
-				
 			 
+			 $("img.ravatarimg"  ).imgr({ radius:"16px"});	
 		});
 		
 		

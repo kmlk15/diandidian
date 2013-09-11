@@ -215,6 +215,13 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
 
   def displayContent( photo: Photo): scala.xml.Elem = {
     val  brief = photo.brief
+    if(brief.trim().isEmpty()){
+      <div class="content">
+        <p>
+          { photo.username }
+        </p>
+      </div>
+    }else{
     if (brief.size > 100) {
       <div class="content">
         <p>
@@ -229,6 +236,7 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
           { brief }
         </p>
       </div>
+    }
     }
   }
 
@@ -259,14 +267,22 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
       <div>
         <div class="user-content clearfix" style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
           <div class="col col1">
-            <img src={ photo.avatar } width="49" height="49" alt={ photo.username }/>
+            <img class="ravatarimg" src={ photo.avatar } width="36" height="36" alt={ photo.username }/>
           </div>
           <div class="col col2">
+              {if (photo.brief.trim().isEmpty ){
             <div class="title">
-              <h2>{ location.name }</h2><span>-</span>
+              <h2>图片来源</h2><span>:</span>
             </div>
-            { displayContent(photo) }
+              }else{
+	            <div class="title">
+            	  <h2>{ photo.username }</h2><span>:</span>
+            	  </div>
+              }
+              }
+            { displayContent(photo ) }
           </div>
+
         </div>
       </div>             
     }
