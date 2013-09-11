@@ -64,14 +64,23 @@ object Plans extends Controller {
                 
                 log.debug( "allLocationViewList.size={}" , allLocationViewList.size )
                 
+                /**
+                 * 变换 已经安排的数据
+                 * 这里 有可能实际已经删除该地点，
+                 * 但是 安排的 map 里 还有数据， 需要在 变换后 删除 空地点列表的  日期 
+                 */
                 val locationViewMap: Map[String, List[LocationView]] = plan.map.map { kv =>
                   val idList  = kv._2.split(";").toList
                   log.debug("idList={}",idList )
                   kv._1 ->  idList.flatMap( id =>allLocationViewMap.get( Some(id) )   )
-                }
+                }.filter( kv => !kv._2.isEmpty )
+                
+                
                 val tmpSet = plan.map.flatMap(kv => kv._2.split(";")).toSet
 
                 val freeLocationList = plan.list.filter(p => !tmpSet.contains(p.id))
+                
+                //和 未安排的数据合并
                 val locationViewMap2 = if (freeLocationList.isEmpty) {
                   locationViewMap
                 } else {

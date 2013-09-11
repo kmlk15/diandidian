@@ -186,9 +186,12 @@ object BagHelp {
    * addlocation 
    * 的组合！
    *  需要定义好 removelocation 和 addlocation 再来定义  update 方法！
+   *  2013-09-11 吴昊
+   *  这里的 update 不再 等价于   removelocation 和 addlocation  的组合 ， 
+   *  在 进行 行程安排后， 不能 简单的 组合操作， 实际 应该是  plan 的 直接 变换 
    *  
    */
-  def update(bag: Bag, change: BagUpdateFromto , isRemove: Boolean = false): Bag = {
+  def update2(bag: Bag, change: BagUpdateFromto , isRemove: Boolean = false): Bag = {
     
     val fromMap = bag.map
     val tobagOption = for{
@@ -215,4 +218,78 @@ object BagHelp {
     
   }
   
+ 
+  
+    def update(bag: Bag, change: BagUpdateFromto , isRemove: Boolean = false): Bag = {
+    
+    val fromMap = bag.map
+    val tobagOption = for{
+      fromstatus <- fromMap.get(change.fromStatus)
+      fromplan <- fromstatus.map.get(change.fromPlan)
+    }yield{
+    
+    log.debug( "isRemove={}" , isRemove )
+    if( isRemove ){
+   	  val tostatus =  	fromstatus.copy( map = fromstatus.map - fromplan.name )
+      val lastbag =  bag.copy( map = bag.map + ( tostatus.name -> tostatus))
+      Some( lastbag)
+    }else{
+ 
+    		val toplan = fromplan.copy(  name = change.toPlan)
+   	    val bagchanged : Option[Bag] = fromMap.get( change.toStatus) match{
+   	      //目标 status 还不存在 
+   	      case None =>{
+   	        val fromstatusChanged = fromstatus.copy( map = fromstatus.map - fromplan.name )
+   	       val tostatus =  Status(name = change.toStatus ,  map = Map( toplan.name  ->  toplan))
+   	        val lastbag =  bag.copy(map = bag.map + (fromstatusChanged.name -> fromstatusChanged) + (tostatus.name -> tostatus ) )
+   	        Some( lastbag)
+   	      }
+   	      //目标 status 已经存在 
+   	      case Some( tostatus) =>{
+   	        /**
+   	         * 如果是 同一个 status中 重命名
+   	         * 如果 已经存在 同名 plan  ， 则不允许  操作
+   	         */
+   	        /*
+   	         * 在同一个 status 中操作 
+   	         */
+   	        if( fromstatus == tostatus){
+   	          tostatus.map.get( toplan.name) match{
+   	            case None =>  
+   	              val laststatus = tostatus.copy( map = tostatus.map + ( toplan.name  ->  toplan) - fromplan.name  )
+   	              val lastbag = bag.copy(map = bag.map +   (laststatus.name -> laststatus ) )
+   	              Some( lastbag)
+   	            case Some( plan) => 
+   	              log.error(" 已经存在 同名 plan ")
+   	              None
+   	          }
+   	         
+   	        }else{
+    	          tostatus.map.get( toplan.name) match{
+   	            case None =>  
+   	              val fromstatusChanged = fromstatus.copy( map = fromstatus.map - fromplan.name )
+   	              val laststatus = tostatus.copy( map = tostatus.map + ( toplan.name  ->  toplan)  )
+   	              val lastbag = bag.copy(map = bag.map +   (laststatus.name -> laststatus )  + (fromstatusChanged.name -> fromstatusChanged ))
+   	              Some( lastbag)
+   	            case Some( plan) => 
+   	              log.error(" 已经存在 同名 plan ")
+   	              None
+   	          }
+   	        }
+   	      }
+   	    }
+   	    bagchanged
+
+    }
+    }
+    tobagOption match{
+      case None => bag 
+      case Some(tobag)  => tobag  match{
+        case None => bag
+        case Some( lastbag ) => lastbag 
+      }  
+    }
+    
+  }
+    
 }
