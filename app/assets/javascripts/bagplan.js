@@ -64,7 +64,7 @@ $.ajaxSetup({ cache: false });
 		var param = url.param()
 		//alert( JSON.stringify (param ) ) ;
 		//return false;
-		
+		var locationId = param.locationId ;
 		 $.getJSON("/bag/del", param,  function (result){
 			 if( result.success){
 				 var  dellocationName = $(atag).parents("td").prev().text();
@@ -73,17 +73,30 @@ $.ajaxSetup({ cache: false });
 					var $ul = $(atag).parents("ul");
 					$itemDel.remove();
 					updateBagCount($ul);
+					//删除  plan  中的
+					$li = $("li#" + locationId  ) 
 					
-					// DETAIL PAGE 
-					if( $("#attraction-detal .user-content .col.col3 span.added").length > 0 ){
-						var e = $("#attraction-detal .user-content .col.col3 span.added")
-						var locationName = $("span#locationName").text();
-						if( dellocationName == locationName  ){
-							e.text("加入背包")
-							e.removeClass("added")
-							e.addClass("add-bag")
+					var $droppingUl = $li.parent("ul");
+					$li. remove() ;
+					//删除空白的 内容
+					
+					
+					//remove header if drag to empty
+					
+					if ($droppingUl.find("li").length<=0) {
+						$droppingUl.prev("h3").remove();
+						if($droppingUl.prev("hr").length>0) {
+							$droppingUl.prev("hr").remove();
+						} else if ($droppingUl.next("hr").length>0) {
+							$droppingUl.next("hr").remove();
+							highlightTopDate();
 						}
+						$droppingUl.remove();
 					}
+					setPlanAttractionsListPaddingBottom();
+					
+					
+					 
 			 }else{
 				 alert( result.msg)
 			 }
@@ -91,34 +104,7 @@ $.ajaxSetup({ cache: false });
 		return false;
 	});
 
-	//删除背包
-	$("#my-bag  ").on('click',".accordion .accordion   h4  a.deletePlan",function() {
-		//是否为空
-		var atag = this
-		var ul = $("ul", $(atag).parent().next())
-		var count = ul.find("li").length;
-		if( count==0  || confirm("不是空的背包，确认要删除吗?")){
-			
-			var url = $.url( $(atag).attr("href") );
-	 		var query = url.param()
-	 		var q = {"fromStatus": query.statusName , "fromPlan":query.planName,"toStatus": query.statusName , "toPlan":query.planName, "cmd":"delete" }
-	 		 
-	 		$.getJSON("/bag/updateJson" ,q , function (result){
-	 			 if( result.success){
-	 				 
-	 				 $(atag).parent().next().remove();
-	 				  
-	 				 $(atag).parent().remove();
-	 				 
-	 				 
-	 			 }
-	 			
-	 		});
-	 		
-		} 
-		
-		return false;
-	});
+ 
 	
 	
 	//设置 plan , 为 地点的 添加删除 ，准备关联数据
@@ -128,11 +114,26 @@ $.ajaxSetup({ cache: false });
 	$("#my-bag  ").on('click',".accordion .accordion   h4  a.setPlan",function() {
 		var atag = this
 		
+		var count = $( "small span", $(this)).text();
+		console.log( "count=" + count );
+		if( count == "0"){
+			return false ; 
+		}
 		
-		var url = $.url( $(atag).attr("href") );
+		var u1 = $.url( $(atag).attr("href") );
+		var p1 = u1.param();
+		
+		var u2 = $.url( )
+		var p2 = u2.param();
+		
+		console.log( "p1=" + JSON.stringify( p1))
+		console.log( "p2=" + JSON.stringify( p2))
+		if (  JSON.stringify( p1) ==  JSON.stringify( p2) ){
+			return false;
+		}
 		
 		 
-		 return true;
+		 return  true  ;
 	});
 	
 		

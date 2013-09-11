@@ -307,4 +307,17 @@ $.ajaxSetup({ cache: false });
 		
 	});
 	
+	
+	//空的背包 不允许进入  Plan 页面
+	$("div#my-bag" ).on("click" , "a.plan"  , function(){
+		console.log("click a.plan ") ;
+	 
+		var count = $(this).prev("ul").find("li").length;
+		console.log("li count = " + count );
+		if( count >0 ){
+			return true;
+		}else{
+			return false;
+		}
+	});
 });

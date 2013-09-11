@@ -442,6 +442,7 @@ function initialTimeLineLink() {
 							}
 							$droppingUl.remove();
 						}
+						setPlanAttractionsListPaddingBottom();
 						
 						return;
 					}

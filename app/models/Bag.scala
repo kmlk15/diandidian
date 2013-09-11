@@ -55,7 +55,9 @@ case class Status( name: String ="计划中", map :Map[String ,Plan] = Map())
 case class Bag(id: String = "", typ: String = "", map: Map[String, Status] = Map()) {
 
   lazy val locationList: List[SimpleLocation] = locations()
-  lazy val isEmpty: Boolean = locationList.isEmpty
+  lazy val planList : List[Plan] = plans()
+  
+  lazy val isEmpty: Boolean = planList.isEmpty
 
   def locations(): List[SimpleLocation] = {
     val seq = for {
@@ -66,6 +68,18 @@ case class Bag(id: String = "", typ: String = "", map: Map[String, Status] = Map
       location
     }
     seq.toList
+  }
+  
+  def plans():List[ Plan] ={
+    val seq = for {
+      statusTuple <- map
+      planTuple <- statusTuple._2.map
+       
+    } yield {
+      planTuple._2
+    }
+    seq.toList
+    
   }
 
   
