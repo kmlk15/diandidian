@@ -92,7 +92,7 @@ object HoursFormHelp{
    def opentimetable(hours: HoursForm ): String = {
     val trList =  view( hours)
     val html= 
-      <table border="1" >
+      <table border="0" >
       {
       trList.map( str => <tr><td>{str._1}</td><td>{str._2.open} -  {str._2.close}</td></tr>)
       }

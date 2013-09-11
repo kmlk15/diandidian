@@ -17,7 +17,7 @@ function loadDetail( name ) {
 			var galleryContentData = json.galleryContent; 
 			
 			 
-			
+			$("div.detal-text div.user-content").remove();
 			$("div.detal-text").prepend( galleryContentData )
 			
 			 var viewModel = ko.mapping.fromJS( json );
