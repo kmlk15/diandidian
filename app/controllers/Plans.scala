@@ -100,7 +100,7 @@ object Plans extends Controller {
                   first = first, last = last,
                   map = sortmap)
 
-                Ok(views.html.plan("planning", planview , cityListStr ))
+                Ok(views.html.plangmap("planning", planview , cityListStr ))
             }
 
         }

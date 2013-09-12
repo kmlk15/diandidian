@@ -79,54 +79,13 @@
 							</div><!-- end header -->
 							<div id="plan-attractions-list-wrap" class="customized-scroll">
 								<div id="plan-attractions-list">
-								 @for( kv <- planview.map  ){
-								   <h3 class="@kv._1  @if(kv._1 == planview.first ) {active } ">@planview.getTtitle( kv._1 ) </h3>
-								   <ul class="clearfix ui-droppable">
-								   @for( locationview <- kv._2){
-								   	<li class="ui-draggable" id="@locationview.location.id">
-								   		<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg"  width="200" height="181"  />
-								   		<div class="bottom">
-												<h4>@locationview.location.name</h4>
-												<span>@locationview.location.address.city: @locationview.location.address.district</span>
-										</div>
-										<div class="hover-cover">
-												<table>
-													<tr>
-														<td class="label">地址:</td>
-														<td>@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street </td>
-													</tr>
-													<tr>
-														<td class="label">时间:</td>
-														<td>每日上午10时至下午6时, 逢星期六上午10时至晚上8时 逢星期四（公众假期除外）休馆 逢星期三免费入场</td>
-													</tr>
-													<tr>
-														<td class="label">成人:</td>
-														<td>@locationview.location.admission.adults, 儿童:@locationview.location.admission.seniors</td>
-													</tr>
-													<tr>
-														<td class="label">电话:</td>
-														<td>@locationview.location.phone.general</td>
-													</tr>
-												</table>
-												<div class="note-input">
-													<textarea>@locationview.note</textarea>
-													<span>完成</span>
-												</div>
-												<span class="btn remark">备注</span>
-												<span class="btn detail">详情</span>
-											</div>	
-								   	</li>
-								   }
-								   </ul>
-								   @if(kv._1 != planview.last ) {  <hr/>  }
-								    
-								 }
+								  
 									
 									
 								</div><!-- end plan-attractions-list -->
 							</div><!-- end plan-attractions-list-wrap -->
 							
-							<div id="map_canvas" style="min-width:640px;height:480px;top:20px">
+							<div id="map-canvas" style="min-width:640px;height:480px;top:100px;left:150px;position:absolute;">
 map
 </div>	
 <div style="min-width:640px;height:80px;top:20px" ></div>
@@ -139,9 +98,72 @@ map
 	</div><!-- end container -->
 
 
+
+<script language="javaScript">
+var cityListStr = "@cityListStr" ; 
+</script>
+
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
-	
-	<script language="javaScript">
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.core.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.widget.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.mouse.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.draggable.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.droppable.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.datepicker.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-scrolltofixed-min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.tokeninput.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.mousewheel.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.jscrollpane.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=true" type="text/javascript"></script>
+
+<script>
+function initialize() {
+  var myLatlng = new google.maps.LatLng(22.283364 , 114.173068);
+  var mapOptions = {
+    zoom: 13,
+    center: myLatlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  @for( kv <- planview.map  ){
+	  @for( locationview <- kv._2){
+		  @if(locationview.location.address.latitude != 0 ){
+		  var marker_@locationview.location.id.get  = new google.maps.Marker({
+		      position:  new google.maps.LatLng(@locationview.location.address.latitude , @locationview.location.address.longitude ),
+		      map: map,
+		      title: '@locationview.location.name'	
+		  });
+		  }
+		  
+	  }
+  }
+  
+
+  
+}
+
+
+$(function(){
+	initialize()
+}); 
+ 
+
+</script>
+     
+ 
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/purl.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/master.js")'></script>
+ 
+<!--[if lt IE 9]>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/ie.js")'></script>
+<![endif]-->
+<script type="text/javascript" src='@routes.Assets.at("javascripts/planning.js")'></script>
+ <script language="javaScript">
 	@if(planview.map.size >=1){
 
 	$(function(){
@@ -156,51 +178,10 @@ map
 	});
 	 
 	}
-	//构造 背包中地点的  json 数据， 用于地图上的操作， 注意，这里的定义 将用在  plan.js 的拖动操作 和 bagplan.js 的地点删除操作
-	var  locationMap = {}
-	 
-	console.log( "locationMap=" + JSON.stringify(locationMap) ) ; 
-	
-	
-	var cityListStr = "@cityListStr" ; 
-	</script>
-	
 
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.core.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.widget.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.mouse.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.draggable.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.droppable.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.datepicker.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-scrolltofixed-min.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.tokeninput.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.mousewheel.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.jscrollpane.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/purl.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/master.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/bagplan.js")'></script>
-<!--[if lt IE 9]>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/ie.js")'></script>
-<![endif]-->
-<script type="text/javascript" src='@routes.Assets.at("javascripts/planning.js")'></script>
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=true" type="text/javascript"></script>
- 
-<script src='@routes.Assets.at("javascripts/jquery.ui.map.min.js")' type="text/javascript"></script>
-<script>
-$(function() {
-     
-    var yourStartLatLng = new google.maps.LatLng(22.283364, 114.173068);
-    $('#map_canvas').gmap({'center': yourStartLatLng, 'zoom':4 , 'mapTypeId': google.maps.MapTypeId.ROADMAP  });
-    $('#map_canvas').gmap('option', 'zoom', 7);
-    $('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': '22.283364, 114.173068', 'bounds': true } );
-    
-});
+	
 </script>
- 
-
- 
+	 
     
 
 </body>

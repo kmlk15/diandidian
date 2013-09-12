@@ -6,6 +6,7 @@ import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
 import org.slf4j.LoggerFactory
 import scala.collection.immutable
+import play.api.libs.json
 
 /**
  * SimpleLocation ,  根据 planning 的需求 可能要 有时间数据 和 顺序。
@@ -40,6 +41,9 @@ case class PlanView( name: String="" , startDate:Long = 0L  ,   endDate: Long  =
     }
     
   }
+  
+ 
+  
 }
     
 case class LocationView( location:LocationForm=LocationForm()  , photo:Photo=Photo() , note: String = "" )
@@ -91,13 +95,14 @@ case class BagUpdateFromto( fromStatus: String="" , fromPlan: String="" ,toStatu
 object BagHelp {
   
   import play.api.libs.json._
+   
   
   implicit val simpleLocationFmt = Json.format[SimpleLocation]
   implicit val planFmt = Json.format[Plan]
   implicit  val statusFmt = Json.format[Status]
   implicit  val bagFmt = Json.format[Bag]
   implicit  val  planFormFmt = Json.format[PlanForm]
-  
+   
   
   val log = LoggerFactory.getLogger(BagHelp.getClass())
   val defaultPlanName = "背包"
@@ -291,5 +296,26 @@ object BagHelp {
     }
     
   }
-    
+
+  def gmap(planview: PlanView): JsObject = {
+    val map = planview.map
+    val list: List[ JsObject] = map.map(kv => {
+      val dataList :List[ JsObject ]   = kv._2.map{view =>
+        Json.obj(
+        		"name"-> view.location.name , 
+        		"imgsrc" -> view.photo.detailpageThumbnailImg ,
+        		"address" -> ( view.location.address.city + view.location.address.district + view.location.address.street),
+        		"data" -> planview.getTtitle(  kv._1 ),
+        		"position" -> ( view.location.address.latitude + "," + view.location.address.longitude ) ,
+        		"timeline" -> "timeline", 
+        		"id" -> view.location.id.get 
+        )
+        }
+       val jsArr = Json.toJson( dataList )
+      Json.obj(kv._1 -> jsArr)
+    }).toList 
+
+    Json.obj()
+  }
+     
 }
