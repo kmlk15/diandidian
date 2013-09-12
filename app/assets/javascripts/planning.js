@@ -162,7 +162,9 @@ function createTimeline( startDate , endDate ){
 function createTimeLinkHtml(startDate , endDate ){
 	
 	var durationDay = (endDate.getTime()-startDate.getTime())/(24*60*60*1000);
-	var timeLinkHtml = '<div class="date-line clearfix"><img src="/assets/images/time-line-mark.png" width="8" height="11" /><a class="no-sign" href="00_no-assign">尚未安排</a>';
+	var timeLinkHtml = '<div class="date-line clearfix"><img src="/assets/images/time-line-mark.png" width="8" height="11" />' ;
+		timeLinkHtml +=	'<a class="all" href="00_all">全部显示 </a>';
+		timeLinkHtml +=	'<a class="no-sign" href="00_no-assign">尚未安排</a>';
 	var startLoopDate = startDate;
 	var year = startLoopDate.getFullYear();
 	var month = startLoopDate.getMonth()+1;
@@ -387,7 +389,37 @@ function initialTimeLineLink() {
 	var attractionsApi = $("#plan-attractions-list-wrap").data('jsp');
 	$("#plan-timeline .date-line a").click(function(e) {
 		var href = $(this).attr("href");
+	 
 		href = href.replace(new RegExp("/", "g") ,"");
+		 
+		
+		 
+		if( window.gmapon){
+			 console.log("gmapon=" + window.gmapon );
+			 console.log("key=" + "t-"+href );
+			 console.log( timelineMap["t-"+href]  ) ;
+			 if( href =="00_all"){
+				 for(index in markerMap) { 
+					 var   marker = markerMap[index]; 
+					  marker.setMap (   map  ) ; 
+				 }
+			 }else{
+			  for(index in markerMap) { 
+				  if( !$.inArray( index , timelineMap["t-"+href])){
+					  var   marker = markerMap[index]; 
+					  marker.setMap (  null  ) ; 
+				  }else{
+					  var   marker = markerMap[index]; 
+					  marker.setMap (   map  ) ; 
+				  }
+			  } 
+			 }
+			   
+			 
+			  
+			  
+			return false ;
+		}
 		var $target = $("#plan-attractions-list").find(".t-"+href);
 		if ($target.length>0) {
 			var arrowTopPosstion = 3;

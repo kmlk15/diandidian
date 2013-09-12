@@ -187,17 +187,7 @@ map
 <script type="text/javascript" src='@routes.Assets.at("javascripts/planning.js")'></script>
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=true" type="text/javascript"></script>
  
-<script src='@routes.Assets.at("javascripts/jquery.ui.map.min.js")' type="text/javascript"></script>
-<script>
-$(function() {
-     
-    var yourStartLatLng = new google.maps.LatLng(22.283364, 114.173068);
-    $('#map_canvas').gmap({'center': yourStartLatLng, 'zoom':4 , 'mapTypeId': google.maps.MapTypeId.ROADMAP  });
-    $('#map_canvas').gmap('option', 'zoom', 7);
-    $('#map_canvas').gmap('addMarker', { /*id:'m_1',*/ 'position': '22.283364, 114.173068', 'bounds': true } );
-    
-});
-</script>
+ 
  
 
  

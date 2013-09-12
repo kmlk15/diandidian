@@ -101,6 +101,7 @@ map
 
 <script language="javaScript">
 var cityListStr = "@cityListStr" ; 
+var gmapon = true;
 </script>
 
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
@@ -116,10 +117,22 @@ var cityListStr = "@cityListStr" ;
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.jscrollpane.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/purl.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/master.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/bagplan.js")'></script>
+<!--[if lt IE 9]>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/ie.js")'></script>
+<![endif]-->
+<script type="text/javascript" src='@routes.Assets.at("javascripts/planning.js")'></script>
 
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=true" type="text/javascript"></script>
 
 <script>
+var map ;
+var  markerMap = {};
+
+var timelineMap =  {} ;
+
 function initialize() {
   var myLatlng = new google.maps.LatLng(22.283364 , 114.173068);
   var mapOptions = {
@@ -127,9 +140,10 @@ function initialize() {
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
-  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
+   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+ 
   @for( kv <- planview.map  ){
+	  var  arr = Array();
 	  @for( locationview <- kv._2){
 		  @if(locationview.location.address.latitude != 0 ){
 		  var marker_@locationview.location.id.get  = new google.maps.Marker({
@@ -137,10 +151,18 @@ function initialize() {
 		      map: map,
 		      title: '@locationview.location.name'	
 		  });
+		  markerMap[ "@locationview.location.id.get" ] = marker_@locationview.location.id.get ;
+		  arr.push( "@locationview.location.id.get") ;
 		  }
 		  
 	  }
+	  timelineMap[ '@kv._1' ] = arr ; 
   }
+  
+  for(index in markerMap) { 
+	  var   marker = markerMap[index]; 
+	  marker.setMap (  map  ) ; 
+  } 
   
 
   
