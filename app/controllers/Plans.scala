@@ -30,12 +30,12 @@ import models.SimpleLocation
 import scala.collection.immutable
 
 object Plans extends Controller {
-  val log = LoggerFactory.getLogger(Bags.getClass())
-  val bagService = base.BagServiceRegistry.bagService
-  val locationService = base.locationFormRegistry.locationService
-  val cmsService = base.CmsServiceRegistry.cmsService
+  private val log = LoggerFactory.getLogger(Bags.getClass())
+  private val bagService = base.BagServiceRegistry.bagService
+  private val locationService = base.locationFormRegistry.locationService
+  private val cmsService = base.CmsServiceRegistry.cmsService
 
-  val bagIdCookieName = "tmpbagId"
+   
 
   def view() = Action { implicit request =>
     val statusName = request.getQueryString("statusName").getOrElse("")
@@ -59,8 +59,11 @@ object Plans extends Controller {
               case Some(plan) if (plan.list.isEmpty) => Ok("Plan 为空，请先添加地点")
               case Some(plan) =>
                 
-                val allLocationViewList = simplelocationList2LocationViewList(plan.list)
-                val allLocationViewMap = allLocationViewList.map( view => view.location.id -> view ).toMap
+                val allLocationViewList : List[LocationView] = simplelocationList2LocationViewList(plan.list)
+                 //从这里  计算出所有的 city 信息， 用于传递到 /home 进行搜索
+                val cityListStr = allLocationViewList.map( _.location.address.city).distinct.mkString(",")
+                 
+                val allLocationViewMap :Map[Option[String], LocationView] = allLocationViewList.map( view => view.location.id -> view ).toMap
                 
                 log.debug( "allLocationViewList.size={}" , allLocationViewList.size )
                 
@@ -97,7 +100,7 @@ object Plans extends Controller {
                   first = first, last = last,
                   map = sortmap)
 
-                Ok(views.html.plan("planning", planview))
+                Ok(views.html.plan("planning", planview , cityListStr ))
             }
 
         }
@@ -238,7 +241,7 @@ object Plans extends Controller {
 
   }
 
-  def simplelocationList2LocationViewList(list: List[SimpleLocation]) : List[LocationView]= {
+  private  def simplelocationList2LocationViewList(list: List[SimpleLocation]) : List[LocationView]= {
      list.flatMap{ simple =>
           locationService.getById(simple.id).map{ location =>
          val photo = if (location.photo.startsWith("266_")) {

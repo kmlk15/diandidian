@@ -107,9 +107,9 @@ $.ajaxSetup({ cache: false });
  
 	
 	
-	//设置 plan , 为 地点的 添加删除 ，准备关联数据
+	 
 	/**
-	 * 在 PlanPage , 点击， 修改url ,重新载入页面
+	 * 在 PlanPage , 点击， 如果背包非空， 重新载入页面
 	 */
 	$("#my-bag  ").on('click',".accordion .accordion   h4  a.setPlan",function() {
 		var atag = this
@@ -134,6 +134,15 @@ $.ajaxSetup({ cache: false });
 		
 		 
 		 return  true  ;
+	});
+	
+	$("#my-bag  ").on('click',"div.accordion div.accordion  div.accordion-content     a.search",function() {
+		var atag = this
+		console.log( "cityListStr=" + cityListStr )
+		var  query = "?cityList=" + encodeURI(cityListStr) ;
+		console.log( "query=" + query ) ;
+		$(this).attr("href" , "/home" + query )
+		return  true  ;
 	});
 	
 		

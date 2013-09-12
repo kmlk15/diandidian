@@ -44,11 +44,11 @@ import play.api.mvc.Session
  */
 
 object Bags extends Controller {
-  val log = LoggerFactory.getLogger(Bags.getClass())
-  val bagService = base.BagServiceRegistry.bagService
-  val locationService = base.locationFormRegistry.locationService
+  private val log = LoggerFactory.getLogger(Bags.getClass())
+  private val bagService = base.BagServiceRegistry.bagService
+  private val locationService = base.locationFormRegistry.locationService
 
-  val bagIdCookieName = "tmpbagId"
+  private val bagIdCookieName = "tmpbagId"
 
   def add(locationName: String , statusName: String = defaultStatusName ,planName : String = defaultPlanName ) = Action { implicit request =>
     def userAdd(location: LocationForm): json.JsObject = {
@@ -112,16 +112,16 @@ object Bags extends Controller {
   /**
    * 这里需要做 安全认证
    */
-  def getBagId(cookie: Cookie) : String  = {
+  private def getBagId(cookie: Cookie) : String  = {
     cookie.value
   }
-  def getBagId( session: Session ) : String ={
+  private def getBagId( session: Session ) : String ={
     session.get("userId").getOrElse("")
   }
   /**
    * 需要增加 cookie 加密
    */
-  def cookieVal(bagId: String) = {
+  private def cookieVal(bagId: String) = {
     bagId
   }
 
@@ -232,7 +232,7 @@ object Bags extends Controller {
         case None =>  Ok( views.html.bagEmpty ( ))
         case Some(bag) if( bag.isEmpty) => Ok( views.html.bagEmpty ( ))
         case Some( bag ) if (mock != "") => Ok( views.html.bagMock (  bag ))  // 用于mock
-        case Some( bag ) if (plan != "") =>{
+        case Some( bag ) if (getBagId( session) != ""  && plan != "") =>{
           val openStatusName = request.getQueryString("statusName").getOrElse(  defaultStatusName )
           val openPlanName = request.getQueryString("planName").getOrElse(  defaultPlanName )
           Ok( views.html.bagPlan (  bag ,openStatusName ,openPlanName))  // 用于plan page

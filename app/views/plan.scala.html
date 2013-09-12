@@ -1,4 +1,4 @@
-@(name: String , planview: models.PlanView)(implicit session: Session)
+@(name: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -148,20 +148,22 @@
 			</div><!-- end main -->
 		</div><!-- end content -->
 	</div><!-- end container -->
-	@if(planview.map.size >=1){
 	<script language="javaScript">
+	@if(planview.map.size >=1){
+
 	$(function(){
 		addDroppable();
 	});
-	</script>
+	
 	}
 	@if(planview.startDate > 0  &&  planview.endDate >0 &&  planview.endDate >= planview.startDate){
-	<script language="javaScript">
+	 
 	$(function(){
 		createTimeline( new Date( @planview.startDate )   , new Date(@planview.endDate)  );
 	});
-	</script>
-	
+	 
 	}
+	var cityListStr = "@cityListStr" ; 
+	</script>
 </body>
 </html>
