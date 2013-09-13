@@ -8,10 +8,101 @@
 
 @script={
 
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=false&libraries=places" type="text/javascript"></script>
+
+<script>
+var map ;
+ 
+
+function initialize() {
+  var myLatlng = new google.maps.LatLng(22.283364 , 114.173068);
+  var mapOptions = {
+    zoom: 13,
+    center: myLatlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+ @if(form("address.latitude").value !=  0.0  && form("address.longitude").value !=0.0){
+	 var marker =new google.maps.Marker({
+	      position:  new   google.maps.LatLng(@form("address.latitude").value , @form("address.longitude").value ),
+	      map: map,
+	      title: 'Hello'	
+	  });
+ }else{
+	 var marker  ;
+ }
+  
+ var input = (document.getElementById('target'));
+ var searchBox = new google.maps.places.SearchBox(input);
+ var markers = [];
+
+ google.maps.event.addListener(searchBox, 'places_changed', function() {
+   var places = searchBox.getPlaces();
+
+   for (var i = 0, marker; marker = markers[i]; i++) {
+     marker.setMap(null);
+   }
+
+   markers = [];
+   var bounds = new google.maps.LatLngBounds();
+   for (var i = 0, place; place = places[i]; i++) {
+     var image = {
+       url: place.icon,
+       size: new google.maps.Size(71, 71),
+       origin: new google.maps.Point(0, 0),
+       anchor: new google.maps.Point(17, 34),
+       scaledSize: new google.maps.Size(25, 25)
+     };
+
+     var marker = new google.maps.Marker({
+       map: map,
+       icon: image,
+       title: place.name,
+       position: place.geometry.location
+     });
+
+     markers.push(marker);
+
+     bounds.extend(place.geometry.location);
+   }
+
+   map.fitBounds(bounds);
+ });
+
+ google.maps.event.addListener(map, 'bounds_changed', function() {
+   var bounds = map.getBounds();
+   searchBox.setBounds(bounds);
+ });
+ 
+ 
+  map.addListener("click" , function(event){  
+	  console.log("map event= " + JSON.stringify (event) );
+	  if( marker == null ){
+		  marker =  new google.maps.Marker({
+		      position: event.latLng ,
+		      map: map,
+		      title: 'Hello'	
+		  });
+	  }else{
+		  marker.setPosition( event.latLng);
+	  }
+	  $("input#address_latitude").val( event.latLng.pb);
+	  $("input#address_longitude").val( event.latLng.qb);
+  });
 }
 
 
-@views.html.cms.main( title.toString  ){
+$(function(){
+	initialize()
+}); 
+ 
+
+</script>
+
+}
+
+
+@views.html.cms.main( title.toString, script  ){
 <div class="row" > 
 	<div class="col-lg-offset-2 col-lg-6">
 	  @if( msg != "") { <h2><span class="label label-warning">@msg</span></h2><br/> }
@@ -20,6 +111,9 @@
 		<br/>
 	</div>
 </div>
+
+ 
+ 
  
     
 @helper.form(action = (if(!id.isDefined) controllers.cms.routes.Locations.save  else controllers.cms.routes.Locations.update( id.get )) , 'class -> "form-horizontal") {
@@ -38,7 +132,23 @@
      @helper.inputText(form("url") , '_label -> "网址" , 'class -> "form-control")
      @helper.inputText(form("address.latitude")  , '_label -> "latitude" , 'class -> "form-control")
      @helper.inputText(form("address.longitude")  , '_label -> "longitude" , 'class -> "form-control" )
-        <div class="row" > 
+     <div class="row" > 
+		<div class="col-lg-offset-2 col-lg-6">
+	    	 <input class="btn btn-primary" type="button" value="从google Map 获取">  
+	    	 
+	    	 
+	    	<br/>  
+	    </div>
+    </div>
+     <div id="panel">
+      <input id="target" type="text" placeholder="Search Box"  value='@form("address.city").value@form("address.street").value'>
+    </div>
+     <div class="row">
+     	<div id="map-canvas" style="width:640px;height:480px" class="col-lg-8"></div>
+     </div>
+     
+     
+    <div class="row" > 
 		<div class="col-lg-offset-2 col-lg-6">
 	    	<h3>开放时间</h3>
 	    	<br/>  

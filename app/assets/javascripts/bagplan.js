@@ -94,8 +94,15 @@ $.ajaxSetup({ cache: false });
 						$droppingUl.remove();
 					}
 					setPlanAttractionsListPaddingBottom();
-					
-					
+					//删除地图中的数据
+					console.log(markerMap );
+					console.log( locationId);
+					console.log(markerMap[locationId] );
+					if(markerMap !=null && markerMap[locationId] != undefined ){
+						markerMap[locationId].setMap( null );
+						delete markerMap[locationId] ;
+						//还需要从已经分配的的日期中删除？？ 
+					}
 					 
 			 }else{
 				 alert( result.msg)

@@ -85,7 +85,7 @@
 								</div><!-- end plan-attractions-list -->
 							</div><!-- end plan-attractions-list-wrap -->
 							
-							<div id="map-canvas" style="min-width:640px;height:480px;top:100px;left:150px;position:absolute;">
+							<div id="map-canvas" style="min-width:960px;height:680px;top:100px;left:150px;position:absolute;">
 map
 </div>	
 <div style="min-width:640px;height:80px;top:20px" ></div>
@@ -136,12 +136,14 @@ var timelineMap =  {} ;
 function initialize() {
   var myLatlng = new google.maps.LatLng(22.283364 , 114.173068);
   var mapOptions = {
-    zoom: 13,
+    zoom: 10,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
-   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
  
+ 
+  
   @for( kv <- planview.map  ){
 	  var  arr = Array();
 	  @for( locationview <- kv._2){
@@ -149,7 +151,10 @@ function initialize() {
 		  var marker_@locationview.location.id.get  = new google.maps.Marker({
 		      position:  new google.maps.LatLng(@locationview.location.address.latitude , @locationview.location.address.longitude ),
 		      map: map,
-		      title: '@locationview.location.name'	
+		      title: '@locationview.location.id.get @locationview.location.name  @planview.getTtitle( kv._1 ) ' 
+		  });
+		  marker_@{locationview.location.id.get}.addListener("click" , function(event){  
+			  console.log("marker event= " + JSON.stringify (event) );
 		  });
 		  markerMap[ "@locationview.location.id.get" ] = marker_@locationview.location.id.get ;
 		  arr.push( "@locationview.location.id.get") ;
@@ -159,10 +164,7 @@ function initialize() {
 	  timelineMap[ '@kv._1' ] = arr ; 
   }
   
-  for(index in markerMap) { 
-	  var   marker = markerMap[index]; 
-	  marker.setMap (  map  ) ; 
-  } 
+
   
 
   

@@ -71,6 +71,8 @@ object Plans extends Controller {
                  * 变换 已经安排的数据
                  * 这里 有可能实际已经删除该地点，
                  * 但是 安排的 map 里 还有数据， 需要在 变换后 删除 空地点列表的  日期 
+                 * 这里还存在一个问题， 由于删除的不同步，会出现 ，一个地点出现在2个 日期中
+                 * 所以还是需要 在 删除的时候 处理这个问题
                  */
                 val locationViewMap: Map[String, List[LocationView]] = plan.map.map { kv =>
                   val idList  = kv._2.split(";").toList
@@ -99,8 +101,11 @@ object Plans extends Controller {
                 val planview = PlanView(name = plan.name,  startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap)
-
-                Ok(views.html.plangmap("planning", planview , cityListStr ))
+                 request.getQueryString("map") match{
+                  case None => Ok(views.html.plan("planning", planview , cityListStr ))
+                  case Some(x) => Ok(views.html.plangmap("planning", planview , cityListStr ))
+                }
+                
             }
 
         }

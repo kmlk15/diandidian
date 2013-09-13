@@ -22,7 +22,7 @@
 	@for(location <- locationList ){
 	<tr>
 		<td class="col-lg-2">@location.name</td>
-		<td class="col-lg-4">@location.enName</td>
+		<td class="col-lg-4">@location.enName (@location.address.latitude , @location.address.longitude  )</td>
 		 
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Locations.edit( location.id.get )">Edit</a></td>
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Locations.del( location.id.get )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>

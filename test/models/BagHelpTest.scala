@@ -72,15 +72,19 @@ class BagHelpTest extends FunSuite {
 
     val bag = createBag(statusName, planName)
     val bag2 = BagHelp.addLocation(bag, "准备去", "exist", List(location3))
-    log.debug("bag2={}", bag2)
+    log.error("bag2={}", bag2)
 
     val change = BagUpdateFromto(statusName, planName, "准备去", "exist")
     val tobag = BagHelp.update(bag2, change)
-
+    log.error("tobag={}", tobag)
+    //保持不变， 这里 需要有办法 告知 调用者!, 或者要求 调用者在 调用前判断 目标是否已经存在
+    assert( bag2 === tobag )
+    
     val newbag = createBag("准备去", "exist")
+    
     val lastbag = BagHelp.addLocation(newbag, "准备去", "exist", List(location3))
 
-    assert(tobag.map.get("准备去").get.map.get("exist").get.list.toSet === lastbag.map.get("准备去").get.map.get("exist").get.list.toSet)
+    assert(tobag.map.get("准备去").get.map.get("exist").get.list.toSet === Set(location3 ))
 
   }
 

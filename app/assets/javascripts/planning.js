@@ -397,25 +397,35 @@ function initialTimeLineLink() {
 		if( window.gmapon){
 			 console.log("gmapon=" + window.gmapon );
 			 console.log("key=" + "t-"+href );
-			 console.log( timelineMap["t-"+href]  ) ;
+			 //console.log( timelineMap["t-"+href]  ) ;
 			 if( href =="00_all"){
 				 for(index in markerMap) { 
 					 var   marker = markerMap[index]; 
 					  marker.setMap (   map  ) ; 
 				 }
 			 }else{
-			  for(index in markerMap) { 
-				  if( !$.inArray( index , timelineMap["t-"+href])){
-					  var   marker = markerMap[index]; 
-					  marker.setMap (  null  ) ; 
-				  }else{
-					  var   marker = markerMap[index]; 
-					  marker.setMap (   map  ) ; 
-				  }
+				
+			  for(index in markerMap) {
+				  var   marker = markerMap[index]; 
+				  marker.setMap (  null  ) ; 
 			  } 
+				 
+				 var arr = timelineMap["t-"+href] 
+				 if( arr != undefined ){
+					 $.each(arr , function( index,value){
+						 console.log( "value=" + value  ) ;
+						 var   marker = markerMap[value]; 
+						 if( marker != null ){
+							 marker.setMap (   map  ) ; 
+						 }else{
+							 console.log("这个地点已经被删除了 id=" + value);
+						 }
+					 });
+				 }
 			 }
 			   
-			 
+			   
+			  
 			  
 			  
 			return false ;
