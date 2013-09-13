@@ -1435,6 +1435,51 @@ ul, ol {
 }
 */
 
+#infowindowtimeline {
+	overflow: auto;
+	margin: 0px 0 0 0;
+	.jspPane {
+		width: 122px !important;
+	}
+	.map-date-line {
+		position: relative;
+		padding-right: 13px;
+		border-right: 1px solid @red;
+		.active {
+			color: @red;
+		}
+		p {
+			margin: 0 0 12px 0;
+			font-size: 18px;
+			text-align: right;
+		}
+		a {
+			display: block;
+			float: right;
+			clear: both;
+			margin: 0 0 8px 0;
+			width: 80px;
+			border: 1px solid @greyBg;
+			font-size: 18px;
+			text-align: right;
+			&.year {
+				font-size: 16px;
+			}
+			&:hover {
+				text-decoration: none;
+			}
+			&.drop-hover {
+				
+				border: 1px dashed @red;
+			}
+		}
+		img {
+			position: absolute;
+			top: 2px;
+			right: -1px;
+		}
+	}
+}
 
 
 

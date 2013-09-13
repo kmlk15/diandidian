@@ -192,6 +192,112 @@ function createTimeLinkHtml(startDate , endDate ){
 	return timeLinkHtml ;
 }
 
+function createMapTimeline( startDate , endDate ){
+	
+	var timeLinkHtml = createMapTimeLinkHtml(startDate , endDate );
+
+	 
+	 
+	$("#infowindowtimeline").html(timeLinkHtml);
+	 
+	
+	initialMapTimeLineLink();
+	
+}
+
+
+function createMapTimeLinkHtml(startDate , endDate ){
+	
+	var durationDay = (endDate.getTime()-startDate.getTime())/(24*60*60*1000);
+	var timeLinkHtml = '<div class="map-date-line clearfix">' ;
+		timeLinkHtml +=	'<a class="no-sign" href="00_no-assign">尚未安排</a>';
+	var startLoopDate = startDate;
+	var year = startLoopDate.getFullYear();
+	var month = startLoopDate.getMonth()+1;
+	var formatMonth = month<10 ? "0"+month : month;
+	var date = startLoopDate.getDate();
+	var formatDate = date<10 ? "0"+date : date;
+	var loopTimeHtml = '<a class="year" href="'+year+'">'+year+'</a><a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
+	for(var i=0; i<durationDay; i++) {
+		startLoopDate = new Date(startLoopDate.getTime()+(24*60*60*1000));
+		if (year != startLoopDate.getFullYear()) {
+			year = startLoopDate.getFullYear();
+			loopTimeHtml = loopTimeHtml + '<a class="year" href="'+year+'">'+year+'</a>';
+		}
+		date = startLoopDate.getDate();
+		formatDate = date<10 ? "0"+date : date;
+		if (month != (startLoopDate.getMonth()+1)) {
+			month = startLoopDate.getMonth()+1;
+			formatMonth = month<10 ? "0"+month : month;
+			loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
+		} else {
+			loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+date+'日</a>';
+		}
+	}
+	timeLinkHtml = timeLinkHtml + loopTimeHtml + '</div>';
+	return timeLinkHtml ;
+}
+
+
+function initialMapTimeLineLink() {
+	 
+	$("#infowindowtimeline").on("click" , ".map-date-line a" , function(e) {
+		$("#infowindowtimeline").hide();
+		var href = $(this).attr("href");
+		href = href.replace(new RegExp("/", "g") ,"");
+		if( window.gmapon){
+			var locationId = window.currentLocationid ;
+			var newkey = "t-"+href ;
+			var oldkey = location2timeMap[locationId] ;
+			location2timeMap[locationId] = newkey ;
+			console.log("locationId=" + locationId);
+			
+			 console.log("gmapon=" + window.gmapon );
+			 console.log("key=" + "t-"+href );
+			 //console.log( timelineMap["t-"+href]  ) ;
+			 //从 原来的 object 中删除
+			 // 加入到新的 object 
+			 console.log("原来的位置 =" + oldkey  ) ;
+			 console.log("新的位置 =" + newkey  ) ;
+			 
+			  for(index in markerMap) {
+				  var   marker = markerMap[index]; 
+				  marker.setMap (  null  ) ; 
+			  } 
+			  
+			 $.each(location2timeMap , function( index,value){
+				 console.log( "index -> value=" + index + '->' +  value  ) ;
+				 if( value == newkey){
+					 var   marker = markerMap[index]; 
+					 console.log("show marker ") ;
+					 if( marker != null ){
+						 marker.setMap (   map  ) ; 
+					 }else{
+						 console.log("这个地点已经被删除了 id=" + value);
+					 }
+				 }
+			 });
+				 
+			
+			return false ;
+		}
+		var $target = $("#plan-attractions-list").find(".t-"+href);
+		if ($target.length>0) {
+			var arrowTopPosstion = 3;
+			var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
+			arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
+			$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
+			attractionsApi.scrollToElement($target,true, 1000);
+			$("#plan-timeline .date-line a.active").removeClass("active");
+			$(this).addClass("active");
+			$("#plan-attractions-list h3.active").removeClass("active");
+			$target.addClass("active");
+		}
+		return false;
+	});
+	
+}
+
 
 function draggableAttraction() {
 	$("#plan-attractions-list ul li").draggable(
@@ -410,18 +516,21 @@ function initialTimeLineLink() {
 				  marker.setMap (  null  ) ; 
 			  } 
 				 
-				 var arr = timelineMap["t-"+href] 
-				 if( arr != undefined ){
-					 $.each(arr , function( index,value){
-						 console.log( "value=" + value  ) ;
-						 var   marker = markerMap[value]; 
+				 var key = "t-"+href   ;
+				 
+				 $.each(location2timeMap , function( index,value){
+					 console.log( "index -> value=" + index + '->' +  value  ) ;
+					 if( value == key){
+						 var   marker = markerMap[index]; 
+						 console.log("show marker ") ;
 						 if( marker != null ){
 							 marker.setMap (   map  ) ; 
 						 }else{
 							 console.log("这个地点已经被删除了 id=" + value);
 						 }
-					 });
-				 }
+					 }
+				 });
+				 
 			 }
 			   
 			   

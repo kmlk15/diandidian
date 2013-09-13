@@ -97,7 +97,14 @@ map
 		</div><!-- end content -->
 	</div><!-- end container -->
 
+<div id="infowindowtimeline" style='display:none;background-color:white;width:100px'  >
+<ul  >
+<li>尚未安排</li>
+<li>12月25日</li>
+<li>26日</li>
+</ul>
 
+</div>
 
 <script language="javaScript">
 var cityListStr = "@cityListStr" ; 
@@ -132,6 +139,7 @@ var map ;
 var  markerMap = {};
 
 var timelineMap =  {} ;
+var location2timeMap = {} ;
 
 function initialize() {
   var myLatlng = new google.maps.LatLng(22.283364 , 114.173068);
@@ -148,6 +156,8 @@ function initialize() {
 	  var  arr = Array();
 	  @for( locationview <- kv._2){
 		  @if(locationview.location.address.latitude != 0 ){
+			  location2timeMap['@locationview.location.id.get'] = '@kv._1'; 
+				  
 		  var marker_@locationview.location.id.get  = new google.maps.Marker({
 		      position:  new google.maps.LatLng(@locationview.location.address.latitude , @locationview.location.address.longitude ),
 		      map: map,
@@ -158,8 +168,31 @@ function initialize() {
 		  });
 		  markerMap[ "@locationview.location.id.get" ] = marker_@locationview.location.id.get ;
 		  arr.push( "@locationview.location.id.get") ;
-		  }
 		  
+		  var img='<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.detailpageThumbnailImg" />';
+		  var name='<h3>@locationview.location.name</h3><span>@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>' ; 
+	      var datastr= '<span>计划日期: @planview.getTtitle( kv._1 )</span>' ;
+	      var  timelinestr = '<span style="color:red" id="@locationview.location.id.get" class="infowindow" >设置或更改日期</span>' ;
+	      
+		  var contentString = '<div id="content_@locationview.location.id.get"  style="width:300px">' ;
+		  contentString += '<div class="row">'+ img +  name +' </div>'
+		  contentString += '<div>' + datastr +  timelinestr  + '</div>'
+		  contentString += '</div>'
+		  
+		  var infowindow_@locationview.location.id.get = new google.maps.InfoWindow({
+		      content: contentString
+		  });
+		  
+		  google.maps.event.addListener(marker_@locationview.location.id.get  , 'click', function() {
+			  	
+			    infowindow_@{locationview.location.id.get}.open(map, marker_@locationview.location.id.get);
+		  });
+		  
+		  }
+		  google.maps.event.addListener( infowindow_@locationview.location.id.get , "closeclick" , function(){
+			  console.log("infowindow  closeclick");
+			  $("div#infowindowtimeline").hide();
+		  });
 	  }
 	  timelineMap[ '@kv._1' ] = arr ; 
   }
@@ -169,7 +202,39 @@ function initialize() {
 
   
 }
-
+$(function(){
+	
+	createMapTimeline( new Date( @planview.startDate )   , new Date(@planview.endDate)  );
+	
+});
+$(function() {
+	$("div#map-canvas").on("click" ,  "span.infowindow" ,   function(e){
+		 
+		var locationid = $(this).attr("id");
+		window.currentLocationid = locationid ;
+		console.log("click span event locationid=" +locationid  );
+		console.log("e.pageX: " + e.pageX + ", e.pageY: " + e.pageY);
+		var position =$(this).position();
+		console.log("left: " + position.left + ", top: " + position.top);
+		
+		var offset = $(this).offset();
+		console.log("left: " + offset.left + ", top: " + offset.top );
+		
+		offset.position="absolute";
+		offset.top = offset.top + 20 ;
+        
+		$("div#infowindowtimeline").css ( offset) ;
+		
+		$("div#infowindowtimeline").toggle();
+		
+	});
+	
+	$("div#infowindowtimeline").click(function(e){
+		var offset = $(this).offset();
+		console.log("left: " + offset.left + ", top: " + offset.top );
+		
+	});
+});
 
 $(function(){
 	initialize()
