@@ -287,7 +287,7 @@ function initialMapTimeLineLink() {
 			var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
 			arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
 			$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
-			attractionsApi.scrollToElement($target,true, 1000);
+			//attractionsApi.scrollToElement($target,true, 1000);
 			$("#plan-timeline .date-line a.active").removeClass("active");
 			$(this).addClass("active");
 			$("#plan-attractions-list h3.active").removeClass("active");
@@ -545,7 +545,7 @@ function initialTimeLineLink() {
 			var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
 			arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
 			$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
-			attractionsApi.scrollToElement($target,true, 1000);
+			//attractionsApi.scrollToElement($target,true, 1000);
 			$("#plan-timeline .date-line a.active").removeClass("active");
 			$(this).addClass("active");
 			$("#plan-attractions-list h3.active").removeClass("active");
