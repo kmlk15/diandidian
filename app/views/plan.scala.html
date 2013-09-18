@@ -52,7 +52,7 @@
 						<div id="plan-timeline-wrap">
 							<div id="plan-timeline" class="customized-scroll">
 								<div id="plan-date-input" class="clearfix">
-									<img class="calendar-icon" src='@routes.Assets.at("images/calendar.png")' width="36" height="36" alt="Calendar Icon" />
+									<img class="calendar-icon" src='@routes.Assets.at("images/calendar_blue.png")' width="36" height="36" alt="Calendar Icon" />
 									<p>请输入日期</p>
 								</div><!-- end plan-data-input -->
 								
@@ -70,9 +70,9 @@
 								</div><!-- end plan-name -->
 								 
 								<div class="plan-menu">
-									<span>计划完成</span>
+									<span>保存</span>
 									<ul>
-										<li ><a href="#"  id="mytest">保存</a></li>
+										<li  id="mytest">保存</li>
 										<li class="last">保存+PDF</li>
 									</ul>
 								</div>
@@ -84,7 +84,7 @@
 								   <ul class="clearfix ui-droppable">
 								   @for( locationview <- kv._2){
 								   	<li class="ui-draggable" id="@locationview.location.id">
-								   		<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg"  width="200" height="181"  />
+								   		<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg"  width="193" height="190"  />
 								   		<div class="bottom">
 												<h4>@locationview.location.name</h4>
 												<span>@locationview.location.address.city: @locationview.location.address.district</span>

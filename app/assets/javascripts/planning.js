@@ -162,7 +162,7 @@ function createTimeline( startDate , endDate ){
 function createTimeLinkHtml(startDate , endDate ){
 	
 	var durationDay = (endDate.getTime()-startDate.getTime())/(24*60*60*1000);
-	var timeLinkHtml = '<div class="date-line clearfix"><img src="/assets/images/time-line-mark.png" width="8" height="11" />' ;
+	var timeLinkHtml = '<div class="date-line clearfix"><img src="/assets/images/time-line-mark-blue.png" width="8" height="11" />' ;
 		timeLinkHtml +=	'<a class="all" href="00_all">全部显示 </a>';
 		timeLinkHtml +=	'<a class="no-sign" href="00_no-assign">尚未安排</a>';
 	var startLoopDate = startDate;

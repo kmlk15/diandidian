@@ -1110,7 +1110,7 @@ ul, ol {
 	.date-line {
 		position: relative;
 		padding-right: 13px;
-		border-right: 1px solid @red;
+		border-right: 1px solid @blue;
 		.active {
 			color: @red;
 		}
@@ -1199,9 +1199,13 @@ ul, ol {
 			position: relative;
 			float: right;
 			margin: 11px 0 0 0;
+			background: url(/assets/images/btn_planning_save.png)   no-repeat;
 			&:hover {
+				background: url(/assets/images/btn_planning_save_hove.png)   no-repeat;
+				
 				span {
-					background: url(/assets/images/sprite.png) 0 -901px no-repeat;
+					color:@textGrey ;
+					background: url(/assets/images/btn_planning_save_hove.png)   no-repeat;
 				}
 				ul {
 					display: block;
@@ -1233,14 +1237,14 @@ ul, ol {
 					line-height: 28px;
 					border-bottom: 1px dashed @accountMenuBorderColor;
 					font-size: 17px;
-					color: @textGrey4;
+					color: @blue;
 					cursor: pointer;
 					&.last {
 						border-bottom: none;
 					}
 					&:hover {
 						background: @greyPlanDropDownHoverBg;
-						color: @white;
+						color: @blue;
 					}
 				}
 			}
@@ -1342,9 +1346,9 @@ ul, ol {
 						left: 9px;
 						padding-left: 34px;
 						width: 56px;
-						background: url(/assets/images/sprite.png) 0 -1002px no-repeat;
+						background: url(/assets/images/btn_planning_note_blue.png)  no-repeat;
 						&:hover {
-							background: url(/assets/images/sprite.png) 0 -966px no-repeat;
+							background: url(/assets/images/btn_planning_note_blue_hover.png)  no-repeat;
 						}
 						
 					}
@@ -1352,9 +1356,9 @@ ul, ol {
 						right: 9px;
 						padding-left: 19px;
 						width: 71px;
-						background: url(/assets/images/sprite.png) 0 -1035px no-repeat;
+						background: url(/assets/images/btn_planning_detail_blue.png)   no-repeat;
 						&:hover {
-							background: url(/assets/images/sprite.png) 0 -1068px no-repeat;
+							background: url(/assets/images/btn_planning_detail_blue_hover.png)  no-repeat;
 						}
 					}
 				}
