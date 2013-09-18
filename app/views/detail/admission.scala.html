@@ -3,7 +3,7 @@
 <table width="260">
 	<tr>
 		<td   class="labe4" >门票:</td>
-		<td  >日间入场门票</td>
+		<td  > @admission.free </td>
 	</tr>
 @if(admission.general!="0" &&  admission.general!="" ){
 	<tr >
@@ -19,13 +19,16 @@
 }
 @if(admission.seniors!="0" &&  admission.seniors!="" ){	
 	<tr>
-		<td class="labe4">长者及学生:</td>
+		<td class="labe4">学生:</td>
+		<td><span >@admission.student </span></td>
+	</tr>
+}	
+@if(admission.seniors!="0" &&  admission.seniors!="" ){	
+	<tr>
+		<td class="labe4">长者 学生:</td>
 		<td><span >@admission.seniors </span></td>
 	</tr>
 }	
-	<tr>
-		<td class="labe4">免入场费:</td>
-		<td><span> @admission.free</span></td>
-	</tr>
+ 
 
 </table>

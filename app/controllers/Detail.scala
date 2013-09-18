@@ -213,7 +213,7 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
  
   }
 
-  def displayContent( photo: Photo): scala.xml.Elem = {
+  def displayUserPhotoContent( photo: Photo): scala.xml.Elem = {
     val  brief = photo.brief
     if(brief.trim().isEmpty()){
       <div class="content">
@@ -240,24 +240,59 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     }
   }
 
- 
+   def displayAdminPhotoContent( photo: Photo): scala.xml.Elem = {
+    val  brief = photo.brief
+    if(brief.trim().isEmpty()){
+      <div class="content">
+        <p>
+        
+        </p>
+      </div>
+    }else{
+    if (brief.size > 100) {
+      <div class="content">
+        <p>
+          { brief.substring(0, 100) }
+          <span class="more">	{ brief.substring(100) }</span>
+        </p>
+        <div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
+      </div>
+    } else {
+      <div class="content">
+        <p>
+          { brief }
+        </p>
+      </div>
+    }
+    }
+  }
   
  
   
   def displayContent( photo: Photo , location : LocationForm, isFirst: Boolean  ): scala.xml.Elem = {
     if( photo.uploadtype == "admin"){
       <div>
-        <div class="user-content " style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
+        <div class="user-content clearfix" style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
           <div class="col col1">
+        {if (photo.avatar =="" ){
+        	   <div class="title">图片来源 : </div>
+        	 }else{
+        	   <div class="title"><a href={ photo.avatar } target="_blank">图片来源</a> :</div>
+        	 }
+        	  }
           </div>
           <div class="col col2">
-            <div class="title">
-              <a href={ photo.avatar } target="_blank">图片来源</a> : { photo.username } 
-            </div>
-            <div class="content">
-              <p>
-              </p>
-            </div>
+             
+        	  {if (photo.avatar =="" ){
+        	   <div class="title"> { photo.username } </div>
+        	 }else{
+        	   <div class="title"> { photo.username } </div>
+        	 }
+        	  }
+        	  
+            
+ 
+        	  { displayAdminPhotoContent(photo ) }
           </div>
         </div>
       </div>
@@ -280,7 +315,7 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
             	  </div>
               }
               }
-            { displayContent(photo ) }
+            { displayUserPhotoContent(photo ) }
           </div>
 
         </div>

@@ -580,10 +580,11 @@ ul, ol {
 			font-size: 15px;			
 			cursor: pointer;
 			&.state-active {
+				color: @textGrey;
 				border-bottom: 1px dashed @myBagBorderColor;
 				background-image: url(/assets/images/accordion-head-icon-active.png);
 			}
-				
+
 			.deletePlan{
 							float: right;
 							margin-top:  8px;
@@ -615,6 +616,14 @@ ul, ol {
 					border-bottom: none;
 					background-image: url(/assets/images/accordion-iteam-icon-active.png);
 				}	
+				&.active-bag {
+					
+					border-bottom: 1px dashed @myBagBorderColor;
+					background-image: url(/assets/images/icon_triangle_blue.png);
+					a {
+						color:@blue;
+					}
+			    }	
 				a {
 					span {
 						
@@ -854,7 +863,7 @@ ul, ol {
 		border-right: 1px dashed @greyTopDropHoverBg;
 		padding-right: 18px;
 			.user-content {
-			margin: 0 auto 3px 25px;
+			margin: 0 auto 15px 25px;
 			min-height: 18px;
 			.col {
 				float: left;
@@ -890,11 +899,11 @@ ul, ol {
 								color: @blue;
 								cursor: pointer;
 								&.more {
-									background: url(/assets/images/red-triangle-dropdown.png) right 50% no-repeat;
+									background: url(/assets/images/icon_triangle_blue.png) right 50% no-repeat;
 								}
 								&.less {
 									display: none;
-									background: url(/assets/images/red-triangle-up.png) right 50% no-repeat;
+									background: url(/assets/images/icon_triangle_blue.png) right 50% no-repeat;
 								}
 							}
 						}
@@ -983,7 +992,7 @@ ul, ol {
 						td.labe4{
 						width: 80px;
 						text-align:right;
-						padding-right:5px;
+						padding-right:10px;
 						}
 					}
 					&.col1 {

@@ -10,6 +10,7 @@
 
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=false&libraries=places" type="text/javascript"></script>
 
+@****
 <script>
 var map ;
  
@@ -98,7 +99,7 @@ $(function(){
  
 
 </script>
-
+****@
 }
 
 
@@ -132,6 +133,7 @@ $(function(){
      @helper.inputText(form("url") , '_label -> "网址" , 'class -> "form-control")
      @helper.inputText(form("address.latitude")  , '_label -> "latitude" , 'class -> "form-control")
      @helper.inputText(form("address.longitude")  , '_label -> "longitude" , 'class -> "form-control" )
+     @****
      <div class="row" > 
 		<div class="col-lg-offset-2 col-lg-6">
 	    	 <input class="btn btn-primary" type="button" value="从google Map 获取">  
@@ -140,13 +142,14 @@ $(function(){
 	    	<br/>  
 	    </div>
     </div>
+    
      <div id="panel">
       <input id="target" type="text" placeholder="Search Box"  value='@form("address.city").value@form("address.street").value'>
     </div>
      <div class="row">
      	<div id="map-canvas" style="width:640px;height:480px" class="col-lg-8"></div>
      </div>
-     
+     ***@
      
     <div class="row" > 
 		<div class="col-lg-offset-2 col-lg-6">
@@ -174,8 +177,9 @@ $(function(){
     </div>
      @helper.inputText(form("admission.general")  , '_label -> "标准"  ,  'class -> "form-control" )
      @helper.inputText(form("admission.children")  , '_label -> "儿童"  ,  'class -> "form-control" )
-     @helper.inputText(form("admission.seniors")  , '_label -> "长者及学生"  ,  'class -> "form-control" )
-     @helper.inputText(form("admission.free")  , '_label -> "免入场费" ,  'class -> "form-control"  )
+     @helper.inputText(form("admission.student")  , '_label -> "学生"  ,  'class -> "form-control" )
+     @helper.inputText(form("admission.seniors")  , '_label -> "长者"  ,  'class -> "form-control" )
+     @helper.inputText(form("admission.free")  , '_label -> "" ,  'class -> "form-control"  )
      
      @helper.select( form("category.categoryId") ,  categoryList.map(c => (c.id -> (  ( {"-" * ( c.level-1) * 2    } ) + c.level +":"+ c.name+"-"+c.enName) ))    , '_label -> "类别"  ,  'class -> "form-control"     ) 
       

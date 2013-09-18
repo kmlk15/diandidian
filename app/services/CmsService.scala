@@ -23,8 +23,7 @@ trait CmsServiceComponent {
 
     def getPhotoUserById(id: String): Option[PhotoUser]
 
-    def getPhotoUserByUserId(userId: String): Option[PhotoUser]
-
+   
     def getPhotoUserByUserName(userName: String): Option[PhotoUser]
 
     def delPhotoUserById(id: String): Int
@@ -83,7 +82,7 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
      */
     def savePhotoUser(user: PhotoUser): Option[PhotoUser] = {
 
-      getPhotoUserByUserId(user.userId) match {
+      getPhotoUserByUserName(user.userName) match {
         case None => {
           val id = new ObjectId().toString
           val w1 = user.copy(id = id)
@@ -99,13 +98,7 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       photoUserMongoClient.find(q).headOption
 
     }
-    def getPhotoUserByUserId(userId: String): Option[PhotoUser] = {
-
-      val q = MongoDBObject()
-      q.put("userId", userId)
-      getPhotoUser(q)
-
-    }
+ 
 
     def getPhotoUserByUserName(userName: String): Option[PhotoUser] = {
 
@@ -133,7 +126,7 @@ trait CmsServiceComponentImpl extends CmsServiceComponent {
       getPhotoUserById(user.id) match {
         case None => None
         case Some(uu) => {
-          val uu2 = getPhotoUserByUserId(user.userId)
+          val uu2 = getPhotoUserByUserName(user.userName)
           if (uu2 == None || uu == uu2.get) {
             val w1 = uu.copy(userName = user.userName, userId = user.userId)
             val q = MongoDBObject()

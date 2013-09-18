@@ -30,7 +30,7 @@
 					 
 						@defining( status.map.keySet.toList.sorted) { keylist =>
 						@for( key <- keylist  ; plan <- status.map.get(key)  ){
-							<h4 class="accordion-header @if(plan.name== keylist.head  ){   state-active } " ><a @if(status.name==defaultStatusName && plan.name== keylist.head ){style="color:rgb(0, 174, 239)"} href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="setPlan">@plan.name  <span>-</span>
+							<h4 class="accordion-header @if(plan.name== keylist.head  ){  active-bag } " ><a   href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="setPlan">@plan.name  <span>-</span>
 							<small><span>@plan.list.size</span>个景点</small></a>
 							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="deletePlan"></a>
 							 </h4>

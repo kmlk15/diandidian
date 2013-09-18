@@ -28,7 +28,7 @@ class CmsServiceTest extends Specification{
       val updateuserName ="new test"
       val updateUserId = "new userid "
         service.getPhotoUserById("not exist")  === None
-        service.getPhotoUserByUserId(userId) === None 
+        
         
         val user = PhotoUser("", userId , userName)
         
@@ -40,14 +40,11 @@ class CmsServiceTest extends Specification{
         
         val user3 = service.getPhotoUserById( user2.id )
         
-        val user4 = service.getPhotoUserByUserId( user.userId )
-        
+       
         val user5 = service.getPhotoUserByUserName( user.userName)
         
         user3 !== None 
-        
-        user3 === user4 
-        user4 === user5 
+        user3 === user5 
         
         
         val updateuser = PhotoUser( user2.id , updateuserName , updateUserId )

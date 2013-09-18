@@ -43,7 +43,7 @@ object Users extends Controller with AuthTrait {
       errors => Ok(views.html.cms.userEdit(None, errors)),
       user => {
         service.savePhotoUser(user) match {
-          case None => Ok(views.html.cms.userEdit(None, PhotoUserHelp.form.fill(user), "同样 UserId 的用户已经存在 "))
+          case None => Ok(views.html.cms.userEdit(None, PhotoUserHelp.form.fill(user), "同样 用户名称 的用户已经存在 "))
           case Some(u) => Redirect(routes.Users.list)
         }
 
@@ -57,7 +57,7 @@ object Users extends Controller with AuthTrait {
       user => {
 
         service.updatePhotoUser(user.copy(id = id)) match {
-          case None => Ok(views.html.cms.userEdit(Some(id), PhotoUserHelp.form.fill(user), "同样 UserId 的用户已经存在 "))
+          case None => Ok(views.html.cms.userEdit(Some(id), PhotoUserHelp.form.fill(user), "同样 用户名称 的用户已经存在 "))
           case Some(user) => Redirect(routes.Users.list)
         }
 
@@ -83,10 +83,7 @@ object Users extends Controller with AuthTrait {
 
   }
 
-  def getByuserId(userId: String) =isAuthenticated { username => implicit request =>
-    val user = service.getPhotoUserByUserId(userId)
-    outJson(user)
-  }
+ 
 
   def outJson(u: Option[PhotoUser]) = {
 

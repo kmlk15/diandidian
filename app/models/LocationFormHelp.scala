@@ -70,6 +70,7 @@ object HoursFormHelp{
           m1.get( hours.friday).map( buf=> buf.append("周五"))
           
           val buf  = opencloseBuffer.map( openclose =>{ openclose -> m1.get( openclose).map(buf=> buf.mkString(",")) }).
+         
           map( kv => kv._2.getOrElse("") + ": " -> ( kv._1   ))
 
           buf.toList
@@ -85,7 +86,9 @@ object HoursFormHelp{
       
     }
      
-    listA ++ listB ++ List( "假日: " -> (hours.holiday ) )
+   val totalist =   listA ++ listB ++ List( "假日: " -> (hours.holiday ) )
+   //过滤 未设置时间的
+    totalist.filter(  kv => kv._2 != OpenClose())
   }
   
   
@@ -94,7 +97,7 @@ object HoursFormHelp{
     val html= 
       <table border="0" >
       {
-      trList.map( str => <tr><td>{str._1}</td><td>{str._2.open} -  {str._2.close}</td></tr>)
+      trList.map( str => <tr><td  style='padding-right:10px;text-align:right;'  >{str._1}</td><td>{str._2.open} -  {str._2.close}</td></tr>)
       }
       </table>
        

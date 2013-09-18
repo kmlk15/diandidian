@@ -43,8 +43,12 @@ $.ajaxSetup({ cache: false });
 			$clickedHeader.removeClass("state-active");
 			 
 		} else {
-			$clickedHeader.addClass("state-active");
-			 
+			//$clickedHeader.removeClass("active-bag");
+			 if( $clickedHeader.hasClass( "active-bag" )){
+				 
+			 }else{
+				 $clickedHeader.addClass("state-active");
+			 }
 			
 		}
 		$headerNextContent.slideToggle(200);
@@ -68,8 +72,8 @@ $.ajaxSetup({ cache: false });
 					updateBagCount($ul);
 					
 					// DETAIL PAGE 
-					if( $("#attraction-detal .user-content .col.col3 span.added").length > 0 ){
-						var e = $("#attraction-detal .user-content .col.col3 span.added")
+					if( $("#attraction-detal  div.detal-sidebar  span.added").length > 0 ){
+						var e = $("#attraction-detal  div.detal-sidebar  span.added")
 						var locationName = $("span#locationName").text();
 						if( dellocationName == locationName  ){
 							e.text("加入背包")
@@ -128,10 +132,17 @@ $.ajaxSetup({ cache: false });
 		//$("div#my-bag h3  span#currentStatus").html(query.statusName);
 		//$("div#my-bag h3  span#currentPlan").html(query.planName);
 		//将移除 所有 ul 的 css  open
-		 $("#my-bag  .accordion .accordion  h4.accordion-header a ").css("color" , "rgb(60, 60, 60)") ; 
-		  
-		 $(this).css("color" , "rgb(0, 174, 239)") ;
-		 $(this).parent().addClass("state-active");
+		// $("#my-bag  .accordion .accordion  h4.accordion-header a ").css("color" , "rgb(60, 60, 60)") ; 
+		 
+		 //$("#my-bag  .accordion .accordion  h4.accordion-header").css("background-image","url(/assets/images/accordion-iteam-icon-active.png)") ;
+		
+		 $("#my-bag  .accordion .accordion  h4.accordion-header").removeClass( "active-bag" ) ;
+		// $(this).css("color" , "rgb(0, 174, 239)") ;
+		 
+		 $(this).parent().removeClass("state-active");
+		 $(this).parent().addClass("active-bag");
+		 
+		// $(this).parent().css("background-image","url(/assets/images/icon_triangle_blue.png)");
 		 $(this).parent().next().show();
 		$("#my-bag .accordion .accordion div ul").removeClass("open");
 		//当前的 加上 css  open
@@ -273,7 +284,7 @@ $.ajaxSetup({ cache: false });
 		$.getJSON("/bag/createNewplan" , function(result){ 
 			
 		$("#my-bag .accordion .accordion div ul").removeClass("open");
-		$("#my-bag  .accordion .accordion  h4.accordion-header a").css("color" , "rgb(60, 60, 60)") ; 
+		$("#my-bag  .accordion .accordion  h4.accordion-header  ").removeClass( "active-bag") ; 
 		
 		var planName = result.data.planName ; 
 		var statusName  =   result.data.statusName  ; 
@@ -283,8 +294,8 @@ $.ajaxSetup({ cache: false });
 		
 		var html= '';
 		html += '<div class="accordion accordion-content" style="display:block;">';
-		html +='<h4 class="accordion-header state-active" >';
-		html +='<a style="color:rgb(0, 174, 239)" href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'"  class="setPlan">'+ planName +'<span>-</span>';
+		html +='<h4 class="accordion-header  active-bag" >';
+		html +='<a   href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'"  class="setPlan">'+ planName +'<span>-</span>';
 		html += '<small><span>0</span>个景点</small></a>'
 		html += '<a class="deletePlan" href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'"></a>';
 		html +='</h4>' ;
