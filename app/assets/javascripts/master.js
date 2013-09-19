@@ -61,27 +61,16 @@ $(function() {
 	
 	
 	//token input
-	$("#search-address").tokenInput( "/locationsearch",{ theme: "facebook"});
+	$("#search-address").tokenInput( "/locationsearch",{ 
+		theme: "facebook" ,
+		preventDuplicates: true
+		 
+	});
      
 	$("#search-address-wrap #token-input-search-address").focus(function(e) {
 		//alert("focus")
 		$("#search-address-wrap label").hide();
-	}).blur(function(e) {
-		var val = $("#search-address").tokenInput("get");
-		if(val == "") {
-			$("#search-address-wrap label").show();
-		}else{
-			// 这里是 需要 实际处理 搜索结果的， 考虑采用页面 跳转的方式
-			// 将 id  作为 参数传递
-			var ids = "";
-				function get( i , item) {
-					ids += item.id +","
-				}
-				$.each(val, get) 
-				window.location = "/home?ids=" + ids
-			 
-		}
-	}).keypress(function( event ) {
+	}) .keypress(function( event ) {
 		  if ( event.which == 13 ) {
 			     event.preventDefault();
 			     var val = $("#search-address").tokenInput("get");
@@ -102,6 +91,22 @@ $(function() {
 		  
 	});
 	
+	$("#search-address-wrap  #search-click ").click(function(e) {
+	     var val = $("#search-address").tokenInput("get");
+			if(val == "") {
+				$("#search-address-wrap label").show();
+			}else{
+				// 这里是 需要 实际处理 搜索结果的， 考虑采用页面 跳转的方式
+				// 将 id  作为 参数传递
+				var ids = "";
+					function get( i , item) {
+						ids += item.id +","
+					}
+					$.each(val, get) 
+					window.location = "/home?ids=" + ids
+				 
+			} 
+	});
 	
 	$("#search-address-wrap label").click(function(e) {
 		$("#search-address-wrap #token-input-search-address").focus();

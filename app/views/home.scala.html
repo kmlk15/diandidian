@@ -7,57 +7,8 @@
 @main(message, script ) {
 <div id="container">
 	<div id="header">
-	
-		<div id="user-sign" @if( session.get("username")==None) {  class="not-signin"}else{ class="signin"}   >
-				<div class="account">
-					<div class="user-info">
-						@if(session.get("avatar").getOrElse("")!=""){
-				 
-						<img src='@session.get("avatar").getOrElse("")' width="36" height="36" alt=""  id="avatarimg" />
-						 
-						}
-						<span>
-						@if( session.get("username")==None){
-							<a href='/login/'>登录</a>
-						}else{
-							<span class="username">@session.get("username").getOrElse("")</span>
-						}
-						
-						</span>
-					</div><!-- end user-info -->
-					<ul>
-						<li>@if( session.get("username")==None){
-						 
-						}else{
-						 <a href="/login/logout">退出</a>  
-						}
-						
-						</li>
-					</ul>
-				</div><!-- end account -->
-			</div><!-- end user-sign -->
-			
-		
-		<div id="top-nav" class="clearfix">
-			<a class="logo" href="/"><img src="/assets/images/logo_diandidian.png" width="189" height="68" alt="点地点" /></a>
-			<div class="dropdown">
-				<span>目的地</span>
-				<div>
-					<dl>
-						<dt>港澳台:</dt>
-						<dd><a href='/home?country=@helper.urlEncode("中国")&city=@helper.urlEncode("香港")'  >香港</a><a href='/home?country=@helper.urlEncode("中国")&city=@helper.urlEncode("澳门" )'>澳门</a></dd>
-					</dl>
-					<dl>
-						<dt>美国:</dt>
-						<dd><a href='/home?country=@helper.urlEncode("美国")&city=@helper.urlEncode("旧金山")'>旧金山</a></dd>
-					</dl>
-				</div>
-			</div>
-			<div id="search-address-wrap">
-				<input type="text" name="address" id="search-address" />
-				<label>搜索国家或城市</label>
-			</div>
-		</div><!-- end top-nav -->
+	@common.header(  session  )
+		 
 	</div><!-- end header -->
 	<!-- <div id="shadow-divide"></div> -->
 	<div id="content">
