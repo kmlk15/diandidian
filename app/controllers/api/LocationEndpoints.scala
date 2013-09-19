@@ -37,25 +37,45 @@ object LocationEndpoints extends Controller {
     val ph = fromjson[Pictures](jv)
     Ok(JsValue.toJson(tojson(ph)))
   }
-
+	
+/**
+ *  根据 不同的搜索条件 返回 相应的结果
+ *  
+ */
   def location=Action{ implicit request =>
-    
+    val country =  request.getQueryString("country").getOrElse("")
     val city = request.getQueryString("city").getOrElse("")
     val district = request.getQueryString("district").getOrElse("")
     val ids = request.getQueryString("ids").getOrElse("")
     val cityList =  request.getQueryString("cityList").getOrElse("") 
     
     val locationsList: List[LocationForm] = if (city != "" && district != "") {
+      //按地区搜索
       ls.list(city, district)
     } else if (city != "") {
+      //按城市搜索
       ls.list(city)
     } else if( ids != "" ){
+      //搜索框 提交的搜索
       log.debug( "ids={}", ids )
       val idsArr = ids.split(",")
-      idsArr.toSet.flatMap( ( id: String ) =>  ls.getById( id) ).toList
+      idsArr.toSet.flatMap( ( id: String ) => { 
+        if( id.startsWith("city:")){
+          id.split(":") match{
+            case  Array(_,_,city) =>{
+              ls.list( city)
+            }
+            case  _ => Nil
+          }
+        }else{
+        		ls.getById( id)
+        }
+      }).toList
     }else if(cityList != ""){
+      //同时搜索多个城市， 用于 planning page   继续搜索 按钮
       cityList.split(",").toList.flatMap(  city => ls.list(city))
     } else {
+      //返回 所有的 地点 
       ls.list()
     }
     
@@ -70,16 +90,46 @@ object LocationEndpoints extends Controller {
       }else{
         Photo()
       }
-      
-     
-      
-      Json.obj( "photo" -> Json.toJson( photo )) ++ Json.obj("location" -> Json.toJson( location ) )
+  
+     Json.obj( "photo" -> Json.toJson( photo )) ++ Json.obj("location" -> Json.toJson( location ) )
     }
     
+    //提取 结果中的  地点数据  国家和城市， 用于 在 显示在 导航条上
+    //如果是 多个国家， 就不显示了， 只显示 一个国家 一个或多个城市的情况
+   val countryCityMap :Map[String ,String] =  locationsList.map( location => location.address).map(  address => (address.country, address.city) ).
+    distinct.groupBy( kv=> kv._1).
+    map( kv => kv._1 -> kv._2.map( x => x._2).mkString(",") )
     
-    Ok( Json.toJson( locations) )
+     log.debug("countryCityMap{}", countryCityMap) 
+     
+   val(resultcountry ,  resultcity ) =  if( countryCityMap.size == 1 ){
+       val country= countryCityMap.keySet.head
+       val city = countryCityMap.values.head
+       ( country , city)
+    }else if (countryCityMap.size == 0){
+     
+      (country,city)
+      
+    }else{
+      ( "" , "" )
+    }
+   
+   log.debug("(resultcountry ,  resultcity )={}", (resultcountry ,  resultcity ) ) 
+   
+    val data = Json.obj( "country" ->resultcountry, "city" -> resultcity, "list" -> Json.toJson( locations) )
+    val resultJson = Json.obj("success" -> true , "data" -> data )
+    Ok(  resultJson )
     
   }
+  
+  /**
+   * 为搜索框 提供选项数据
+   * 2013-09-19 
+   * 如何提供 城市数据？
+   * 城市没有独立的表
+   * 城市 只有中文名称
+   * 从 搜索的结果中 提取 地点？
+   */
   def search = Action{ implicit request =>
      import play.api.libs.json.Json
     val q= request.getQueryString("q").getOrElse("").trim()
@@ -92,9 +142,11 @@ object LocationEndpoints extends Controller {
        */
       log.debug("search q='{}'",q)
       val locationList =  ls.search( q )
+      val cityList :List[( String , String)] = locationList.map( location => location.address).map( address => (address.country , address.city)).distinct
+      val cityIdList = cityList.map( kv => Json.obj("id"->  ("city:"+kv._1 +":"  + kv._2) , "name" -> ("城市:"+ kv._2) ) )
       val idnameList = locationList.map( location => Json.obj("id" -> location.id , "name" -> location.name))
       log.debug( Json.prettyPrint(  Json.toJson( idnameList )) )
-      Ok( Json.toJson( idnameList ))
+      Ok( Json.toJson(  cityIdList ++ idnameList ))
     }
   }
   

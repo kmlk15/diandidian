@@ -1,14 +1,17 @@
 function loadHomeAttractions( query) {
-	$.getJSON("/location", query, function(json){
+	$.getJSON("/location", query, function( result ){
 		var attractionListHtml = '';
+		 var json = result.data.list ; 
 		 
-		if (json.length > 0) {
-			 //alert( query.country == null )
-			if( query.country == null && query.city==null){
+		 //alert( query.country == null )
+			if( result.data.country == null && result.data.city==null){
 				attractionListHtml += '<h2>  </h2>';
 			}else{
-				attractionListHtml += '<h2>' + query.country + ' &gt;' + query.city+'</h2>';
+				attractionListHtml += '<h2>' + result.data.country + ' &gt;' + result.data.city+'</h2>';
 			}
+			
+		if (json.length > 0) {
+			
 			attractionListHtml += '<ul class="clearfix">';
 		 
 			$.each(json, function(index, data){
