@@ -1,5 +1,7 @@
 	function loadBag(){
-		$.get("/bag/get", function(data){
+		var url = $.url();
+		var param = url.param()
+		$.get("/bag/get",param , function(data){
 			var html = $( "div#my-bag " ,$(data)).html() ;
 			$("div#my-bag").html( html )
 			//alert( html );
@@ -189,13 +191,21 @@ $.ajaxSetup({ cache: false });
 		var titleText = $(this).parent("li").find("h3").text();
 		//var locationName = titleText.trim()
 		var locationName = titleText ; 
+		var href =$("a", $ul.parent().prev("h4") ).attr("href");
+		 
+		console.log(" aTag href  =" + href  ) ;
+		var url = $.url(  href );
+		var param = url.param()
+		console.log("param=" +  JSON.stringify (param ) ) ;
 		
-		var statusName=  window.currentStatusName ;
-		var planName = window.currentPlanName;
+		window.currentStatusName = param.statusName ;
+		window.currentPlanName = param.planName;
+		var statusName = param.statusName ;
+		var planName = param.statusName ;
 		
-		var param = {locationName:locationName ,statusName:statusName , planName: planName }
+		 param.locationName = locationName ;
 		
-		//alert( JSON.stringify (param ) ) ;
+		console.log( JSON.stringify (param ) ) ;
 		//return false;
 		
 		$.getJSON("/bag/add", param , function( result ) { 

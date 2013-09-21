@@ -153,7 +153,7 @@ $.ajaxSetup({ cache: false });
 	    var param = url.param() ;
 	    param.cityList = cityListStr ;
 	    
-		var  query = "? "   + jQuery.param( param );
+		var  query = "?"   + jQuery.param( param );
 		console.log( "query=" + query ) ;
 		
 		$(this).attr("href" , "/home" + query )

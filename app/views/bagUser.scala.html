@@ -1,7 +1,6 @@
-@( bag: models.Bag)(implicit  statusNameList: List[String] = List( "计划中"  ,"准备前往","过去背包"  ))
+@( bag: models.Bag  , defaultStatusName : String ,defaultPlanName: String  )(implicit  statusNameList: List[String] = List( "计划中"  ,"准备前往","过去背包"  ))
 
-@import models.BagHelp.defaultPlanName
-@import models.BagHelp.defaultStatusName
+ 
 @script={
  <script type="text/javascript" src="@routes.Assets.at("javascripts/bag.js")"></script>
 
@@ -30,12 +29,12 @@
 					 
 						@defining( status.map.keySet.toList.sorted) { keylist =>
 						@for( key <- keylist  ; plan <- status.map.get(key)  ){
-							<h4 class="accordion-header @if(plan.name== keylist.head  ){  active-bag } " ><a   href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="setPlan">@plan.name  <span>-</span>
+							<h4 class="accordion-header @if(status.name==defaultStatusName  && plan.name==  defaultPlanName   ){  active-bag } " ><a   href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="setPlan">@plan.name  <span>-</span>
 							<small><span>@plan.list.size</span>个景点</small></a>
 							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="deletePlan"></a>
 							 </h4>
-							<div class="accordion-content clearfix  @if(status.name==defaultStatusName && plan.name== keylist.head ){ state-active }" @if(status.name==defaultStatusName && plan.name== keylist.head ){ style="display:block;"}  >
-								<ul @if(status.name==defaultStatusName && plan.name== keylist.head ){class="open"}>
+							<div class="accordion-content clearfix  @if(status.name==defaultStatusName && plan.name== defaultPlanName ){ state-active }" @if(status.name==defaultStatusName && plan.name== defaultPlanName ){ style="display:block;"}  >
+								<ul @if(status.name==defaultStatusName && plan.name== defaultPlanName ){class="open"}>
 								@for( simpleLocation <- plan.list.reverse   ){
 								<li> 
 								<table cellpadding="0" cellspacing="0">
