@@ -94,6 +94,8 @@ $.ajaxSetup({ cache: false });
 						$droppingUl.remove();
 					}
 					setPlanAttractionsListPaddingBottom();
+					if(typeof markerMap === 'undefined'  ) {
+					}else{
 					//删除地图中的数据
 					console.log(markerMap );
 					console.log( locationId);
@@ -103,7 +105,7 @@ $.ajaxSetup({ cache: false });
 						delete markerMap[locationId] ;
 						//还需要从已经分配的的日期中删除？？ 
 					}
-					 
+					}
 			 }else{
 				 alert( result.msg)
 			 }
@@ -143,11 +145,17 @@ $.ajaxSetup({ cache: false });
 		 return  true  ;
 	});
 	
+	//search, 
 	$("#my-bag  ").on('click',"div.accordion div.accordion  div.accordion-content     a.search",function() {
 		var atag = this
 		console.log( "cityListStr=" + cityListStr )
-		var  query = "?cityList=" + encodeURI(cityListStr) ;
+		var url = $.url(  );
+	    var param = url.param() ;
+	    param.cityList = cityListStr ;
+	    
+		var  query = "? "   + jQuery.param( param );
 		console.log( "query=" + query ) ;
+		
 		$(this).attr("href" , "/home" + query )
 		return  true  ;
 	});

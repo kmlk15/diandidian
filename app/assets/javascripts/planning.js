@@ -625,6 +625,77 @@ function initialTimeLineLink() {
 	);
 }
 
+//del 
+$(function(){
+	
+	$("div#plan-attractions-list").on('click',"    a",function() {
+		
+		var urla =  $.url( $(this).attr("href"));
+		
+		var parama = urla.param()
+		var locationId = parama.locationId ;
+		console.log("locationId=" + locationId  );
+		
+		var atag = $("ul.open li.li_" +locationId +" table  td.del a" );
+		
+		console.log("atag.html=" + atag.html() );
+		
+		//return false ;
+		var url = $.url( $(atag).attr("href") );
+		var param = url.param()
+		console.log( JSON.stringify (param ) ) ;
+		//return false;
+		var locationId = param.locationId ;
+		 $.getJSON("/bag/del", param,  function (result){
+			 if( result.success){
+				 var  dellocationName = $(atag).parents("td").prev().text();
+
+				 var $itemDel = $(atag).parents("li");
+					var $ul = $(atag).parents("ul");
+					$itemDel.remove();
+					updateBagCount($ul);
+					//删除  plan  中的
+					$li = $("li#" + locationId  ) 
+					
+					var $droppingUl = $li.parent("ul");
+					$li. remove() ;
+					//删除空白的 内容
+					
+					
+					//remove header if drag to empty
+					
+					if ($droppingUl.find("li").length<=0) {
+						$droppingUl.prev("h3").remove();
+						if($droppingUl.prev("hr").length>0) {
+							$droppingUl.prev("hr").remove();
+						} else if ($droppingUl.next("hr").length>0) {
+							$droppingUl.next("hr").remove();
+							highlightTopDate();
+						}
+						$droppingUl.remove();
+					}
+					setPlanAttractionsListPaddingBottom();
+					//删除地图中的数据
+					if(typeof markerMap === 'undefined'  ) {
+					}else{
+					console.log(markerMap );
+					console.log( locationId);
+					console.log(markerMap[locationId] );
+					if(markerMap !=null && markerMap[locationId] != undefined ){
+						markerMap[locationId].setMap( null );
+						delete markerMap[locationId] ;
+						//还需要从已经分配的的日期中删除？？ 
+					}
+					}
+			 }else{
+				 alert( result.msg)
+			 }
+		 })
+		return false;
+	});
+	
+	
+});
 
 
 function highlightTopDate() {

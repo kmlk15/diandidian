@@ -27,7 +27,7 @@ case class Plan(name: String = "背包", startDate: Long = 0L, endDate: Long = 0
 /**
  * 用于页面展示时的对象
  */
-case class PlanView(name: String = "", startDate: Long = 0L, endDate: Long = 0L,
+case class PlanView(statusName:String = "" , name: String = "", startDate: Long = 0L, endDate: Long = 0L,
   first: String = "", last: String = "", map: immutable.SortedMap[String, List[LocationView]] = immutable.SortedMap()) {
   val pattern = """t-(\d{4})(\d{2})(\d{2})""".r
   def getTtitle(cssClassname: String): String = {

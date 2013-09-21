@@ -36,7 +36,7 @@
 							<div class="accordion-content clearfix  @if(status.name==defaultStatusName && plan.name== defaultPlanName ){ state-active }" @if(status.name==defaultStatusName && plan.name== defaultPlanName ){ style="display:block;"}  >
 								<ul @if(status.name==defaultStatusName && plan.name== defaultPlanName ){class="open"}>
 								@for( simpleLocation <- plan.list.reverse   ){
-								<li> 
+								<li class="li_@simpleLocation.id"> 
 								<table cellpadding="0" cellspacing="0">
 								<tbody><tr>
 								<td>@simpleLocation.name</td>

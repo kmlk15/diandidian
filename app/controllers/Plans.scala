@@ -98,7 +98,7 @@ object Plans extends Controller {
 
                 val first = sortmap.headOption.map(kv => kv._1).getOrElse("")
                 val last = sortmap.lastOption.map(kv => kv._1).getOrElse("")
-                val planview = PlanView(name = plan.name,  startDate = plan.startDate, endDate = plan.endDate,
+                val planview = PlanView(statusName = statusName, name = plan.name,   startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap)
                  request.getQueryString("map") match{
