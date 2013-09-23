@@ -86,6 +86,11 @@ GET 	/cms/photo/edit/:id			controllers.cms.Photos.edit( id )
 POST 	/cms/photo/update/:id		controllers.cms.Photos.update( id )
 GET   	/cms/photo/del/:id				controllers.cms.Photos.del( id )
 
+GET   	 /cms/photo/listUserPhoto/:locationId               			controllers.cms.Photos.listUserPhoto(locationId) 
+GET   	/cms/photo/delUserPhoto/:id				controllers.cms.Photos.delUserPhoto( id )
+
+
+
 GET   	 /cms/userphoto/               			controllers.cms.UserPhotos.list() 
 GET  	/cms/userphoto/add/:locationId					controllers.cms.UserPhotos.add(locationId)
 POST 	/cms/userphoto/save/:locationId				controllers.cms.UserPhotos.save(locationId)

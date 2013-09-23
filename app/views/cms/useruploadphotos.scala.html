@@ -1,0 +1,38 @@
+@( locationId: String  , photoList : List[models.Photo])(implicit session: Session)
+
+ 
+
+@script={
+ 
+}
+ 
+@views.html.cms.main(  "CMS 地点 用户上传照片列表" , script){
+<table   class="table table-hover">
+	<thead>
+	<tr>
+		<th>用户上传照片列表</th>
+		<th></th>
+		<th>imgsrc</th>
+		 
+		 
+		<th><a href="@controllers.cms.routes.Locations.list" >返回地点列表</a></th>
+	</tr>
+	</thead>
+	<tbody>
+	@for(photo <- photoList ){
+	<tr>
+		<td class="col-lg-2"><img src="@photo.avatar" />@photo.username
+		<p>@photo.brief</p>
+		</td>
+		<td class="col-lg-2"></td>
+		<td class="col-lg-2"><img src="http://diandidian.s3-us-west-1.amazonaws.com/@photo.detailpageThumbnailImg" /> </td>
+	 
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Photos.delUserPhoto( photo.id.get )"  onclick=" return confirm('确定要删除吗？')">Delete</a></td>
+
+	 
+
+	</tr>
+		}
+	</tbody>
+</table>
+}  

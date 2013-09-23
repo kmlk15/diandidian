@@ -288,4 +288,41 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
       }
   }
 
+    def listUserPhoto(locationId: String) = isAuthenticated { username =>
+    implicit request =>
+      location(locationId) match {
+        case None => NotFound
+        case Some(location) => {
+          val list = service.getUserUploadPhotoList(locationId)
+          //Ok( Json.toJson(list))
+
+          Ok(views.html.cms.useruploadphotos(locationId, list))
+        }
+      }
+
+  }
+    
+   def delUserPhoto(id: String) = isAuthenticated { username =>
+    implicit request =>
+      val photo = service.getPhotoById(id)
+      photo match {
+        case None => NotFound
+        case Some(p) => {
+          if (p.atHomepage) {
+            val locationTmp = location(p.locationId).get
+            if (locationTmp != None && locationTmp.photo.contains(p.homepageImg)) {
+              service.updateLocation(locationTmp.copy(photo = ""))
+            }
+          }
+          if (service.delPhotoById(id) == 1) {
+            //删除实际的文件
+
+            removeFile(p.imgId, p.extension, p.atHomepage)
+          }
+
+          Redirect(routes.Photos.listUserPhoto(p.locationId))
+        }
+      }
+  }
+      
 }

@@ -14,7 +14,7 @@
 		<th></th>
 		<th></th>
 		<th></th>
-		
+		<th></th>
 		<th><a href="@controllers.cms.routes.Locations.add" >加 新</a></th>
 	</tr>
 	</thead>
@@ -29,6 +29,7 @@
 
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Photos.add( location.id.get )">Add Photo</a></td>
 		<td class="col-lg-1"><a href="@controllers.cms.routes.Photos.list( location.id.get )">List Photo</a></td>
+		<td class="col-lg-1"><a href="@controllers.cms.routes.Photos.listUserPhoto( location.id.get )">User Photos</a></td>
 
 	</tr>
 		}
