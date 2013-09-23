@@ -163,7 +163,11 @@ function createTimeLinkHtml(startDate , endDate ){
 	
 	var durationDay = (endDate.getTime()-startDate.getTime())/(24*60*60*1000);
 	var timeLinkHtml = '<div class="date-line clearfix"><img src="/assets/images/time-line-mark-blue.png" width="8" height="11" />' ;
+	if( window.gmapon )	{
+		timeLinkHtml +=	'<a class="all" href="00_all" style="display:block">全部显示 </a>';
+	}else{
 		timeLinkHtml +=	'<a class="all" href="00_all" style="display:none">全部显示 </a>';
+	}
 		timeLinkHtml +=	'<a class="no-sign" href="00_no-assign">尚未安排</a>';
 	var startLoopDate = startDate;
 	var year = startLoopDate.getFullYear();
@@ -243,6 +247,7 @@ function initialMapTimeLineLink() {
 	 
 	$("#infowindowtimeline").on("click" , ".map-date-line a" , function(e) {
 		$("#infowindowtimeline").hide();
+		var atag = this ; 
 		var href = $(this).attr("href");
 		href = href.replace(new RegExp("/", "g") ,"");
 		if( window.gmapon){
@@ -288,8 +293,13 @@ function initialMapTimeLineLink() {
 				$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
 				//attractionsApi.scrollToElement($target,true, 1000);
 				$("#plan-timeline .date-line a.active").removeClass("active");
+				$("#plan-timeline .date-line a").each( function( index,element){
+					console.log( $(element).attr("href"));
+					if( $(element).attr("href") == $(atag).attr("href") ){
+						$(element).addClass("active");
+					}
+				});
 				
-				$(this).addClass("active");
 				 
 			 
 		}
@@ -492,15 +502,15 @@ function initialPlanNameLabel() {
 }
 
 function initialTimeLineLink() {
+	//jquery.jscrollpane.js
 	var attractionsApi = $("#plan-attractions-list-wrap").data('jsp');
- 
 	console.log( "attractionsApi=" +  JSON.stringify (attractionsApi ) ) ;
-//	if(typeof attractionsApi === 'undefined'  ){
-//		$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
-//	}
-//	var attractionsApi = $("#plan-attractions-list-wrap").data('jsp');
-//	 
-//	console.log( "attractionsApi=" +  JSON.stringify (attractionsApi ) ) ;
+	if(typeof attractionsApi === 'undefined'  ){
+		$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
+		attractionsApi = $("#plan-attractions-list-wrap").data('jsp');
+		console.log( "attractionsApi=" +  JSON.stringify (attractionsApi ) ) ;
+	}
+	
 	
 	$("#plan-timeline .date-line a").click(function(e) {
 		var href = $(this).attr("href");
@@ -517,14 +527,11 @@ function initialTimeLineLink() {
 					  marker.setMap (   map  ) ; 
 				 }
 			 }else{
-				
 			  for(index in markerMap) {
 				  var   marker = markerMap[index]; 
 				  marker.setMap (  null  ) ; 
 			  } 
-				 
 				 var key = "t-"+href   ;
-				 
 				 $.each(location2timeMap , function( index,value){
 					 console.log( "index -> value=" + index + '->' +  value  ) ;
 					 if( value == key){
@@ -545,7 +552,10 @@ function initialTimeLineLink() {
 			var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
 			arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
 			$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
-			//attractionsApi.scrollToElement($target,true, 1000);
+			var $target = $("#plan-attractions-list").find(".t-"+href);
+			if ($target.length>0) {
+				attractionsApi.scrollToElement($target,true, 1000);
+			}
 			$("#plan-timeline .date-line a.active").removeClass("active");
 			$(this).addClass("active");
 			return false ;
