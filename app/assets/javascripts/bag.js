@@ -185,32 +185,49 @@ $.ajaxSetup({ cache: false });
 	 */
 	$("#attractions-list").on('click',"ul li .add-bag", function(e) {
 		var thistag = this 
-		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
-		var $ul = $("#my-bag .accordion .accordion div ul.open");//ul to add li
-		$ul = $($ul[0]);
 		var titleText = $(this).parent("li").find("h3").text();
 		//var locationName = titleText.trim()
 		var locationName = titleText ; 
-		var href =$("a", $ul.parent().prev("h4") ).attr("href");
+		
+		var bagAddress = $("#attractions-list h2 .address").text();//which bag to add
+		
+		var $ul = $("#my-bag .accordion .accordion div ul.open");//ul to add li
+		console.log( "$ul.length=" + $ul.length );
+		if(  $ul.length > 0 ){
+			$ul = $($ul[0]);
+			
+			var href =$("a", $ul.parent().prev("h4") ).attr("href");
+			 
+			console.log(" aTag href  =" + href  ) ;
+			if( href ){
+				var url = $.url(  href );
+				var param = url.param()
+				console.log("param=" +  JSON.stringify (param ) ) ;
+				
+				window.currentStatusName = param.statusName ;
+				window.currentPlanName = param.planName;
+				var statusName = param.statusName ;
+				var planName = param.statusName ;
+				param.locationName = locationName ;
+			}else{
+				var param = { locationName:locationName } ;
+			}
+			
+		}else{
+			 
+			var param = { locationName:locationName } ;
+		}
+		
+		
 		 
-		console.log(" aTag href  =" + href  ) ;
-		var url = $.url(  href );
-		var param = url.param()
-		console.log("param=" +  JSON.stringify (param ) ) ;
-		
-		window.currentStatusName = param.statusName ;
-		window.currentPlanName = param.planName;
-		var statusName = param.statusName ;
-		var planName = param.statusName ;
-		
-		 param.locationName = locationName ;
 		
 		console.log( JSON.stringify (param ) ) ;
 		//return false;
 		
 		$.getJSON("/bag/add", param , function( result ) { 
 			if( result.success){
-				var needremove = $("#needremove", $ul) 
+				var needremove = $("li#needremove") 
+				console.log("needremove.length=" + needremove.length )
 				if( needremove.length !=0){
 					 //重新加载  bag 部分页面
 					loadBag();
@@ -262,8 +279,8 @@ $.ajaxSetup({ cache: false });
 		var thistag = this
 		$.getJSON("/bag/add", param , function( result ) { 
 			if( result.success){
-				var needremove = $("#needremove", $ul) 
-				if( needremove.length !=0){
+				var needremove = $("li#needremove") 
+				if( needremove.length !=0){ 
 					loadBag();
 				} else{
 					

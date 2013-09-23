@@ -231,8 +231,14 @@ class CmsServiceTest extends Specification{
       pictureList.size === 1 
       pictureList === List( picture2 )
       
+     val useruploadList = service.getUserUploadPhotoList(location.id.get)
+     useruploadList.size === 1 
+     useruploadList === List( picture2 )
      
-        
+     val adminuploadList = service.getAdminUploadPhotoList(location.id.get)
+     adminuploadList.size === 0
+      
+     
       
      val picture4 = service.updatePhoto( picture2.copy( imgId ="new imgsrc")).get
      picture4.id === picture2.id
