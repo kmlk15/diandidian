@@ -292,7 +292,52 @@ function initialMapTimeLineLink() {
 					 }
 				 }
 			 });
-
+			 //移动 li
+			 
+			 var $targetHeader = $("#plan-attractions-list").find("h3."+ newkey);
+				if ($targetHeader.length>0) {
+					 $("li#" + locationId ).appendTo($( "ul#"+ newkey));
+				} else {
+					var dateValue = "" + year + month + day ;
+					var targetHtml =  '<h3 class="'+newkey+'">'+month+'月'+day+'日</h3><ul class="clearfix" id="'+newkey+'" ></ul>';
+					if($(this).hasClass("no-sign")) {
+						targetHtml =  '<h3 class="'+newkey+'">尚未安排</h3><ul class="clearfix ui-droppable" id="'+newkey+'" ></ul>';
+						$("#plan-attractions-list").prepend("<hr />");
+						$("#plan-attractions-list").prepend(targetHtml);
+						$("#plan-attractions-list ul:first").append( $("li#" + locationId ) );
+					}else{
+						var beforeTarget = findDropHeaderPos(dateValue);
+						if(beforeTarget) {
+							beforeTarget.before(targetHtml).before("<hr />");
+							beforeTarget.prev().prev().append( $("li#" + locationId ) );
+						} else {
+							$("#plan-attractions-list").append("<hr />");
+							$("#plan-attractions-list").append(targetHtml);
+							$("#plan-attractions-list ul:last").append( $("li#" + locationId ) );
+						}
+						
+					}
+				}
+				addDroppable();
+				//remove header if drag to empty
+				var $droppingUl = $("ul#"+ oldkey);
+				
+				if ($droppingUl.find("li").length<=0) {
+					$droppingUl.prev("h3").remove();
+					if($droppingUl.prev("hr").length>0) {
+						$droppingUl.prev("hr").remove();
+					} else if ($droppingUl.next("hr").length>0) {
+						$droppingUl.next("hr").remove();
+						highlightTopDate();
+					}
+					$droppingUl.remove();
+				}
+				setPlanAttractionsListPaddingBottom();
+				
+			 
+			
+			 //如果 目标 ul 不存在， 构造 目标ul
+			 
 			 //移动时间线图标
 				var arrowTopPosstion = 3;
 				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
