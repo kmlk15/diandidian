@@ -249,30 +249,40 @@ function initialMapTimeLineLink() {
 		$("#infowindowtimeline").hide();
 		var atag = this ; 
 		var href = $(this).attr("href");
+		
+		var dateArr = href.split("/");
+		var year = dateArr[0];
+		var month = dateArr[1];
+		var day = dateArr[2];
+		
 		href = href.replace(new RegExp("/", "g") ,"");
 		if( window.gmapon){
 			var locationId = window.currentLocationid ;
 			var newkey = "t-"+href ;
-			var oldkey = location2timeMap[locationId] ;
-			location2timeMap[locationId] = newkey ;
-			console.log("locationId=" + locationId);
+			var oldkey = locationMap[locationId].timeline ;
+			if( oldkey == newkey ){
+				console.log(" oldkey == newkey " + (oldkey == newkey) );
+				return false ;
+			}
 			
-			 console.log("gmapon=" + window.gmapon );
-			 console.log("key=" + "t-"+href );
-			 //console.log( timelineMap["t-"+href]  ) ;
-			 //从 原来的 object 中删除
-			 // 加入到新的 object 
-			 console.log("原来的位置 =" + oldkey  ) ;
-			 console.log("新的位置 =" + newkey  ) ;
-			 
+			locationMap[locationId].timeline = newkey ;
+			locationMap[locationId].content.date = month+"月" + day + "日" ;
+			var content = locationMap[locationId].content.contentString();
+			//更新 内容
+			infowindow.setContent( content ) ;
+			console.log("locationId=" + locationId);
+  		    console.log("key=" + "t-"+href );
+
+  		    //全部关闭
 			  for(index in markerMap) {
 				  var   marker = markerMap[index]; 
 				  marker.setMap (  null  ) ; 
 			  } 
 			  
-			 $.each(location2timeMap , function( index,value){
+			 //只显示满足要求的 地点 
+			 $.each(locationMap , function( index,value){
 				 console.log( "index -> value=" + index + '->' +  value  ) ;
-				 if( value == newkey){
+				 if( value.timeline == newkey){
 					 var   marker = markerMap[index]; 
 					 console.log("show marker ") ;
 					 if( marker != null ){
@@ -282,11 +292,8 @@ function initialMapTimeLineLink() {
 					 }
 				 }
 			 });
-				 
-			
-			//return false ;
-		
-			   
+
+			 //移动时间线图标
 				var arrowTopPosstion = 3;
 				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
 				arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index() +1);
@@ -352,6 +359,8 @@ function addDroppable() {
 		{
 			drop: function(event, ui) {
 				//alert("drop , event = " + event ) ;
+				//同步更新 locationMap 信息
+				
 				var $droppingUl = ui.draggable.parent("ul");
 				ui.draggable.appendTo($(this));
 				if ($droppingUl.find("li").length<=0) {
@@ -520,7 +529,7 @@ function initialTimeLineLink() {
 		if( window.gmapon){
 			 console.log("gmapon=" + window.gmapon );
 			 console.log("key=" + "t-"+href );
-			 //console.log( timelineMap["t-"+href]  ) ;
+			 
 			 if( href =="00_all"){
 				 for(index in markerMap) { 
 					 var   marker = markerMap[index]; 
@@ -532,9 +541,9 @@ function initialTimeLineLink() {
 				  marker.setMap (  null  ) ; 
 			  } 
 				 var key = "t-"+href   ;
-				 $.each(location2timeMap , function( index,value){
+				 $.each(locationMap , function( index,value){
 					 console.log( "index -> value=" + index + '->' +  value  ) ;
-					 if( value == key){
+					 if( value.timeline == key){
 						 var   marker = markerMap[index]; 
 						 console.log("show marker ") ;
 						 if( marker != null ){
@@ -596,13 +605,13 @@ function initialTimeLineLink() {
 					var year = dateArr[0];
 					var month = dateArr[1];
 					var day = dateArr[2];
-					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日</h3><ul class="clearfix"></ul>';
+					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日</h3><ul class="clearfix" id="t-'+dateValue+'" ></ul>';
 					if($(this).hasClass("no-sign")) {
-						targetHtml =  '<h3 class="t-'+dateValue+'">尚未安排</h3><ul class="clearfix ui-droppable"></ul>';
+						targetHtml =  '<h3 class="t-'+dateValue+'">尚未安排</h3><ul class="clearfix ui-droppable" id="t-'+dateValue+'" ></ul>';
 						$("#plan-attractions-list").prepend("<hr />");
 						$("#plan-attractions-list").prepend(targetHtml);
 						$("#plan-attractions-list ul:first").append(ui.draggable);
-						// why return ? 2013-09-07
+						
 						addDroppable();
 						//删除空白的 ul 
 						
@@ -684,10 +693,8 @@ $(function(){
 					var $droppingUl = $li.parent("ul");
 					$li. remove() ;
 					//删除空白的 内容
-					
-					
+
 					//remove header if drag to empty
-					
 					if ($droppingUl.find("li").length<=0) {
 						$droppingUl.prev("h3").remove();
 						if($droppingUl.prev("hr").length>0) {
@@ -702,13 +709,14 @@ $(function(){
 					//删除地图中的数据
 					if(typeof markerMap === 'undefined'  ) {
 					}else{
-					console.log(markerMap );
-					console.log( locationId);
-					console.log(markerMap[locationId] );
-					if(markerMap !=null && markerMap[locationId] != undefined ){
-						markerMap[locationId].setMap( null );
-						delete markerMap[locationId] ;
-						//还需要从已经分配的的日期中删除？？ 
+						console.log(markerMap );
+						console.log( locationId);
+						console.log(markerMap[locationId] );
+						if(markerMap !=null && markerMap[locationId] != undefined ){
+							markerMap[locationId].setMap( null );
+							delete markerMap[locationId] ;
+							delete locationMap[locationId];
+							//还需要从已经分配的的日期中删除？？ 
 					}
 					}
 			 }else{

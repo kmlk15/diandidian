@@ -104,6 +104,8 @@ $.ajaxSetup({ cache: false });
 						markerMap[locationId].setMap( null );
 						delete markerMap[locationId] ;
 						//还需要从已经分配的的日期中删除？？ 
+						delete locationMap[locationId];
+						
 					}
 					}
 			 }else{
