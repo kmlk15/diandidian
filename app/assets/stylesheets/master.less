@@ -198,6 +198,9 @@ ul, ol {
 			font-weight: 300;
 			color: @blue;
 			cursor: pointer;
+			a{
+				color:@blue
+			}
 		}
 		&:hover {
 			span {
@@ -557,12 +560,12 @@ ul, ol {
 					 
 				 
 					background: url(/assets/images/btn_add_new_knapsack_65x20.png) 0 0 no-repeat;
-					background-position:center; 
+					background-position:center center; 
 					font-size: 13px;
 					color: @white;
 					&:hover {
 						background: url(/assets/images/btn_add_new_knapsack_65x20_Hover.png) 0 0 no-repeat;
-						background-position:center; 
+						background-position: center center ; 
 						text-decoration: none;
 						color: @textGrey4;
 					}
@@ -580,7 +583,7 @@ ul, ol {
 			font-size: 15px;			
 			cursor: pointer;
 			&.state-active {
-				color: @textGrey;
+				color: @blue;
 				border-bottom: 1px dashed @myBagBorderColor;
 				background-image: url(/assets/images/accordion-head-icon-active.png);
 			}
@@ -618,7 +621,7 @@ ul, ol {
 				}	
 				&.active-bag {
 					
-					border-bottom: 1px dashed @myBagBorderColor;
+					 
 					background-image: url(/assets/images/icon_triangle_blue.png);
 					a {
 						color:@blue;

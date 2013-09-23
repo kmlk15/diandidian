@@ -92,8 +92,19 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
   def encode( str: String ): String = URLEncoder .encode(str, "utf-8")
 
   def admissionView( admission: AdmissionForm): String = {
+    if( (admission.adults=="" || admission.adults=="0") && 
+    	 (admission.general=="" || admission.general=="0") && 
+    	 (admission.children=="" || admission.children=="0") && 
+    	 (admission.student=="" || admission.student=="0") && 
+    	 (admission.seniors=="" || admission.seniors=="0") && 
+    	 (admission.free=="" || admission.free=="0") 
+    ){
+      
+     "" 
+    }else{
      val html = views.html.detail.admission( admission )
-     html.toString	 
+     html.toString
+    }
   }
   
   def galleryview( locationId: String ) =Action{
