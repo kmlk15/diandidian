@@ -358,11 +358,19 @@ function addDroppable() {
 	$("#plan-attractions-list ul").droppable(
 		{
 			drop: function(event, ui) {
-				//alert("drop , event = " + event ) ;
-				//同步更新 locationMap 信息
+				console.log("drop , event = " + event ) ;
+				
 				
 				var $droppingUl = ui.draggable.parent("ul");
 				ui.draggable.appendTo($(this));
+				
+				//同步更新 locationMap 信息
+				var locationId = $(ui.draggable).attr("id");
+				var timeline = $(this).attr("id");
+				console.log( "locationId=" + locationId + "\ttimeline=" + timeline);
+				locationMap[locationId].timeline = timeline  ;
+				locationMap[locationId].content.date = getDateStr( timeline ) ;
+				
 				if ($droppingUl.find("li").length<=0) {
 					$droppingUl.prev("h3").remove();
 					if($droppingUl.prev("hr").length>0) {
@@ -593,8 +601,24 @@ function initialTimeLineLink() {
 			drop: function(event, ui) {
 				 
 				var $droppingUl = ui.draggable.parent("ul");
+				
+				
+				
+				
+				
+				
 				var href = $(this).attr("href");
+				
 				var dateValue = href.replace(new RegExp("/", "g") ,"");
+
+				var timeline = 't-'+dateValue ;
+				var locationId = $(ui.draggable).attr("id");
+				console.log( "locationId=" + locationId + "\ttimeline=" + timeline);
+				locationMap[locationId].timeline = timeline  ;
+				locationMap[locationId].content.date = getDateStr( timeline ) ;
+				
+				
+				
 				var $targetHeader = $("#plan-attractions-list").find(".t-"+dateValue);
 				if ($targetHeader.length>0) {
 					var $ul = $targetHeader.next("ul");
@@ -747,4 +771,16 @@ function getCurrentStatusnamePlanName( ) {
 	}
 	console.log("param.planName=" + param.planName  ) ;
 	return   param ; 
+}
+
+function getDateStr(timeline){
+	var arr = timeline.match("t-(\\d{4})(\\d{2})(\\d{2})");
+	console.log( arr );
+	if(arr!=null && arr.length == 4){
+		var dateStr = arr[2]+"月" + arr[3] + "日" ;
+		return dateStr;
+		
+	}else{
+		return "尚未安排";
+	}
 }
