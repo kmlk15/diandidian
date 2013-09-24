@@ -131,7 +131,7 @@ $(function() {
 				window.planEndDate = endDate;
 				
 				createTimeline(startDate , endDate );
-				
+				createMapTimeline(startDate , endDate );
 			}
 		}
 	);
