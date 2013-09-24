@@ -76,7 +76,7 @@ object Plans extends Controller {
                  */
                 val locationViewMap: Map[String, List[LocationView]] = plan.map.map { kv =>
                   val idList  = kv._2.split(";").toList
-                  log.debug("idList={}",idList )
+                  log.debug("{} -> {}", kv._1 , idList , "" )
                   kv._1 ->  idList.flatMap( id =>allLocationViewMap.get( Some(id) )   )
                 }.filter( kv => !kv._2.isEmpty )
                 
@@ -90,7 +90,7 @@ object Plans extends Controller {
                   locationViewMap
                 } else {
                   val idList = freeLocationList.map(p => p.id)
-                    log.debug("idList={}",idList )
+                    log.debug("t-00_no-assign idList={}",idList )
                   locationViewMap + ("t-00_no-assign" -> (   idList.flatMap( id =>allLocationViewMap.get( Some(id) )  ) ))
                 }
 
@@ -212,7 +212,7 @@ object Plans extends Controller {
                 val name = planform.name
                 val idList = planform.list
 
-                name -> (idList.filter(id => exists(id))).mkString(";")
+                name -> (idList.filter(id => exists(id))).mkString( ";")
 
               }.toMap.filter( kv => !kv._2.isEmpty() )
 

@@ -266,6 +266,23 @@ function initialMapTimeLineLink() {
 			}
 			
 			locationMap[locationId].timeline = newkey ;
+			
+			var param = getCurrentStatusnamePlanName()
+			param.date = newkey ; 
+			param.locationId = locationId ; 
+			console.log(  JSON.stringify(param))
+			
+			$.getJSON("/bag/locationSignDate" , param , function( result){
+				
+				if(  result.success ){
+					
+				}else{
+					consloe.log("locationSignDate ERROR");
+					return  false ;
+				}
+				
+			});
+			
 			locationMap[locationId].content.date = month+"月" + day + "日" ;
 			var content = locationMap[locationId].content.contentString();
 			//更新 内容
@@ -413,6 +430,23 @@ function addDroppable() {
 				var locationId = $(ui.draggable).attr("id");
 				var timeline = $(this).attr("id");
 				console.log( "locationId=" + locationId + "\ttimeline=" + timeline);
+				
+				var param = getCurrentStatusnamePlanName()
+				param.date = timeline ; 
+				param.locationId = locationId ; 
+				console.log(  JSON.stringify(param))
+				
+				$.getJSON("/bag/locationSignDate" , param , function( result){
+					
+					if(  result.success ){
+						
+					}else{
+						consloe.log("locationSignDate ERROR");
+						return  false ;
+					}
+					
+				});
+				
 				locationMap[locationId].timeline = timeline  ;
 				locationMap[locationId].content.date = getDateStr( timeline ) ;
 				
@@ -659,6 +693,23 @@ function initialTimeLineLink() {
 				var timeline = 't-'+dateValue ;
 				var locationId = $(ui.draggable).attr("id");
 				console.log( "locationId=" + locationId + "\ttimeline=" + timeline);
+				
+				var param = getCurrentStatusnamePlanName()
+				param.date = timeline ; 
+				param.locationId = locationId ; 
+				console.log(  JSON.stringify(param))
+				
+				$.getJSON("/bag/locationSignDate" , param , function( result){
+					
+					if(  result.success ){
+						
+					}else{
+						consloe.log("locationSignDate ERROR");
+						return  false ;
+					}
+					
+				});
+				
 				locationMap[locationId].timeline = timeline  ;
 				locationMap[locationId].content.date = getDateStr( timeline ) ;
 				

@@ -23,7 +23,7 @@ case class SimpleLocation(id: String = "", name: String = "", enName: String = "
  * map 中， 是分组后的 simplelocation
  *
  */
-case class Plan(id: String   , name: String = "背包", startDate: Long = 0L, endDate: Long = 0L,
+case class Plan(id: String=""   , name: String = "背包", startDate: Long = 0L, endDate: Long = 0L,
   list: List[SimpleLocation] = Nil, map: Map[String, String] = Map() , visible: String ="private")
 
 /**
@@ -56,7 +56,7 @@ case class PlanForm(name: String = "", list: List[String] = Nil)
 
 case class Status(name: String = "计划中", map: Map[String, Plan] = Map())
 
-case class Bag(id: String = "", typ: String = "", usertype: String  ,  map: Map[String, Status] = Map()) {
+case class Bag(id: String = "", typ: String = "", usertype: String = ""  ,  map: Map[String, Status] = Map()) {
 
   lazy val locationList: List[SimpleLocation] = locations()
   lazy val planList: List[Plan] = plans()
@@ -86,6 +86,10 @@ case class Bag(id: String = "", typ: String = "", usertype: String  ,  map: Map[
 
   }
 
+  def getPlan( id: String ) : Option[Plan] ={
+    planList.find(  p => p.id == id )
+  }
+  
 }
 
 case class BagUpdateFromto(fromStatus: String = "", fromPlan: String = "", toStatus: String = "", toPlan: String = "")

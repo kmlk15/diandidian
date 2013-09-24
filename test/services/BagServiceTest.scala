@@ -110,5 +110,106 @@ class BagServiceTest extends Specification {
     }
   }
 
- 
+  " 地点分配日期 测试"  in new WithApplication {
+
+      val mongoDB = MongoConnection()("mytestxx")
+      val col = mongoDB("bags")
+      col.drop()
+
+      val location1 = LocationForm(id = Some("1"), name = "l1", enName = "l1en")
+      val location2 = LocationForm(id = Some("2"), name = "l2", enName = "l2en")
+      val location3 = LocationForm(id = Some("3"), name = "l3", enName = "l3en")
+
+      val date1 = "date1"
+      val date2 = "date2"
+      val date3 = "date3"
+        
+      val service = LL.bagService
+      val bagId = (new ObjectId()).toString
+      val typ= "user"
+       val usertype="facebook"
+      val statusName =  defaultStatusName
+      val planName =  defaultPlanName
+      
+      service.addLocation(bagId, typ, usertype, statusName, planName, location1)
+      service.addLocation(bagId, typ, usertype, statusName, planName, location2)
+      service.addLocation(bagId, typ, usertype, statusName, planName, location3)
+      
+      
+      val bag = service.get(bagId).get
+      val plan = bag.planList.find( p => p.name == planName).get
+      plan.list.size ===3 
+      plan.map.isEmpty === true
+      
+      service.locationSignDate(bagId, statusName, planName, location1.id.get , date1)
+      
+       {
+        val bag = service.get(bagId).get
+        val plan = bag.planList.find( p => p.name == planName).get
+         plan.list.size ===3 
+         plan.map.isEmpty === false
+         plan.map.get( date1).get === location1.id.get
+      }
+      
+      service.locationSignDate(bagId, statusName, planName, location1.id.get , date1)
+      
+      {
+        val bag = service.get(bagId).get
+        val plan = bag.planList.find( p => p.name == planName).get
+         plan.list.size ===3 
+         plan.map.isEmpty === false
+         plan.map.get( date1).get === location1.id.get
+      }
+      
+      service.locationSignDate(bagId, statusName, planName, location2.id.get , date2)
+      
+      service.locationSignDate(bagId, statusName, planName, location3.id.get , date3)
+      
+       {
+        val bag = service.get(bagId).get
+        val plan = bag.planList.find( p => p.name == planName).get
+         plan.list.size ===3 
+         plan.map.isEmpty === false
+         plan.map.get( date1).get === location1.id.get
+         plan.map.get( date2).get === location2.id.get
+         plan.map.get( date3).get === location3.id.get
+      }
+      
+      service.locationSignDate(bagId, statusName, planName, location1.id.get , date2)
+      
+      {
+        val bag = service.get(bagId).get
+        val plan = bag.planList.find( p => p.name == planName).get
+         plan.list.size ===3 
+         plan.map.isEmpty === false
+         plan.map.get( date1).get === ""
+         plan.map.get( date2).get === List(location2.id.get , location1.id.get).mkString(";")
+         plan.map.get( date3).get === location3.id.get
+      }
+      
+     service.locationSignDate(bagId, statusName, planName, location2.id.get , date3)
+      
+      {
+        val bag = service.get(bagId).get
+        val plan = bag.planList.find( p => p.name == planName).get
+         plan.list.size ===3 
+         plan.map.isEmpty === false
+         plan.map.get( date1).get === ""
+         plan.map.get( date2).get === List( location1.id.get).mkString(";")
+         plan.map.get( date3).get === List( location3.id.get ,location2.id.get ).mkString(";")
+      }
+     
+      service.locationSignDate(bagId, statusName, planName, location1.id.get , date3)
+      
+      {
+        val bag = service.get(bagId).get
+        val plan = bag.planList.find( p => p.name == planName).get
+         plan.list.size ===3 
+         plan.map.isEmpty === false
+         plan.map.get( date1).get === ""
+         plan.map.get( date2).get === ""
+         plan.map.get( date3).get === List( location3.id.get ,location2.id.get ,location1.id.get ).mkString(";")
+      }
+     
+  }
 }

@@ -29,6 +29,9 @@ GET    /bag/add		controllers.Bags.add(locationName, statusName?="背包" , planN
 
 GET   /bag/del			controllers.Bags.del( locationId, statusName , planName  )
 
+GET   /bag/locationSignDate			controllers.Bags.locationSignDate( locationId, statusName , planName, date  )
+
+
 GET  /bag/get			controllers.Bags.get()
 GET  /bag/update		controllers.Bags.update()
 GET  /bag/createNewplan     controllers.Bags.createNewplan()

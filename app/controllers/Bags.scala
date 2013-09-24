@@ -352,5 +352,17 @@ object Bags extends Controller {
       case None => NotFound
     }
   }
-  
+
+  //地点 分配日期 
+  def locationSignDate(locationId: String, statusName: String, planName: String, date: String) = Action { implicit request =>
+    session.get("userId") match {
+      case Some(bagId) => {
+        bagService.locationSignDate(bagId, statusName, planName, locationId, date) match {
+          case None => Ok(Json.obj("success" -> false, "msg" -> ""))
+          case Some(updatedBag) => Ok(Json.obj("success" -> true, "msg" -> ""))
+        }
+      }
+      case None => NotFound
+    }
+  }
 }

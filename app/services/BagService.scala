@@ -26,7 +26,9 @@ trait BagServiceComponent {
     def addLocation(bagId: String, typ: String,usertype: String , statusName: String, planName: String, location: LocationForm): Boolean
 
     def removeLocation(bagId: String, statusName: String, planName: String, location: LocationForm): Boolean
-
+    //地点分配日期
+    def locationSignDate( bagId: String, statusName: String, planName: String, locationId: String , date: String ): Option[Bag]
+     
     def get(bagId: String): Option[Bag]
     
     def del( bagId: String ): Int
@@ -120,6 +122,47 @@ trait BagServiceComponentImpl extends BagServiceComponent {
       }
 
     }
+    
+    def locationSignDate( bagId: String, statusName: String, planName: String, locationId: String , date: String ): Option[Bag] ={
+     val splitChar = ";"
+      get(bagId) match {
+          case Some(bag) => {
+          val result :Option[Option[Bag]]=   for{ 
+              status <- bag.map.get(statusName)
+              plan <- status.map.get(planName)
+            }yield{
+              //将地点移到合适的日期中
+              // 如果已经分配，先需要删除
+              log.debug( "map={}", plan.map )
+            val afterRemove :Map[String, String] = plan.map.map( kv =>  kv._1 -> ( kv._2.split(splitChar).filter( str => str != locationId ).mkString(splitChar) ))
+            log.debug ("afterRemove={}", afterRemove )
+            val str : String =  afterRemove.get( date ).map(  str =>{ 
+              val  arr = str.split(  splitChar )
+              log.debug("arr={}", arr )
+              val afterAdd =( arr ++ Array( locationId ) ).filterNot( _.isEmpty())
+              log.debug("afterAdd={}", afterAdd )
+              
+              val afterDistinct = afterAdd.distinct
+              log.debug("afterDistinct={}", afterDistinct )
+              val newstr = afterDistinct.mkString( splitChar )
+              log.debug("newstr={}", newstr )
+              
+              newstr
+              }).getOrElse( locationId )
+            log.debug( "date->str = {} ->{} "  ,  date  , str ,""  )
+            val afterAdd =   afterRemove + ( date -> str )
+            log.debug ("afterAdd={}", afterAdd )
+             val newplan = plan.copy( map = afterAdd)
+             val newstatus = status.copy(  map = status.map + (newplan.name -> newplan ))
+             val newbag = bag.copy( map = bag.map + ( newstatus.name -> newstatus))
+             update(newbag)   
+            } 
+            result.getOrElse(None)
+          }
+          case None => None
+      }
+    }
+    
     def update(bag: Bag): Option[Bag] = {
 
       val q = MongoDBObject()
