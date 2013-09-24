@@ -7,6 +7,8 @@ import play.api.data.validation.Constraints._
 import org.slf4j.LoggerFactory
 import scala.collection.immutable
 import play.api.libs.json
+import org.bson.types.ObjectId
+
 
 /**
  * SimpleLocation ,  根据 planning 的需求 可能要 有时间数据 和 顺序。
@@ -21,8 +23,8 @@ case class SimpleLocation(id: String = "", name: String = "", enName: String = "
  * map 中， 是分组后的 simplelocation
  *
  */
-case class Plan(name: String = "背包", startDate: Long = 0L, endDate: Long = 0L,
-  list: List[SimpleLocation] = Nil, map: Map[String, String] = Map())
+case class Plan(id: String   , name: String = "背包", startDate: Long = 0L, endDate: Long = 0L,
+  list: List[SimpleLocation] = Nil, map: Map[String, String] = Map() , visible: String ="private")
 
 /**
  * 用于页面展示时的对象
@@ -54,7 +56,7 @@ case class PlanForm(name: String = "", list: List[String] = Nil)
 
 case class Status(name: String = "计划中", map: Map[String, Plan] = Map())
 
-case class Bag(id: String = "", typ: String = "", map: Map[String, Status] = Map()) {
+case class Bag(id: String = "", typ: String = "", usertype: String  ,  map: Map[String, Status] = Map()) {
 
   lazy val locationList: List[SimpleLocation] = locations()
   lazy val planList: List[Plan] = plans()
@@ -114,12 +116,13 @@ object BagHelp {
     val newStatus = bag.map.get(statusName) match {
       case None =>
         log.debug("Status 还没有建立，创建新的 Status ")
-        Status(statusName, Map(planName -> Plan(name = planName, list = simpleLocationList)))
+   
+        Status(statusName, Map(planName -> Plan(id = (new ObjectId().toString), name = planName, list = simpleLocationList)))
       case Some(status) =>
         val newplan = status.map.get(planName) match {
           case None =>
             log.debug("Plan 还没有建立，创建新的 Plan ")
-            Plan(name = planName, list = simpleLocationList)
+            Plan(id = (new ObjectId().toString) , name = planName, list = simpleLocationList)
           case Some(plan) =>
             val newList = (simpleLocationList ::: plan.list).distinct
             val newPlan = plan.copy(list = newList)
@@ -223,7 +226,7 @@ object BagHelp {
 
   /**
    * change 的目标 如果 已经存在， 则不做任何改变
-   * 如果要合并， 则需要明确的 调用合并方法！先删除， 在合并
+   * 如果要合并， 则需要明确的 调用合并方法！先删除， 再合并
    *  保持不变， 这里 需要有办法 告知 调用者!, 或者要求 调用者在 调用前判断 目标是否已经存在
    */
   def update(bag: Bag, change: BagUpdateFromto, isRemove: Boolean = false): Bag = {

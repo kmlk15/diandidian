@@ -54,7 +54,7 @@ object Bags extends Controller {
     def userAdd(location: LocationForm): json.JsObject = {
       val bagId = getBagId( session)
       val typ="user"
-      val success = bagService.addLocation(bagId, typ, statusName, planName, location)
+      val success = bagService.addLocation(bagId, typ, getUsertype(session),statusName, planName, location)
       if( success){
          val data = Json.obj("name" -> location.name, "id" -> location.id.get)
 	      val result = Json.obj("success" -> true, "data" -> data)
@@ -77,11 +77,11 @@ object Bags extends Controller {
 
           //如何 写cookie?
 
-          (bagId, bagService.addLocation(bagId, typ, statusName, planName, location))
+          (bagId, bagService.addLocation(bagId, typ,getUsertype(session), statusName, planName, location))
 
         case Some(bagIdcookie) =>
           val bagId = getBagId(bagIdcookie)
-          (bagId, bagService.addLocation(bagId, typ, statusName, planName, location))
+          (bagId, bagService.addLocation(bagId, typ,getUsertype(session), statusName, planName, location))
       }
 
       if (flag) {
@@ -115,8 +115,13 @@ object Bags extends Controller {
   private def getBagId(cookie: Cookie) : String  = {
     cookie.value
   }
+  
   private def getBagId( session: Session ) : String ={
     session.get("userId").getOrElse("")
+  }
+  
+  private def getUsertype(session: Session ) : String ={
+    session.get("usertype").getOrElse("")
   }
   /**
    * 需要增加 cookie 加密
@@ -209,7 +214,7 @@ object Bags extends Controller {
                plan <-  status._2.map
                location <- plan._2.list
               }{
-            	  bagService.addLocation(userId, typ, defaultStatusName, defaultPlanName,
+            	  bagService.addLocation(userId, typ,getUsertype(session), defaultStatusName, defaultPlanName,
             			  LocationForm( id =Some( location.id) , name = location.name , enName = location.enName )
             	  )
               }

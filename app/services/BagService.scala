@@ -23,7 +23,7 @@ trait BagServiceComponent {
      */
      def createNewplan( bagId: String ):String 
      
-    def addLocation(bagId: String, typ: String, statusName: String, planName: String, location: LocationForm): Boolean
+    def addLocation(bagId: String, typ: String,usertype: String , statusName: String, planName: String, location: LocationForm): Boolean
 
     def removeLocation(bagId: String, statusName: String, planName: String, location: LocationForm): Boolean
 
@@ -84,14 +84,14 @@ trait BagServiceComponentImpl extends BagServiceComponent {
      newPlanname
     }
  
-    def addLocation(bagId: String, typ: String, statusName: String, planName: String, location: LocationForm): Boolean = {
+    def addLocation(bagId: String, typ: String, usertype: String ,  statusName: String, planName: String, location: LocationForm): Boolean = {
       val simpleLocation = SimpleLocation(location.id.get, location.name, location.enName)
       get(bagId) match {
         case None =>
           log.debug("bag 还没有建立，创建新的 bag ")
-          val plan = Plan(name= planName, list = List(simpleLocation))
+          val plan = Plan( id = (new ObjectId().toString) , name= planName, list = List(simpleLocation))
           val status = Status(statusName, Map(plan.name -> plan))
-          val bag = Bag(bagId, typ, Map(status.name -> status))
+          val bag = Bag(bagId, typ, usertype, Map(status.name -> status))
           bagsMongoClient.insert(bag)
         case Some(bag) =>
           val newBag = BagHelp.addLocation(bag, statusName, planName, List( simpleLocation ))

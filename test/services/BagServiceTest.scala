@@ -32,10 +32,11 @@ class BagServiceTest extends Specification {
       val service = LL.bagService
       val bagId = (new ObjectId()).toString
       val typ= "user"
+        val usertype="weibo"
       val statusName =  defaultStatusName
       val planName =  defaultPlanName
       
-      val result = service.addLocation(bagId, typ, statusName, planName, location1)
+      val result = service.addLocation(bagId, typ,usertype, statusName, planName, location1)
 
       result === true
       val bagOption = service.get(bagId)
@@ -51,7 +52,7 @@ class BagServiceTest extends Specification {
       locationlist.size === 1
       locationlist(0) === SimpleLocation(location1.id.get, location1.name, location1.enName)
 
-      val resutl2 = service.addLocation(bagId, typ, statusName, planName, location2)
+      val resutl2 = service.addLocation(bagId, typ, usertype, statusName, planName, location2)
       resutl2 === true
 
       val bagOption2 = service.get(bagId)
@@ -64,7 +65,7 @@ class BagServiceTest extends Specification {
       
       locationlist2(0) === SimpleLocation(location2.id.get, location2.name, location2.enName)
       
-      service.addLocation(bagId, typ, statusName, planName, location2)
+      service.addLocation(bagId, typ,usertype, statusName, planName, location2)
       
       val locationlist22 = service.get(bagId).get.map.get(statusName).get.map.get(planName).get.list
       locationlist22.size === 2
@@ -95,12 +96,13 @@ class BagServiceTest extends Specification {
       val service = LL.bagService
       val bagId = (new ObjectId()).toString
       val typ= "user"
+       val usertype="facebook"
       val statusName =  defaultStatusName
       val planName =  defaultPlanName
       
       service.createNewplan(bagId) === ""
       
-      val result = service.addLocation(bagId, typ, statusName, planName, location1)
+      val result = service.addLocation(bagId, typ, usertype, statusName, planName, location1)
       
       service.createNewplan(bagId) === defaultPlanName +"1"
       

@@ -12,10 +12,10 @@ class BagHelpTest extends FunSuite {
     val location1 = SimpleLocation(id = "1", name = "l1", enName = "l1en")
     val location2 = SimpleLocation(id = "2", name = "l2", enName = "l2en")
 
-    val plan: Plan = Plan(name = planName, list = List(location1, location2))
+    val plan: Plan = Plan(id="aaaa",name = planName, list = List(location1, location2))
     val status = Status(statusName, Map(plan.name -> plan))
     val map = Map[String, Status](status.name -> status)
-    val bag = Bag(id = id, map = map, typ = "")
+    val bag = Bag(id = id, map = map, typ = "" , usertype="")
     bag
   }
 
