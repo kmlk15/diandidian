@@ -312,18 +312,16 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     }else{
       <div>
         <div class="user-content clearfix " style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
-          <div class="col col1">
+          <div class="col colImg">
             <img class="ravatarimg" src={ photo.avatar } width="36" height="36" alt={ photo.username }/>
           </div>
           <div class="col col2">
               {if (photo.brief.trim().isEmpty ){
-            <div class="title">
-              <h2>图片来源:</h2>
-            </div>
+            	  <div class="title">图片来源:</div>
               }else{
 	            <div class="title">
             	  <h2>{ photo.username }:</h2> 
-            	  </div>
+            	 </div>
               }
               }
             { displayUserPhotoContent(photo ) }
