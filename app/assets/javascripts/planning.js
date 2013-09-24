@@ -132,6 +132,20 @@ $(function() {
 				
 				createTimeline(startDate , endDate );
 				createMapTimeline(startDate , endDate );
+				
+				//TODO ， 数据更新到 后端
+				var param = getCurrentStatusnamePlanName();
+				param.startDate = startDate.getTime ();
+				param.endDate  = endDate.getTime ()  ; 
+				$.getJSON("/plan/updateDate" , param, function( result){
+					if( result.success){
+						
+					}else{
+						console.log("update ERROR");
+					}
+					
+				});
+				
 			}
 		}
 	);

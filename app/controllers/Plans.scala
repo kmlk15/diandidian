@@ -177,6 +177,40 @@ object Plans extends Controller {
     }
 
   }
+  def updateDate( statusName : String , planName : String , startDate: Long ,endDate: Long )=Action{ implicit request =>
+    session.get("userId") match {
+      case None => NotFound
+       case Some(userId) =>
+        val bagId = userId
+        log.debug("bagId={}", bagId)
+        bagService.get(bagId) match {
+          case None =>
+            Ok(Json.obj("success" -> false, "msg" -> "bag 不存在"))
+          case Some(bag) =>
+            val planOption = for {
+              status <- bag.map.get(statusName)
+              plan <- status.map.get(planName)
+            } yield {
+                if( startDate > 0 && endDate >0 && endDate >= startDate &&
+                		( plan.startDate != startDate || plan.endDate != endDate)
+                ){
+            	    val  newplan =  plan.copy(  startDate = startDate , endDate = endDate )
+            	   	 val newstatus = status.copy(  map = status.map + (newplan.name -> newplan ))
+	             val newbag = bag.copy( map = bag.map + ( newstatus.name -> newstatus))
+	             bagService.update(newbag)   match {
+	               case None =>  Ok(Json.obj("success" -> false, "msg" -> " update newbag ERROR"))
+	               case Some( updatedBag) =>  Ok(Json.obj("success" -> true, "msg" -> ""))
+	             }
+            	     
+               }else{
+                    Ok(Json.obj("success" -> true, "msg" -> "no change"))
+               }
+             }
+            planOption.getOrElse( Ok(Json.obj("success" -> false, "msg" -> " plan not exists")) )
+            
+        }  
+    }
+  }
   
   def update() = Action { implicit request =>
     val postData = request.body.asFormUrlEncoded

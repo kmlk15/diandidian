@@ -149,20 +149,7 @@
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
 	
 	<script language="javaScript">
-	@if(planview.map.size >=1){
-
-	$(function(){
-		addDroppable();
-	});
 	
-	}
-	@if(planview.startDate > 0  &&  planview.endDate >0 &&  planview.endDate >= planview.startDate){
-	 
-	$(function(){
-		createTimeline( new Date( @planview.startDate )   , new Date(@planview.endDate)  );
-	});
-	 
-	}
 
 	var cityListStr = "@cityListStr" ;
 	
@@ -200,6 +187,25 @@
  
  
 <script>
+
+@if(planview.map.size >=1){
+
+	$(function(){
+		addDroppable();
+	});
+	
+	}
+	
+	@if(planview.startDate > 0  &&  planview.endDate >0 &&  planview.endDate >= planview.startDate){
+	 
+	$(function(){
+		$("#attraction-planning-wrap .start-date .datepicker").datepicker("setDate" , new Date(@planview.startDate) ) ;
+		$("#attraction-planning-wrap .end-date .datepicker").datepicker("setDate" , new Date(@planview.endDate) );
+		createTimeline( new Date( @planview.startDate )   , new Date(@planview.endDate)  );
+	});
+	 
+	}
+	
 var map ;
 var markerMap = {};
 var infowindow ;  
