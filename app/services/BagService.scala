@@ -33,7 +33,16 @@ trait BagServiceComponent {
     
     def del( bagId: String ): Int
     
-     def save( bag: Bag ):Option[Bag] 
+    def save( bag: Bag ):Option[Bag] 
+    
+     /**
+      * 根据 plan visible 
+      * 1 private , 执行删除操作
+      * 2 public , 先执行删除操作， 在执行加入操作， 
+      */
+    def indexPlan( bagId: String , plan: Plan ):Boolean
+    
+    
   }
 
 }
@@ -45,7 +54,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
   val dbname = "topo"
   override val bagService = new BagService {
     lazy val bagsMongoClient = mongoService.getMongoService[Bag]("bags", dbname)
-    		
+    lazy val locationPlanIndexMongoClient = mongoService.getMongoService[LocationPlanIndex]("locationPlanIndex", dbname)		
     
      def createNewplan( bagId: String ):String ={
       
@@ -197,7 +206,30 @@ trait BagServiceComponentImpl extends BagServiceComponent {
         q.put("_id", bagId)
         bagsMongoClient.delete(q, WriteConcern.Normal)
     }
+    
+    /**
+     * 建立 Location Plan 索引 
+     */
+    def indexPlan( bagId: String , plan: Plan ): Boolean ={
+      
+       val q = MongoDBObject("planId" -> plan.id)
+    	locationPlanIndexMongoClient.delete(q, WriteConcern.Normal)
+    	
+      if( plan.visible=="public"){
+        plan.list.map( simplelocation =>{
+    	 val index = LocationPlanIndex( id= new ObjectId().toString, 
+    			 bagId = bagId,
+    			 planId = plan.id,
+    			 locationId = simplelocation.id 
+    	 )
+    	 locationPlanIndexMongoClient.insert( index )
+        })
+      } 
+      
+     true
+    }
   }
+  
 }
 
   

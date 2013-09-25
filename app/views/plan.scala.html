@@ -69,14 +69,21 @@
 									<input type="button" name="updateplanName" value="保存"  style="display:none"/>
 									<input type="button" name="cancelplanName" value="取消"  style="display:none"/>
 								</div><!-- end plan-name -->
+								@* TODO CSS  *@ 
+								<div class="plan-menu" id="visiblebutton">
+								 	<span>@planview.visible</span>
+								 </div>
+								 
 								 <div class="plan-menu" id="mapbutton">
 								 	<span>MAP</span>
 								 </div>
 								<div class="plan-menu">
 									<span>保存</span>
 									<ul>
-										<li  id="mytest">保存</li>
-										<li class="last">保存+PDF</li>
+										<li  id="plansave">保存</li>
+										<li id="planpublic">公开</li>
+										<li id="planprivate">私有</li>
+										<li class="last" id="plansavepdf">保存+PDF</li>
 									</ul>
 								</div>
 							</div><!-- end header -->

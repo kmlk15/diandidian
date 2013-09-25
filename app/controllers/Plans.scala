@@ -98,7 +98,7 @@ object Plans extends Controller {
 
                 val first = sortmap.headOption.map(kv => kv._1).getOrElse("")
                 val last = sortmap.lastOption.map(kv => kv._1).getOrElse("")
-                val planview = PlanView(statusName = statusName, name = plan.name,   startDate = plan.startDate, endDate = plan.endDate,
+                val planview = PlanView(statusName = statusName, name = plan.name, visible=plan.visible,  startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap)
                  request.getQueryString("map") match{
@@ -177,10 +177,14 @@ object Plans extends Controller {
     }
 
   }
-  def updateDate( statusName : String , planName : String , startDate: Long ,endDate: Long )=Action{ implicit request =>
+  /**
+   * 时间线 更新
+   */
+  def updateDate(statusName: String, planName: String, startDate: Long, endDate: Long) = Action { 
+    implicit request =>
     session.get("userId") match {
       case None => NotFound
-       case Some(userId) =>
+      case Some(userId) =>
         val bagId = userId
         log.debug("bagId={}", bagId)
         bagService.get(bagId) match {
@@ -191,25 +195,74 @@ object Plans extends Controller {
               status <- bag.map.get(statusName)
               plan <- status.map.get(planName)
             } yield {
-                if( startDate > 0 && endDate >0 && endDate >= startDate &&
-                		( plan.startDate != startDate || plan.endDate != endDate)
-                ){
-            	    val  newplan =  plan.copy(  startDate = startDate , endDate = endDate )
-            	   	 val newstatus = status.copy(  map = status.map + (newplan.name -> newplan ))
-	             val newbag = bag.copy( map = bag.map + ( newstatus.name -> newstatus))
-	             bagService.update(newbag)   match {
-	               case None =>  Ok(Json.obj("success" -> false, "msg" -> " update newbag ERROR"))
-	               case Some( updatedBag) =>  Ok(Json.obj("success" -> true, "msg" -> ""))
-	             }
-            	     
-               }else{
-                    Ok(Json.obj("success" -> true, "msg" -> "no change"))
-               }
-             }
-            planOption.getOrElse( Ok(Json.obj("success" -> false, "msg" -> " plan not exists")) )
-            
-        }  
+              if (startDate > 0 && endDate > 0 && endDate >= startDate &&
+                (plan.startDate != startDate || plan.endDate != endDate)) {
+                val newplan = plan.copy(startDate = startDate, endDate = endDate)
+                val newstatus = status.copy(map = status.map + (newplan.name -> newplan))
+                val newbag = bag.copy(map = bag.map + (newstatus.name -> newstatus))
+                bagService.update(newbag) match {
+                  case None => Ok(Json.obj("success" -> false, "msg" -> " update newbag ERROR"))
+                  case Some(updatedBag) => Ok(Json.obj("success" -> true, "msg" -> ""))
+                }
+
+              } else {
+                Ok(Json.obj("success" -> true, "msg" -> "no change"))
+              }
+            }
+            planOption.getOrElse(Ok(Json.obj("success" -> false, "msg" -> " plan not exists")))
+
+        }
     }
+  }
+
+  /**
+   * 可见状态更新
+   * visible public or private 
+   */
+  def updateVisible(statusName: String, planName: String, visible: String) = Action {
+    implicit request =>
+     val normalVisible = if( visible=="public" || visible=="private"){
+        visible
+      }else{
+        "private"
+      }
+      session.get("userId") match {
+        case None => NotFound
+        case Some(userId) =>
+          val bagId = userId
+          log.debug("bagId={}", bagId)
+          bagService.get(bagId) match {
+            case None =>
+              Ok(Json.obj("success" -> false, "msg" -> "bag 不存在"))
+            case Some(bag) =>
+              val planOption = for {
+                status <- bag.map.get(statusName)
+                plan <- status.map.get(planName)
+              } yield {
+                if (plan.visible != normalVisible ) {
+                  val newplan = plan.copy(visible = normalVisible)
+                  val newstatus = status.copy(map = status.map + (newplan.name -> newplan))
+                  val newbag = bag.copy(map = bag.map + (newstatus.name -> newstatus))
+                  bagService.update(newbag) match {
+                    case None => Ok(Json.obj("success" -> false, "msg" -> " update newbag ERROR"))
+                    case Some(updatedBag) => {
+                         //建立和修改  索引( locationId, bagId , planId , visible)
+                      //如果是  private , 则执行删除
+                      //如果是 public , 则执行加入
+                      //这里的索引 用于  地点和 plan 建立关联，  实际 使用时， 还需要 再确认比较一次，因为 location 有可能被删除了
+                      bagService.indexPlan( bagId , plan )
+                      
+                      Ok(Json.obj("success" -> true, "msg" -> ""))
+                    }
+                  }
+                } else {
+                  Ok(Json.obj("success" -> true, "msg" -> "no change"))
+                }
+              }
+              planOption.getOrElse(Ok(Json.obj("success" -> false, "msg" -> " plan 不存在")))
+
+          }
+      }
   }
   
   def update() = Action { implicit request =>

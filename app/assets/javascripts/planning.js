@@ -3,26 +3,17 @@ $(function() {
 	/**
 	 * 提取 页面上的状态， 再 更新到 后端
 	 */
-	$("#mytest").click(function() {
-		 
-		 
+	$("#plansave").click(function() {
 		var param =getCurrentStatusnamePlanName();
-		 
 	   var startDate = 0;
 	  if( window.planStartDate != null) {
 		  startDate = window.planStartDate.getTime() ;
 	   } 
-		 
 	    var endDate =  0;
 	    if( window.planEndDate !=null ){
 	    		endDate = window.planEndDate.getTime() ;
 	    }
-	    
-				
-	 //alert("startDate=" + startDate) ;
-	 // alert("endDate=" + endDate) ;
-	 
-	 param.startDate  = startDate ;
+ 	 param.startDate  = startDate ;
 	 param.endDate = endDate ; 
 	 
 		var plan = $.map($("#plan-attractions-list h3"), function(val, index) {
@@ -40,19 +31,41 @@ $(function() {
 			return one;
 		});
 
-		//alert(JSON.stringify(plan));
+		//console.log(JSON.stringify(plan));
 
 		var planStr = JSON.stringify(plan);
 		param.data = planStr ;
 		
 		$.post("/plan/update", param , function(result) {
-			//alert(JSON.stringify(result))
-			alert( result.success);
+			//console.log(JSON.stringify(result))
+			console.log( result.success);
 		});
-
 		return false;
-
 	});
+	
+	$("#planpublic").click(function() {
+		var param =getCurrentStatusnamePlanName();
+		param.visible="public";
+		$.getJSON("/plan/updateVisible", param, function(result){
+			console.log( result.success);
+			if(result.success){
+				$("div#visiblebutton").html("<span>公开</span>")
+			}
+		});
+	});
+	
+	$("#planprivate").click(function() {
+		var param =getCurrentStatusnamePlanName();
+		param.visible="private";
+		$.getJSON("/plan/updateVisible", param, function(result){
+			console.log( result.success);
+			if(result.success){
+				$("div#visiblebutton").html("<span>私有</span>")
+			}
+		});
+	});
+	
+	
 	$(window).resize(function(e) {
 		var space = 133;
 		var height = $(this).height()-space;

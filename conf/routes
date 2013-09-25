@@ -39,10 +39,12 @@ GET  /bag/updateJson      controllers.Bags.updateJson()
  
 
 GET    /plan/                   controllers.Plans.view()
-POST    /plan/update                   controllers.Plans.update()
-POST    /plan/updateNote                   controllers.Plans.updateNote()
+POST    /plan/update            controllers.Plans.update()
+POST    /plan/updateNote        controllers.Plans.updateNote()
 
-GET    /plan/updateDate                   controllers.Plans.updateDate( statusName : String , planName : String , startDate: Long ,endDate: Long )
+GET    /plan/updateDate             controllers.Plans.updateDate( statusName : String , planName : String , startDate: Long ,endDate: Long )
+GET    /plan/updateVisible  		controllers.Plans.updateVisible( statusName : String , planName : String , visible: String )
+
 
 GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example
