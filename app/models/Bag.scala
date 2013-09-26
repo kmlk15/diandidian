@@ -125,12 +125,13 @@ object BagHelp {
       "toPlan" -> text)(BagUpdateFromto.apply)(BagUpdateFromto.unapply)
   }
 
-  def addLocation(bag: Bag, statusName: String, planName: String, simpleLocationList: List[SimpleLocation]): Bag = {
+  def addLocation(bag: Bag, statusName: String, planName: String, simpleLocationList: List[SimpleLocation]):( Bag ,Option[Plan] )= {
     val newStatus = bag.map.get(statusName) match {
       case None =>
         log.debug("Status 还没有建立，创建新的 Status ")
    
         Status(statusName, Map(planName -> Plan(id = (new ObjectId().toString), name = planName, list = simpleLocationList)))
+        
       case Some(status) =>
         val newplan = status.map.get(planName) match {
           case None =>
@@ -145,20 +146,21 @@ object BagHelp {
         newStatus
     }
     val newBag = bag.copy(map = bag.map + (statusName -> newStatus))
-    newBag
+    (newBag,  newStatus.map.get(planName) )
   }
 
-  def removeLocation(bag: Bag, statusName: String, planName: String, simpleLocationList: List[SimpleLocation], removEmptyplan: Boolean = false): Bag = {
+  def removeLocation(bag: Bag, statusName: String, planName: String, 
+      simpleLocationList: List[SimpleLocation], removEmptyplan: Boolean = false): (Bag,Option[Plan]) = {
     log.debug("status={}, plan={} , remove location={} , removEmptyplan={}", statusName, planName, simpleLocationList, removEmptyplan.toString)
     bag.map.get(statusName) match {
       case None =>
         log.debug("status  不存在 ")
-        bag
+        (bag,None)
       case Some(status) =>
         status.map.get(planName) match {
           case None =>
             log.debug("plan   不存在 ")
-            bag
+            (bag, None)
           case Some(plan) =>
             log.debug(" plan.list={}", plan.list)
             /**
@@ -175,7 +177,7 @@ object BagHelp {
 
             if (newList == plan.list && !plan.list.isEmpty) {
               log.debug(" simplelocation    不存在 ")
-              bag
+              (bag, Some(plan))
             } else {
               log.debug(" 删除 location={}", simpleLocationList)
               val newplan = plan.copy(list = newList, map = newMap)
@@ -192,7 +194,7 @@ object BagHelp {
                 bag.copy(map = bag.map + (statusName -> newStatus))
               }
               log.debug("removelocation bag ={}", newBag)
-              newBag
+              ( newBag , Some( newplan))
             }
         }
 
@@ -210,6 +212,7 @@ object BagHelp {
    *  在 进行 行程安排后， 不能 简单的 组合操作， 实际 应该是  plan 的 直接 变换
    *
    */
+   
   def update2(bag: Bag, change: BagUpdateFromto, isRemove: Boolean = false): Bag = {
 
     val fromMap = bag.map
@@ -221,11 +224,11 @@ object BagHelp {
       val removeList = fromplan.list
       log.debug("isRemove={}", isRemove)
       if (isRemove) {
-        val bag1 = removeLocation(bag, change.fromStatus, change.fromPlan, removeList, true)
+        val bag1 = removeLocation(bag, change.fromStatus, change.fromPlan, removeList, true)._1
         bag1
       } else {
-        val bag1 = removeLocation(bag, change.fromStatus, change.fromPlan, removeList, true)
-        val bag2 = addLocation(bag1, change.toStatus, change.toPlan, addList)
+        val bag1 = removeLocation(bag, change.fromStatus, change.fromPlan, removeList, true)._1
+        val bag2 = addLocation(bag1, change.toStatus, change.toPlan, addList)._1
         bag2
 
       }

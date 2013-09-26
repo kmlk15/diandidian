@@ -71,7 +71,7 @@ class BagHelpTest extends FunSuite {
     val location3 = SimpleLocation(id = "3", name = "l3", enName = "l3en")
 
     val bag = createBag(statusName, planName)
-    val bag2 = BagHelp.addLocation(bag, "准备去", "exist", List(location3))
+    val (bag2, optionPlan) = BagHelp.addLocation(bag, "准备去", "exist", List(location3))
     log.error("bag2={}", bag2)
 
     val change = BagUpdateFromto(statusName, planName, "准备去", "exist")
@@ -90,7 +90,7 @@ class BagHelpTest extends FunSuite {
 
   test("简单的性能估计") {
     val s = System.currentTimeMillis()
-
+ 
     var bag = createBag(statusName, planName)
     /*
      * 加入 10个点
@@ -103,7 +103,7 @@ class BagHelpTest extends FunSuite {
       i <- 1 to 10
     } {
       val location3 = SimpleLocation(i.toString, "name" + i, "enName" + i)
-      bag = BagHelp.addLocation(bag, status, plan, List(location3))
+      bag  = BagHelp.addLocation(bag, status, plan, List(location3))._1
     }
 
     log.debug("bag={}", bag)

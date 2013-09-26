@@ -221,49 +221,16 @@ object Plans extends Controller {
    */
   def updateVisible(statusName: String, planName: String, visible: String) = Action {
     implicit request =>
-     val normalVisible = if( visible=="public" || visible=="private"){
-        visible
-      }else{
-        "private"
-      }
       session.get("userId") match {
         case None => NotFound
         case Some(userId) =>
           val bagId = userId
           log.debug("bagId={}", bagId)
-          bagService.get(bagId) match {
-            case None =>
-              Ok(Json.obj("success" -> false, "msg" -> "bag 不存在"))
-            case Some(bag) =>
-              val planOption = for {
-                status <- bag.map.get(statusName)
-                plan <- status.map.get(planName)
-              } yield {
-                if (plan.visible != normalVisible ) {
-                  val newplan = plan.copy(visible = normalVisible)
-                  val newstatus = status.copy(map = status.map + (newplan.name -> newplan))
-                  val newbag = bag.copy(map = bag.map + (newstatus.name -> newstatus))
-                  bagService.update(newbag) match {
-                    case None => Ok(Json.obj("success" -> false, "msg" -> " update newbag ERROR"))
-                    case Some(updatedBag) => {
-                         //建立和修改  索引( locationId, bagId , planId , visible)
-                      //如果是  private , 则执行删除
-                      //如果是 public , 则执行加入
-                      //这里的索引 用于  地点和 plan 建立关联，  实际 使用时， 还需要 再确认比较一次，因为 location 有可能被删除了
-                      bagService.indexPlan( bagId , plan )
-                      
-                      Ok(Json.obj("success" -> true, "msg" -> ""))
-                    }
-                  }
-                } else {
-                  Ok(Json.obj("success" -> true, "msg" -> "no change"))
-                }
-              }
-              planOption.getOrElse(Ok(Json.obj("success" -> false, "msg" -> " plan 不存在")))
-
-          }
+          val jsVal = bagService.updatePlanVisible(bagId , statusName ,planName , visible  )
+          Ok( jsVal)
       }
   }
+  
   
   def update() = Action { implicit request =>
     val postData = request.body.asFormUrlEncoded
