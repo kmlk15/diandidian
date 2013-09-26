@@ -171,7 +171,7 @@ object BagHelp {
             val newList = plan.list.filter(location => !simpleLocationIdList.contains(location.id))
 
             val newMap = plan.map.map(kv => {
-              val idListStr = kv._2.split(",").filter(id => !simpleLocationIdList.contains(id)).mkString(",")
+              val idListStr = kv._2.split(";").filter(id => !simpleLocationIdList.contains(id)).mkString(";")
               kv._1 -> idListStr
             }).filter(kv => kv._2 != "")
 
@@ -181,7 +181,9 @@ object BagHelp {
             } else {
               log.debug(" 删除 location={}", simpleLocationList)
               val newplan = plan.copy(list = newList, map = newMap)
-
+              log.debug(" plan={}", plan)
+               log.debug(" newplan={}", newplan)
+               
               val newStatus = if (removEmptyplan && newplan.list.isEmpty) {
                 status.copy(map = status.map - newplan.name)
               } else {

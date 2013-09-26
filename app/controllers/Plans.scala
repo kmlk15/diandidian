@@ -81,9 +81,11 @@ object Plans extends Controller {
                 }.filter( kv => !kv._2.isEmpty )
                 
                 
-                val tmpSet = plan.map.flatMap(kv => kv._2.split(";")).toSet
-
+                val tmpSet = plan.map.filter( kv => kv._1 != "t-00_no-assign").flatMap(kv => kv._2.split(";")).toSet
+                log.debug("tmpSet={}", tmpSet)
+                
                 val freeLocationList = plan.list.filter(p => !tmpSet.contains(p.id))
+                log.debug("freeLocationList={}", freeLocationList)
                 
                 //和 未安排的数据合并
                 val locationViewMap2 = if (freeLocationList.isEmpty) {
