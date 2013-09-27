@@ -107,13 +107,9 @@ object Plans extends Controller {
                   case None => Ok(views.html.plan("planning", planview , cityListStr ))
                   case Some(x) => Ok(views.html.plangmap("planning", planview , cityListStr ))
                 }
-                
             }
-
         }
-
     }
-
   }
 
   //更新某一个location 的 note 

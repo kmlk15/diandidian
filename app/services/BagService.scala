@@ -52,6 +52,8 @@ trait BagServiceComponent {
      * 这里 实际使用时，是需要 planName , user name , user avatar
      */
     def getLocationPlanIndex(locationId: String): List[LocationPlanIndex]
+    
+   
   }
 
 }
@@ -312,6 +314,8 @@ trait BagServiceComponentImpl extends BagServiceComponent {
       locationPlanIndexMongoClient.find(q)
 
     }
+ 
+
   }
 
 }
