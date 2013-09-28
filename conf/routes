@@ -25,7 +25,7 @@ GET    /login/callback/twitter  				 controllers.LoginTwitter.twitterCallback()
 GET    /login/facebook					controllers.LoginFacebook.facebook()
 GET    /login/callback/facebook  				 controllers.LoginFacebook.facebookCallback()
 
-GET    /bag/add		controllers.Bags.add(locationName, statusName?="背包" , planName?="计划中"  )
+GET    /bag/add		controllers.Bags.add(locationName, statusName?="计划中" , planName?="背包"  )
 
 GET   /bag/del			controllers.Bags.del( locationId, statusName , planName  )
 

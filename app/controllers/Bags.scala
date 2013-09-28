@@ -51,9 +51,14 @@ object Bags extends Controller {
   private val bagIdCookieName = "tmpbagId"
 
   def add(locationName: String , statusName: String = defaultStatusName ,planName : String = defaultPlanName ) = Action { implicit request =>
+    
     def userAdd(location: LocationForm): json.JsObject = {
+   
       val bagId = getBagId( session)
       val typ="user"
+      
+      log.debug("bagId={}, statusNam={},planName={}",  bagId ,statusName,planName  )
+           
       val success = bagService.addLocation(bagId, typ, getUsertype(session),statusName, planName, location)
       if( success){
          val data = Json.obj("name" -> location.name, "id" -> location.id.get)

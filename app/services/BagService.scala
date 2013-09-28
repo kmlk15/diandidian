@@ -104,9 +104,13 @@ trait BagServiceComponentImpl extends BagServiceComponent {
 
     def addLocation(bagId: String, typ: String, usertype: String, statusName: String, planName: String, location: LocationForm): Boolean = {
       val simpleLocation = SimpleLocation(location.id.get, location.name, location.enName)
+      
+       log.debug("bag  bagId={} ,  typ={}, usertype={}, statusName={}, planName={},simpleLocation={} ", 
+              bagId , typ , usertype,statusName,planName,simpleLocation         )
+      
       get(bagId) match {
         case None =>
-          log.debug("bag 还没有建立，创建新的 bag ")
+          log.debug("还没有建立，创建新的 bag ")
           val plan = Plan(id = (new ObjectId().toString), name = planName, list = List(simpleLocation))
           val status = Status(statusName, Map(plan.name -> plan))
           val bag = Bag(bagId, typ, usertype, Map(status.name -> status))
