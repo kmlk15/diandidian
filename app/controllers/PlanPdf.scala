@@ -103,6 +103,8 @@ object PlanPdf extends Controller {
                 val planview = PlanView(statusName = statusName, name = plan.name, visible=plan.visible,  startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap)
+                  //如何输出PDF文件， 生成 静态文件？ 用 ByteArray  ?
+                  //需要读取 s3 上的文件 
                   
                  Ok(views.html.plangmap("planning", planview , cityListStr ))
                

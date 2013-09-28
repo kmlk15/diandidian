@@ -62,7 +62,10 @@
 						
 						
 						<div id="plan-attractions">
-							<div class="header">
+							<div class="header clear-fix ">
+								<div class="visiblebutton" id="visiblebutton">
+								 	<span>@planview.visible</span>
+								 </div>
 								<div class="plan-name">
 									<input type="text" name="planName"  value="@planview.name" />
 									<label for="planName">请输入行程名称</label>
@@ -70,14 +73,8 @@
 									<input type="button" name="cancelplanName" value="取消"  style="display:none"/>
 								</div><!-- end plan-name -->
 								@* TODO CSS  *@ 
-								<div class="plan-menu" id="visiblebutton">
-								 	<span>@planview.visible</span>
-								 </div>
-								 
-								 <div class="plan-menu" id="mapbutton">
-								 	<span>MAP</span>
-								 </div>
-								<div class="plan-menu">
+								
+								 <div class="plan-menu">
 									<span>保存</span>
 									<ul>
 										<li  id="plansave">保存</li>
@@ -86,6 +83,10 @@
 										<li class="last" id="plansavepdf">保存+PDF</li>
 									</ul>
 								</div>
+								 <div class="plan-map" id="mapbutton">
+								 	<span>MAP</span>
+								 </div>
+		
 							</div><!-- end header -->
 							<div id="plan-attractions-list-wrap" class="customized-scroll">
 								<div id="plan-attractions-list">
@@ -345,6 +346,9 @@ $(function(){
 	$("div#mapbutton").click( function(){
 		var tag = $("div#map-canvas") ; 
 		var w = $( "div#plan-attractions").width() - $("div#plan-timeline-wrap").width() - 12 ;
+		var h = $( "div#plan-attractions").height() -  148 ;
+		console.log("h=" + h ) ;
+		
 		if( gmapon ){
 			gmapon = false; 
 			tag.hide();
@@ -354,6 +358,7 @@ $(function(){
 			$("div#plan-timeline a.all").show();
 			if( w != tag.width()){
 				tag.width( w );
+				tag.height( h );
 				tag.show();
 				var currCenter = map.getCenter();
 				google.maps.event.trigger(map, "resize");

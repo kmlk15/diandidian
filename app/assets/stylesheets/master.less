@@ -1184,6 +1184,23 @@ ul, ol {
 		overflow: visible;
 		height: 45px;
 		background: @greyBg;
+		 .visiblebutton{
+		 	float: left;
+			position: relative;
+			margin: 11px 10px  0px 0;
+			span {
+				position: relative;
+				display: block;
+				padding: 5px 0 0 7px;
+				width: 95px;
+				height: 22px;
+				//background: url(/assets/images/sprite.png) 0 -929px no-repeat;
+				font-size: 17px;
+				color: @blue;
+				cursor: pointer;
+				z-index: 5;
+			}
+		 }
 		.plan-name {
 			float: left;
 			position: relative;
@@ -1209,6 +1226,37 @@ ul, ol {
 				font-size: 18px;
 				color: @textGrey2;
 			}
+		}
+		.plan-map {
+			position: relative;
+			float:  right;
+			margin: 11px 10px  0px 0;
+			background: url(/assets/images/btn_planning_save.png)   no-repeat;
+			&:hover {
+				background: url(/assets/images/btn_planning_save_hove.png)   no-repeat;
+				
+				span {
+					color:@textGrey ;
+					background: url(/assets/images/btn_planning_save_hove.png)   no-repeat;
+				}
+				ul {
+					display: block;
+				}
+			}
+			
+			span {
+				position: relative;
+				display: block;
+				padding: 5px 0 0 7px;
+				width: 95px;
+				height: 22px;
+				background: url(/assets/images/sprite.png) 0 -929px no-repeat;
+				font-size: 17px;
+				color: @white;
+				cursor: pointer;
+				z-index: 5;
+			}
+			
 		}
 		.plan-menu {
 			position: relative;
