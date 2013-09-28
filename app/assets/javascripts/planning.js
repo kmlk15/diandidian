@@ -861,11 +861,11 @@ $(function(){
 						console.log( locationId);
 						console.log(markerMap[locationId] );
 						if(markerMap !=null && markerMap[locationId] != undefined ){
-							if(  locationMap[locationId] ) {
+							 
 								markerMap[locationId].setMap( null );
 								delete markerMap[locationId] ;
 								delete locationMap[locationId];
-							}
+							 
 					}
 					}
 			 }else{
