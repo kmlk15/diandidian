@@ -474,9 +474,10 @@ function addDroppable() {
 					
 				});
 				
-				locationMap[locationId].timeline = timeline  ;
-				locationMap[locationId].content.date = getDateStr( timeline ) ;
-				
+				if(  locationMap[locationId] ) {
+					locationMap[locationId].timeline = timeline  ;
+					locationMap[locationId].content.date = getDateStr( timeline ) ;
+				}
 				if ($droppingUl.find("li").length<=0) {
 					$droppingUl.prev("h3").remove();
 					if($droppingUl.prev("hr").length>0) {
@@ -736,10 +737,10 @@ function initialTimeLineLink() {
 					}
 					
 				});
-				
-				locationMap[locationId].timeline = timeline  ;
-				locationMap[locationId].content.date = getDateStr( timeline ) ;
-				
+				if(  locationMap[locationId] ) {
+					locationMap[locationId].timeline = timeline  ;
+					locationMap[locationId].content.date = getDateStr( timeline ) ;
+				}
 				
 				
 				var $targetHeader = $("#plan-attractions-list").find(".t-"+dateValue);
@@ -860,10 +861,11 @@ $(function(){
 						console.log( locationId);
 						console.log(markerMap[locationId] );
 						if(markerMap !=null && markerMap[locationId] != undefined ){
-							markerMap[locationId].setMap( null );
-							delete markerMap[locationId] ;
-							delete locationMap[locationId];
-							//还需要从已经分配的的日期中删除？？ 
+							if(  locationMap[locationId] ) {
+								markerMap[locationId].setMap( null );
+								delete markerMap[locationId] ;
+								delete locationMap[locationId];
+							}
 					}
 					}
 			 }else{
