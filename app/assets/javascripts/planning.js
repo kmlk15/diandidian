@@ -287,7 +287,8 @@ function initialMapTimeLineLink() {
 		$("#infowindowtimeline").hide();
 		var atag = this ; 
 		var href = $(this).attr("href");
-		
+	        console.log("href="+ href);	
+		href = href.replace("http://www.diandidian.com/plae/","");
 		var dateArr = href.split("/");
 		var year = dateArr[0];
 		var month = dateArr[1];
@@ -297,6 +298,7 @@ function initialMapTimeLineLink() {
 		if( window.gmapon){
 			var locationId = window.currentLocationid ;
 			var newkey = "t-"+href ;
+			console.log("newkey=" + newkey ) ;
 			var oldkey = locationMap[locationId].timeline ;
 			if( oldkey == newkey ){
 				console.log(" oldkey == newkey " + (oldkey == newkey) );
@@ -308,12 +310,12 @@ function initialMapTimeLineLink() {
 			var param = getCurrentStatusnamePlanName()
 			param.date = newkey ; 
 			param.locationId = locationId ; 
-			console.log(  JSON.stringify(param))
+			console.log("param=" +  JSON.stringify(param))
 			
 			$.getJSON("/bag/locationSignDate" , param , function( result){
 				
 				if(  result.success ){
-					
+					console.log(" /bag/locationSignDate ok ");		
 				}else{
 					consloe.log("locationSignDate ERROR");
 					return  false ;
@@ -348,7 +350,7 @@ function initialMapTimeLineLink() {
 				 }
 			 });
 			 //移动 li
-			 
+			 console.log(" move  li "); 
 			 var $targetHeader = $("#plan-attractions-list").find("h3."+ newkey);
 				if ($targetHeader.length>0) {
 					 $("li#" + locationId ).appendTo($( "ul#"+ newkey));
@@ -373,6 +375,7 @@ function initialMapTimeLineLink() {
 						
 					}
 				}
+				console.log(" addDroppable ");
 				addDroppable();
 				//remove header if drag to empty
 				var $droppingUl = $("ul#"+ oldkey);
@@ -394,6 +397,7 @@ function initialMapTimeLineLink() {
 			 //如果 目标 ul 不存在， 构造 目标ul
 			 
 			 //移动时间线图标
+				console.log(" move timeline ") ;
 				var arrowTopPosstion = 3;
 				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
 				arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index() +1);
@@ -649,7 +653,7 @@ function initialTimeLineLink() {
 	
 	$("#plan-timeline .date-line a").click(function(e) {
 		var href = $(this).attr("href");
-	 
+		href = href.replace("http://www.diandidian.com/plan/",""); 
 		href = href.replace(new RegExp("/", "g") ,"");
 
 		if( window.gmapon){
@@ -726,7 +730,7 @@ function initialTimeLineLink() {
 				
 				
 				var href = $(this).attr("href");
-				
+				href = href.replace("http://www.diandidian.com/plan/","");	
 				var dateValue = href.replace(new RegExp("/", "g") ,"");
 
 				var timeline = 't-'+dateValue ;
