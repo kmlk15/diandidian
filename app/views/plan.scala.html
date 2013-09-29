@@ -69,8 +69,8 @@
 								<div class="plan-name">
 									<input type="text" name="planName"  value="@planview.name" />
 									<label for="planName">请输入行程名称</label>
-									<input type="button" name="updateplanName" value="保存"  style="display:none"/>
-									<input type="button" name="cancelplanName" value="取消"  style="display:none"/>
+									<input type="button" name="updateplanName" value="保存"  style="display:none;width:50px"/>
+									<input type="button" name="cancelplanName" value="取消"  style="display:none;width:50px"/>
 								</div><!-- end plan-name -->
 								@* TODO CSS  *@ 
 								
@@ -357,21 +357,33 @@ $(function(){
 		
 		if( gmapon ){
 			gmapon = false; 
-			tag.hide();
-			$("div#plan-timeline a.all").hide();
+			tag.slideToggle( 1200 );
+			$("div#plan-timeline a.all").fadeOut( 400  , function(){
+				$("div#plan-date-input").fadeIn( 800 );
+			}  );
+			
 		}else{
 			gmapon  = true ;
-			$("div#plan-timeline a.all").show();
+			
+			$("div#plan-date-input").fadeOut( 400 , function(){
+				$("div#plan-timeline a.all").fadeIn(800 );
+			} );
 			if( w != tag.width()){
 				tag.width( w );
 				tag.height( h );
-				tag.show();
-				var currCenter = map.getCenter();
-				google.maps.event.trigger(map, "resize");
-				map.setCenter(currCenter);
+				tag.slideToggle( 1200 , function(){
+					
+					var currCenter = map.getCenter();
+					google.maps.event.trigger(map, "resize");
+					map.setCenter(currCenter);
+					
+				});
+				
+				
+				
 				console.log("resize");
 			}else{
-				tag.show();
+				tag.slideToggle( 1200 );
 			}
 		}
 	});
