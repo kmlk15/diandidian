@@ -120,8 +120,8 @@
 														<td>@locationview.location.phone.general</td>
 													</tr>
 												</table>
-												<div class="note-input">
-													<textarea>@locationview.note</textarea>
+												<div class="note-input" >
+													<textarea id="note_@locationview.location.id.get" >@locationview.note</textarea>
 													<span>完成</span>
 												</div>
 												<span class="btn remark">备注</span>
@@ -138,10 +138,16 @@
 								</div><!-- end plan-attractions-list -->
 							</div><!-- end plan-attractions-list-wrap -->
 							
-<div id="map-canvas" style="width:85%;min-width:722px;height:300px;top:53px;left:143px;position:absolute;display:none">
+<div id="map-canvas"  style="width:85%;min-width:722px;height:300px;top:53px;left:143px;position:absolute;display:none">
  
 </div>	
- 
+
+<div id="note-input" class="note-input"   >
+<input type="hidden" value=""  name="locationId" />
+<textarea name="note"></textarea>
+<span>完成</span>
+</div> 
+
 
 						</div>
 					</div><!-- end attraction-planning -->

@@ -93,22 +93,30 @@ $(function() {
 	$("#plan-attractions-list").on('click', " ul li .hover-cover" ,  function() {$(this).hide();})
 	
 	$("#plan-attractions-list ").on('click', "ul li .hover-cover .btn.remark" ,  function() {
-		$(this).prev(".note-input").show();
+		var locationId = $(this).parent().parent().attr("id") ; 
+		console.log("locationId=" +  locationId) ;
+		 $("div#note-input  input[name=locationId]").val( locationId  ) 
+		 $("div#note-input  textarea[name=note]").val(   $("textarea#note_" +locationId ) .val( )   ) 
+		$("div#note-input").show();
 		return false;
 	})
 	
-	$("#plan-attractions-list ").on('click', "ul li .hover-cover .note-input span" , function() {
+	$("div#note-input span ").click( function() {
 	    var param = getCurrentStatusnamePlanName() 
-	    var locationId = $(this).parent().parent().parent().attr("id") ; 
-	    	//alert( locationId) ;
+	    var locationId = $("div#note-input  input[name=locationId]").val(   ) 
+	    console.log("locationId=" +  locationId) ;
 	    	var note = $("textarea" ,  $(this).parent( )).val()
-	    //	alert( note ) ;
+	    	
+	    	 $("textarea#note_" +locationId ) .val( note  )
+	    	 
+	   console.log( note ) ;
 		
 	    	param.locationId = locationId ;
 	    	param.note = note ;
+	    
 	    	$.post("/plan/updateNote" , param , function ( result){
-	    		//alert( result.success  );
-	    		$(this).parents(".hover-cover").hide();
+	    		console.log( result.success  );
+	    		$("div#note-input").hide();
 	    	});
 		
 		
