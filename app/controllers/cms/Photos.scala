@@ -21,7 +21,6 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
 
   val service = base.CmsServiceRegistry.cmsService
 
-
     
   def photoUserList = service.getPhotoUsers()
 
@@ -324,5 +323,5 @@ object Photos extends Controller with AuthTrait with services.FileUploadService 
         }
       }
   }
-      
+  
 }

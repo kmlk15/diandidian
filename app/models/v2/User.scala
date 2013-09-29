@@ -7,6 +7,8 @@ import play.api.data.Forms._
 import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
 
+case class BaseUser( userId: String = "" ,screenName: String="" , avatar: String = ""  , usertype: String = ""  )
+
 case class WeiboUser( weiboId: String = "" , userId: String = "" ,screenName: String="" , avatar: String = ""  , 
     token: String="{}" , profile: String = "{}"  )
 

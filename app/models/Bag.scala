@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 import scala.collection.immutable
 import play.api.libs.json
 import org.bson.types.ObjectId
-
+import models.v2.BaseUser
 
 /**
  * SimpleLocation ,  根据 planning 的需求 可能要 有时间数据 和 顺序。
@@ -98,9 +98,10 @@ case class BagUpdateFromto(fromStatus: String = "", fromPlan: String = "", toSta
 //locaionId 和 plan 之间的关联关系
 //用于通过 locationId 搜索到对应的 plan
 //目前，只记录  public 的plan 
-
+//   planName: Option[ String ] = None  , userName: Option[ String ] = None  , avatar: Option[ String ] = None在 实际使用时候 填充 
 case class LocationPlanIndex(id: String , locationId: String , 
-    bagId: String, planId: String , visible: String="public" )
+    bagId: String, planId: String , visible: String="public", 
+    plan: Option[ Plan ] = None  , baseUser:Option[BaseUser] = None )
 
 
 object BagHelp {

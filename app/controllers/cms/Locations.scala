@@ -21,7 +21,10 @@ object Locations extends Controller  with AuthTrait  {
   val log = LoggerFactory.getLogger(Locations.getClass())
 
   val service = base.CmsServiceRegistry.cmsService
-  
+  val bagService = base.BagServiceRegistry.bagService
+  val loginService = base.LoginServiceRegistry.loginService
+ 
+ 
   def categoryList = service.getCategoryList( )
   
   def createCategoryForm(categroyId: String):  CategoryForm = {
@@ -112,4 +115,38 @@ object Locations extends Controller  with AuthTrait  {
 
   }
 
+  
+   
+   def assignPlan(id: String ) = isAuthenticated { username =>
+    implicit request =>
+      
+       service.getLocationById(id)  match {
+        case None => NotFound
+        case Some(location) => {
+          val indexList =  bagService.getLocationPlanIndex( id )
+         val indexViewList =  indexList.map( index => {
+             bagService.get(index.bagId)  match{
+               case None =>
+                 log.debug("bag 不存在 bagId={}" , index.bagId)
+                 index
+               case Some( bag ) =>
+                  val optionPlan = bag.getPlan(  index.planId )
+                  loginService.getBaseUser(bag.id, bag.usertype)  match{
+                    case None=> 
+                       log.debug("location plan index ,index={},  plan={}, userName={} , avatar={}", index, optionPlan, "" , "")
+                      index.copy( plan = optionPlan )
+                    case Some(  baseUser ) =>
+                      log.debug("location plan index ,index={},  plan={}, userName={} , avatar={}", index , optionPlan, baseUser.screenName , baseUser.avatar)
+                      index.copy( plan = optionPlan  ,  baseUser =Some( baseUser) )
+                  }
+                }
+            }).filterNot( index => index.plan ==None || index.baseUser== None   )
+
+            Ok( views.html.cms.locationPlanIndex( location , indexViewList))
+        }
+      }
+  }
+     
+ 
+   
 }

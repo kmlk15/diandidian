@@ -25,6 +25,7 @@ trait LoginServiceComponent {
 
     def getFacebookUser(facebookId: String): Option[FacebookUser]
 
+    def getBaseUser(userId: String ,  usertype: String): Option[ BaseUser ]
   }
 }
 
@@ -153,6 +154,24 @@ trait LoginServiceComponentImpl extends LoginServiceComponent {
       }
     }
 
+    def getBaseUser(userId: String ,  usertype: String): Option[ BaseUser ] ={
+      val q = MongoDBObject( "userId"  -> userId)
+      usertype match{
+        case "weibo" =>
+           weiboMongoClient.find(q).headOption.map( u => 
+             BaseUser( userId = userId , screenName = u.screenName, avatar= u.avatar,usertype = usertype) )
+        case "twitter" =>
+           twitterMongoClient.find(q).headOption.map( u => 
+             BaseUser( userId = userId , screenName = u.screenName, avatar= u.avatar,usertype = usertype) )
+        case "facebook" =>
+           facebookMongoClient.find(q).headOption.map( u => 
+             BaseUser( userId = userId , screenName = u.screenName, avatar= u.avatar,usertype = usertype) )
+           
+      } 
+      
+      
+    }
+    
   }
 }
  
