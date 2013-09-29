@@ -79,22 +79,25 @@ $(function() {
 	
 	
 	
-	$("#plan-attractions-list ul li .bottom").live('mouseenter', function() {
+	$("#plan-attractions-list ").on('mouseenter', "ul li .bottom", function() {
 		 
 		var $hoverCover = $(this).next(".hover-cover");
 		$hoverCover.show();
 		$hoverCover.children(".note-input").hide();
 	})
 	
-	$("#plan-attractions-list ul li").live('mouseleave', function() {
+	$("#plan-attractions-list ").on('mouseleave', "ul li", function() {
 		$(this).children(".hover-cover").hide();
 	})
-	$("#plan-attractions-list ul li .hover-cover").live('click', function() {$(this).hide();})
-	$("#plan-attractions-list ul li .hover-cover .btn.remark").live('click', function() {
+	
+	$("#plan-attractions-list").on('click', " ul li .hover-cover" ,  function() {$(this).hide();})
+	
+	$("#plan-attractions-list ").on('click', "ul li .hover-cover .btn.remark" ,  function() {
 		$(this).prev(".note-input").show();
 		return false;
 	})
-	$("#plan-attractions-list ul li .hover-cover .note-input span").live('click', function() {
+	
+	$("#plan-attractions-list ").on('click', "ul li .hover-cover .note-input span" , function() {
 	    var param = getCurrentStatusnamePlanName() 
 	    var locationId = $(this).parent().parent().parent().attr("id") ; 
 	    	//alert( locationId) ;
@@ -104,13 +107,13 @@ $(function() {
 	    	param.locationId = locationId ;
 	    	param.note = note ;
 	    	$.post("/plan/updateNote" , param , function ( result){
-	    		alert( result.success  );
+	    		//alert( result.success  );
 	    		$(this).parents(".hover-cover").hide();
 	    	});
 		
 		
 	})
-	$("#plan-attractions-list ul li .hover-cover .note-input").live('click', function() {
+	$("#plan-attractions-list ").on('click', "ul li .hover-cover .note-input" , function() {
 		
 		return false;
 	})
