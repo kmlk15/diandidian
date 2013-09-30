@@ -13,7 +13,7 @@ import models.LocationFormHelp._
 import models.LocationJsonHelp._
 import models.CategoryForm
 import models.LocationForm
-import models.Location
+
 import play.api.libs.json.Json
 
 object Locations extends Controller  with AuthTrait  {
@@ -117,7 +117,7 @@ object Locations extends Controller  with AuthTrait  {
 
   
    
-   def assignPlan(id: String ) = isAuthenticated { username =>
+   def listPlan(id: String ) = isAuthenticated { username =>
     implicit request =>
       
        service.getLocationById(id)  match {
@@ -131,14 +131,10 @@ object Locations extends Controller  with AuthTrait  {
                  index
                case Some( bag ) =>
                   val optionPlan = bag.getPlan(  index.planId )
-                  loginService.getBaseUser(bag.id, bag.usertype)  match{
-                    case None=> 
-                       log.debug("location plan index ,index={},  plan={}, userName={} , avatar={}", index, optionPlan, "" , "")
-                      index.copy( plan = optionPlan )
-                    case Some(  baseUser ) =>
-                      log.debug("location plan index ,index={},  plan={}, userName={} , avatar={}", index , optionPlan, baseUser.screenName , baseUser.avatar)
-                      index.copy( plan = optionPlan  ,  baseUser =Some( baseUser) )
-                  }
+                  val optionBaseUser = loginService.getBaseUser(bag.id, bag.usertype)  
+                  log.debug("location plan index ,index={},  plan={},  baseUser={}", index , optionPlan, optionBaseUser)
+                  index.copy( plan = optionPlan  ,  baseUser =optionBaseUser )
+                   
                 }
             }).filterNot( index => index.plan ==None || index.baseUser== None   )
 
@@ -146,7 +142,41 @@ object Locations extends Controller  with AuthTrait  {
         }
       }
   }
-     
+  
+ def assignPlan(locationId: String ) = isAuthenticated { username =>
+    implicit request =>
+      
+       service.getLocationById(locationId)  match {
+        case None => NotFound
+        case Some(location) => {
+           val postData = request.body.asFormUrlEncoded
+        	   val planId = postData.flatMap(m => m.get("planId").flatMap(seq => seq.headOption)).getOrElse("")
+            val action = postData.flatMap(m => m.get("action").flatMap(seq => seq.headOption)).getOrElse("")
+
+            val jsval = if(  planId == ""  ||  (action != "remove"  && action!="assign") )  { 
+            		Json.obj("success" -> false,  "msg" ->" 参数错误")
+              
+            } else  if( action == "remove"){
+            	 	service.updateLocation( location.copy( planId = None)) match{
+            	 	  case None => Json.obj("success" -> false)
+            	 	  case Some( x) => Json.obj("success" -> true)
+            	 	}
+            	   		
+               }else{
+                  bagService.getLocationPlanIndex( locationId  ).filter( index => index.planId == planId).headOption  match{
+                  	case None => Json.obj("success" -> false)
+                  	case Some( index ) => 
+                  	 service.updateLocation( location.copy( planId = Some( planId ) )) match{
+                  	    case None => Json.obj("success" -> false)
+                  	    case Some( x) => Json.obj("success" -> true)
+                  	 }
+                  }
+               }
+                Ok(jsval)
+            }
+      }
+  }
+      
  
    
 }

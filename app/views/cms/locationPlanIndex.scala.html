@@ -3,6 +3,47 @@
  
 
 @script={
+<script>
+var  locationId = "@location.id.get";
+$(function(){
+	
+	$("button").click(  function(){
+		var  btn = this;
+		var planId =  $(this).attr("id") ;
+		console.log("planId=" + planId);
+		
+		if( $(this).hasClass("assign")){
+			var param={ "action":"assign" , "planId" :  planId }
+			$.post( window.location , param , function( result){
+				if( result.success){
+					$("button.remove").removeClass("remove").addClass("assign").removeClass("btn-success").addClass("btn-inverse").html("显示在首页");
+					$(btn).removeClass("assign").addClass("remove").removeClass("btn-inverse").addClass("btn-success").html("取消显示在首页");
+				}else{
+					console.log(" error ")
+				}
+				
+			}) ;
+			
+		}else{
+			var param={ "action":"remove" , "planId" :  planId }
+			
+			$.post( window.location , param , function( result){
+				if( result.success){
+					$(btn).removeClass("remove").addClass("assign").removeClass("btn-success").addClass("btn-inverse").html("显示在首页");
+				}else{
+					console.log(" error ")
+				}
+				
+			}) ;
+			
+		}
+	});
+	
+ 
+	
+});
+</script>
+
  
 }
  
@@ -25,8 +66,12 @@
 		<td class="col-lg-2">@locationPlanIndex.baseUser.get.screenName</td>
 		<td class="col-lg-2"><img src="@locationPlanIndex.baseUser.get.avatar" /> </td>
 	    <td class="col-lg-2">@locationPlanIndex.plan.get.name</td>
-	 
-		<td class="col-lg-2">显示在首页</td>
+	    @if( location.planId ==Some( locationPlanIndex.planId ) ){
+	    		<td class="col-lg-2" ><button class="btn  btn-success remove"  id="@locationPlanIndex.planId" >取消显示在首页</button></td>
+	    }else{
+	    		<td class="col-lg-2"><button  class="btn btn-inverse assign"    id="@locationPlanIndex.planId"  >显示在首页</button></td>
+	    }
+		
 		
 		
 	</tr>

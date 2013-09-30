@@ -134,8 +134,10 @@ case class LocationForm(
   url: String = "" ,
   category: CategoryForm = CategoryForm(categoryId  = ""  , level_1="", level_2="" ),
   fact: String = "",
-  photo: String = ""  
+  photo: String = "" ,
+  planId: Option[String] =  None
 )
+ 
   
 object LocationFormHelp {
   
@@ -201,7 +203,8 @@ object LocationFormHelp {
         "level_2" -> default(text,"")  )(CategoryForm.apply)(CategoryForm.unapply),
 
       "fact" -> text,
-      "photo" -> default(text , "")
+      "photo" -> default(text , ""),
+      "planId" -> optional(of[String])
       
     )(LocationForm.apply)(LocationForm.unapply)
 

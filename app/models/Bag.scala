@@ -99,7 +99,7 @@ case class BagUpdateFromto(fromStatus: String = "", fromPlan: String = "", toSta
 //用于通过 locationId 搜索到对应的 plan
 //目前，只记录  public 的plan 
 //   planName: Option[ String ] = None  , userName: Option[ String ] = None  , avatar: Option[ String ] = None在 实际使用时候 填充 
-case class LocationPlanIndex(id: String , locationId: String , 
+case class LocationPlanIndex(id: Option[String] =None, locationId: String , 
     bagId: String, planId: String , visible: String="public", 
     plan: Option[ Plan ] = None  , baseUser:Option[BaseUser] = None )
 

@@ -52,8 +52,12 @@ trait BagServiceComponent {
      * 这里 实际使用时，是需要 planName , user name , user avatar
      */
     def getLocationPlanIndex(locationId: String): List[LocationPlanIndex]
-    
-   
+
+    /**
+     * 根据ID 得到 某一个具体 Index
+     */
+    def getLocationPlanIndexById(id: String): Option[LocationPlanIndex]
+
   }
 
 }
@@ -104,10 +108,10 @@ trait BagServiceComponentImpl extends BagServiceComponent {
 
     def addLocation(bagId: String, typ: String, usertype: String, statusName: String, planName: String, location: LocationForm): Boolean = {
       val simpleLocation = SimpleLocation(location.id.get, location.name, location.enName)
-      
-       log.debug("bag  bagId={} ,  typ={}, usertype={}, statusName={}, planName={},simpleLocation={} ", 
-              bagId , typ , usertype,statusName,planName,simpleLocation         )
-      
+
+      log.debug("bag  bagId={} ,  typ={}, usertype={}, statusName={}, planName={},simpleLocation={} ",
+        bagId, typ, usertype, statusName, planName, simpleLocation)
+
       get(bagId) match {
         case None =>
           log.debug("还没有建立，创建新的 bag ")
@@ -299,7 +303,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
         })
 
         needAddList.map(locationId => {
-          val index = LocationPlanIndex(id = new ObjectId().toString,
+          val index = LocationPlanIndex(id = Some(new ObjectId().toString),
             bagId = bagId,
             planId = plan.id,
             locationId = locationId)
@@ -318,10 +322,14 @@ trait BagServiceComponentImpl extends BagServiceComponent {
       locationPlanIndexMongoClient.find(q)
 
     }
- 
+
+    def getLocationPlanIndexById(id: String): Option[LocationPlanIndex] = {
+
+      val q = MongoDBObject("_id" -> id)
+      locationPlanIndexMongoClient.find(q).headOption
+    }
 
   }
-
 }
 
   
