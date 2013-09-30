@@ -26,6 +26,8 @@ object LocationEndpoints extends Controller {
 	val log = LoggerFactory.getLogger(LocationEndpoints.getClass())
      val ls = locationFormRegistry.locationService
      val cmsService = CmsServiceRegistry.cmsService
+     val  bagService = BagServiceRegistry.bagService
+     val loginService = base.LoginServiceRegistry.loginService
      
    // val ls = locationRegistry.locationService
   /*
@@ -91,7 +93,33 @@ object LocationEndpoints extends Controller {
         Photo()
       }
   
-     Json.obj( "photo" -> Json.toJson( photo )) ++ Json.obj("location" -> Json.toJson( location ) )
+     /**
+      * 2013-09-30 
+      * 增加 LocationPlanIndex 信息
+      */
+   val locaionPlanIndex =   location.planId.flatMap( planId => {
+        bagService.getLocationPlanIndexByPlanId( location.id.get , planId) .flatMap{ index =>
+            bagService.get(index.bagId).flatMap( bag => { 
+            			 val optionPlan  = bag.getPlan( planId )
+            			 val optionBaseUser = loginService.getBaseUser(bag.id, bag.usertype)  
+            			 if( optionPlan !=None && optionBaseUser !=None ){
+            			   Some( optionPlan.get , optionBaseUser.get)
+            			 }else{
+            			   None
+            			 }
+              })
+          } 
+     }) match{
+       case None =>   Json.obj()
+       case Some( (plan , baseUser) ) =>
+         val jsObj = Json.obj("planName" -> plan.name , "userName" -> baseUser.screenName , "avatar" -> baseUser.avatar)
+          Json.obj( "plan" -> jsObj)
+     }
+      
+   
+      
+     
+     Json.obj( "photo" -> Json.toJson( photo )) ++ Json.obj("location" -> Json.toJson( location ) )  ++ locaionPlanIndex
     }
     
     //提取 结果中的  地点数据  国家和城市， 用于 在 显示在 导航条上

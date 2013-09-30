@@ -56,7 +56,7 @@ trait BagServiceComponent {
     /**
      * 根据ID 得到 某一个具体 Index
      */
-    def getLocationPlanIndexById(id: String): Option[LocationPlanIndex]
+    def getLocationPlanIndexByPlanId(locationId: String , planId: String ): Option[LocationPlanIndex]
 
   }
 
@@ -323,9 +323,9 @@ trait BagServiceComponentImpl extends BagServiceComponent {
 
     }
 
-    def getLocationPlanIndexById(id: String): Option[LocationPlanIndex] = {
+    def getLocationPlanIndexByPlanId(locationId: String, planId: String ): Option[LocationPlanIndex] = {
 
-      val q = MongoDBObject("_id" -> id)
+      val q = MongoDBObject("locationId" -> locationId , "planId" -> planId )
       locationPlanIndexMongoClient.find(q).headOption
     }
 
