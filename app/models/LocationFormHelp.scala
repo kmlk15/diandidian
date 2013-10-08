@@ -7,7 +7,10 @@ import play.api.data.validation.Constraints._
 import play.api.libs.json.Json
 import scala.collection.mutable
  
-case class OpenClose(open: String = "" , close: String = "" )
+case class OpenClose(open: String = "" , close: String = "" ){
+  
+ override  def toString(): String = if( close==""){ open }else if( open==""){ close }else{ open +" - " + close }
+}
 
 case class HoursForm(
   monday: OpenClose = OpenClose(),
@@ -97,13 +100,20 @@ object HoursFormHelp{
     val html= 
       <table border="0" >
       {
-      trList.map( str => <tr><td  style='padding-right:10px;text-align:right;'  >{str._1}</td><td>{str._2.open} -  {str._2.close}</td></tr>)
+      trList.map( str => <tr><td  style='padding-right:10px;text-align:right;'  >{str._1}</td><td>{str._2.toString}</td></tr>)
       }
       </table>
        
     html.toString
   }
    
+ def opentimetablePlanningPage(hours: HoursForm ): String = {
+    val trList =  view( hours)
+    val html= trList.map( str =>str._1  + str._2.toString( ) ).mkString("\n")
+      
+       
+    html 
+  }
 }
 
 

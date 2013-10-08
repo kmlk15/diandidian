@@ -1,6 +1,48 @@
 @(name: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
 @import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
 
+@displayName(location: models.LocationForm) = {
+@if( location.name.length >10){
+	@{location.name.substring(0,10)+"..."}
+}else{
+	@location.name
+}
+  
+}
+
+@displayAdmission( admission : models.AdmissionForm)={
+  <table  >
+	<tr>
+ 		<td  colspan="2" > @admission.free </td>
+	</tr>
+@if(admission.general!="0" &&  admission.general!="" ){
+	<tr >
+		<td class="labe4">标准:</td>
+		<td><span > @admission.general</span></td>
+	</tr>
+}
+@if(admission.children!="0" &&  admission.children!="" ){
+	<tr>
+		<td class="labe4">儿童:</td>
+		<td><span > @admission.children</span></td>
+	</tr>
+}
+@if(admission.student!="0" &&  admission.student!="" ){	
+	<tr>
+		<td class="labe4">学生:</td>
+		<td><span >@admission.student </span></td>
+	</tr>
+}	
+@if(admission.seniors!="0" &&  admission.seniors!="" ){	
+	<tr>
+		<td class="labe4">长者:</td>
+		<td><span >@admission.seniors </span></td>
+	</tr>
+}	
+
+</table>
+}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -97,7 +139,7 @@
 								   	<li class="ui-draggable" id="@locationview.location.id.get">
 								   		<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg"  width="193" height="190"  />
 								   		<div class="bottom">
-												<h4>@locationview.location.name</h4>
+												<h4 title="@locationview.location.name">@displayName(locationview.location)</h4>
 												<span>@locationview.location.address.city: @locationview.location.address.district</span>
 												<span><a style='width:20px;height:20px;float:right;background:url("/assets/images/sprite.png") no-repeat scroll 0px -441px transparent' href="?locationId=@helper.urlEncode(locationview.location.id.get)&statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  ></a></span>
 										</div>
@@ -109,11 +151,11 @@
 													</tr>
 													<tr>
 														<td class="label">时间:</td>
-														<td>每日上午10时至下午6时, 逢星期六上午10时至晚上8时 逢星期四（公众假期除外）休馆 逢星期三免费入场</td>
+														<td>@Html( models.HoursFormHelp.opentimetablePlanningPage( locationview.location.hours) )</td>
 													</tr>
 													<tr>
-														<td class="label">成人:</td>
-														<td>@locationview.location.admission.adults, 儿童:@locationview.location.admission.seniors</td>
+														<td class="label">门票</td>
+														<td>@displayAdmission(locationview.location.admission )</td>
 													</tr>
 													<tr>
 														<td class="label">电话:</td>
