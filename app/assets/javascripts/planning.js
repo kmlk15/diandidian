@@ -101,6 +101,9 @@ $(function() {
 		return false;
 	})
 	
+ 
+	
+	
 	$("div#note-input span ").click( function() {
 	    var param = getCurrentStatusnamePlanName() 
 	    var locationId = $("div#note-input  input[name=locationId]").val(   ) 
@@ -824,7 +827,7 @@ function initialTimeLineLink() {
 //del 
 $(function(){
 	
-	$("div#plan-attractions-list").on('click',"    a",function() {
+	$("div#plan-attractions-list").on('click',"  div.bottom   a",function() {
 		
 		var urla =  $.url( $(this).attr("href"));
 		
