@@ -360,7 +360,7 @@ function initialMapTimeLineLink() {
 					 $("li#" + locationId ).appendTo($( "ul#"+ newkey));
 				} else {
 					var dateValue = "" + year + month + day ;
-					var targetHtml =  '<h3 class="'+newkey+'">'+month+'月'+day+'日 ' +week+' </h3><ul class="clearfix" id="'+newkey+'" ></ul>';
+					var targetHtml =  '<h3 class="'+newkey+'">'+month+'月'+day+'日 - ' +week+' </h3><ul class="clearfix" id="'+newkey+'" ></ul>';
 					if($(this).hasClass("no-sign")) {
 						targetHtml =  '<h3 class="'+newkey+'">尚未安排</h3><ul class="clearfix ui-droppable" id="'+newkey+'" ></ul>';
 						$("#plan-attractions-list").prepend("<hr />");
@@ -774,7 +774,7 @@ function initialTimeLineLink() {
 					var day = dateArr[2];
 					var week = getWeek(year ,  month , day );
 					
-					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日 '+ week +'</h3><ul class="clearfix" id="t-'+dateValue+'" ></ul>';
+					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日 - '+ week +'</h3><ul class="clearfix" id="t-'+dateValue+'" ></ul>';
 					if($(this).hasClass("no-sign")) {
 						targetHtml =  '<h3 class="t-'+dateValue+'">尚未安排</h3><ul class="clearfix ui-droppable" id="t-'+dateValue+'" ></ul>';
 						$("#plan-attractions-list").prepend("<hr />");

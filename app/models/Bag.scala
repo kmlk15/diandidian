@@ -50,7 +50,7 @@ case class PlanView(statusName:String = "" , name: String = "", visible: String 
             weeknameArr( w )
           }
           
-         month + "月" + date + "日" +" " + week
+         month + "月" + date + "日" +" - " + week
         }
       }
     }
