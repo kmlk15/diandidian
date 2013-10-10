@@ -130,6 +130,11 @@ $.ajaxSetup({ cache: false });
 		window.currentStatusName =  query.statusName
 		window.currentPlanName = query.planName
 		var param = query ;
+		
+		//将所有 已经打开的背包 关闭 Edit-10-9-13-REVISED
+		$("#my-bag h4.accordion-header ").removeClass("state-active");
+		$("#my-bag div.accordion-content  div.accordion-content ").hide();
+		
 		 //alert( JSON.stringify (param ) ) ;
 		//$("div#my-bag h3  span#currentStatus").html(query.statusName);
 		//$("div#my-bag h3  span#currentPlan").html(query.planName);

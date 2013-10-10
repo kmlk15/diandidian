@@ -102,6 +102,9 @@ object HoursFormHelp{
       {
       trList.map( str => <tr><td  style='padding-right:10px;text-align:right;'  >{str._1}</td><td>{str._2.toString}</td></tr>)
       }
+     {if( hours.closed != "") 
+     <tr><td colspan="2">休馆:{hours.closed}</td></tr>
+      }
       </table>
        
     html.toString

@@ -2,8 +2,8 @@
 @import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
 
 @displayName(location: models.LocationForm) = {
-@if( location.name.length >10){
-	@{location.name.substring(0,10)+"..."}
+@if( location.name.length >100){
+	@{location.name.substring(0,100)+"..."}
 }else{
 	@location.name
 }
@@ -154,19 +154,17 @@
 														<td>@Html( models.HoursFormHelp.opentimetablePlanningPage( locationview.location.hours) )</td>
 													</tr>
 													<tr>
-														<td class="label">门票</td>
-														<td>@displayAdmission(locationview.location.admission )</td>
+														<td class="label">休馆:</td>
+														<td>  @locationview.location.hours.closed </td>
 													</tr>
-													<tr>
-														<td class="label">电话:</td>
-														<td>@locationview.location.phone.general</td>
-													</tr>
+													
+													
 												</table>
 												<div class="note-input" >
 													<textarea id="note_@locationview.location.id.get" >@locationview.note</textarea>
 													<span>完成</span>
 												</div>
-												<span class="btn remark">备注</span>
+												 
 												<span class="btn detail"><a href="/detail/view/@helper.urlEncode(locationview.location.name)"  target="_blank">详情</a></span>
 											</div>	
 								   	</li>
@@ -400,9 +398,11 @@ $(function(){
 		if( gmapon ){
 			gmapon = false; 
 			tag.slideToggle( 1200 );
-			$("div#plan-timeline a.all").fadeOut( 400  , function(){
-				$("div#plan-date-input").fadeIn( 800 );
-			}  );
+			
+			$("div#plan-date-input").fadeIn( 800 , function(){
+				$("div#plan-timeline a.all").fadeOut( 400);
+			});
+			  
 			
 		}else{
 			gmapon  = true ;

@@ -124,23 +124,25 @@ object LocationEndpoints extends Controller {
     
     //提取 结果中的  地点数据  国家和城市， 用于 在 显示在 导航条上
     //如果是 多个国家， 就不显示了， 只显示 一个国家 一个或多个城市的情况
-   val countryCityMap :Map[String ,String] =  locationsList.map( location => location.address).map(  address => (address.country, address.city) ).
-    distinct.groupBy( kv=> kv._1).
-    map( kv => kv._1 -> kv._2.map( x => x._2).mkString(",") )
-    
-     log.debug("countryCityMap{}", countryCityMap) 
-     
-   val(resultcountry ,  resultcity ) =  if( countryCityMap.size == 1 ){
-       val country= countryCityMap.keySet.head
-       val city = countryCityMap.values.head
-       ( country , city)
-    }else if (countryCityMap.size == 0){
-     
-      (country,city)
-      
-    }else{
-      ( "" , "" )
-    }
+//   val countryCityMap :Map[String ,String] =  locationsList.map( location => location.address).map(  address => (address.country, address.city) ).
+//    distinct.groupBy( kv=> kv._1).
+//    map( kv => kv._1 -> kv._2.map( x => x._2).mkString(",") )
+//    
+//     log.debug("countryCityMap{}", countryCityMap) 
+//     
+//   val(resultcountry ,  resultcity ) =  if( countryCityMap.size == 1 ){
+//       val country= countryCityMap.keySet.head
+//       val city = countryCityMap.values.head
+//       ( country , city)
+//    }else if (countryCityMap.size == 0){
+//     
+//      (country,city)
+//      
+//    }else{
+//      ( "" , "" )
+//    }
+    //根据 Edit-10-9-13-REVISED  修改
+    val(resultcountry ,  resultcity ) =  (country,city)
    
    log.debug("(resultcountry ,  resultcity )={}", (resultcountry ,  resultcity ) ) 
    
