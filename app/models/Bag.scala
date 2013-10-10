@@ -32,13 +32,26 @@ case class Plan(id: String=""   , name: String = "背包", startDate: Long = 0L,
 case class PlanView(statusName:String = "" , name: String = "", visible: String ="private" , startDate: Long = 0L, endDate: Long = 0L,
   first: String = "", last: String = "", map: immutable.SortedMap[String, List[LocationView]] = immutable.SortedMap()) {
   val pattern = """t-(\d{4})(\d{2})(\d{2})""".r
+  val weeknameArr = Array( "", "星期日" , "星期一", "星期二" ,"星期三" ,"星期四" ,"星期五" ,"星期六" )
   def getTtitle(cssClassname: String): String = {
     if (cssClassname == "t-00_no-assign") {
       "尚未安排"
     } else {
       pattern.findFirstMatchIn(cssClassname) match {
         case None => cssClassname
-        case Some(m) => m.group(2) + "月" + m.group(3) + "日"
+        case Some(m) =>{
+          val year = m.group(1)
+          val month = m.group(2)
+          val date = m.group( 3)
+          val week = {
+            val cal = java.util.Calendar.getInstance()
+            cal.set(year.toInt ,month.toInt - 1,  date.toInt )
+            val w = cal.get( java.util.Calendar.DAY_OF_WEEK )
+            weeknameArr( w )
+          }
+          
+         month + "月" + date + "日" +" " + week
+        }
       }
     }
 

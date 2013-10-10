@@ -291,11 +291,12 @@ function initialMapTimeLineLink() {
 		var atag = this ; 
 		var href = $(this).attr("href");
 	        console.log("href="+ href);	
-		href = href.replace("http://www.diandidian.com/plae/","");
+		href = href.replace("http://www.diandidian.com/plan/",""); //IE7
 		var dateArr = href.split("/");
 		var year = dateArr[0];
 		var month = dateArr[1];
 		var day = dateArr[2];
+		var week = getWeek(year ,  month , day ) ;
 		
 		href = href.replace(new RegExp("/", "g") ,"");
 		if( window.gmapon){
@@ -359,7 +360,7 @@ function initialMapTimeLineLink() {
 					 $("li#" + locationId ).appendTo($( "ul#"+ newkey));
 				} else {
 					var dateValue = "" + year + month + day ;
-					var targetHtml =  '<h3 class="'+newkey+'">'+month+'月'+day+'日</h3><ul class="clearfix" id="'+newkey+'" ></ul>';
+					var targetHtml =  '<h3 class="'+newkey+'">'+month+'月'+day+'日 ' +week+' </h3><ul class="clearfix" id="'+newkey+'" ></ul>';
 					if($(this).hasClass("no-sign")) {
 						targetHtml =  '<h3 class="'+newkey+'">尚未安排</h3><ul class="clearfix ui-droppable" id="'+newkey+'" ></ul>';
 						$("#plan-attractions-list").prepend("<hr />");
@@ -771,7 +772,9 @@ function initialTimeLineLink() {
 					var year = dateArr[0];
 					var month = dateArr[1];
 					var day = dateArr[2];
-					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日</h3><ul class="clearfix" id="t-'+dateValue+'" ></ul>';
+					var week = getWeek(year ,  month , day );
+					
+					var targetHtml =  '<h3 class="t-'+dateValue+'">'+month+'月'+day+'日 '+ week +'</h3><ul class="clearfix" id="t-'+dateValue+'" ></ul>';
 					if($(this).hasClass("no-sign")) {
 						targetHtml =  '<h3 class="t-'+dateValue+'">尚未安排</h3><ul class="clearfix ui-droppable" id="t-'+dateValue+'" ></ul>';
 						$("#plan-attractions-list").prepend("<hr />");
@@ -927,3 +930,13 @@ function getDateStr(timeline){
 		return "尚未安排";
 	}
 }
+
+function getWeek( year , month , day ){
+	
+	var d = new Date(year, month-1, day, 0, 0, 0, 0); 
+	var week = weekNameArr[ d.getDay( )];
+	console.log( "week=" + week ) ;
+	console.log("d="+d +"  day of week = " + d.getDay( ) )
+	return week ;
+}
+var weekNameArr = Array( "星期日" , "星期一", "星期二" ,"星期三" ,"星期四" ,"星期五" ,"星期六" );
