@@ -2,8 +2,8 @@
 @import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
 
 @displayName(location: models.LocationForm) = {
-@if( location.name.length >100){
-	@{location.name.substring(0,100)+"..."}
+@if( location.name.length >180){
+	@{location.name.substring(0,180)+"..."}
 }else{
 	@location.name
 }
@@ -139,9 +139,10 @@
 								   	<li class="ui-draggable" id="@locationview.location.id.get">
 								   		<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg"  width="193" height="190"  />
 								   		<div class="bottom">
+												<span><a style='width:20px;height:20px;margin-top:20px;float:right;background:url("/assets/images/sprite.png") no-repeat scroll 0px -441px transparent' href="?locationId=@helper.urlEncode(locationview.location.id.get)&statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  ></a></span>
+
 												<h4 title="@locationview.location.name">@displayName(locationview.location)</h4>
 												<span>@locationview.location.address.city: @locationview.location.address.district</span>
-												<span><a style='width:20px;height:20px;float:right;background:url("/assets/images/sprite.png") no-repeat scroll 0px -441px transparent' href="?locationId=@helper.urlEncode(locationview.location.id.get)&statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  ></a></span>
 										</div>
 										<div class="hover-cover">
 												<table>
@@ -241,6 +242,19 @@
  
  
 <script>
+$(function(){
+	 $( "#plan-attractions-list ul li div.bottom h4").each( function(index, h4tag){
+		 console.log( $(h4tag).text()  + "h4tag.height( )=" + $(h4tag).height( ));
+		 if( $(h4tag).height( ) <= 21 ){
+			 $(h4tag).css("display","block").css("margin-top","2px");
+		 }
+		 if( $(h4tag).next().height()> 13){
+			 
+		 }
+	 });
+	
+	 
+});
 
 @if(planview.map.size >=1){
 
@@ -430,6 +444,7 @@ $(function(){
 		}
 	});
 });
+
 
 </script>
 
