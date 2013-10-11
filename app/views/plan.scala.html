@@ -184,7 +184,9 @@
 </div>	
 
 <div id="note-input" class="note-input"   >
-<input type="hidden" value=""  name="locationId" />
+<input type="hidden" value=""  name="datestr" />
+<div class="close"  style="float:right;height:20px" >btn</div>
+<div class="remark"   style="height:20px">当日备注 </div>
 <textarea name="note"></textarea>
 <span>完成</span>
 </div> 
@@ -211,8 +213,15 @@
 	var gmapon = false;
 	
 	//构造 背包中地点的  json 数据， 用于地图上的操作， 注意，这里的定义 将用在  plan.js 的拖动操作 和 bagplan.js 的地点删除操作
-	var  locationMap = {}
-		 
+	var  locationMap = {} ;
+	
+	//存放每日note 数据
+	var noteArr= {} ;
+	@for( kv <- planview.noteMap  ){
+		noteArr[ "@kv._1"] = $('<div />').html( "@escapeEcmaScript(kv._2)" ). text( )  ;
+		
+	}
+	 
 
 	</script>
 	

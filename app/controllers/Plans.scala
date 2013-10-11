@@ -100,9 +100,10 @@ object Plans extends Controller {
 
                 val first = sortmap.headOption.map(kv => kv._1).getOrElse("")
                 val last = sortmap.lastOption.map(kv => kv._1).getOrElse("")
-                val planview = PlanView(statusName = statusName, name = plan.name, visible=plan.visible,  startDate = plan.startDate, endDate = plan.endDate,
+                val planview = PlanView(statusName = statusName, name = plan.name, visible=plan.visible,  
+                    startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
-                  map = sortmap)
+                  map = sortmap , noteMap = plan.noteMap )
                  request.getQueryString("map") match{
                   case None => Ok(views.html.plan("planning", planview , cityListStr ))
                   case Some(x) => Ok(views.html.plangmap("planning", planview , cityListStr ))
@@ -118,10 +119,10 @@ object Plans extends Controller {
 
     val statusName = postData.flatMap(m => m.get("statusName").flatMap(seq => seq.headOption)).getOrElse("")
     val planName = postData.flatMap(m => m.get("planName").flatMap(seq => seq.headOption)).getOrElse("")
-    val locationId = postData.flatMap(m => m.get("locationId").flatMap(seq => seq.headOption)).getOrElse("")
+   val datestr = postData.flatMap(m => m.get("datestr").flatMap(seq => seq.headOption)).getOrElse("")
     val note = postData.flatMap(m => m.get("note").flatMap(seq => seq.headOption)).getOrElse("")
 
-    log.debug( "statusName={},planName={},locationId={},  note={} " ,statusName ,planName ,locationId , note )
+    log.debug( "statusName={},planName={}, datestr={},  note={} " ,statusName ,planName ,  datestr , note )
     session.get("userId") match {
       case None => Redirect(routes.Login.login())
       case Some(userId) =>
@@ -137,21 +138,11 @@ object Plans extends Controller {
             } yield {
 
              
-              val simplelocationList = plan.list
-              def exists(id: String): Boolean = {
-                simplelocationList.exists(p => p.id == id)
-              }
-              val planlist = plan.list.map { simple =>
-                if (simple.id == locationId) {
-                  simple.copy(note = note)
-                } else {
-                  simple
-                }
-              }
-
+              val noteMap = plan.noteMap  +  ( datestr -> note )
+ 
               log.debug("plan ={}", Json.prettyPrint(Json.toJson(plan)))
 
-              val changedPlan = plan.copy(list = planlist)
+              val changedPlan = plan.copy(noteMap = noteMap)
 
               log.debug("changedPlan={}", Json.prettyPrint(Json.toJson(changedPlan)))
 

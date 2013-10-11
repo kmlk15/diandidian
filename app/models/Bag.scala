@@ -24,13 +24,15 @@ case class SimpleLocation(id: String = "", name: String = "", enName: String = "
  *
  */
 case class Plan(id: String=""   , name: String = "背包", startDate: Long = 0L, endDate: Long = 0L,
-  list: List[SimpleLocation] = Nil, map: Map[String, String] = Map() , visible: String ="private")
+  list: List[SimpleLocation] = Nil, map: Map[String, String] = Map() , noteMap: Map[String,String]= Map( ) , visible: String ="private")
 
 /**
  * 用于页面展示时的对象
  */
 case class PlanView(statusName:String = "" , name: String = "", visible: String ="private" , startDate: Long = 0L, endDate: Long = 0L,
-  first: String = "", last: String = "", map: immutable.SortedMap[String, List[LocationView]] = immutable.SortedMap()) {
+  first: String = "", last: String = "", map: immutable.SortedMap[String, List[LocationView]] = immutable.SortedMap()  , 
+  noteMap: Map[String,String]= Map( ) ) {
+  
   val pattern = """t-(\d{4})(\d{2})(\d{2})""".r
   val weeknameArr = Array( "", "星期日" , "星期一", "星期二" ,"星期三" ,"星期四" ,"星期五" ,"星期六" )
   def getTtitle(cssClassname: String): String = {

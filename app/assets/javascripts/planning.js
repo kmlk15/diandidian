@@ -92,29 +92,48 @@ $(function() {
 	
 	$("#plan-attractions-list").on('click', " ul li .hover-cover" ,  function() {$(this).hide();})
 	
-	$("#plan-attractions-list ").on('click', "ul li .hover-cover .btn.remark" ,  function() {
-		var locationId = $(this).parent().parent().attr("id") ; 
-		console.log("locationId=" +  locationId) ;
-		 $("div#note-input  input[name=locationId]").val( locationId  ) 
-		 $("div#note-input  textarea[name=note]").val(   $("textarea#note_" +locationId ) .val( )   ) 
+//	$("#plan-attractions-list ").on('click', "ul li .hover-cover .btn.remark" ,  function() {
+//		var locationId = $(this).parent().parent().attr("id") ; 
+//		console.log("locationId=" +  locationId) ;
+//		 $("div#note-input  input[name=locationId]").val( locationId  ) 
+//		 $("div#note-input  textarea[name=note]").val(   $("textarea#note_" +locationId ) .val( )   ) 
+//		$("div#note-input").show();
+//		return false;
+//	})
+	
+	$("#plan-attractions-list ").on('click', "h3" ,  function() {
+		var param = getCurrentStatusnamePlanName() 
+		var datestr = $(this).next().attr("id") ;
+		console.log( datestr );
+		 if( "t-00_no-assign" ==  datestr ){
+			 return false;
+		 }
+		 $("div#note-input  input[name=datestr]").val( datestr  ) 
+		 console.log(noteArr );
+		 var note="";
+		 if(  noteArr[ datestr ]  ){
+			  note = noteArr[ datestr ]
+		 }else{
+			 noteArr[ datestr ] = "" ;
+		 }
+		 $("div#note-input  textarea[name=note]").val(    note   ) 
 		$("div#note-input").show();
 		return false;
 	})
-	
  
 	
 	
 	$("div#note-input span ").click( function() {
 	    var param = getCurrentStatusnamePlanName() 
-	    var locationId = $("div#note-input  input[name=locationId]").val(   ) 
-	    console.log("locationId=" +  locationId) ;
-	    	var note = $("textarea" ,  $(this).parent( )).val()
+	    var datestr = $("div#note-input  input[name=datestr]").val(   ) 
+	    console.log("datestr=" +  datestr) ;
+	    	var note = $("textarea" ,  $(this).parent( )).val();
 	    	
-	    	 $("textarea#note_" +locationId ) .val( note  )
+	    	noteArr[ datestr ]  = note ;
 	    	 
 	   console.log( note ) ;
 		
-	    	param.locationId = locationId ;
+	    	param.datestr = datestr ;
 	    	param.note = note ;
 	    
 	    	$.post("/plan/updateNote" , param , function ( result){
@@ -123,11 +142,9 @@ $(function() {
 	    	});
 		
 		
-	})
-	$("#plan-attractions-list ").on('click', "ul li .hover-cover .note-input" , function() {
-		
-		return false;
-	})
+	});
+	
+ 
 	
 	var planStartDate = $("#attraction-planning-wrap .start-date .datepicker").datepicker(
 		{
