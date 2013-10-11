@@ -246,14 +246,9 @@ $(function(){
 	 $( "#plan-attractions-list ul li div.bottom h4").each( function(index, h4tag){
 		 console.log( $(h4tag).text()  + "h4tag.height( )=" + $(h4tag).height( ));
 		 if( $(h4tag).height( ) <= 21 ){
-			 $(h4tag).css("display","block").css("margin-top","2px");
-		 }
-		 if( $(h4tag).next().height()> 13){
-			 
+			 $(h4tag).css("display","block").css("margin-top","3px").css("margin-bottom","2px");
 		 }
 	 });
-	
-	 
 });
 
 @if(planview.map.size >=1){

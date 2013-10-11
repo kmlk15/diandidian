@@ -570,12 +570,13 @@ ul, ol {
 						color: @textGrey4;
 					}
 				}
-				
+ 	
 		.accordion-header {
 			margin: 0;
-			padding: 0 0 0 26px;
-			height: 30px;
-			line-height: 30px;
+			padding: 10px 0px 0px 26px;
+			min-height: 30px;
+			line-height: 18px;
+			
 			background: url(/assets/images/accordion-head-icon.png) 11px 50% no-repeat;
 			border-top: 1px solid @myBagItemBorderColor;
 			font-weight: normal;
@@ -587,10 +588,13 @@ ul, ol {
 				border-bottom: 1px dashed @myBagBorderColor;
 				background-image: url(/assets/images/accordion-head-icon-active.png);
 			}
-
+			.setPlan{
+				display: block;
+				width:180px;
+			}
 			.deletePlan{
 							float: right;
-							margin-top:  8px;
+							margin-top:  3px;
 							margin-right: 11px;
 							padding-left: 0;
 							width: 19px;
@@ -1364,11 +1368,10 @@ ul, ol {
 				width: 185px;
 				overflow:hidden;
 				h4 {
-					
 				    display:inline;
 					font-weight: 400;
 					font-size: 15px;
-					line-height: 1.4;
+					line-height: 1.2;
 					color: @textGrey3;
 				}
 				span {

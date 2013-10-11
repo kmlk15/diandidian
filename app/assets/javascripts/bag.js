@@ -23,6 +23,8 @@
 	
 $(function() {
 	
+ 
+   
 $.ajaxSetup({ cache: false });
 	 
 	window.currentStatusName = "计划中";
