@@ -812,7 +812,7 @@ ul, ol {
 						margin-right: 3px;
 						border: 1px solid @galleryBorderColor;
 						background: @black;
-						&.active, &:hover, {
+						&.active, &:hover {
 							img {
 								.opacity(1);
 							}
@@ -1381,6 +1381,17 @@ ul, ol {
 				span {
 					font-size: 11px;
 					color: @textGrey3;
+					a.del {
+						width:20px;
+						height:20px;
+						margin-top:20px;
+						float:right;
+						background:url("/assets/images/sprite.png") no-repeat scroll 0px -441px transparent;
+						&:hover {
+							background: url("/assets/images/sprite.png") no-repeat scroll 0px -506px transparent ;
+							 
+						}
+					}
 				}
 			}
 			.hover-cover {
