@@ -1235,44 +1235,46 @@ ul, ol {
 			position: relative;
 			float:  right;
 			margin: 11px 10px  0px 0;
-			background: url(/assets/images/btn_planning_save.png)   no-repeat;
+			
 			&:hover {
-				background: url(/assets/images/btn_planning_save_hove.png)   no-repeat;
-				
 				span {
 					color:@textGrey ;
-					background: url(/assets/images/btn_planning_save_hove.png)   no-repeat;
-				}
-				ul {
-					display: block;
+				   background: url(/assets/images/btn_map_hover.png)   no-repeat;
 				}
 			}
 			
+			.active {
+					background: url(/assets/images/btn_map_active.png)   no-repeat;
+					&:hover {
+						color:@white ;
+						background: url(/assets/images/btn_map_active.png)   no-repeat;
+					}
+			 }
 			span {
+				background: url(/assets/images/btn_map.png)   no-repeat;
 				position: relative;
 				display: block;
-				padding: 5px 0 0 7px;
+				padding: 5px 0 0 20px;
 				width: 95px;
 				height: 22px;
-				background: url(/assets/images/sprite.png) 0 -929px no-repeat;
+				 
 				font-size: 17px;
 				color: @white;
 				cursor: pointer;
 				z-index: 5;
+				
 			}
-			
+			 
 		}
 		.plan-menu {
 			position: relative;
 			float: right;
 			margin: 11px 0 0 0;
-			background: url(/assets/images/btn_planning_save.png)   no-repeat;
+			
 			&:hover {
-				background: url(/assets/images/btn_planning_save_hove.png)   no-repeat;
-				
-				span {
+					span {
 					color:@textGrey ;
-					background: url(/assets/images/btn_planning_save_hove.png)   no-repeat;
+					background: url(/assets/images/btn_planning_save_hover.png)   no-repeat;
 				}
 				ul {
 					display: block;
@@ -1284,7 +1286,8 @@ ul, ol {
 				padding: 5px 0 0 7px;
 				width: 95px;
 				height: 22px;
-				background: url(/assets/images/sprite.png) 0 -929px no-repeat;
+				  
+				background: url(/assets/images/btn_planning_save.png)   no-repeat;
 				font-size: 17px;
 				color: @white;
 				cursor: pointer;
@@ -1295,6 +1298,7 @@ ul, ol {
 				position: absolute;
 				top: 17px;
 				padding: 10px 0 0 0;
+				 
 				width: 102px;
 				background: @greyPlanDropDownBg;
 				z-index: 3;

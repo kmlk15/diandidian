@@ -66,7 +66,9 @@ $(function() {
 	//header fix top and sidebar not scroll up
 	$("#header").scrollToFixed({zIndex: 99});
 	$("#attractions-list h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
-	$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
+	
+	//暂时注释，CPU
+	 // $(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
 	
 	
 

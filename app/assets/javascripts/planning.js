@@ -666,7 +666,9 @@ function initialTimeLineLink() {
 	var attractionsApi = $("#plan-attractions-list-wrap").data('jsp');
 	console.log( "attractionsApi=" +  JSON.stringify (attractionsApi ) ) ;
 	if(typeof attractionsApi === 'undefined'  ){
-		$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
+		//暂时注释，CPU
+	//$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
+		
 		attractionsApi = $("#plan-attractions-list-wrap").data('jsp');
 		console.log( "attractionsApi=" +  JSON.stringify (attractionsApi ) ) ;
 	}

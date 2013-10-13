@@ -117,16 +117,16 @@
 								@* TODO CSS  *@ 
 								
 								 <div class="plan-menu">
-									<span>保存</span>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;保存</span>
 									<ul>
 										<li  id="plansave">保存</li>
-										<li id="planpublic">公开</li>
-										<li id="planprivate">私有</li>
+										<li id="planpublic">保存为公开</li>
+										<li id="planprivate">保存为私有</li>
 										<li class="last" id="plansavepdf">保存+PDF</li>
 									</ul>
 								</div>
 								 <div class="plan-map" id="mapbutton">
-								 	<span>MAP</span>
+								 	<span >地图</span>
 								 </div>
 		
 							</div><!-- end header -->
@@ -236,7 +236,9 @@
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-scrolltofixed-min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.tokeninput.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.mousewheel.js")'></script>
+ 
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.jscrollpane.js")'></script>
+ 
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/purl.js")'></script>
@@ -439,11 +441,11 @@ $(function(){
 			$("div#plan-date-input").fadeIn( 800 , function(){
 				$("div#plan-timeline a.all").fadeOut( 400);
 			});
-			  
+			 $(  "span" , this ).removeClass("active")  ;
 			
 		}else{
 			gmapon  = true ;
-			
+			 $(  "span" , this ).addClass("active")  ;
 			$("div#plan-date-input").fadeOut( 400 , function(){
 				$("div#plan-timeline a.all").fadeIn(800 );
 			} );

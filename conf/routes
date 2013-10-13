@@ -45,6 +45,7 @@ POST    /plan/updateNote        controllers.Plans.updateNote()
 GET    /plan/updateDate             controllers.Plans.updateDate( statusName : String , planName : String , startDate: Long ,endDate: Long )
 GET    /plan/updateVisible  		controllers.Plans.updateVisible( statusName : String , planName : String , visible: String )
 
+GET    /plan/testmap                   controllers.Plans.testmap()
 
 GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example
