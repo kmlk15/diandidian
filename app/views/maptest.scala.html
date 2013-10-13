@@ -16,8 +16,8 @@
 <link href='@routes.Assets.at("stylesheets/jquery.ui.theme.css")' rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/master.css")' />
 
- 
-
+ <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.10.2.js")'></script>
+ <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.simplemodal-1.4.4.js")'></script>
 
 </head>
 <body>
@@ -46,7 +46,36 @@
      <a href="2013/10/31">31日</a>
      </div>
      </div>
-     
+  
+  
+<div id="note-input" class="note-input"    >
+<input type="hidden" value=""  name="datestr" />
+
+<div class="close"  > </div>
+ 
+	<div class="remark"   style="height:20px" >当日备注 </div>
+	<textarea name="note"></textarea>
+	<span class="savebtn">保存 </span>
+ 
+</div> 
+
+
+<button id="shownote">show note  input </button>
+ 
+ <script>
+ $("#shownote" ).click( function(){
+	 $("div#note-input").modal( {"closeClass": "close" , "overlayCss":{ "background-color": "#000000"}  , "opacity":75 });
+ });
+ 
+ 
+ $("#note-input span.savebtn").click( function(){
+	 $.modal.close() ;
+ });
+ 
+
+ 
+ </script>
+ 
 
 </body>
 </html>

@@ -1473,35 +1473,56 @@ ul, ol {
 	 
 					display: none;
 					position: absolute;
-					top: 126px;
-					left: 306px;
+					top: 000px;
+					left: 000px;
 					width: 526px;
-					height: 368px;
+					height: 308px;
 					border: 1px solid @greyBorderColor;
 					background: @white;
 					z-index: 5;
+					.remark {
+						margin: 20px 0 0 60px;
+						padding: 0 0 0 15px;
+						font-size: 15px;
+						height: 20px;
+						background: url(/assets/images/icon_pen.png ) no-repeat;
+					}
+					.close {
+						float:right;
+						height:20px;
+						width: 20px;
+						margin: 10px 10px 0 0 ;
+						cursor: pointer ;
+						background:url("/assets/images/sprite.png") no-repeat scroll 0px -441px transparent;
+						&:hover {
+							background: url("/assets/images/sprite.png") no-repeat scroll 0px -506px transparent ;
+							 
+						}
+					}
 					textarea {
+						border: 1px solid @greyPlanDropDownHoverBg;
 						overflow: hidden;
-						margin: 0;
+						margin: 0 0 0 60px;
 						padding: 12px 0 0 8px;
-						width: 500px;
-						height: 360px;
-						border: none;
+						width: 400px;
+						height: 215px;
+						 
 						resize: none;
 						font-size: 13px;
 						color: @textGrey3;
 						background: @white;
 					}
 					span {
+						margin: 0px 30px 0 0px;
 						display: block;
 						position: absolute;
 						bottom: 5px;
 						right: 4px;
-						padding-left: 5px;
-						width: 34px;
+						padding-left: 18px;
+						width: 75px;
 						height: 20px;
 						line-height: 20px;
-						background: url(/assets/images/note-input-btn.png) no-repeat;
+						background: url(/assets/images/btn_small_save.png) no-repeat;
 						cursor: pointer;
 						font-size: 13px;
 						color: @white;

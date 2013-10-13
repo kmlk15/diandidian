@@ -117,13 +117,16 @@ $(function() {
 			 noteArr[ datestr ] = "" ;
 		 }
 		 $("div#note-input  textarea[name=note]").val(    note   ) 
-		$("div#note-input").show();
+		 
+		 
+		 $("div#note-input").modal( {"closeClass": "close"  , "overlayCss":{ "background-color": "#000000"}  , "opacity":75 });
+		 
 		return false;
 	})
+	
  
 	
-	
-	$("div#note-input span ").click( function() {
+	$("div#note-input span.savebtn  ").click( function() {
 	    var param = getCurrentStatusnamePlanName() 
 	    var datestr = $("div#note-input  input[name=datestr]").val(   ) 
 	    console.log("datestr=" +  datestr) ;
@@ -139,8 +142,9 @@ $(function() {
 	    	$.post("/plan/updateNote" , param , function ( result){
 	    		console.log( result.success  );
 	    		$("div#note-input").hide();
+	    		$.modal.close() ;
 	    	});
-		
+	    
 		
 	});
 	
