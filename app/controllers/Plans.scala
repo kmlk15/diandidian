@@ -308,4 +308,11 @@ object Plans extends Controller {
      }
    
   }
+  
+  /**
+   * map 页面 弹出的div css 调试
+   */
+  def testmap() =Action {
+    Ok( views.html.maptest( "xxx" ))
+  }
 }

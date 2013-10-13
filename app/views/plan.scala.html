@@ -248,7 +248,7 @@
 <script type="text/javascript" src='@routes.Assets.at("javascripts/planning.js")'></script>
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=true" type="text/javascript"></script>
  
- 
+<script type="text/javascript" src='@routes.Assets.at("javascripts/infobox.js")'></script>
  
 <script>
 $(function(){
@@ -299,10 +299,29 @@ function initialize() {
   }
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
  
-  infowindow = new google.maps.InfoWindow({
-	  
-      content: ""
-  });
+  var myOptions = {
+			 content: ""
+			,disableAutoPan: false
+			,maxWidth: 0
+			,pixelOffset: new google.maps.Size(-140, 0)
+			,zIndex: null
+			,boxStyle: { 
+			  background: "url('tipbox.gif') no-repeat"
+			  ,opacity: 0.75
+			  ,width: "280px"
+			 }
+			,closeBoxMargin: "10px 2px 2px 2px"
+			,closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif"
+			,infoBoxClearance: new google.maps.Size(1, 1)
+			,isHidden: false
+			,pane: "floatPane"
+			,enableEventPropagation: true
+		};
+    infowindow = new InfoBox(myOptions);
+
+	 
+	
+
   
   google.maps.event.addListener( infowindow , "closeclick" , function(){
 	  console.log("infowindow  closeclick");
@@ -327,7 +346,7 @@ function initialize() {
 					  
 					  timelinestr: '<span style="color:red" id="@locationview.location.id.get" class="infowindow" >设置或更改日期</span>',
 					  contentString: function(){
-						  var contentString = '<div id="content_@locationview.location.id.get"  style="width:300px">' ;
+						  var contentString = '<div id="content_@locationview.location.id.get"  class="googleinfowindow">' ;
 						  contentString += '<div class="clearfix">'+ this.img +  this.name +' </div>';
 						  contentString += '<div >' + '<span>计划日期: '+ this.date + '</span>' +  this.timelinestr  + '</div>';
 						  contentString += '</div>';

@@ -1550,28 +1550,34 @@ ul, ol {
 	.map-date-line {
 		position: relative;
 		padding-right: 13px;
-		border-right: 1px solid @red;
+		background: @greyPlanDropDownBg  ; 
+		//border-right: 1px solid @red;
 		.active {
-			color: @red;
+			color: @blue;
 		}
 		p {
-			margin: 0 0 12px 0;
-			font-size: 18px;
-			text-align: right;
+			margin: 0 0 2px 0;
+			font-size: 15px;
+			text-align: left;
 		}
 		a {
 			display: block;
 			float: right;
 			clear: both;
-			margin: 0 0 8px 0;
+			margin: 0px  0px  0px 0;
 			width: 80px;
-			border: 1px solid @greyBg;
-			font-size: 18px;
-			text-align: right;
+			
+			padding-top:2px;
+			padding-bottom: 2px;
+	 
+			border-bottom: 1px dashed  @accountMenuBorderColor;
+			font-size: 15px;
+			text-align: left;
 			&.year {
 				font-size: 16px;
 			}
 			&:hover {
+				color: @blue;
 				text-decoration: none;
 			}
 			&.drop-hover {
@@ -1586,59 +1592,15 @@ ul, ol {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.googleinfowindow{
+	width:280px;
+	border: 1px solid black; 
+	margin-top: 8px; 
+	background:  @greyDropDownHoverBg; 
+	padding: 5px;
+}
+/**
+google map  infowindow
+width:278-> 280px
+height 117 -> 120px
+**/
