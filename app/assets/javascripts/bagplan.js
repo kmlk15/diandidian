@@ -50,7 +50,11 @@ $.ajaxSetup({ cache: false });
 			$clickedHeader.removeClass("state-active");
 			 
 		} else {
-			$clickedHeader.addClass("state-active");
+			if( $clickedHeader.hasClass( "active-bag" )){
+				 
+			 }else{
+				 $clickedHeader.addClass("state-active");
+			 }
 			 
 			
 		}
