@@ -360,7 +360,7 @@ function initialMapTimeLineLink() {
 				  var   marker = markerMap[index]; 
 				  marker.setMap (  null  ) ; 
 			  } 
-			  
+			  if(infowindow){ infowindow.close( ) ; $("#infowindowtimeline").hide() ; }
 			 //只显示满足要求的 地点 
 			 $.each(locationMap , function( index,value){
 				 console.log( "index -> value=" + index + '->' +  value  ) ;
@@ -686,6 +686,8 @@ function initialTimeLineLink() {
 		if( window.gmapon){
 			 console.log("gmapon=" + window.gmapon );
 			 console.log("key=" + "t-"+href );
+			 
+			 if(infowindow){ infowindow.close( ) ; $("#infowindowtimeline").hide();}
 			 
 			 if( href =="00_all"){
 				 for(index in markerMap) { 

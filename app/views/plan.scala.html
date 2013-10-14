@@ -314,7 +314,7 @@ function initialize() {
 			,zIndex: null
 			,boxStyle: { 
 			  background: "url('tipbox.gif') no-repeat"
-			  ,opacity: 0.75
+			  ,opacity: 1
 			  ,width: "280px"
 			 }
 			,closeBoxMargin: "10px 2px 2px 2px"
@@ -447,7 +447,8 @@ $(function(){
 				$("div#plan-timeline a.all").fadeOut( 400);
 			});
 			 $(  "span" , this ).removeClass("active")  ;
-			
+			 infowindow.close( ) ; 
+			 $("#infowindowtimeline").hide();
 		}else{
 			gmapon  = true ;
 			 $(  "span" , this ).addClass("active")  ;
