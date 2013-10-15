@@ -72,8 +72,10 @@ trait LocationFormServiceComponentImpl extends LocationFormServiceComponent {
      val q3  = MongoDBObject( "enName" -> pattern)
      val q5  = MongoDBObject( "category.level_1" -> pattern)
      val q6  = MongoDBObject( "category.level_2" -> pattern)
+     val q7  = MongoDBObject( "category.level_1_en" -> pattern)
+     val q8  = MongoDBObject( "category.level_2_en" -> pattern)
      
-     val q = MongoDBObject( "$or" ->List(q1,q2,q3,q4,q5,q6))
+     val q = MongoDBObject( "$or" ->List(q1,q2,q3,q4,q5,q6,q7,q8))
   
      
      mongoClient.find(q)

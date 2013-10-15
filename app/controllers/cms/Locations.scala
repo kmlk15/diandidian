@@ -29,16 +29,16 @@ object Locations extends Controller  with AuthTrait  {
   
   def createCategoryForm(categroyId: String):  CategoryForm = {
     if( categroyId ==""){
-      CategoryForm("","","")
+      CategoryForm()
     }else{
        service.getCategoryById( categroyId)match{
-         case None =>  CategoryForm("","","")
+         case None =>  CategoryForm()
          case Some(c ) => if( c.parentId != "" ){      
            service.getCategoryById(c.parentId) match{
-             case None => CategoryForm("","","")
-             case Some( p) => CategoryForm(categroyId, p.name, c.name)
+             case None => CategoryForm( categroyId,   c.name ,"" , c.enName , "" )
+             case Some( p) => CategoryForm(categroyId, p.name, c.name , p.enName , c.enName)
            }
-         }else{ CategoryForm(categroyId,   c.name ,"")  }
+         }else{ CategoryForm(categroyId,   c.name ,"" , c.enName , "" )  }
       }
       
     }
@@ -93,11 +93,9 @@ object Locations extends Controller  with AuthTrait  {
             Ok(views.html.cms.locationEdit(Some(id), errors))
           },
           location => {
-        	  	val updateLocation =if(location.category.categoryId == orignLocation.category.categoryId  ) {
-        	  	  location.copy( id =orignLocation.id , photo = orignLocation.photo ,category =  orignLocation.category )
-        	  	}else{
-        	  	   location.copy( id =orignLocation.id , photo = orignLocation.photo ,category =  createCategoryForm(  location.category.categoryId ))
-        	  	}
+        	  	val updateLocation = location.copy( id =orignLocation.id , photo = orignLocation.photo ,
+        	  	    category =  createCategoryForm(  orignLocation.category.categoryId ))
+        	  	 
             service.updateLocation( updateLocation ) match {
               case None => Ok(views.html.cms.locationEdit(Some(id), LocationFormHelp.form.fill(location), "同样 名字的地点已经存在"))
               case Some(user) => Redirect(routes.Locations.list)

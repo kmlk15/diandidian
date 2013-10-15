@@ -123,7 +123,10 @@ object HoursFormHelp{
 case class CategoryForm(
     categoryId: String = "",
   level_1: String = "",
-  level_2: String ="" )  
+  level_2: String ="" ,
+  level_1_en: String ="" ,
+  level_2_en: String = "" 
+)  
   
 case class AdmissionForm(
   currency: String = "",
@@ -145,7 +148,7 @@ case class LocationForm(
   admission: AdmissionForm = AdmissionForm (),
   hours: HoursForm = HoursForm(),
   url: String = "" ,
-  category: CategoryForm = CategoryForm(categoryId  = ""  , level_1="", level_2="" ),
+  category: CategoryForm = CategoryForm(  ),
   fact: String = "",
   photo: String = "" ,
   planId: Option[String] =  None
@@ -211,9 +214,12 @@ object LocationFormHelp {
       "url" -> text,
 
       "category" -> mapping(
-          "categoryId" -> text ,
+        "categoryId" -> text ,
         "level_1" -> default(text,"") ,
-        "level_2" -> default(text,"")  )(CategoryForm.apply)(CategoryForm.unapply),
+        "level_2" -> default(text,""),
+        "level_1_en" -> default(text,""),
+        "level_2_en" -> default(text,"")
+      )(CategoryForm.apply)(CategoryForm.unapply),
 
       "fact" -> text,
       "photo" -> default(text , ""),
