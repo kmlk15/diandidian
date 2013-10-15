@@ -16,6 +16,7 @@ import models.BagHelp.defaultStatusName
 import models.BagHelp.bagUpdateFromtoform
 import models.Bag
 import play.api.mvc.Session
+import play.api.mvc.AnyContent
 import org.apache.commons.lang3.StringUtils
 import models.Photo
 import models.PlanView
@@ -36,12 +37,20 @@ object Plans extends Controller {
   private val cmsService = base.CmsServiceRegistry.cmsService
 
    
-
+  def getUserId( request: Request[AnyContent] ): Option[String] ={
+    if( request.getQueryString("forpdf") != None){
+       //request.getQueryString("userId")
+       request.session.get( "userId") 
+    }else{
+    		request.session.get( "userId") 
+    }
+  }
+  
   def view() = Action { implicit request =>
     val statusName = request.getQueryString("statusName").getOrElse("")
     val planName = request.getQueryString("planName").getOrElse("")
 
-    session.get("userId") match {
+   getUserId(request)  match {
       case None => Redirect(routes.Login.login())
       case Some(userId) =>
         val bagId = userId
@@ -104,9 +113,9 @@ object Plans extends Controller {
                     startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap , noteMap = plan.noteMap )
-                 request.getQueryString("map") match{
+                 request.getQueryString("forpdf") match{
                   case None => Ok(views.html.plan("planning", planview , cityListStr ))
-                  case Some(x) => Ok(views.html.plangmap("planning", planview , cityListStr ))
+                  case Some(x) => Ok(views.html.planforpdf("planning", planview , cityListStr ))
                 }
             }
         }

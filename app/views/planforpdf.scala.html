@@ -1,0 +1,160 @@
+@(name: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
+@import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
+
+@displayName(location: models.LocationForm) = {
+@if( location.name.length >180){
+	@{location.name.substring(0,180)+"..."}
+}else{
+	@location.name
+}
+  
+}
+
+@displayAdmission( admission : models.AdmissionForm)={
+  <table  >
+	<tr>
+ 		<td  colspan="2" > @admission.free </td>
+	</tr>
+@if(admission.general!="0" &&  admission.general!="" ){
+	<tr >
+		<td class="labe4">标准:</td>
+		<td><span > @admission.general</span></td>
+	</tr>
+}
+@if(admission.children!="0" &&  admission.children!="" ){
+	<tr>
+		<td class="labe4">儿童:</td>
+		<td><span > @admission.children</span></td>
+	</tr>
+}
+@if(admission.student!="0" &&  admission.student!="" ){	
+	<tr>
+		<td class="labe4">学生:</td>
+		<td><span >@admission.student </span></td>
+	</tr>
+}	
+@if(admission.seniors!="0" &&  admission.seniors!="" ){	
+	<tr>
+		<td class="labe4">长者:</td>
+		<td><span >@admission.seniors </span></td>
+	</tr>
+}	
+
+</table>
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Planning Page</title>
+<meta http-equiv="keywords" content="" />
+<meta http-equiv="description" content="" />
+<style>
+.clearfix:before,
+.clearfix:after {
+  content: '.';
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+
+</style>
+
+
+</head>
+<body >
+@**  pdf 封面**@
+
+<div style="width:842px;height:595px;margin-left:auto;margin-right:auto;margin-top:10px">
+<div style="position:relative;left:70px;top:134px;width:115px;height:115px;z-index:20;" >
+	<img id="locationa" src="http://diandidian.s3-us-west-1.amazonaws.com/193_5227230603648b0870554542.jpg"  style="width:115px;height:115px"  /> 
+</div>
+<div style="position:relative;left:50px;top:100px;z-index:10;">
+	<p style="background-color:yellow ;height:40px;width:300px;font-size:20px;line-height:40px;margin: 0 0 0 100px ;padding-left:20px"><em>Derek Lui 15-Day Trip</em></p>
+	<p style="background-color:green ;height:80px;width:550px;font-size:40px;line-height:80px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.name</p>
+	<p style="background-color:blue  ;height:32px;width:480px;font-size:18px;line-height:32px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.startDate @planview.endDate</p>
+	<p style="background-color:white  ;height:32px;width:350px;font-size:14px;line-height:32px;margin: 0 0 0 100px ;" >
+	 <span style="margin: 0 10px 0px 0  " >Created With </span>   
+	 <img  src='@routes.Assets.at("images/logo_diandidian.png")' style="vertical-align:middle;height:32px"/>
+	</p>
+</div>
+<div  style="position:relative;left:560px;top:0px; width:260px;height:260px;z-index:5;">
+<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=-15.800513,-47.91378&zoom=7&size=260x260&sensor=false"  style="width:260px;height:260px;">
+</div>
+</div>
+
+
+
+@** 每一天的 景点 **@
+@for( kv <- planview.map  ){
+
+<div style="width:842px;min-height:595px;margin-left:auto;margin-right:auto;border-top-style:solid;border-top-color:green;border-top-width:4px;margin-top:10px;margin-bottom:10px">
+<h3 style="font-size:32px;height:56px;line-height:56px;border-bottom-style:solid;border-bottom-color:grey;border-top-width:2px;margin: 8px 0 0 0 ;">@planview.getTtitle( kv._1 ) </h3>
+ @for( locationview <- kv._2){
+<div style="border-bottom-style:dotted; border-bottom-color:grey;border-top-width:1px;margin-top:10px;margin-bottom:10px ;padding-top:10px;padding-bottom:10px ">
+<img src="http://diandidian.s3-us-west-1.amazonaws.com/193_522737b503648b0870554547.jpg"    style="border-style:solid;width:193px;height:190px;float:right;margin-right:10px" />
+
+<div  style="">
+	<h4 style="font-size:18px;height:28px;line-height:28px;margin: 8px 0 0 0 ;" >@locationview.location.name</h4>
+	<p>
+		<span>地址：@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>
+		<span>电话：@locationview.location.phone.general</span>
+	</p>
+	 
+	<p>@locationview.location.url</p>
+
+	<div>
+		<div style="float:left">
+		@Html( models.HoursFormHelp.opentimetablePlanningPage( locationview.location.hours) )
+		</div>
+		<div style="float:right">
+		@views.html.detail.admission(  locationview.location.admission )
+		</div>
+	</div>
+
+
+
+</div>
+<div class="clearfix"></div>
+	<div>
+	@(  locationview.location.fact )
+	</div>
+	
+</div>
+}
+</div>
+}
+
+</body>
+
+								 
+
+
+
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.10.2.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=true" type="text/javascript"></script>
+<script>
+$(function(){
+	$("#locationa").imgr({ radius:"60px"});
+	
+	$("#googlemap").imgr({ radius:"130px"});
+});
+
+</script>
+</body>
+</html>
