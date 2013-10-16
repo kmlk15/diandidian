@@ -77,10 +77,10 @@
 @**  pdf 封面**@
 
 <div style="width:960px;height:595px;margin-top:10px;margin-left:auto;margin-right:auto">
-<div style="position:relative;left:70px;top:134px;width:115px;height:115px;z-index:20;" >
+<div style="position:relative;left:120px;top:134px;width:115px;height:115px;z-index:20;" >
 	<img id="locationa" src="http://diandidian.s3-us-west-1.amazonaws.com/193_5227230603648b0870554542.jpg"  style="width:115px;height:115px"  /> 
 </div>
-<div style="position:relative;left:50px;top:100px;z-index:10;width:600px">
+<div style="position:relative;left:100px;top:100px;z-index:10;width:600px">
 	<p style="background-color:yellow ;height:40px;width:300px;font-size:20px;line-height:40px;margin: 0 0 0 100px ;padding-left:20px"><em>Derek Lui 15-Day Trip</em></p>
 	<p style="background-color:green ;height:80px;width:550px;font-size:40px;line-height:80px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.name</p>
 	<p style="background-color:blue  ;height:32px;width:480px;font-size:18px;line-height:32px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.startDate @planview.endDate</p>
@@ -89,8 +89,8 @@
 	 <img  src='@routes.Assets.at("images/logo_diandidian.png")' style="vertical-align:middle;height:32px"/>
 	</p>
 </div>
-<div  style="position:relative;left:540px;top:0px; width:260px;height:260px;z-index:5;">
-<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=-15.800513,-47.91378&zoom=7&size=260x260&sensor=false"  style="width:260px;height:260px;" />
+<div  style="position:relative;left:640px;top:0px; width:260px;height:260px;z-index:5;">
+<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=22.283364,114.173068&zoom=12&size=260x260&sensor=false"  style="width:260px;height:260px;" />
 </div>
 </div>
 
@@ -115,11 +115,11 @@
 	<p style="margin: 0 0 0 0 ;" >@locationview.location.url</p>
 
 	<div style="margin: 10px 0 0 0 ;">
-		<div style="float:left">
+		<div style="float:left;width:300px">
 		 
 		@Html( models.HoursFormHelp.opentimetablePlanningPagePdf( locationview.location.hours) )
 		</div>
-		<div style="float:right">
+		<div style="float:right;width:300px">
 		@views.html.detail.admission(  locationview.location.admission )
 		</div>
 	</div>
