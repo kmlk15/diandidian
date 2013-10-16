@@ -39,8 +39,11 @@ object Plans extends Controller {
    
   def getUserId( request: Request[AnyContent] ): Option[String] ={
     if( request.getQueryString("forpdf") != None){
-       //request.getQueryString("userId")
-       request.session.get( "userId") 
+       if( request.getQueryString("userId") != None){
+         request.getQueryString("userId")
+       }else{
+    	   request.session.get( "userId")
+       	}
     }else{
     		request.session.get( "userId") 
     }

@@ -35,7 +35,7 @@ case class PlanView(statusName:String = "" , name: String = "", visible: String 
   
   val pattern = """t-(\d{4})(\d{2})(\d{2})""".r
   val weeknameArr = Array( "", "星期日" , "星期一", "星期二" ,"星期三" ,"星期四" ,"星期五" ,"星期六" )
-  def getTtitle(cssClassname: String): String = {
+  def getTtitle(cssClassname: String , style: String ="" ): String = {
     if (cssClassname == "t-00_no-assign") {
       "尚未安排"
     } else {
@@ -51,8 +51,12 @@ case class PlanView(statusName:String = "" , name: String = "", visible: String 
             val w = cal.get( java.util.Calendar.DAY_OF_WEEK )
             weeknameArr( w )
           }
-          
-         month + "月" + date + "日" +" - " + week
+          style match{
+           
+            case  "pdf" => year+"-" + month + "-" + date   + " " + week
+            case  _  =>  month + "月" + date + "日" +" - " + week 
+          }
+        
         }
       }
     }

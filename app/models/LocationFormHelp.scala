@@ -110,6 +110,22 @@ object HoursFormHelp{
     html.toString
   }
    
+  def opentimetablePlanningPagePdf(hours: HoursForm ): String = {
+    val trList =  view( hours)
+    val html= 
+      <table  style="width:280px">
+      <tr><td colspan="2">开放时间:</td></tr>
+      {
+      trList.map( str => <tr colspan="2"><td  style='padding-right:2px;text-align:left;'  >{str._1} {str._2.toString}</td></tr>)
+      }
+     {if( hours.closed != "") 
+     <tr><td colspan="2">休馆:{hours.closed}</td></tr>
+      }
+      </table>
+       
+    html.toString
+  }
+      
  def opentimetablePlanningPage(hours: HoursForm ): String = {
     val trList =  view( hours)
     val html= trList.map( str =>str._1  + str._2.toString( ) ).mkString("\n")

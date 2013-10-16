@@ -73,14 +73,14 @@
 
 
 </head>
-<body >
+<body  style="background-color:white" >
 @**  pdf 封面**@
 
-<div style="width:842px;height:595px;margin-left:auto;margin-right:auto;margin-top:10px">
+<div style="width:960px;height:595px;margin-top:10px;margin-left:auto;margin-right:auto">
 <div style="position:relative;left:70px;top:134px;width:115px;height:115px;z-index:20;" >
 	<img id="locationa" src="http://diandidian.s3-us-west-1.amazonaws.com/193_5227230603648b0870554542.jpg"  style="width:115px;height:115px"  /> 
 </div>
-<div style="position:relative;left:50px;top:100px;z-index:10;">
+<div style="position:relative;left:50px;top:100px;z-index:10;width:600px">
 	<p style="background-color:yellow ;height:40px;width:300px;font-size:20px;line-height:40px;margin: 0 0 0 100px ;padding-left:20px"><em>Derek Lui 15-Day Trip</em></p>
 	<p style="background-color:green ;height:80px;width:550px;font-size:40px;line-height:80px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.name</p>
 	<p style="background-color:blue  ;height:32px;width:480px;font-size:18px;line-height:32px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.startDate @planview.endDate</p>
@@ -89,8 +89,8 @@
 	 <img  src='@routes.Assets.at("images/logo_diandidian.png")' style="vertical-align:middle;height:32px"/>
 	</p>
 </div>
-<div  style="position:relative;left:560px;top:0px; width:260px;height:260px;z-index:5;">
-<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=-15.800513,-47.91378&zoom=7&size=260x260&sensor=false"  style="width:260px;height:260px;">
+<div  style="position:relative;left:540px;top:0px; width:260px;height:260px;z-index:5;">
+<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=-15.800513,-47.91378&zoom=7&size=260x260&sensor=false"  style="width:260px;height:260px;" />
 </div>
 </div>
 
@@ -99,24 +99,25 @@
 @** 每一天的 景点 **@
 @for( kv <- planview.map  ){
 
-<div style="width:842px;min-height:595px;margin-left:auto;margin-right:auto;border-top-style:solid;border-top-color:green;border-top-width:4px;margin-top:10px;margin-bottom:10px">
-<h3 style="font-size:32px;height:56px;line-height:56px;border-bottom-style:solid;border-bottom-color:grey;border-top-width:2px;margin: 8px 0 0 0 ;">@planview.getTtitle( kv._1 ) </h3>
+<div style="width:960px;min-height:595px;border-top-style:solid;border-top-color:green;border-top-width:4px;margin-top:10px;margin-bottom:10px;page-break-before:always;margin-left:auto;margin-right:auto">
+<h3 style="font-size:32px;height:56px;line-height:56px;border-bottom-style:solid;border-bottom-color:grey;border-top-width:2px;margin: 8px 0 0 0 ;">@planview.getTtitle( kv._1 ,"pdf" ) </h3>
  @for( locationview <- kv._2){
 <div style="border-bottom-style:dotted; border-bottom-color:grey;border-top-width:1px;margin-top:10px;margin-bottom:10px ;padding-top:10px;padding-bottom:10px ">
-<img src="http://diandidian.s3-us-west-1.amazonaws.com/193_522737b503648b0870554547.jpg"    style="border-style:solid;width:193px;height:190px;float:right;margin-right:10px" />
+<img src="http://diandidian.s3-us-west-1.amazonaws.com/193_522737b503648b0870554547.jpg"    style="width:193px;height:190px;float:right;margin-right:10px" />
 
-<div  style="">
-	<h4 style="font-size:18px;height:28px;line-height:28px;margin: 8px 0 0 0 ;" >@locationview.location.name</h4>
-	<p>
+<div  style="margin: 0 0 0 0 ;">
+	<h4 style="font-size:18px;height:28px;line-height:28px;margin: 4px 0 4px 0 ;" >@locationview.location.name</h4>
+	<p style="margin: 0 0 0 0 ;">
 		<span>地址：@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>
 		<span>电话：@locationview.location.phone.general</span>
 	</p>
 	 
-	<p>@locationview.location.url</p>
+	<p style="margin: 0 0 0 0 ;" >@locationview.location.url</p>
 
-	<div>
+	<div style="margin: 10px 0 0 0 ;">
 		<div style="float:left">
-		@Html( models.HoursFormHelp.opentimetablePlanningPage( locationview.location.hours) )
+		 
+		@Html( models.HoursFormHelp.opentimetablePlanningPagePdf( locationview.location.hours) )
 		</div>
 		<div style="float:right">
 		@views.html.detail.admission(  locationview.location.admission )
@@ -133,6 +134,12 @@
 	
 </div>
 }
+@if(  planview.noteMap.get( kv._1 ) != None){
+	<h3>@planview.getTtitle( kv._1 ,"pdf")-当日备注</h3>
+	<div>
+	@planview.noteMap.get( kv._1 )
+	</div>
+}
 </div>
 }
 
@@ -144,15 +151,15 @@
 
 
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.10.2.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAPeQnJdCOB6zGbQ19DHnmG5yFeE0Oq5G8&sensor=true" type="text/javascript"></script>
 <script>
 $(function(){
 	$("#locationa").imgr({ radius:"60px"});
 	
 	$("#googlemap").imgr({ radius:"130px"});
+	
+	 
 });
 
 </script>
