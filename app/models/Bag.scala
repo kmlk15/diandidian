@@ -74,6 +74,11 @@ case class PlanView(statusName:String = "" , name: String = "", visible: String 
     val d2Str = if(d1.year() ==d2.year()) fmt2.print(d2) else fmt.print( d2 )
     d1Str + " - " + d2Str 
   }
+  val keyIndexMap = ( map.keySet.toList zip ( 1 to map.size ) ) toMap
+  def getIndex( key: String ): Int = {
+    keyIndexMap.get(key).getOrElse(0)
+  }
+  
 }
 
 case class LocationView(location: LocationForm = LocationForm(), photo: Photo = Photo(), note: String = "")

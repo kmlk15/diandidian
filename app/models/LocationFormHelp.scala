@@ -113,7 +113,7 @@ object HoursFormHelp{
   def opentimetablePlanningPagePdf(hours: HoursForm ): String = {
     val trList =  view( hours)
     val html= 
-      <table  style="width:280px">
+      <table  style="width:320px">
       <tr><td colspan="2">开放时间:</td></tr>
       {
       trList.map( str => <tr colspan="2"><td  style='padding-right:2px;text-align:left;'  >{str._1} {str._2.toString}</td></tr>)
