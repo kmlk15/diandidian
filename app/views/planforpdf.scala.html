@@ -68,7 +68,7 @@
 .clearfix {
   zoom: 1;
 }
-
+ 
 </style>
 
 
@@ -81,9 +81,9 @@
 	<img id="locationa" src="http://diandidian.s3-us-west-1.amazonaws.com/193_5227230603648b0870554542.jpg"  style="width:115px;height:115px"  /> 
 </div>
 <div style="position:relative;left:100px;top:100px;z-index:10;width:600px">
-	<p style="background-color:yellow ;height:40px;width:300px;font-size:20px;line-height:40px;margin: 0 0 0 100px ;padding-left:20px"><em>Derek Lui 15-Day Trip</em></p>
+	<p style="background-color:yellow ;height:40px;width:300px;font-size:20px;line-height:40px;margin: 0 0 0 100px ;padding-left:20px"><em>Derek Lui @planview.getDays  -Day Trip</em></p>
 	<p style="background-color:green ;height:80px;width:550px;font-size:40px;line-height:80px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.name</p>
-	<p style="background-color:blue  ;height:32px;width:480px;font-size:18px;line-height:32px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.startDate @planview.endDate</p>
+	<p style="background-color:blue  ;height:32px;width:480px;font-size:18px;line-height:32px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.getStartEnd </p>
 	<p style="background-color:white  ;height:32px;width:350px;font-size:14px;line-height:32px;margin: 0 0 0 100px ;" >
 	 <span style="margin: 0 10px 0px 0  " >Created With </span>   
 	 <img  src='@routes.Assets.at("images/logo_diandidian.png")' style="vertical-align:middle;height:32px"/>
@@ -98,9 +98,13 @@
 
 @** 每一天的 景点 **@
 @for( kv <- planview.map  ){
+<hr id="pageHeader" style="border-top-style:solid;border-top-color:green;border-top-width:4px;page-break-before:always;margin: 0 0 0 0px ;" />
+<div style="width:960px;min-height:595px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto">
 
-<div style="width:960px;min-height:595px;border-top-style:solid;border-top-color:green;border-top-width:4px;margin-top:10px;margin-bottom:10px;page-break-before:always;margin-left:auto;margin-right:auto">
-<h3 style="font-size:32px;height:56px;line-height:56px;border-bottom-style:solid;border-bottom-color:grey;border-top-width:2px;margin: 8px 0 0 0 ;">@planview.getTtitle( kv._1 ,"pdf" ) </h3>
+<h3 style="font-size:32px;height:56px;line-height:56px;border-bottom-style:solid;border-bottom-color:grey;border-top-width:1px;margin: 8px 0 0px 0 ;padding:0 0 5px 0 ">
+<span style="background-color:black;color:white;padding:8px 8px 8px 8px;border:1px solid black;border-radius:32px;font-size:28px;margin-bottom:5px " >12</span>
+<span>@planview.getTtitle( kv._1 ,"pdf" )</span> 
+</h3>
  @for( locationview <- kv._2){
 <div style="border-bottom-style:dotted; border-bottom-color:grey;border-top-width:1px;margin-top:10px;margin-bottom:10px ;padding-top:10px;padding-bottom:10px ">
 <img src="http://diandidian.s3-us-west-1.amazonaws.com/193_522737b503648b0870554547.jpg"    style="width:193px;height:190px;float:right;margin-right:10px" />
