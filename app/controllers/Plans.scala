@@ -324,7 +324,7 @@ object Plans extends Controller {
       	  val randomstr = RandomStringUtils.randomAlphanumeric(4) ;
       	  val  filename = "/opt/phantomjs/tmp/" + userId +  randomstr   + ".pdf"
       	  val cmdSeq = Seq("/opt/phantomjs/bin/phantomjs","--debug=true", "--disk-cache=true", 
-      	      "/opt/phantomjs/js/rasterize.coffee" ,     url   , filename, "A4" )
+      	      "/opt/phantomjs/js/printheaderfooter.js" ,     url   , filename, "A4" )
       	  log.debug( "cmdSeq={}", cmdSeq.mkString( " " ))
       	  import scala.sys.process._
       	  if(  cmdSeq.! == 0 )  {

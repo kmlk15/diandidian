@@ -124,7 +124,10 @@ body {
 }
 
 .contentframe{
-	width:960px;min-height:595px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto
+	width:960px;min-height:595px;
+	margin-top:10px;margin-bottom:10px;
+	
+	page-break-before:always;
 }
 
 hr.green{
@@ -175,6 +178,7 @@ h3{
 }
 
 .location{
+	margin-top:10px;margin-bottom:10px ;
 	border-bottom-style:dotted;
 	border-bottom-color:grey;
 	border-bottom-width:1px;
@@ -211,7 +215,7 @@ h3{
 
 @** 每一天的 景点 **@
 @for( kv <- planview.map  ){
-<hr class="green"/>
+
 <div class="contentframe">
 	<h3 >
 		@if(planview.getIndex(kv._1 ) < 10){
