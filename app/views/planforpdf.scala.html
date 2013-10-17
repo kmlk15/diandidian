@@ -221,48 +221,51 @@ h3{
 		}
 		<span>@planview.getTtitle( kv._1 ,"pdf" )</span> 
 	</h3>
+	
+<div class="content">	
  @for( locationview <- kv._2){
-<div class="content">
+
  <div class="location">
-<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg" class="photo"  />
-
-<div  style="margin: 0 0 0 0 ; width:720px ; float:left">
-	<h4 style="font-size:18px;height:28px;line-height:28px;margin: 4px 0 4px 0 ;" >@locationview.location.name</h4>
-	<p style="margin: 0 0 0 0 ;">
-		<span>地址：@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>
-		<span>电话：@locationview.location.phone.general</span>
-	</p>
-	 
-	<p style="margin: 0 0 0 0 ;" >@locationview.location.url</p>
-
-	<div style="margin: 10px 0 0 0 ;">
-		<div style="float:left;width:300px">
+	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg" class="photo"  />
+	<div  style="margin: 0 0 0 0 ; width:720px ; float:left">
+		<h4 style="font-size:18px;height:28px;line-height:28px;margin: 4px 0 4px 0 ;" >@locationview.location.name</h4>
+		<p style="margin: 0 0 0 0 ;">
+			<span>地址：@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>
+			<span>电话：@locationview.location.phone.general</span>
+		</p>
 		 
-		@Html( models.HoursFormHelp.opentimetablePlanningPagePdf( locationview.location.hours) )
+		<p style="margin: 0 0 0 0 ;" >@locationview.location.url</p>
+	
+		<div style="margin: 10px 0 0 0 ;">
+			<div style="float:left;width:300px">
+			 
+			@Html( models.HoursFormHelp.opentimetablePlanningPagePdf( locationview.location.hours) )
+			</div>
+			<div style="float:right;width:300px">
+			@views.html.detail.admission(  locationview.location.admission )
+			</div>
 		</div>
-		<div style="float:right;width:300px">
-		@views.html.detail.admission(  locationview.location.admission )
+		<div class="clearfix"></div>
+		<div style="margin-top:10px;">
+		@Html(  locationview.location.fact )
 		</div>
-	</div>
+	
+	</div> 
 	<div class="clearfix"></div>
-	<div style="margin-top:10px;">
-	@Html(  locationview.location.fact )
-	</div>
-
-</div>
- 
-<div class="clearfix"></div>
-  
- </div>
+ </div> @*  end location *@
 }
+
 @if(  planview.noteMap.get( kv._1 ) != None){
 	<div style="font-size:28px;margin-top:10px;margin-bottom:5px">当日备注</div>
 	<div>
 	@planview.noteMap.get( kv._1 )
 	</div>
 }
-</div>
-</div>
+
+</div> @*  end content *@
+
+</div> @*  end content frame *@
+
 }
 
 
