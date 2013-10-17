@@ -119,7 +119,9 @@ object Plans extends Controller {
                   map = sortmap , noteMap = plan.noteMap )
                  request.getQueryString("forpdf") match{
                   case None => Ok(views.html.plan("planning", planview , cityListStr ))
-                  case Some(x) => Ok(views.html.planforpdf("planning", planview , cityListStr ))
+                  case Some(x) => 
+                    val nickname = request.getQueryString("name").getOrElse("")
+                    Ok(views.html.planforpdf( nickname  , planview , cityListStr ))
                 }
             }
         }

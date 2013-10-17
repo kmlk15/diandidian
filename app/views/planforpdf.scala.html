@@ -1,4 +1,4 @@
-@(name: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
+@(nickname: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
 @import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
 
 @displayName(location: models.LocationForm) = {
@@ -198,7 +198,7 @@ h3{
 		src="http://diandidian.s3-us-west-1.amazonaws.com/@planview.map.head._2.head.photo.planpageImg"    /> 
 </div>
 <div style="position:relative;left:100px;top:100px;z-index:10;width:600px">
-	<p class="yellowbox"><em>Derek Lui @{planview.getDays}-Day Trip</em></p>
+	<p class="yellowbox"><em>@{nickname}  @{planview.getDays }-Day Trip</em></p>
 	<p class="greenbox"><strong>@planview.name</strong></p>
 	<p class="bluebox">@planview.getStartEnd </p>
 	<p style="background-color:white  ;height:32px;width:350px;font-size:14px;line-height:32px;margin: 0 0 0 100px ;" >

@@ -64,7 +64,8 @@ case class PlanView(statusName:String = "" , name: String = "", visible: String 
     }
   }
 
-  def getDays: Long = ( endDate - startDate)/( 24L*3600*1000)
+  def getDays: Long  =( ( endDate - startDate)/( 24L*3600*1000)) 
+  
  val  fmt = DateTimeFormat.forPattern("Y d.M");
   val fmt2 = DateTimeFormat.forPattern("d.M");
   def getStartEnd: String = {
