@@ -124,19 +124,21 @@ body {
 }
 
 .contentframe{
-width:960px;min-height:595px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto
+	width:960px;min-height:595px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto
 }
 
-hr{
+hr.green{
 	border-top-style:solid;
 	border-top-color:green;
 	border-top-width:4px;
 	page-break-before:always;
 	margin: 0 0 0 0px ;	
 }
+
+
 h3{
 	font-size:32px;height:56px;line-height:56px;
-	border-bottom-style:solid;border-bottom-color:grey;border-top-width:1px;
+	border-bottom-style:solid;border-bottom-color:grey;border-bottom-width:1px;
 	margin: 8px 0 0px 0 ;
 	padding:0 0 5px 0
 }
@@ -167,12 +169,18 @@ h3{
  border-radius: 0 10px 10px 0; 
 }
 .content{
-	border-bottom-style:dotted;
-	 border-bottom-color:grey;
-	 border-top-width:1px;
+	
 	 margin-top:10px;margin-bottom:10px ;
-	 padding-top:10px;padding-bottom:10px 
+	 padding-top:10px;padding-bottom:10px ;
 }
+
+.location{
+	border-bottom-style:dotted;
+	border-bottom-color:grey;
+	border-bottom-width:1px;
+	padding-top:0px;padding-bottom:10px ;
+}
+
 </style>
 
 
@@ -203,7 +211,7 @@ h3{
 
 @** 每一天的 景点 **@
 @for( kv <- planview.map  ){
-<hr/>
+<hr class="green"/>
 <div class="contentframe">
 	<h3 >
 		@if(planview.getIndex(kv._1 ) < 10){
@@ -215,7 +223,7 @@ h3{
 	</h3>
  @for( locationview <- kv._2){
 <div class="content">
- 
+ <div class="location">
 <img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg" class="photo"  />
 
 <div  style="margin: 0 0 0 0 ; width:720px ; float:left">
@@ -238,16 +246,17 @@ h3{
 	</div>
 	<div class="clearfix"></div>
 	<div style="margin-top:10px;">
-	@(  locationview.location.fact )
+	@Html(  locationview.location.fact )
 	</div>
 
 </div>
  
 <div class="clearfix"></div>
- 
+  
+ </div>
 }
 @if(  planview.noteMap.get( kv._1 ) != None){
-	<h3>@planview.getTtitle( kv._1 ,"pdf")-当日备注</h3>
+	<div style="font-size:28px;margin-top:10px;margin-bottom:5px">当日备注</div>
 	<div>
 	@planview.noteMap.get( kv._1 )
 	</div>
@@ -256,7 +265,7 @@ h3{
 </div>
 }
 
-</body>
+
 
 								 
 
