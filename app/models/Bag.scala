@@ -65,15 +65,16 @@ case class PlanView(statusName:String = "" , name: String = "", visible: String 
   }
 
   def getDays: Long = ( endDate - startDate)/( 24L*3600*1000)
- val  fmt = DateTimeFormat.forPattern("Y d/M");
-  val fmt2 = DateTimeFormat.forPattern("d/M");
+ val  fmt = DateTimeFormat.forPattern("Y d.M");
+  val fmt2 = DateTimeFormat.forPattern("d.M");
   def getStartEnd: String = {
     val d1 = new DateTime( startDate)
     val d2 = new DateTime( endDate )
     val d1Str = fmt.print( d1 )
     val d2Str = if(d1.year() ==d2.year()) fmt2.print(d2) else fmt.print( d2 )
-    d1Str + " - " + d2Str 
+    d1Str + "-" + d2Str 
   }
+  
   val keyIndexMap = ( map.keySet.toList zip ( 1 to map.size ) ) toMap
   def getIndex( key: String ): Int = {
     keyIndexMap.get(key).getOrElse(0)

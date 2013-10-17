@@ -68,48 +68,157 @@
 .clearfix {
   zoom: 1;
 }
- 
+body {
+	font-family: "微软雅黑", "STHeiti", Verdana, arial, sans-serif;
+	background-color:white;
+} 
+
+.yellowbox{
+	background-color:#fff200;
+	color:#626262;
+	height:40px;
+	width:400px;
+	font-size:14px;
+	line-height:40px;
+	margin: 0 0 0 100px ;
+	padding-left:20px
+}
+.greenbox{
+	background-color:#00a500 ;
+	color:white;
+	height:80px;
+	width:600px;
+	font-size:38px;
+	line-height:80px;
+	margin: 0 0 0 100px ;
+	padding-left:20px;
+}
+.bluebox{
+	font-family: Verdana, arial, sans-serif;
+	background-color:#00aeef  ;
+	height:32px;
+	width:500px;
+	font-size:18px;
+	line-height:32px;
+	margin: 0 0 0 100px ;
+	padding-left:20px;
+	color:white;
+}
+.googlemapbox{
+	position:relative;
+	left:640px;
+	top:0px; 
+	width:260px;
+	height:260px;
+	z-index:5;
+}
+
+.coverframe{
+	width:960px;height:595px;
+	margin-top:10px;margin-left:auto;margin-right:auto
+}
+.coverphoto{
+	position:relative;left:120px;top:134px;
+	width:115px;height:115px;
+	z-index:20;
+}
+
+.contentframe{
+width:960px;min-height:595px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto
+}
+
+hr{
+	border-top-style:solid;
+	border-top-color:green;
+	border-top-width:4px;
+	page-break-before:always;
+	margin: 0 0 0 0px ;	
+}
+h3{
+	font-size:32px;height:56px;line-height:56px;
+	border-bottom-style:solid;border-bottom-color:grey;border-top-width:1px;
+	margin: 8px 0 0px 0 ;
+	padding:0 0 5px 0
+}
+
+.num1 {
+	background-color:black;
+	color:white;
+	padding:8px 16px 8px 16px;
+	border:1px solid black;
+	border-radius:32px;
+	font-size:28px;
+	margin-bottom:5px
+}
+.num2 {
+	background-color:black;
+	color:white;
+	padding:8px 8px 8px 8px;
+	border:1px solid black;
+	border-radius:32px;
+	font-size:28px;
+	margin-bottom:5px
+}
+
+.photo{
+ width:193px;height:190px;
+ float:right;
+ margin-right:10px;
+ border-radius: 0 10px 10px 0; 
+}
+.content{
+	border-bottom-style:dotted;
+	 border-bottom-color:grey;
+	 border-top-width:1px;
+	 margin-top:10px;margin-bottom:10px ;
+	 padding-top:10px;padding-bottom:10px 
+}
 </style>
 
 
 </head>
-<body  style="background-color:white" >
+<body   >
 @**  pdf 封面**@
 
-<div style="width:960px;height:595px;margin-top:10px;margin-left:auto;margin-right:auto">
-<div style="position:relative;left:120px;top:134px;width:115px;height:115px;z-index:20;" >
-	<img id="locationa" src="http://diandidian.s3-us-west-1.amazonaws.com/@planview.map.head._2.head.photo.planpageImg"  style="width:115px;height:115px"  /> 
+<div class="coverframe">
+<div class="coverphoto" >
+	<img id="locationa" style="width:115px;height:115px"
+		src="http://diandidian.s3-us-west-1.amazonaws.com/@planview.map.head._2.head.photo.planpageImg"    /> 
 </div>
 <div style="position:relative;left:100px;top:100px;z-index:10;width:600px">
-	<p style="background-color:yellow ;height:40px;width:300px;font-size:20px;line-height:40px;margin: 0 0 0 100px ;padding-left:20px"><em>Derek Lui @planview.getDays  -Day Trip</em></p>
-	<p style="background-color:green ;height:80px;width:550px;font-size:40px;line-height:80px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.name</p>
-	<p style="background-color:blue  ;height:32px;width:480px;font-size:18px;line-height:32px;margin: 0 0 0 100px ;padding-left:20px;color:white">@planview.getStartEnd </p>
+	<p class="yellowbox"><em>Derek Lui @{planview.getDays}-Day Trip</em></p>
+	<p class="greenbox"><strong>@planview.name</strong></p>
+	<p class="bluebox">@planview.getStartEnd </p>
 	<p style="background-color:white  ;height:32px;width:350px;font-size:14px;line-height:32px;margin: 0 0 0 100px ;" >
 	 <span style="margin: 0 10px 0px 0  " >Created With </span>   
 	 <img  src='@routes.Assets.at("images/logo_diandidian.png")' style="vertical-align:middle;height:32px"/>
 	</p>
 </div>
-<div  style="position:relative;left:640px;top:0px; width:260px;height:260px;z-index:5;">
-<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=22.283364,114.173068&zoom=12&size=260x260&sensor=false"  style="width:260px;height:260px;" />
-</div>
+	<div  class="googlemapbox">
+		<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=22.283364,114.173068&zoom=12&size=260x260&sensor=false"  style="width:260px;height:260px;" />
+	</div>
 </div>
 
 
 
 @** 每一天的 景点 **@
 @for( kv <- planview.map  ){
-<hr id="pageHeader" style="border-top-style:solid;border-top-color:green;border-top-width:4px;page-break-before:always;margin: 0 0 0 0px ;" />
-<div style="width:960px;min-height:595px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto">
-
-	<h3 style="font-size:32px;height:56px;line-height:56px;border-bottom-style:solid;border-bottom-color:grey;border-top-width:1px;margin: 8px 0 0px 0 ;padding:0 0 5px 0 ">
-		<span style="background-color:black;color:white;padding:8px 8px 8px 8px;border:1px solid black;border-radius:32px;font-size:28px;margin-bottom:5px " >@if(planview.getIndex(kv._1 ) < 10){0}@planview.getIndex(kv._1 )</span>
+<hr/>
+<div class="contentframe">
+	<h3 >
+		@if(planview.getIndex(kv._1 ) < 10){
+		<span class="num1" > @planview.getIndex(kv._1 )</span>
+		}else{
+		<span class="num2" >@planview.getIndex(kv._1 )</span>
+		}
 		<span>@planview.getTtitle( kv._1 ,"pdf" )</span> 
 	</h3>
  @for( locationview <- kv._2){
-<div style="border-bottom-style:dotted; border-bottom-color:grey;border-top-width:1px;margin-top:10px;margin-bottom:10px ;padding-top:10px;padding-bottom:10px ">
-<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg"    style="width:193px;height:190px;float:right;margin-right:10px;border-radius: 0 10px 10px 0;" />
+<div class="content">
+ 
+<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg" class="photo"  />
 
-<div  style="margin: 0 0 0 0 ;">
+<div  style="margin: 0 0 0 0 ; width:720px ; float:left">
 	<h4 style="font-size:18px;height:28px;line-height:28px;margin: 4px 0 4px 0 ;" >@locationview.location.name</h4>
 	<p style="margin: 0 0 0 0 ;">
 		<span>地址：@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>
@@ -127,16 +236,15 @@
 		@views.html.detail.admission(  locationview.location.admission )
 		</div>
 	</div>
-
-
-
-</div>
-<div class="clearfix"></div>
-	<div style="margin-top:10px">
+	<div class="clearfix"></div>
+	<div style="margin-top:10px;">
 	@(  locationview.location.fact )
 	</div>
-	
+
 </div>
+ 
+<div class="clearfix"></div>
+ 
 }
 @if(  planview.noteMap.get( kv._1 ) != None){
 	<h3>@planview.getTtitle( kv._1 ,"pdf")-当日备注</h3>
@@ -144,6 +252,7 @@
 	@planview.noteMap.get( kv._1 )
 	</div>
 }
+</div>
 </div>
 }
 
