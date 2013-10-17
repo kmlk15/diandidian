@@ -65,6 +65,18 @@ $(function() {
 		});
 	});
 	
+	$("#plansavepdf").click( function(){
+		var param = getCurrentStatusnamePlanName();
+		$.getJSON("/plan/outpdf", param, function(result){
+			console.log( result );
+			if( result.success){
+				location="/plan/sendfile/" + result.data.randomstr;
+			}else{
+				alert( result.msg );
+			}
+		});
+	});
+	
 	
 	$(window).resize(function(e) {
 		var space = 133;

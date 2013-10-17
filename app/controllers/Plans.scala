@@ -29,6 +29,7 @@ import models.BagHelp.bagFmt
 import models.LocationView
 import models.SimpleLocation
 import scala.collection.immutable
+import org.apache.commons.lang3.RandomStringUtils
 
 object Plans extends Controller {
   private val log = LoggerFactory.getLogger(Bags.getClass())
@@ -301,6 +302,53 @@ object Plans extends Controller {
 
   }
 
+  /**
+   * 保存并 输出 PDF 
+   * 1 这里的保存 实际是不需要的， 在每一步操作的时候，已经保存
+   * 2 实现pdf 输出
+   * a 生成 url 
+   * b 调用 shell , phantomjs 输出 pdf 文件
+   * c 将 pdf 文件输出到 客户端
+   * d 这里的 pdf 文件， 不能让用户直接访问到， 以后 是否需要考虑 缓存?
+   */
+  def  outpdf(  statusName: String , planName: String )= Action {implicit request =>
+
+    session.get("userId") match {
+      	case None => Redirect(routes.Login.login())
+      	case Some(userId) =>
+      	  val name = session.get("username").getOrElse("")
+      	  val url = "http://www.diandidian.com/plan/?statusName=" + URLEncoder.encode( statusName,"utf-8") +
+      	  "&planName=" +  URLEncoder.encode( planName,"utf-8") +
+      	  "&forpdf=true&userId="+ userId +"&name=" + URLEncoder.encode( name ,"utf-8")
+      	  log.debug("url={}", url )
+      	  val randomstr = RandomStringUtils.randomAlphanumeric(4) ;
+      	  val  filename = "/opt/phantomjs/tmp/" + userId +  randomstr   + ".pdf"
+      	  val cmdSeq = Seq("/opt/phantomjs/bin/phantomjs","--debug=true", "--disk-cache=true", 
+      	      "/opt/phantomjs/js/rasterize.coffee" ,     url   , filename, "A4" )
+      	  log.debug( "cmdSeq={}", cmdSeq.mkString( " " ))
+      	  import scala.sys.process._
+      	  if(  cmdSeq.! == 0 )  {
+      	     Ok(Json.obj("success"->true, "data"->Json.obj("randomstr"-> randomstr)))
+      	  }else{
+      	     Ok(Json.obj("success"->false,"msg" -> " 生成PDF失败"))
+      	  }
+ 	  }
+  }
+  
+  //发送pdf 文件
+  def sendfile( randomstr: String ) = Action{ implicit request => 
+  	 session.get("userId") match {
+      	case None => Redirect(routes.Login.login())
+      	case Some( userId) =>
+      	  val  filename = "/opt/phantomjs/tmp/" + userId +  randomstr   + ".pdf"
+      	  Ok.sendFile(
+      			  content = new java.io.File(filename),
+      			  fileName = _ => randomstr + ".pdf" ,
+      			  inline = true
+      		)
+  	 }
+  }
+  
   private  def simplelocationList2LocationViewList(list: List[SimpleLocation]) : List[LocationView]= {
      list.flatMap{ simple =>
           locationService.getById(simple.id).map{ location =>
