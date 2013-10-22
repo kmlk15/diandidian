@@ -559,13 +559,39 @@ function initialPlanNameLabel() {
 	$input.focus(function(e) {
 		planname = $(this).val() ;
 		$label.hide();
-		$submitcmd.show();
-		$cancelcmd.show();
+		$(this).addClass("focus");
+		//$submitcmd.show();
+		//$cancelcmd.show();
 	}).blur(function(e) {
-		
+		$(this).removeClass("focus");
+		$input.val( planname );
+		if( planname == ""){
+			$label.show();
+		}
+	});
+	$input.keyup( function(e){
+		//console.log("e.which=" + e.which ); 
+		if (   e.which === 27) {
+		    e.preventDefault();
+		    $(this).removeClass("focus");
+			$input.val( planname );
+			if( planname == ""){
+				$label.show();
+			}
+		    
+		}else{
+			return  true ;
+		}
 	});
 	
-	$submitcmd.click( function(e){
+	$input.keypress( function(e){
+		console.log("e.which=" + e.which ); 
+		if ( e.which === 13  || e.which === 27) {
+		    e.preventDefault();
+		}else{
+			return  true ;
+		}
+		
 		var currentParam  = getCurrentStatusnamePlanName();
 		var newname = $input.val() ;
 		console.log("currentParam=" + currentParam.planName ) ;
