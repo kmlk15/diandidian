@@ -214,7 +214,7 @@ $.ajaxSetup({ cache: false });
 				window.currentStatusName = param.statusName ;
 				window.currentPlanName = param.planName;
 				var statusName = param.statusName ;
-				var planName = param.statusName ;
+				var planName = param.planName ;
 				param.locationName = locationName ;
 			}else{
 				var param = { locationName:locationName } ;
@@ -329,9 +329,9 @@ $.ajaxSetup({ cache: false });
 		var html= '';
 		html += '<div class="accordion accordion-content" style="display:block;">';
 		html +='<h4 class="accordion-header  active-bag" >';
+		html += '<a class="deletePlan" href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'"></a>';
 		html +='<a   href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'"  class="setPlan">'+ planName +'<span>-</span>';
 		html += '<small><span>0</span>个景点</small></a>'
-		html += '<a class="deletePlan" href="?statusName='+ encodeURI( statusName ) +'&amp;planName='+ encodeURI( planName ) +'"></a>';
 		html +='</h4>' ;
 		html += '<div class="accordion-content clearfix   state-active" style="display: block;">';
 		html +='<ul class="open">';	
