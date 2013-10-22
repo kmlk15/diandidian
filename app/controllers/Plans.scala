@@ -121,7 +121,7 @@ object Plans extends Controller {
                   case None => Ok(views.html.plan("planning", planview , cityListStr ))
                   case Some(x) => 
                     val nickname = request.getQueryString("name").getOrElse("")
-                    Ok(views.html.planforpdf( nickname  , planview , cityListStr ))
+                    Ok(views.html.planforpdf841( nickname  , planview , cityListStr ))
                 }
             }
         }
@@ -324,9 +324,11 @@ object Plans extends Controller {
       	  "&forpdf=true&userId="+ userId +"&name=" + URLEncoder.encode( name ,"utf-8")
       	  log.debug("url={}", url )
       	  val randomstr = RandomStringUtils.randomAlphanumeric(4) ;
+      	  //val js = "rasterize.coffee" 
+      	  val js = "/printheaderfooter.js"
       	  val  filename = "/opt/phantomjs/tmp/" + userId +  randomstr   + ".pdf"
       	  val cmdSeq = Seq("/opt/phantomjs/bin/phantomjs","--debug=true", "--disk-cache=true", 
-      	      "/opt/phantomjs/js/printheaderfooter.js" ,     url   , filename, "A4" )
+      	      "/opt/phantomjs/js/" + js ,     url   , filename, "A4" )
       	  log.debug( "cmdSeq={}", cmdSeq.mkString( " " ))
       	  import scala.sys.process._
       	  if(  cmdSeq.! == 0 )  {

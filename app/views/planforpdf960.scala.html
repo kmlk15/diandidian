@@ -1,0 +1,296 @@
+@(nickname: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
+@import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
+
+@displayName(location: models.LocationForm) = {
+@if( location.name.length >180){
+	@{location.name.substring(0,180)+"..."}
+}else{
+	@location.name
+}
+  
+}
+
+@displayAdmission( admission : models.AdmissionForm)={
+  <table  >
+	<tr>
+ 		<td  colspan="2" > @admission.free </td>
+	</tr>
+@if(admission.general!="0" &&  admission.general!="" ){
+	<tr >
+		<td class="labe4">标准:</td>
+		<td><span > @admission.general</span></td>
+	</tr>
+}
+@if(admission.children!="0" &&  admission.children!="" ){
+	<tr>
+		<td class="labe4">儿童:</td>
+		<td><span > @admission.children</span></td>
+	</tr>
+}
+@if(admission.student!="0" &&  admission.student!="" ){	
+	<tr>
+		<td class="labe4">学生:</td>
+		<td><span >@admission.student </span></td>
+	</tr>
+}	
+@if(admission.seniors!="0" &&  admission.seniors!="" ){	
+	<tr>
+		<td class="labe4">长者:</td>
+		<td><span >@admission.seniors </span></td>
+	</tr>
+}	
+
+</table>
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Planning Page</title>
+<meta http-equiv="keywords" content="" />
+<meta http-equiv="description" content="" />
+<style>
+.clearfix:before,
+.clearfix:after {
+  content: '.';
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+body {
+	font-family: "微软雅黑", "STHeiti", Verdana, arial, sans-serif;
+	background-color:white;
+} 
+
+.yellowbox{
+	background-color:#fff200;
+	color:#626262;
+	height:40px;
+	width:400px;
+	font-size:14px;
+	line-height:40px;
+	margin: 0 0 0 100px ;
+	padding-left:20px
+}
+.greenbox{
+	background-color:#00a500 ;
+	color:white;
+	height:80px;
+	width:600px;
+	font-size:38px;
+	line-height:80px;
+	margin: 0 0 0 100px ;
+	padding-left:20px;
+}
+.bluebox{
+	font-family: Verdana, arial, sans-serif;
+	background-color:#00aeef  ;
+	height:32px;
+	width:500px;
+	font-size:18px;
+	line-height:32px;
+	margin: 0 0 0 100px ;
+	padding-left:20px;
+	color:white;
+}
+.googlemapbox{
+	position:relative;
+	left:640px;
+	top:0px; 
+	width:260px;
+	height:260px;
+	z-index:5;
+}
+
+.coverframe{
+	width:960px;height:595px;
+	margin-top:10px;margin-left:auto;margin-right:auto
+}
+.coverphoto{
+	position:relative;left:120px;top:134px;
+	width:115px;height:115px;
+	z-index:20;
+}
+
+.contentframe{
+	width:960px;min-height:595px;
+	margin-top:10px;margin-bottom:10px;
+	
+	page-break-before:always;
+}
+
+hr.green{
+	border-top-style:solid;
+	border-top-color:green;
+	border-top-width:4px;
+	page-break-before:always;
+	margin: 0 0 0 0px ;	
+}
+
+
+h3{
+	font-size:32px;height:56px;line-height:56px;
+	border-bottom-style:solid;border-bottom-color:grey;border-bottom-width:1px;
+	margin: 8px 0 0px 0 ;
+	padding:0 0 5px 0
+}
+
+.num1 {
+	background-color:black;
+	color:white;
+	padding:8px 16px 8px 16px;
+	border:1px solid black;
+	border-radius:32px;
+	font-size:28px;
+	margin-bottom:5px
+}
+.num2 {
+	background-color:black;
+	color:white;
+	padding:8px 8px 8px 8px;
+	border:1px solid black;
+	border-radius:32px;
+	font-size:28px;
+	margin-bottom:5px
+}
+
+.photo{
+ width:193px;height:190px;
+ float:right;
+ margin-right:10px;
+ border-radius: 0 10px 10px 0; 
+}
+.content{
+	
+	 margin-top:10px;margin-bottom:10px ;
+	 padding-top:10px;padding-bottom:10px ;
+}
+
+.location{
+	margin-top:10px;margin-bottom:10px ;
+	border-bottom-style:dotted;
+	border-bottom-color:grey;
+	border-bottom-width:1px;
+	padding-top:0px;padding-bottom:10px ;
+}
+
+</style>
+
+
+</head>
+<body   >
+@**  pdf 封面**@
+
+<div class="coverframe">
+<div class="coverphoto" >
+	<img id="locationa" style="width:115px;height:115px"
+		src="http://diandidian.s3-us-west-1.amazonaws.com/@planview.map.head._2.head.photo.planpageImg"    /> 
+</div>
+<div style="position:relative;left:100px;top:100px;z-index:10;width:600px">
+	<p class="yellowbox"><em>@{nickname}  @{planview.getDays }-Day Trip</em></p>
+	<p class="greenbox"><strong>@planview.name</strong></p>
+	<p class="bluebox">@planview.getStartEnd </p>
+	<p style="background-color:white  ;height:32px;width:350px;font-size:14px;line-height:32px;margin: 0 0 0 100px ;" >
+	 <span style="margin: 0 10px 0px 0  " >Created With </span>   
+	 <img  src='@routes.Assets.at("images/logo_diandidian.png")' style="vertical-align:middle;height:32px"/>
+	</p>
+</div>
+	<div  class="googlemapbox">
+		<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=22.283364,114.173068&zoom=12&size=260x260&sensor=false"  style="width:260px;height:260px;" />
+	</div>
+</div>
+
+
+
+@** 每一天的 景点 **@
+@for( kv <- planview.map  ){
+
+<div class="contentframe">
+	<h3 >
+		@if(planview.getIndex(kv._1 ) < 10){
+		<span class="num1" > @planview.getIndex(kv._1 )</span>
+		}else{
+		<span class="num2" >@planview.getIndex(kv._1 )</span>
+		}
+		<span>@planview.getTtitle( kv._1 ,"pdf" )</span> 
+	</h3>
+	
+<div class="content">	
+ @for( locationview <- kv._2){
+
+ <div class="location">
+	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg" class="photo"  />
+	<div  style="margin: 0 0 0 0 ; width:720px ; float:left">
+		<h4 style="font-size:18px;height:28px;line-height:28px;margin: 4px 0 4px 0 ;" >@locationview.location.name</h4>
+		<p style="margin: 0 0 0 0 ;">
+			<span>地址：@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>
+			<span>电话：@locationview.location.phone.general</span>
+		</p>
+		 
+		<p style="margin: 0 0 0 0 ;" >@locationview.location.url</p>
+	
+		<div style="margin: 10px 0 0 0 ;">
+			<div style="float:left;width:300px">
+			 
+			@Html( models.HoursFormHelp.opentimetablePlanningPagePdf( locationview.location.hours) )
+			</div>
+			<div style="float:right;width:300px">
+			@views.html.detail.admission(  locationview.location.admission )
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div style="margin-top:10px;">
+		@Html(  locationview.location.fact )
+		</div>
+	
+	</div> 
+	<div class="clearfix"></div>
+ </div> @*  end location *@
+}
+
+@if(  planview.noteMap.get( kv._1 ) != None){
+	<div style="font-size:28px;margin-top:10px;margin-bottom:5px">当日备注</div>
+	<div>
+	@planview.noteMap.get( kv._1 )
+	</div>
+}
+
+</div> @*  end content *@
+
+</div> @*  end content frame *@
+
+}
+
+
+
+								 
+
+
+
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.10.2.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
+<script>
+$(function(){
+	$("#locationa").imgr({ radius:"60px"});
+	
+	$("#googlemap").imgr({ radius:"130px"});
+	
+	 
+});
+
+</script>
+</body>
+</html>

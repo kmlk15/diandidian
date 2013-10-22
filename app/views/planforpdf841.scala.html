@@ -1,0 +1,299 @@
+@(nickname: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
+@import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
+
+@displayName(location: models.LocationForm) = {
+@if( location.name.length >180){
+	@{location.name.substring(0,180)+"..."}
+}else{
+	@location.name
+}
+  
+}
+
+@displayAdmission( admission : models.AdmissionForm)={
+  <table  >
+	<tr>
+ 		<td  colspan="2" > @admission.free </td>
+	</tr>
+@if(admission.general!="0" &&  admission.general!="" ){
+	<tr >
+		<td class="labe4">标准:</td>
+		<td><span > @admission.general</span></td>
+	</tr>
+}
+@if(admission.children!="0" &&  admission.children!="" ){
+	<tr>
+		<td class="labe4">儿童:</td>
+		<td><span > @admission.children</span></td>
+	</tr>
+}
+@if(admission.student!="0" &&  admission.student!="" ){	
+	<tr>
+		<td class="labe4">学生:</td>
+		<td><span >@admission.student </span></td>
+	</tr>
+}	
+@if(admission.seniors!="0" &&  admission.seniors!="" ){	
+	<tr>
+		<td class="labe4">长者:</td>
+		<td><span >@admission.seniors </span></td>
+	</tr>
+}	
+
+</table>
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Planning Page</title>
+<meta http-equiv="keywords" content="" />
+<meta http-equiv="description" content="" />
+<style>
+.clearfix:before,
+.clearfix:after {
+  content: '.';
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+body {
+	font-family: "微软雅黑", "STHeiti", Verdana, arial, sans-serif;
+	background-color:white;
+} 
+
+.yellowbox{
+	background-color:#fbee23;
+	color:#58544b;
+	height:30px;
+	width:290px;
+	font-size:13px;
+	line-height:40px;
+	margin: 0 0 0 100px ;
+	padding-left:20px;
+	overflow:hidden;
+}
+
+.greenbox{
+	background-color:#00a500 ;
+	color:white;
+	height:76px;
+	width:530px;
+	font-size:36px;
+	line-height:76px;
+	margin: 0 0 0 100px ;
+	padding-left:20px;
+	overflow:hidden;
+	
+}
+.bluebox{
+	font-family: Verdana, arial, sans-serif;
+	background-color:#00aeef  ;
+	height:30px;
+	width:470px;
+	font-size:13px;
+	line-height:30px;
+	margin: 0 0 0 100px ;
+	padding-left:20px;
+	color:white;
+}
+.googlemapbox{
+	position:relative;
+	left:578px;
+	top:-60px; 
+	width:210px;
+	height:210px;
+	z-index:5;
+}
+
+.coverframe{
+	width:841px;height:595px;
+	/* margin-top:10px;margin-left:auto;margin-right:auto */
+}
+.coverphoto{
+	position:relative;left:53px;top:134px;
+	width:126px;height:126px;
+	z-index:20;
+}
+
+.contentframe{
+	width:841px;min-height:595px;
+	margin-top:10px;margin-bottom:20px;
+	margin-left:36px;margin-right:36px;
+	page-break-before:always;
+}
+
+ 
+
+h3{
+	font-size:32px;height:56px;line-height:56px;
+	width:770px;
+	border-bottom-style:solid;border-bottom-color:#58544b;border-bottom-width:1px;
+	margin: 8px 0 0px 0 ;
+	padding:0 0 5px 0
+}
+
+.num1 {
+	font-family: Verdana, arial, sans-serif;
+	background-color:#58544b;
+	color:white;
+	padding:8px 13px 8px 13px;
+	border:1px solid #58544b;
+	border-radius:38px;
+	font-size:20px;
+	margin-top: 26px;
+	margin-bottom:5px
+}
+.num2 {
+	font-family: Verdana, arial, sans-serif;
+	background-color:#58544b;
+	color:white;
+	padding:8px 5px 8px 5px;
+	border:1px solid #58544b;
+	border-radius:38px;
+	font-size:20px;
+	margin-top: 26px;
+	margin-bottom:5px
+}
+
+.photo{
+ width:159px;height:158px;
+ float:right;
+ margin-right:0px;
+ border-radius: 0 10px 10px 0; 
+ border-color: #d8d8d8;
+}
+.content{
+	 width:770px;
+	 
+}
+
+.location{
+ 	widht:770px;
+	margin-top:10px;margin-bottom:10px ;
+	border-bottom-style:dotted;
+	border-bottom-color:#58544b;
+	border-bottom-width:1px;
+	 
+}
+
+</style>
+
+
+</head>
+<body   >
+@**  pdf 封面**@
+
+<div class="coverframe">
+<div class="coverphoto" >
+	<img id="locationa" style="width:126px;height:126px"
+		src="http://diandidian.s3-us-west-1.amazonaws.com/@planview.map.head._2.head.photo.planpageImg"    /> 
+</div>
+<div style="position:relative;left:53px;top:56px;z-index:10;width:630px">
+	<div class="yellowbox"><span>@{nickname} - @{planview.getDays }天旅程</span></div>
+	<div class="greenbox"><strong>@planview.name</strong></div>
+	<div class="bluebox">@planview.getStartEnd </div>
+	<div style="background-color:white;height:32px;width:250px;margin: 8px 0 0 120px ;" >
+	    
+	 <img  src='@routes.Assets.at("images/output_DD_logo.png")' style="vertical-align:middle;width:78px;height:28px"/>
+	</div>
+</div>
+	<div  class="googlemapbox">
+		<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=22.283364,114.173068&zoom=12&size=210x210&sensor=false"  style="width:210px;height:210px;" />
+	</div>
+</div>
+
+
+
+@** 每一天的 景点 **@
+@for( kv <- planview.map  ){
+
+<div class="contentframe">
+	<h3 >
+		@if(planview.getIndex(kv._1 ) < 10){
+		<span class="num1" >@planview.getIndex(kv._1 )</span>
+		}else{
+		<span class="num2" >@planview.getIndex(kv._1 )</span>
+		}
+		<span style="color:#58544b;font-size:20px;" >@planview.getTtitle( kv._1 ,"pdf" )</span> 
+	</h3>
+	
+<div class="content">	
+ @for( locationview <- kv._2){
+
+ <div class="location">
+	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.planpageImg" class="photo"  />
+	<div  style="margin: 0 0 0 0 ; width:590px; float:left">
+		<h4 style="font-size:18px;height:28px;line-height:28px;margin: 4px 0 4px 0 ;color:#58544b" >@locationview.location.name</h4>
+		<p style="margin: 4px 0 4px 0 ;color:#58544b;font-size:13px;">
+			<span style="width:335px">地址：@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>
+			<span>@if(!locationview.location.phone.general.isEmpty){电话：@locationview.location.phone.general}</span>
+		</p>
+		 
+		<p style="margin: 0 0 0 0 ;color:#00aeef;font-family: Verdana, arial, sans-serif; font-size:13px;" >@locationview.location.url</p>
+	
+		<div style="margin: 20px 0 20px 0 ;">
+			<div style="float:left;width:335px">
+			 
+			@Html( models.HoursFormHelp.opentimetablePlanningPagePdf( locationview.location.hours) )
+			</div>
+			<div style="float:right;width:255px">
+			@views.html.detail.admission(  locationview.location.admission )
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div style="margin-top:20px;margin-bottom:20px;font-size:13px;color:#58544b;line-height:18px;">
+		@Html(  locationview.location.fact )
+		</div>
+	
+	</div> 
+	<div class="clearfix"></div>
+ </div> @*  end location *@
+}
+
+ 
+	<div style="font-size:18px;margin-top:10px;margin-bottom:5px;color:#58544b">当日备注</div>
+	<div style="min-height:32px;font-size:13px;color:#58544b;line-height:18px;">
+	@planview.noteMap.get( kv._1 )
+	</div>
+ 
+
+</div> @*  end content *@
+
+</div> @*  end content frame *@
+
+}
+
+
+
+								 
+
+
+
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.10.2.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
+<script>
+$(function(){
+	$("#locationa").imgr({ radius:"63px"});
+	
+	$("#googlemap").imgr({ radius:"105px"});
+	
+	 
+});
+
+</script>
+</body>
+</html>
