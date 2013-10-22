@@ -11,21 +11,24 @@ if (system.args.length < 3) {
 } else {
     var address = system.args[1];
     var output = system.args[2];
-    page.viewportSize = { width: 800, height: 600 };
+    page.viewportSize = { width: 841, height: 595 };
     page.paperSize = {
         format: 'A4',
         orientation: 'landscape',
-        margin: "0cm",
+        //width: "1169px"  ,
+        //height: "826px" , 
+        //margin: "10px 36px 10px 72px",
+        margin: {left:"0px" ,right: "0cm",top:"0cm",bottom    :"0cm" },
         border: "0cm",
         /* default header/footer for pages that don't have custom overwrites (see below) */
         header: {
-            height: "0.5cm",
-            left: "-5px",
+            height: "15px",
+            border: "0cm",
             contents: phantom.callback(function(pageNum, numPages) {
-                if (pageNum == 1) {
+                if (pageNum == 1 ) {
                     return "";
                 }
-                return "<div style='background-color:#00a651;width:120%;height:10px'  />";
+                return "<div style='margin-left:44px;background-color:#00a651;width:918px;height:10px'  />";
             })
         }
     };
