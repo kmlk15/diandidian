@@ -303,7 +303,7 @@ var infowindow ;
 function initialize() {
   var myLatlng = new google.maps.LatLng(22.283364 , 114.173068);
   var mapOptions = {
-    zoom: 10,
+    zoom: 9,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
@@ -448,6 +448,14 @@ $(function(){
 			
 			$("div#plan-date-input").fadeIn( 800 , function(){
 				$("div#plan-timeline a.all").fadeOut( 400);
+				var img = $("#plan-timeline .date-line > img")
+				console.log( img.position() );
+				if( img.position().top < 10){
+					img.animate({top:img.position().top    },1000);
+				}else{
+					img.animate({top:img.position().top - 30   },1000);
+				}
+				
 			});
 			 $(  "span" , this ).removeClass("active")  ;
 			 infowindow.close( ) ; 
@@ -457,6 +465,8 @@ $(function(){
 			 $(  "span" , this ).addClass("active")  ;
 			$("div#plan-date-input").fadeOut( 400 , function(){
 				$("div#plan-timeline a.all").fadeIn(800 );
+				 var img = $("#plan-timeline .date-line > img")
+				img.animate({top:img.position().top + 30   },1000);
 			} );
 			if( w != tag.width()){
 				tag.width( w );

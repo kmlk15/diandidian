@@ -75,7 +75,7 @@ $(function() {
 	
 	
 	$(window).resize(function(e) {
-		var space = 133;
+		var space = 210;
 		var height = $(this).height()-space;
 		$("#attraction-planning-wrap").height(height);
 		$("#plan-attractions-list-wrap, #plan-timeline").height(height-$("#plan-attractions .header").height());
