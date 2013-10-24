@@ -48,9 +48,7 @@ $(function() {
 		param.visible="public";
 		$.getJSON("/plan/updateVisible", param, function(result){
 			console.log( result.success);
-			if(result.success){
-				$("div#visiblebutton").html("<span>公开</span>")
-			}
+			 
 		});
 	});
 	
@@ -59,9 +57,7 @@ $(function() {
 		param.visible="private";
 		$.getJSON("/plan/updateVisible", param, function(result){
 			console.log( result.success);
-			if(result.success){
-				$("div#visiblebutton").html("<span>私有</span>")
-			}
+			 
 		});
 	});
 	
