@@ -120,7 +120,7 @@
 										<li  id="plansave">保存</li>
 										<li id="planpublic">保存为公开</li>
 										<li id="planprivate">保存为私有</li>
-										<li class="last" id="plansavepdf">保存+PDF</li>
+										<li class="last" id="plansavepdf"><a href="/plan/outpdf?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  target="_blank">保存+PDF</a></li>
 									</ul>
 								</div>
 								 <div class="plan-map" id="mapbutton">
@@ -210,8 +210,10 @@
 	<span class="savebtn">保存 </span>
  
 </div> 
+<a href="#"   target="_blank"     id="pdfdownload"></a>
 
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.10.2.js")'></script>
+
+ <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.10.2.js")'></script>
 	
 	<script language="javaScript">
 	

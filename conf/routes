@@ -47,7 +47,7 @@ GET    /plan/updateVisible  		controllers.Plans.updateVisible( statusName : Stri
 GET    /plan/outpdf				controllers.Plans.outpdf( statusName : String , planName : String  )
 GET    /plan/testmap                   controllers.Plans.testmap()
 
-GET		/plan/sendfile/$randomstr<[0-9a-zA-Z]{4}> 	controllers.Plans.sendfile( randomstr: String) 
+GET		/plan/sendfile/$randomstr<[0-9a-zA-Z]{4}>/:planName 	controllers.Plans.sendfile( randomstr: String, planName : String) 
 	
 GET     /test                       controllers.api.LocationEndpoints.test
 GET     /example                    controllers.api.LocationEndpoints.example

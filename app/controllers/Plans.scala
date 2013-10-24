@@ -332,7 +332,9 @@ object Plans extends Controller {
       	  log.debug( "cmdSeq={}", cmdSeq.mkString( " " ))
       	  import scala.sys.process._
       	  if(  cmdSeq.! == 0 )  {
-      	     Ok(Json.obj("success"->true, "data"->Json.obj("randomstr"-> randomstr)))
+      	     //Ok(Json.obj("success"->true, "data"->Json.obj("randomstr"-> randomstr ,"planName" -> planName )))
+      	    val nexturl ="/plan/sendfile/" +  randomstr +"/" + URLEncoder.encode(  planName, "utf-8") +".pdf";
+      	     Redirect( nexturl)
       	  }else{
       	     Ok(Json.obj("success"->false,"msg" -> " 生成PDF失败"))
       	  }
@@ -340,14 +342,14 @@ object Plans extends Controller {
   }
   
   //发送pdf 文件
-  def sendfile( randomstr: String ) = Action{ implicit request => 
+  def sendfile( randomstr: String , planName: String ) = Action{ implicit request => 
   	 session.get("userId") match {
       	case None => Redirect(routes.Login.login())
       	case Some( userId) =>
       	  val  filename = "/opt/phantomjs/tmp/" + userId +  randomstr   + ".pdf"
       	  Ok.sendFile(
       			  content = new java.io.File(filename),
-      			  fileName = _ => randomstr + ".pdf" ,
+      			  fileName = _ => planName   ,
       			  inline = true
       		)
   	 }

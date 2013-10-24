@@ -61,17 +61,22 @@ $(function() {
 		});
 	});
 	
-	$("#plansavepdf").click( function(){
-		var param = getCurrentStatusnamePlanName();
-		$.getJSON("/plan/outpdf", param, function(result){
-			console.log( result );
-			if( result.success){
-				location="/plan/sendfile/" + result.data.randomstr;
-			}else{
-				alert( result.msg );
-			}
-		});
-	});
+//	$("#plansavepdf").click( function(){
+//		var param = getCurrentStatusnamePlanName();
+//		$.getJSON("/plan/outpdf", param, function(result){
+//			console.log( result );
+//			if( result.success){
+//				var href="/plan/sendfile/" + result.data.randomstr +"/" + encodeURI( result.data.planName) +".pdf";
+//				console.log("href=" + href ) ;
+//				$("#pdfdownload").attr("href", href)
+//				
+//				$("#pdfdownload")[0].click();
+//				
+//			}else{
+//				alert( result.msg );
+//			}
+//		});
+//	});
 	
 	
 	$(window).resize(function(e) {

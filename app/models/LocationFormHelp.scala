@@ -6,6 +6,7 @@ import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
 import play.api.libs.json.Json
 import scala.collection.mutable
+import org.apache.commons.lang3.StringUtils
  
 case class OpenClose(open: String = "" , close: String = "" ){
   
@@ -152,7 +153,20 @@ case class AdmissionForm(
   student: String = "",
   seniors: String = "",
   free: String = ""
-)
+){
+  
+  def isEmpty(): Boolean = {
+    ( StringUtils.isBlank( currency )  ||  currency=="0" )&& 
+    (StringUtils.isBlank( general )  ||  general=="0" ) && 
+    ( StringUtils.isBlank( adults ) ||  adults=="0"  ) && 
+    ( StringUtils.isBlank( children )  ||  children=="0"  )&& 
+    ( StringUtils.isBlank( student )  ||  student=="0" ) && 
+    ( StringUtils.isBlank( seniors )  ||  seniors=="0" ) && 
+   (  StringUtils.isBlank( free )  ||  free=="0" )
+         
+  }
+  
+}
   
 
 case class LocationForm(
