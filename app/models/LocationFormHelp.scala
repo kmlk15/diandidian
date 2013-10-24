@@ -104,7 +104,7 @@ object HoursFormHelp{
       trList.map( str => <tr><td  style='padding-right:10px;text-align:right;'  >{str._1}</td><td>{str._2.toString}</td></tr>)
       }
      {if( hours.closed != "") 
-     <tr><td colspan="2"  stlye="width:250px">休馆:{hours.closed}</td></tr>
+     <tr><td colspan="2"  style="width:250px">休馆:{hours.closed}</td></tr>
       }
       </table>
        
