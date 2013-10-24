@@ -1326,7 +1326,7 @@ ul, ol {
 				padding: 10px 0 0 0;
 				 
 				width: 102px;
-				background: @greyPlanDropDownBg;
+				background: @greyDropDownHoverBg;
 				z-index: 3;
 				li {
 					padding: 0 0 0 7px;
@@ -1400,7 +1400,7 @@ ul, ol {
 				background: #f00;
 			}
 			.bottom {
-				padding: 0 0 3px 8px;
+				padding: 5px 0 3px 8px;
 				cursor: pointer;
 				height: 38px;
 				width: 185px;
@@ -1645,11 +1645,51 @@ ul, ol {
 	}
 }
 .googleinfowindow{
-	width:280px;
-	border: 1px solid black; 
-	margin-top: 8px; 
-	background:  @greyDropDownHoverBg; 
-	padding: 5px;
+	width:282px;
+	border: 1px solid #8f8f8f; 
+	background:  @greyDropDownHoverBg;
+	color: @textGrey2;
+	.div1{
+		margin-left:8px;
+		margin-top:8px;
+		margin-bottom:8px;
+		h3{
+			font-size:17px;
+			line-height: 18px;
+		}
+		h4{
+			font-size: 12px;
+		}
+		
+		img {
+			margin-right: 8px;
+			width:102px;
+			height:57px;
+			float:left;
+		}
+	}
+	.div2{
+		margin-left:8px;
+	}
+	.div3{
+		margin-left:8px;
+		margin-top:8px;
+		margin-bottom:8px;
+		
+		.mydate {
+			min-width: 110px;
+			font-size:12px;
+			float:left;
+		}
+		
+		.infowindow{
+			
+			left:120px;
+			color:red;
+			cursor: pointer;
+			
+		}
+	} 
 }
 /**
 google map  infowindow

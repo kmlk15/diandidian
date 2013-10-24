@@ -350,16 +350,18 @@ function initialize() {
 			  locationData.position = new google.maps.LatLng(@locationview.location.address.latitude , @locationview.location.address.longitude );
 			  
 			  locationData.content = {
-					  img: '<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.detailpageThumbnailImg"  width="102"  height="57" style="float:left" />',
+					  img: '<img src="http://diandidian.s3-us-west-1.amazonaws.com/@locationview.photo.detailpageThumbnailImg"  />',
 					  name: '<h3>@escapeEcmaScript(locationview.location.name)</h3><h4>@{escapeEcmaScript(locationview.location.address.city + locationview.location.address.district + locationview.location.address.street)}</h4>',
 					  date: '@planview.getTtitle( kv._1 )',
 					  
-					  timelinestr: '<span style="color:red" id="@locationview.location.id.get" class="infowindow" >设置或更改日期</span>',
+					  timelinestr: '<div id="@locationview.location.id.get" class="infowindow" >设置或更改日期</div>',
 					  contentString: function(){
 						  var contentString = '<div id="content_@locationview.location.id.get"  class="googleinfowindow">' ;
-						  contentString += '<div class="clearfix">'+ this.img +  this.name +' </div>';
-						  contentString += '<div >' + '<span>计划日期: '+ this.date + '</span>' +  this.timelinestr  + '</div>';
+						  contentString += '<div class="div1 clearfix">'+ this.img +  this.name +' </div>';
+						  contentString += '<img class="div2" src="/assets/images/pop-map-dotted-line.png" />' ; 
+						  contentString += '<div class="div3" >' + '<div class="mydate">'+ this.date + '</div>' +  this.timelinestr  + '</div>';
 						  contentString += '</div>';
+						  console.log ( contentString );
 						  return contentString;
 					  }
 			  };
@@ -402,7 +404,7 @@ $(function(){
 	
 });
 $(function() {
-	$("div#map-canvas").on("click" ,  "span.infowindow" ,   function(e){
+	$("div#map-canvas").on("click" ,  "div.infowindow" ,   function(e){
 		 
 		var locationid = $(this).attr("id");
 		window.currentLocationid = locationid ;
@@ -415,8 +417,8 @@ $(function() {
 		console.log("left: " + offset.left + ", top: " + offset.top );
 		
 		offset.position="absolute";
-		offset.top = offset.top + 20 ;
-        
+		offset.top = offset.top + 25 ;
+		offset.left = offset.left + 110 ;
 		$("div#infowindowtimeline").css ( offset) ;
 		
 		$("div#infowindowtimeline").toggle();
