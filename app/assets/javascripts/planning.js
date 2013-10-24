@@ -488,6 +488,13 @@ function setPlanAttractionsListPaddingBottom() {
 	var lastUlHeight = $("#plan-attractions-list ul:last").outerHeight(true);
 	var paddintBottom = visibleHeight - h3Height - lastUlHeight - 5;
 	$("#plan-attractions-list").css("padding-bottom", paddintBottom+"px");
+	if( gmapon ){
+		var tag = $("div#map-canvas") ; 
+		var w = $( "div#plan-attractions").width() - $("div#plan-timeline-wrap").width() - 40 ;
+		var h = $( "div#plan-attractions").height() -  148 ;
+		tag.width( w );
+		tag.height( h );
+	}
 }
 
 
