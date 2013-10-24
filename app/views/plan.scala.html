@@ -100,6 +100,7 @@
 								</div><!-- end plan-data-input -->
 								
 							</div><!-- end plan-timeline -->
+							
 						</div><!-- end plan-timeline-wrap -->
 						
 						
@@ -147,15 +148,18 @@
 														<td class="label">地址:</td>
 														<td>@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street </td>
 													</tr>
+													@if( models.HoursFormHelp.opentimetablePlanningPage( locationview.location.hours) != "" ){
 													<tr>
 														<td class="label">时间:</td>
 														<td>@Html( models.HoursFormHelp.opentimetablePlanningPage( locationview.location.hours) )</td>
 													</tr>
+													}
+													@if(locationview.location.hours.closed != "" ){
 													<tr>
 														<td class="label">休馆:</td>
 														<td>  @locationview.location.hours.closed </td>
 													</tr>
-													
+													}
 													
 												</table>
 												<div class="note-input" >
@@ -193,6 +197,8 @@
 <div id="infowindowtimeline" style='display:none;background-color:white;width:100px'  >
 
 </div>
+<img id="date-line-tooltip" src='@routes.Assets.at("images/no_attraction_alert.png")'  style="display:none" />
+
 
 <div id="note-input" class="note-input"    >
 <input type="hidden" value=""  name="datestr" />

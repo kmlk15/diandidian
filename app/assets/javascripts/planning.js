@@ -769,6 +769,7 @@ function initialTimeLineLink() {
 			$(this).addClass("active");
 			return false ;
 		}else{
+			$("#date-line-tooltip").hide( );
 			var $target = $("#plan-attractions-list").find(".t-"+href);
 			if ($target.length>0) {
 				var arrowTopPosstion = 3;
@@ -780,11 +781,22 @@ function initialTimeLineLink() {
 				$(this).addClass("active");
 				$("#plan-attractions-list h3.active").removeClass("active");
 				$target.addClass("active");
-			} 
+			}else{
+				var offset = $(this).offset();
+				offset.position="absolute";
+				offset.left = offset.left  + 90;
+				offset.top = offset.top  - 5 ;
+				console.log( offset  ) ;
+				
+				$("#date-line-tooltip").css( offset );
+				$("#date-line-tooltip").show( ).delay(  2000 ).hide( "slow" );
+				
+			}
 			return false;
 		}
 	});
 	
+	 
 	
 	$("#plan-timeline .date-line a:not('.year')").droppable(
 		{
