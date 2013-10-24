@@ -270,7 +270,7 @@ function createMapTimeline( startDate , endDate ){
 	
 	var timeLinkHtml = createMapTimeLinkHtml(startDate , endDate );
 
-	 
+	console.log( "timeLinkHtml=" + timeLinkHtml ) ;
 	 
 	$("#infowindowtimeline").html(timeLinkHtml);
 	 
@@ -292,7 +292,13 @@ function createMapTimeLinkHtml(startDate , endDate ){
 	var date = startLoopDate.getDate();
 	var formatDate = date<10 ? "0"+date : date;
 	var loopTimeHtml = '<a class="year" href="'+year+'">'+year+'</a><a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
+	var lastdaycss="";
 	for(var i=0; i<durationDay; i++) {
+		if( i == durationDay -1 ){
+			lastdaycss="lastday" ;
+		}
+		console.log("i=" + i +"\tlastdaycss="+ lastdaycss );
+		
 		startLoopDate = new Date(startLoopDate.getTime()+(24*60*60*1000));
 		if (year != startLoopDate.getFullYear()) {
 			year = startLoopDate.getFullYear();
@@ -303,9 +309,9 @@ function createMapTimeLinkHtml(startDate , endDate ){
 		if (month != (startLoopDate.getMonth()+1)) {
 			month = startLoopDate.getMonth()+1;
 			formatMonth = month<10 ? "0"+month : month;
-			loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+month+'月'+date+'日</a>';
+			loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'" class="'+ lastdaycss +'">'+month+'月'+date+'日</a>';
 		} else {
-			loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'">'+date+'日</a>';
+			loopTimeHtml = loopTimeHtml + '<a href="'+year+'/'+formatMonth+'/'+formatDate+'" class="'+ lastdaycss +'">'+date+'日</a>';
 		}
 	}
 	timeLinkHtml = timeLinkHtml + loopTimeHtml + '</div>';

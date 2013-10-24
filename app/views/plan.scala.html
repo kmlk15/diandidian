@@ -320,7 +320,7 @@ function initialize() {
 			  ,opacity: 1
 			  ,width: "280px"
 			 }
-			,closeBoxMargin: "10px 2px 2px 2px"
+			,closeBoxMargin: "5px 5px 5px 5px"
 			,closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif"
 			,infoBoxClearance: new google.maps.Size(1, 1)
 			,isHidden: false
@@ -329,14 +329,24 @@ function initialize() {
 		};
     infowindow = new InfoBox(myOptions);
 
-	 
-	
+	 // 自动关闭 时间线 
+    google.maps.event.addListener(map , "click" , function(){
+    	 console.log("click on map") ;
+    	 $("div#infowindowtimeline").hide();
+    });
 
-  
+    google.maps.event.addListener( map , "bounds_changed" , function(){
+  	  console.log("infowindow  closeclick");
+  	  $("div#infowindowtimeline").hide();
+    });
+    
+    
   google.maps.event.addListener( infowindow , "closeclick" , function(){
 	  console.log("infowindow  closeclick");
 	  $("div#infowindowtimeline").hide();
   });
+  
+
   
   
   @for( kv <- planview.map  ){
@@ -380,7 +390,9 @@ function initialize() {
 		  
 
 		  google.maps.event.addListener(marker_@locationview.location.id.get  , 'click', function() {
+			  $("div#infowindowtimeline").hide();
 			  infowindow.close();
+			  
 			  var content = locationMap['@locationview.location.id.get'].content.contentString();
 			  infowindow.setContent( content ) ;
 			  infowindow.open(map, marker_@locationview.location.id.get);
