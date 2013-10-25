@@ -767,17 +767,32 @@ function initialTimeLineLink() {
 				 
 			 }
 			 
-			//移动图标
-			var arrowTopPosstion = 3;
-			var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
-			arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
-			$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
+			
 			var $target = $("#plan-attractions-list").find(".t-"+href);
 			if ($target.length>0) {
+				//移动图标
+				var arrowTopPosstion = 3;
+				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
+				arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
+				$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
+				
 				attractionsApi.scrollToElement($target,true, 1000);
+				$("#plan-timeline .date-line a.active").removeClass("active");
+				$(this).addClass("active");
+				
+			}else{
+					var offset = $(this).offset();
+					offset.position="absolute";
+					offset.left = offset.left  + 90;
+					offset.top = offset.top  - 5 ;
+					console.log( offset  ) ;
+					
+					$("#date-line-tooltip").css( offset );
+					$("#date-line-tooltip").show( ).delay(  2000 ).hide( "slow" );
+					
+				 
 			}
-			$("#plan-timeline .date-line a.active").removeClass("active");
-			$(this).addClass("active");
+			
 			return false ;
 		}else{
 			$("#date-line-tooltip").hide( );
