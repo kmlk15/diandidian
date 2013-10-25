@@ -723,7 +723,7 @@ function initialTimeLineLink() {
 	console.log( "attractionsApi=" +  JSON.stringify (attractionsApi ) ) ;
 	if(typeof attractionsApi === 'undefined'  ){
 		//暂时注释，CPU
-	$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true});
+	$(".customized-scroll").jScrollPane({autoReinitialise: true, autoReinitialiseDelay: 0, hideFocus: true , verticalGutter:0 });
 		
 		attractionsApi = $("#plan-attractions-list-wrap").data('jsp');
 		console.log( "attractionsApi=" +  JSON.stringify (attractionsApi ) ) ;
