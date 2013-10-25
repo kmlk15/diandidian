@@ -501,7 +501,7 @@ function setPlanAttractionsListPaddingBottom() {
 	$("#plan-attractions-list").css("padding-bottom", paddintBottom+"px");
 	if( gmapon ){
 		var tag = $("div#map-canvas") ; 
-		var w = $( "div#plan-attractions").width() - $("div#plan-timeline-wrap").width() - 35 ;
+		var w = $( "div#plan-attractions").width() - $("div#plan-timeline-wrap").width() - 11 ;
 		var h = $( "div#plan-attractions").height() -  148 ;
 		tag.width( w );
 		tag.height( h );
@@ -771,6 +771,7 @@ function initialTimeLineLink() {
 			var $target = $("#plan-attractions-list").find(".t-"+href);
 			if ($target.length>0) {
 				//移动图标
+				$("#date-line-tooltip").hide( );
 				var arrowTopPosstion = 3;
 				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
 				arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
