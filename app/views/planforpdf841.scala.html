@@ -71,7 +71,7 @@
 body {
 	font-family: "微软雅黑", "STHeiti", Verdana, arial, sans-serif;
 	background-color:white;
-	zoom: 139%;
+	 zoom: 139%; 
 } 
 
 .yellowbox{
@@ -79,11 +79,12 @@ body {
 	color:#58544b;
 	height:30px;
 	width:290px;
-	line-height: 30px;
+	line-height: 35px;
 	font-size:13px;
-	line-height:40px;
+	 
 	margin: 0 0 0 100px ;
-	padding-left:30px;
+	padding-left:32px;
+	 
 	overflow:hidden;
 }
 
@@ -120,7 +121,7 @@ body {
 }
 
 .coverframe{
-	width:841px;height:595px;
+	width:841px;height:575px;
 	/* margin-top:10px;margin-left:auto;margin-right:auto */
 }
 .coverphoto{
@@ -130,7 +131,7 @@ body {
 }
 
 .contentframe{
-	width:841px;min-height:595px;
+	width:841px;min-height:575px;
 	margin-top:10px;margin-bottom:20px;
 	margin-left:36px;margin-right:36px;
 	page-break-before:always;
@@ -142,7 +143,7 @@ h3{
 	font-size:32px;height:56px;line-height:56px;
 	width:770px;
 	border-bottom-style:solid;border-bottom-color:#58544b;border-bottom-width:1px;
-	margin: 8px 0 0px 0 ;
+	/** margin: 8px 0 0px 0 ; **/
 	padding:0 0 5px 0
 }
 
@@ -191,7 +192,7 @@ h3{
 }
 
 td.labe4{
-	width: 50px;
+	width: 30px;
 }
 </style>
 
@@ -211,7 +212,7 @@ td.labe4{
 	<div class="bluebox"><strong>@planview.getStartEnd</strong></div>
 	<div style="background-color:white;height:32px;width:250px;margin: 8px 0 0 120px ;" >
 	    
-	 <img  src='@routes.Assets.at("images/logo_diandidian.png")' style="vertical-align:middle;width:78px;height:28px"/>
+	 <img  src='@routes.Assets.at("images/output_DD_logo.png")' style="vertical-align:middle;width:78px;height:28px"/>
 	</div>
 </div>
 	<div  class="googlemapbox">
@@ -243,25 +244,38 @@ td.labe4{
 		<h4 style="font-size:18px;height:28px;line-height:28px;margin: 4px 0 4px 0 ;color:#58544b" >@locationview.location.name</h4>
 		<p style="margin: 4px 0 4px 0 ;color:#58544b;font-size:12px;">
 			<span style="width:335px">地址：@locationview.location.address.city@locationview.location.address.district@locationview.location.address.street</span>
-			<span>@if(!locationview.location.phone.general.isEmpty){电话：@locationview.location.phone.general}</span>
+			<span style="margin-left:20px">@if(!locationview.location.phone.general.isEmpty){电话：@locationview.location.phone.general}</span>
 		</p>
 		 
 		<p style="margin: 0 0 0 0 ;color:#00aeef;font-family: Verdana, arial, sans-serif; font-size:12px;" >@locationview.location.url</p>
 	
-		<div style="margin: 20px 0 20px 0 ;font-size:12px;color:#58544b">
-			<div style="float:left;width:335px">
+		<div style="margin: 20px 0 20px 0 ;font-size:11px;color:#58544b">
+			
 			 @if( locationview.location.hours == models.HoursForm()){
-			 }else{
-				@Html( models.HoursFormHelp.opentimetablePlanningPagePdf( locationview.location.hours) )
-			 }
-			</div>
-			<div style="float:right;width:255px">
 			 
-			@if(  locationview.location.admission==models.AdmissionForm( ) || locationview.location.admission.isEmpty()   ){
-			}else{
-			 	@views.html.detail.admission(  locationview.location.admission )
-			}
-			</div>
+			    @if(  locationview.location.admission==models.AdmissionForm( ) || locationview.location.admission.isEmpty()   ){
+				}else{
+					<div style="float:left;width:335px">
+				 	@views.html.detail.admission(  locationview.location.admission )
+				 	</div>
+				}
+				
+			 }else{
+			 	<div style="float:left;width:335px">
+				@Html( models.HoursFormHelp.opentimetablePlanningPagePdf( locationview.location.hours) )
+				</div>
+				@if(  locationview.location.admission==models.AdmissionForm( ) || locationview.location.admission.isEmpty()   ){
+				}else{
+					<div style="float:right;width:255px">
+				 	@views.html.detail.admission(  locationview.location.admission )
+				 	</div>
+				}
+			 }
+			
+			
+			 
+			
+			
 		</div>
 		<div class="clearfix"></div>
 		<div style="margin-top:20px;margin-bottom:20px;font-size:12px;color:#58544b;line-height:18px;">

@@ -18,7 +18,7 @@ if (system.args.length < 3) {
         //width: "1169px"  ,
         //height: "826px" , 
         //margin: "10px 36px 10px 72px",
-        margin: {left:"0px" ,right: "0cm",top:"0cm",bottom    :"0cm" },
+        margin: {left:"0px" ,right: "0cm",top:"0cm",bottom    :"0.5cm" },
         border: "0cm",
         /* default header/footer for pages that don't have custom overwrites (see below) */
         header: {
@@ -28,7 +28,7 @@ if (system.args.length < 3) {
                 if (pageNum == 1 ) {
                     return "";
                 }
-                return "<div style='margin-left:44px;margin-bottom:20px;background-color:#00a500;width:918px;height:12px'  />";
+                return "<div style='margin-left:44px;margin-top:10px;background-color:#00a651;width:918px;height:10px'  />";
             })
         }
     };
