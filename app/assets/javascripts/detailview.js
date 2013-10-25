@@ -34,6 +34,9 @@ function loadDetail( name ) {
 				});
 			 
 			 $("img.ravatarimg"  ).imgr({ radius:"16px"});	
+			 if(json.opentimetable == ""  ){
+				 $("#opentime").hide();
+			 }
 		});
 		
 		

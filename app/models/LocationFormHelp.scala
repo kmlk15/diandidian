@@ -97,6 +97,9 @@ object HoursFormHelp{
   
   
    def opentimetable(hours: HoursForm ): String = {
+     if(hours == HoursForm () ){
+        ""
+     }else{
     val trList =  view( hours)
     val html= 
       <table border="0" >
@@ -110,7 +113,7 @@ object HoursFormHelp{
        
     html.toString
   }
-   
+   }
   def opentimetablePlanningPagePdf(hours: HoursForm ): String = {
     val trList =  view( hours)
     val html= 
