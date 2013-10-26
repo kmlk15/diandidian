@@ -30,7 +30,19 @@ if (system.args.length < 3) {
                 }
                 return "<div style='margin-left:44px;margin-top:10px;background-color:#00a651;width:918px;height:10px'  />";
             })
-        }
+        },
+         footer: {
+             height: "0.5cm",
+ 
+	     contents: phantom.callback(function(pageNum, numPages) {
+                if (pageNum == 1) {
+                    return "";
+                }
+                return "<div style='float:right;margin-right:80px' >" + pageNum + "</div>";
+	   })
+       }
+
+
     };
     page.open(address, function (status) {
         if (status !== 'success') {
