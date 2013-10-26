@@ -35,18 +35,21 @@ trait FileUploadService {
    * 精确的大小
    */
 
-  def resize(from: String, to: String,  wh: (Int,Int) ): Boolean = {
+  def resize(from: String, to: String, wh: (Int, Int)): Boolean = {
     import scala.sys.process._
-    val (w,h) = wh
-    
+    val (w, h) = wh
+
     val file = new File(from)
     if (file.exists()) {
-      /**
-       * convert -resize  1280x768   $img    1280.png ;
-       */
-      Seq("convert", from, "-resize", w + "x" + h + "^", "-gravity", "center", "-extent", w + "x" + h, to).! == 0
-    }else{
-      
+      val imgsize = Seq("identify", "-format", "%[fx:w]x%[fx:h]", from).!!
+      log.debug("imgsize={}", imgsize)
+      if (imgsize.trim() == w + "x" + h) {
+        Seq("cp", "-rpv", from, to).! == 0
+      } else {
+        Seq("convert", from, "-resize", w + "x" + h + "^", "-gravity", "center", "-extent", w + "x" + h, "-quality", "100", to).! == 0
+      }
+    } else {
+
       false
     }
   }
@@ -54,7 +57,7 @@ trait FileUploadService {
   /**
    * 可以处理成一个边 ， 保持比例
    */
-  def resize1(from: String, to: String,wh: (Int,Int) ) = {
+  def resizexx(from: String, to: String,wh: (Int,Int) ) = {
     import scala.sys.process._
     val (w,h) = wh
     val file = new File(from)
