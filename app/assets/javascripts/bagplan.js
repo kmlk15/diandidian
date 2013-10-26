@@ -120,6 +120,54 @@ $.ajaxSetup({ cache: false });
 	});
 
  
+	//删除背包
+	$("#my-bag  ").on('click',".accordion .accordion   h4  a.deletePlan",function() {
+		//是否为空
+		var atag = this
+		var ul = $("ul", $(atag).parent().next())
+		var count = ul.find("li").length;
+		if( count==0  || confirm("不是空的背包，确认要删除吗?")){
+			
+			var url = $.url( $(atag).attr("href") );
+	 		var query = url.param()
+	 		var q = {"fromStatus": query.statusName , "fromPlan":query.planName,"toStatus": query.statusName , "toPlan":query.planName, "cmd":"delete" }
+	 		 
+	 		$.getJSON("/bag/updateJson" ,q , function (result){
+	 			 if( result.success){
+	 				 
+	 				 //需要转移到合适的 背包
+	 				 // 不是空的下一个背包
+	 				var nexturl = $(atag).parent().nextAll( "h4 ").filter(function(index){
+	 					var count = $( " a.setPlan small span", $(this)).text();
+	 					console.log( "count=" + count );
+	 					if( count == "0"){
+	 						return false ; 
+	 					}else{
+	 						return true;
+	 					}
+	 				 }).first(); 
+	 				console.log("nexturl=" + nexturl )
+	 				if( nexturl.length== 1  ){
+	 					console.log( "next plan  href=" + $( " a.setPlan", nexturl).attr("href")  ) ;
+	 					window.location=  $( " a.setPlan", nexturl).attr("href") ;
+	 				}else{
+	 					console.log(" goto home ");
+	 					window.location= "/home" ;
+	 				}
+	 				 $(atag).parent().next().remove();
+	 				 $(atag).parent().remove();
+	 				 
+	 				
+	 				 
+	 			 }
+	 			
+	 		});
+	 		
+		} 
+		
+		return false;
+	});
+	
 	
 	
 	 
