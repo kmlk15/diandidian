@@ -240,6 +240,9 @@ function createTimeline( startDate , endDate ){
 function timelineimgPosition(){
 	
 	//定位到和   右边的 第一条一致
+	if( $("#plan-attractions-list h3").length == 0 ) {
+		return false ;
+	}
 	var cssName = $("#plan-attractions-list h3.active , #plan-attractions-list h3:first").first().attr("class").replace(/\s*active\s*/g ,"");
 	
 	cssName = jQuery.trim( cssName);
@@ -260,6 +263,7 @@ function timelineimgPosition(){
 				return false;
 			}
 		}).addClass("active");
+		console.log( "positionindex=" + positionindex );
 		
 		var arrowTopPosstion = 3;
 		var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
@@ -365,15 +369,21 @@ function createMapTimeLinkHtml(startDate , endDate ){
 function initialMapTimeLineLink() {
 	 
 	$("#infowindowtimeline").on("click" , ".map-date-line a" , function(e) {
-		$("#infowindowtimeline").hide();
+		if( $(this).hasClass("year")){
+			return false;
+		}
 		var atag = this ; 
 		var href = $(this).attr("href");
-	        console.log("href="+ href);	
+       console.log("href="+ href);
+       
 		href = href.replace("http://www.diandidian.com/plan/",""); //IE7
 		var dateArr = href.split("/");
+		 
 		var year = dateArr[0];
 		var month = dateArr[1];
 		var day = dateArr[2];
+		$("#infowindowtimeline").hide();
+		 
 		var week = getWeek(year ,  month , day ) ;
 		
 		href = href.replace(new RegExp("/", "g") ,"");
