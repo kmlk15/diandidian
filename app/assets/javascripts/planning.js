@@ -232,7 +232,44 @@ function createTimeline( startDate , endDate ){
 	$("#attraction-planning-wrap .date").hide();
 	initialTimeLineLink();
 	
+	timelineimgPosition();
+	
+	
 }
+
+function timelineimgPosition(){
+	
+	//定位到和   右边的 第一条一致
+	var cssName = $("#plan-attractions-list h3.active").first().attr("class").replace(/\s*active\s*/g ,"");
+	cssName = jQuery.trim( cssName);
+	console.log("cssName=" + cssName  +"xxxx");
+	if( cssName == "t-00_no-assign"){
+		$( "#plan-timeline a[href=00_no-assign]").addClass("active");
+	}else{
+		var dateregexp = /t-(\d{4})(\d{2})(\d{2})/g ;
+		var match =  dateregexp.exec(cssName);
+		var href = match[1]+"/" + match[2] +"/" + match[3];
+		console.log( "href=" + href );
+		var  positionindex = 0 ;
+		$( "#plan-timeline a").filter( function(  index){ 
+			if( $(this).attr("href")== href){
+				positionindex = index ; 
+				return true;
+			}else{
+				return false;
+			}
+		}).addClass("active");
+		
+		var arrowTopPosstion = 3;
+		var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
+		arrowTopPosstion = arrowTopPosstion + linkHeight * (positionindex -1 );
+		$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
+		
+	}
+	
+	
+}
+
 
 function createTimeLinkHtml(startDate , endDate ){
 	
@@ -368,6 +405,10 @@ function initialMapTimeLineLink() {
 			});
 			
 			locationMap[locationId].content.date = month+"月" + day + "日" ;
+			if( href == "00_no-assign"){
+				locationMap[locationId].content.date = "尚未安排" ;
+			}
+			
 			var content = locationMap[locationId].content.contentString();
 			//更新 内容
 			infowindow.setContent( content ) ;
@@ -741,35 +782,11 @@ function initialTimeLineLink() {
 			 
 			 if(infowindow){ infowindow.close( ) ; $("#infowindowtimeline").hide();}
 			 
-			 if( href =="00_all"){
-				 for(index in markerMap) { 
-					 var   marker = markerMap[index]; 
-					  marker.setMap (   map  ) ; 
-				 }
-			 }else{
-			  for(index in markerMap) {
-				  var   marker = markerMap[index]; 
-				  marker.setMap (  null  ) ; 
-			  } 
-				 var key = "t-"+href   ;
-				 $.each(locationMap , function( index,value){
-					 console.log( "index -> value=" + index + '->' +  value  ) ;
-					 if( value.timeline == key){
-						 var   marker = markerMap[index]; 
-						 console.log("show marker ") ;
-						 if( marker != null ){
-							 marker.setMap (   map  ) ; 
-						 }else{
-							 console.log("这个地点已经被删除了 id=" + value);
-						 }
-					 }
-				 });
-				 
-			 }
+ 
 			 
 			
 			var $target = $("#plan-attractions-list").find(".t-"+href);
-			if ($target.length>0) {
+			if ($target.length>0 ) {
 				//移动图标
 				$("#date-line-tooltip").hide( );
 				var arrowTopPosstion = 3;
@@ -781,7 +798,47 @@ function initialTimeLineLink() {
 				$("#plan-timeline .date-line a.active").removeClass("active");
 				$(this).addClass("active");
 				
+				
+				
+				 for(index in markerMap) {
+					  var   marker = markerMap[index]; 
+					  marker.setMap (  null  ) ; 
+				  } 
+					 var key = "t-"+href   ;
+					 $.each(locationMap , function( index,value){
+						 console.log( "index -> value=" + index + '->' +  value  ) ;
+						 if( value.timeline == key){
+							 var   marker = markerMap[index]; 
+							 console.log("show marker ") ;
+							 if( marker != null ){
+								 marker.setMap (   map  ) ; 
+							 }else{
+								 console.log("这个地点已经被删除了 id=" + value);
+							 }
+						 }
+					 });
+					 
+				
 			}else{
+				if( $(this).hasClass("year")){
+					
+				}else if( href =="00_all" ){
+					
+					$("#date-line-tooltip").hide( );
+					var arrowTopPosstion = 3;
+					var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
+					arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
+					$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
+					
+					$("#plan-timeline .date-line a.active").removeClass("active");
+					$(this).addClass("active");
+					
+					 for(index in markerMap) { 
+						 var   marker = markerMap[index]; 
+						  marker.setMap (   map  ) ; 
+					 }
+					 
+				}else{
 					var offset = $(this).offset();
 					offset.position="absolute";
 					offset.left = offset.left  + 90;
@@ -790,7 +847,7 @@ function initialTimeLineLink() {
 					
 					$("#date-line-tooltip").css( offset );
 					$("#date-line-tooltip").show( ).delay(  2000 ).hide( "slow" );
-					
+				}	
 				 
 			}
 			
@@ -809,15 +866,18 @@ function initialTimeLineLink() {
 				$("#plan-attractions-list h3.active").removeClass("active");
 				$target.addClass("active");
 			}else{
-				var offset = $(this).offset();
-				offset.position="absolute";
-				offset.left = offset.left  + 90;
-				offset.top = offset.top  - 5 ;
-				console.log( offset  ) ;
-				
-				$("#date-line-tooltip").css( offset );
-				$("#date-line-tooltip").show( ).delay(  2000 ).hide( "slow" );
-				
+				if( $(this).hasClass("year")){
+					
+				}else{
+					var offset = $(this).offset();
+					offset.position="absolute";
+					offset.left = offset.left  + 90;
+					offset.top = offset.top  - 5 ;
+					console.log( offset  ) ;
+					
+					$("#date-line-tooltip").css( offset );
+					$("#date-line-tooltip").show( ).delay(  2000 ).hide( "slow" );
+				}
 			}
 			return false;
 		}

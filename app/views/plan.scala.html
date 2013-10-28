@@ -449,7 +449,9 @@ $(function() {
 $(function(){
 	initialize()
 }); 
-
+ 
+	
+var  firstOpenMap = true;
 //地图显示 开关
 $(function(){
 	$("div#mapbutton").click( function(){
@@ -459,30 +461,80 @@ $(function(){
 		console.log("h=" + h ) ;
 		
 		if( gmapon ){
-			gmapon = false; 
+			
 			tag.slideToggle( 1200 );
 			
 			$("div#plan-date-input").fadeIn( 800 , function(){
 				$("div#plan-timeline a.all").fadeOut( 400);
 				var img = $("#plan-timeline .date-line > img")
 				console.log( img.position() );
-				if( img.position().top < 10){
-					img.animate({top:img.position().top    },1000);
-				}else{
-					img.animate({top:img.position().top - 30   },1000);
-				}
 				
+					if( img.position().top < 10){
+						img.animate({top:img.position().top    },1000);
+					}else{
+						img.animate({top:img.position().top - 30   },1000);
+					}
+					//定位到 当前 acvite 的 右侧栏 
+					if($("div#plan-timeline a.all").hasClass("active")){
+						/**
+						定位，并触发点击
+						**/
+						timelineimgPosition();
+						$("div#plan-timeline a.all").removeClass("active");
+					}
 			});
 			 $(  "span" , this ).removeClass("active")  ;
 			 infowindow.close( ) ; 
 			 $("#infowindowtimeline").hide();
+			 
+			 gmapon = false; 
+			 
+			 
 		}else{
 			gmapon  = true ;
 			 $(  "span" , this ).addClass("active")  ;
 			$("div#plan-date-input").fadeOut( 400 , function(){
 				$("div#plan-timeline a.all").fadeIn(800 );
 				 var img = $("#plan-timeline .date-line > img")
-				img.animate({top:img.position().top + 30   },1000);
+				 
+				 if(firstOpenMap){
+						console.log( "firstOpenMap=" +  firstOpenMap  );
+						firstOpenMap = false ; 
+						img.animate({top: 3 },1000);
+						$("div#plan-timeline a.active").removeClass("active");
+						$("div#plan-timeline a.all").addClass("active");
+					}else{
+						//重绘地图上的标记
+						
+						var href = $("div#plan-timeline a.active").attr("href");
+						href = href.replace("http://www.diandidian.com/plan/","");// IE8  有关 
+						href = href.replace(new RegExp("/", "g") ,"");
+						
+						for(index in markerMap) {
+							  var   marker = markerMap[index]; 
+							  marker.setMap (  null  ) ; 
+						  } 
+							 var key = "t-"+href   ;
+							 $.each(locationMap , function( index,value){
+								 console.log( "index -> value=" + index + '->' +  value  ) ;
+								 if( value.timeline == key){
+									 var   marker = markerMap[index]; 
+									 console.log("show marker ") ;
+									 if( marker != null ){
+										 marker.setMap (   map  ) ; 
+									 }else{
+										 console.log("这个地点已经被删除了 id=" + value);
+									 }
+								 }
+							 });
+							 
+						
+						if($("div#plan-timeline a.all").hasClass("active")){
+							
+						}else{
+							img.animate({top:img.position().top + 30   },1000);
+						}
+					}
 			} );
 			if( w != tag.width()){
 				tag.width( w );
