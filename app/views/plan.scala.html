@@ -468,7 +468,7 @@ $(function(){
 				$("div#plan-timeline a.all").fadeOut( 400);
 				var img = $("#plan-timeline .date-line > img")
 				console.log( img.position() );
-				
+				if(img.length==1){
 					if( img.position().top < 10){
 						img.animate({top:img.position().top    },1000);
 					}else{
@@ -482,6 +482,7 @@ $(function(){
 						timelineimgPosition();
 						$("div#plan-timeline a.all").removeClass("active");
 					}
+				}
 			});
 			 $(  "span" , this ).removeClass("active")  ;
 			 infowindow.close( ) ; 
@@ -500,12 +501,14 @@ $(function(){
 				 if(firstOpenMap){
 						console.log( "firstOpenMap=" +  firstOpenMap  );
 						firstOpenMap = false ; 
-						img.animate({top: 3 },1000);
+						if( img.length ==1 ){
+							img.animate({top: 3 },1000);
+						}
 						$("div#plan-timeline a.active").removeClass("active");
 						$("div#plan-timeline a.all").addClass("active");
 					}else{
 						//重绘地图上的标记
-						
+						if( $("div#plan-timeline a.active").length== 1 ){
 						var href = $("div#plan-timeline a.active").attr("href");
 						href = href.replace("http://www.diandidian.com/plan/","");// IE8  有关 
 						href = href.replace(new RegExp("/", "g") ,"");
@@ -527,12 +530,14 @@ $(function(){
 									 }
 								 }
 							 });
-							 
+						} 
 						
 						if($("div#plan-timeline a.all").hasClass("active")){
 							
 						}else{
-							img.animate({top:img.position().top + 30   },1000);
+							if( img.length ==1 ){
+								img.animate({top:img.position().top + 28   },1000)
+							}
 						}
 					}
 			} );
