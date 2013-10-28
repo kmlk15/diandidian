@@ -240,7 +240,8 @@ function createTimeline( startDate , endDate ){
 function timelineimgPosition(){
 	
 	//定位到和   右边的 第一条一致
-	var cssName = $("#plan-attractions-list h3.active").first().attr("class").replace(/\s*active\s*/g ,"");
+	var cssName = $("#plan-attractions-list h3.active , #plan-attractions-list h3:first").first().attr("class").replace(/\s*active\s*/g ,"");
+	
 	cssName = jQuery.trim( cssName);
 	console.log("cssName=" + cssName  +"xxxx");
 	if( cssName == "t-00_no-assign"){
