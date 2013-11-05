@@ -45,8 +45,11 @@ POST    /plan/updateNote        controllers.Plans.updateNote()
 GET    /plan/updateDate             controllers.Plans.updateDate( statusName : String , planName : String , startDate: Long ,endDate: Long )
 GET    /plan/updateVisible  		controllers.Plans.updateVisible( statusName : String , planName : String , visible: String )
 GET    /plan/outpdf				controllers.Plans.outpdf( statusName : String , planName : String  )
-GET    /plan/share				controllers.Plans.share( statusName : String , planName : String  )
+GET    /plan/share				controllers.Plans.share( planId: String , statusName : String , planName : String  )
 GET    /plan/cancelShare			controllers.Plans.cancelShare( statusName : String , planName : String  )
+GET    /plan/editShare				controllers.Plans.editShare( planId: String , statusName : String , planName : String  )
+GET    /plan/updateShare			controllers.Plans.updateShare( planId: String    )
+GET    /plan/shareIt			controllers.Plans.shareIt( planId: String    )
 
 
 GET    /plan/testmap                   controllers.Plans.testmap()

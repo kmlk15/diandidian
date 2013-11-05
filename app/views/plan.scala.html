@@ -118,7 +118,7 @@
 									<span>&nbsp;&nbsp;&nbsp;&nbsp;保存</span>
 									<ul>
 										<li id="plansavepdf"><a href="/plan/outpdf?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  target="_blank">保存+PDF</a></li>
-										<li class="last" id="planshare"><a href="/plan/share?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)">分享背包</a></li>
+										<li class="last" id="planshare"><a href="/plan/share?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)&planId=@{planview.id}">分享背包</a></li>
 									</ul>
 								</div>
 								 <div class="plan-map" id="mapbutton">

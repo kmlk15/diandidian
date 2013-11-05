@@ -28,19 +28,20 @@ case class SimpleLocation(id: String = "", name: String = "", enName: String = "
 case class Plan(id: String=""   , name: String = "背包", startDate: Long = 0L, endDate: Long = 0L,
   list: List[SimpleLocation] = Nil, map: Map[String, String] = Map() , noteMap: Map[String,String]= Map( ) , visible: String ="private")
 
-case class ShareLocation( id: String , note: String = "", img: String = "", 
+case class ShareLocation( id: String ,   note: String = "", img: String = "", 
    	name: String = "" , address: String = "" ,  url: String = ""
+   	  
     )
 
-case class SharePlan( planId: String = "" , bagId: String = "" ,  img: String = "",
-	locationList : List[ShareLocation] = Nil,
-    userId: String="", usertype: String = "",  userName: String = "" , avatar: String = ""     
+case class SharePlan( id: String = "" , bagId: String = "" ,  name: String = "" ,  img: String = "",
+	locationList : List[ShareLocation] = Nil, citylistStr: String = "",
+    userId: String="", usertype: String = "",  username: String = "" , avatar: String = ""     
 )
 
 /**
  * 用于页面展示时的对象
  */
-case class PlanView(statusName:String = "" , name: String = "", visible: String ="private" , startDate: Long = 0L, endDate: Long = 0L,
+case class PlanView(id: String , statusName:String = "" , name: String = "", visible: String ="private" , startDate: Long = 0L, endDate: Long = 0L,
   first: String = "", last: String = "", map: immutable.SortedMap[String, List[LocationView]] = immutable.SortedMap()  , 
   noteMap: Map[String,String]= Map( ) ) {
   

@@ -100,7 +100,7 @@ object PlanPdf extends Controller {
 
                 val first = sortmap.headOption.map(kv => kv._1).getOrElse("")
                 val last = sortmap.lastOption.map(kv => kv._1).getOrElse("")
-                val planview = PlanView(statusName = statusName, name = plan.name, visible=plan.visible,  startDate = plan.startDate, endDate = plan.endDate,
+                val planview = PlanView(id = plan.id , statusName = statusName, name = plan.name, visible=plan.visible,  startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap)
                   //如何输出PDF文件， 生成 静态文件？ 用 ByteArray  ?

@@ -21,6 +21,8 @@ import org.apache.commons.lang3.StringUtils
 import models.Photo
 import models.PlanView
 import models.PlanForm
+import models.SharePlan
+import models.ShareLocation
 import models.BagUpdateFromto
 
 import models.BagHelp.planFormFmt
@@ -115,7 +117,7 @@ object Plans extends Controller {
 
                 val first = sortmap.headOption.map(kv => kv._1).getOrElse("")
                 val last = sortmap.lastOption.map(kv => kv._1).getOrElse("")
-                val planview = PlanView(statusName = statusName, name = plan.name, visible=plan.visible,  
+                val planview = PlanView(id = plan.id , statusName = statusName, name = plan.name, visible=plan.visible,  
                     startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap , noteMap = plan.noteMap )
@@ -363,7 +365,7 @@ object Plans extends Controller {
    * 3 输出 到 SharePlan 管理页面
    * 
    */
-  def  share(  statusName: String , planName: String )= Action {implicit request =>
+  def  share( planId: String ,  statusName: String , planName: String )= Action {implicit request =>
 
     session.get("userId") match {
       	case None => Redirect(routes.Login.login())
@@ -375,7 +377,7 @@ object Plans extends Controller {
       	      val tobag = models.BagHelp.update(bag, change , false )
       	       bagService.update(tobag) match{
       	        case Some( bag ) =>
-      	          	val url = "/plan/editShare?statusName=" + URLEncoder.encode( change.toStatus,"utf-8") +
+      	          	val url = "/plan/editShare?planId="+ planId+"&statusName=" + URLEncoder.encode( change.toStatus,"utf-8") +
       	          	"&planName=" +  URLEncoder.encode( change.toPlan,"utf-8")
       	          	Redirect( url )
       	        case None =>  InternalServerError("share update bag ")
@@ -413,6 +415,72 @@ object Plans extends Controller {
       	}
     }
     }
+  
+  /**
+   * 生成 share  plan 编辑表单
+   */
+  def editShare(planId: String ,   statusName: String , planName: String )= Action {implicit request =>
+      session.get("userId") match {
+      	case None => Redirect(routes.Login.login())
+      	case Some(userId) =>{
+      	  val bagId = userId
+      	   bagService.get(userId) match {
+      	     case None => NotFound
+      	     case Some( bag) =>
+      	       bag.getPlan(planId) match{
+      	         case None => NotFound
+      	         case Some(plan)=>
+      	          val sharePlan : SharePlan =  bagService.getSharePlan(planId) match{
+      	             case None => 
+      	               val locationList:List[ShareLocation] =  plan.list.flatMap{ simplelocation => 
+      	                  locationService.getById( simplelocation.id ).map{location =>
+      	                    val address = location.address.city + location.address.district+location.address.street
+      	                    val url = location.url
+      	                    ShareLocation( id = location.id.get, name=location.name , address = address , url =url)  }
+      	             	}
+      	                 
+      	               val sharePlan = SharePlan(id = plan.id , name = plan.name , bagId = bag.id , 
+      	            		   locationList = locationList ,
+      	                   userId = userId , 
+      	                   usertype= session.get("usertype").getOrElse(""),
+      	                   username= session.get("username").getOrElse(""), 
+      	                   avatar= session.get("avatar").getOrElse("")
+      	               )
+      	               sharePlan
+      	             case Some( sharePlan)=> 
+      	               //TODO 需要考虑 地点的 变动， 删除了地点，增加了地点
+      	               sharePlan
+      	               
+      	           }
+      	           
+      	           Ok(views.html.planeditshare("planning", sharePlan  , "" ))
+      	           
+      	       }
+      	   }
+      	}
+      }
+    
+  	 
+  }
+  
+  /**
+   * 更新 share plan 数据
+   */
+  def updateShare(planId: String  )= Action {implicit request =>
+    
+  	 Ok("updateShare")
+  }
+  
+  /**
+   * 设置状态为  允许share , 这个 可能是多余的
+   * 主要是 为了  能够 出现在 CMS 中， 或者 说明  这个 share 的内容 已经完整了
+   */
+  def shareIt( planId: String   )= Action {implicit request =>
+    
+  	 Ok("shareIt")
+  }
+  
+  
   
   
   private  def simplelocationList2LocationViewList(list: List[SimpleLocation]) : List[LocationView]= {

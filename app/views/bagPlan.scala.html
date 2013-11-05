@@ -31,7 +31,7 @@
 						@for( key <- keylist  ; plan <- status.map.get(key)  ){
 							<h4 class="accordion-header @if(plan.name== defaultPlanName  ){   active-bag } " >
 							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="deletePlan"></a>
-							<a href='@if(status.name == "分享的背包" ){/plan/editShare}?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)' class="setPlan" >@plan.name  <span>-</span>
+							<a href='@if(status.name == "分享的背包" ){/plan/editShare}else{/plan/}?planId=@plan.id&statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)' class="setPlan" >@plan.name  <span>-</span>
 							<small><span>@plan.list.size</span>个景点</small></a>
 							 
 							 </h4>
@@ -55,7 +55,7 @@
 								 <a class="search"  href="/home">继续搜索</a>
 								}
 								@if( status.name == "分享的背包" ){
-								 <a class="cancelShare"  href="/plan/cancelShare?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">取消分享</a>
+								 <a class="cancelShare"  href="/plan/cancelShare?planId=@plan.id&statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">取消分享</a>
 								}
 							</div>
 							} 

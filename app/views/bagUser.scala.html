@@ -52,11 +52,11 @@
 								</ul>
 					 
 								@if( status.name == "分享的背包" ){
-								 <a class="cancelShare"  href="/plan/editShare?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">编辑分享</a>
+								 <a class="editShare"  href="/plan/editShare?planId=@plan.id&statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">编辑分享</a>
 								}
 								
 								@if( status.name != "分享的背包" ){
-								 <a class="plan"  href="/plan/?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">计划行程</a>
+								 <a class="plan"  href="/plan/?planId=@plan.id&statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">计划行程</a>
 								}
 							</div>
 							} 

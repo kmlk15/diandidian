@@ -58,6 +58,20 @@ trait BagServiceComponent {
      */
     def getLocationPlanIndexByPlanId(locationId: String , planId: String ): Option[LocationPlanIndex]
 
+    /**
+     * 得到 分享 plan 的 数据
+     */
+    def getSharePlan( planId: String): Option[SharePlan]
+    
+    /**
+     * 更新 分享plan 数据
+     */
+    def updateSharePlan( plan: SharePlan): Option[SharePlan]
+    
+    /**
+     * 删除 分享plan 
+     */
+    def delSharePlan( planId: String) : Option[SharePlan]
   }
 
 }
@@ -329,6 +343,22 @@ trait BagServiceComponentImpl extends BagServiceComponent {
       locationPlanIndexMongoClient.find(q).headOption
     }
 
+    
+     /**
+     * 得到 分享 plan 的 数据
+     */
+    def getSharePlan( planId: String): Option[SharePlan]= None
+    
+    /**
+     * 更新 分享plan 数据
+     */
+    def updateSharePlan( plan: SharePlan): Option[SharePlan]= None
+    
+    /**
+     * 删除 分享plan 
+     */
+    def delSharePlan( planId: String) : Option[SharePlan]= None
+    
   }
 }
 

@@ -1,0 +1,151 @@
+@(name: String , shareplan: models.SharePlan, cityListStr: String)(implicit session: Session)
+@import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
+
+@displayName(location: models.LocationForm) = {
+@if( location.name.length >180){
+	@{location.name.substring(0,180)+"..."}
+}else{
+	@location.name
+}
+  
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Planning Page</title>
+<meta http-equiv="keywords" content="" />
+<meta http-equiv="description" content="" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+<link href='@routes.Assets.at("stylesheets/token-input.css")' rel="stylesheet" type="text/css" />
+<link href='@routes.Assets.at("stylesheets/token-input-facebook.css")' rel="stylesheet" type="text/css" />
+<link type="text/css" href='@routes.Assets.at("stylesheets/jquery.jscrollpane.css")' rel="stylesheet" media="all" />
+<link href='@routes.Assets.at("stylesheets/jquery.ui.core.css")' rel="stylesheet" type="text/css" />
+<link href='@routes.Assets.at("stylesheets/jquery.ui.datepicker.css")' rel="stylesheet" type="text/css" />
+<link href='@routes.Assets.at("stylesheets/jquery.ui.theme.css")' rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/master.css")' />
+
+
+
+<!--[if lt IE 8]>
+<link href='@routes.Assets.at("stylesheets/ie7.css")' rel="stylesheet" type="text/css" />
+<![endif]-->
+
+
+
+</head>
+<body id="planning">
+	<div id="container">
+		<div id="header">
+			@common.header(  session  )
+		</div><!-- end header -->
+		 
+		<div id="content">
+			<div id="sidebar" class="customized-scroll">
+				 @common.sideBar("")
+			</div><!-- end sidebar -->
+			
+			<div id="main">
+				
+				<div id="attraction-planning-wrap">
+	
+					<div id="attraction-planning">
+
+						<div id="plan-attractions">
+							<div class="header clear-fix ">
+								<div class="plan-name">
+									<input type="text" name="planName"  value="@shareplan.name" />
+								</div>
+								 <div class="plan-menu" id="updateShare">
+									<span><a href="/plan/updateShare?planId=@shareplan.id">保存</a></span>
+								</div>
+								 <div class="plan-menu" id="shareIt">
+								 	<span ><a href="/plan/shareIt?planId=@shareplan.id">分享背包</a></span>
+								 </div>
+		
+							</div><!-- end header -->
+							  <div  style="margin-left:20px"> <!--  main -->
+								 <div >
+								 @if(shareplan.img==""){
+								 	<img src='@routes.Assets.at("images/shareplan_cover.png")' style="width:780px;height:435px" />
+								 }else{
+								 	<img src="@shareplan.img"  /> 
+								 }
+								 	
+								 </div>
+								 
+								 @for( location <- shareplan.locationList ){
+								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;background-color:rgba(88, 84, 75, 0.19)" >
+									 <div style="float:left;width:630px ">
+									 	<h3 style="margin-left:10px;margin-top:10px;">1.@location.name</h3> 
+										<h4 style="margin-left:20px">@location.address</h4>
+									 	<div style="font-size:15px;margin-left:20px;"><a href="@location.url" target="_blank" style="color:#00aeef">@location.url</a></div>
+										 <div style="margin-left:20px">
+										 	<textarea style="width:550px;height:120px">
+										 	</textarea>
+										 </div>
+									 </div>
+								 
+									 <div style="float:right;width:130px;margin-top:10px;margin-right:20px"> 
+									 @if(location.img==""){	
+									 	<img src='@routes.Assets.at("images/sharelocation_blank.png")' />
+									 }else{
+									 	<img src="@location.img" />
+									 }
+									 </div>
+								 
+								</div>
+								<div class="clearfix"></div>
+								 }
+								 
+								<div>
+								</div>
+
+							 </div>  <!--   main  -->
+						</div>
+					</div><!-- end attraction-planning -->
+				</div><!-- end attraction-planning-wrap -->
+			</div><!-- end main -->
+		</div><!-- end content -->
+	</div><!-- end container -->
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.10.2.js")'></script>
+	
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.simplemodal-1.4.4.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.core.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.widget.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.mouse.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.draggable.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.droppable.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.datepicker.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-scrolltofixed-min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.tokeninput.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.mousewheel.js")'></script>
+ 
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.jscrollpane.js")'></script>
+ 
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/purl.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/master.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/bagplan.js")'></script>
+<!--[if lt IE 9]>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/ie.js")'></script>
+<![endif]-->
+ 
+
+ 
+    
+
+</body>
+</html>
