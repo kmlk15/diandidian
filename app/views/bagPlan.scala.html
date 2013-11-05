@@ -1,4 +1,4 @@
-@( bag: models.Bag , defaultStatusName : String ,defaultPlanName: String  )(implicit  statusNameList: List[String] = List( "计划中"  ,"准备前往","过去背包"  ) 	)
+@( bag: models.Bag , defaultStatusName : String ,defaultPlanName: String  )(implicit  statusNameList: List[String] = List( "计划中"  ,"准备前往","过去背包","分享的背包"  ) 	)
 
 
 @script={
@@ -31,7 +31,7 @@
 						@for( key <- keylist  ; plan <- status.map.get(key)  ){
 							<h4 class="accordion-header @if(plan.name== defaultPlanName  ){   active-bag } " >
 							<a href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="deletePlan"></a>
-							<a   href="?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)" class="setPlan">@plan.name  <span>-</span>
+							<a href='@if(status.name == "分享的背包" ){/plan/editShare}?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)' class="setPlan" >@plan.name  <span>-</span>
 							<small><span>@plan.list.size</span>个景点</small></a>
 							 
 							 </h4>
@@ -51,8 +51,11 @@
 								</li>
 								}
 								</ul>
-								@if( status.name != "过去背包" ){
+								@if( status.name == "计划中" ||   status.name == "准备前往" ){
 								 <a class="search"  href="/home">继续搜索</a>
+								}
+								@if( status.name == "分享的背包" ){
+								 <a class="cancelShare"  href="/plan/cancelShare?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">取消分享</a>
 								}
 							</div>
 							} 

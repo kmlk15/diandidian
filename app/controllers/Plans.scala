@@ -21,6 +21,8 @@ import org.apache.commons.lang3.StringUtils
 import models.Photo
 import models.PlanView
 import models.PlanForm
+import models.BagUpdateFromto
+
 import models.BagHelp.planFormFmt
 import models.BagHelp.planFmt
 import models.BagHelp.statusFmt
@@ -354,6 +356,64 @@ object Plans extends Controller {
       		)
   	 }
   }
+  /**
+   * 分享背包
+   * 1 将背包转移到  “分享的背包” 下
+   * 2 建立 SharePlan 对象
+   * 3 输出 到 SharePlan 管理页面
+   * 
+   */
+  def  share(  statusName: String , planName: String )= Action {implicit request =>
+
+    session.get("userId") match {
+      	case None => Redirect(routes.Login.login())
+      	case Some(userId) =>{
+      	  
+      	  bagService.get(userId) match {
+      	    case Some( bag) =>
+      	      val change = BagUpdateFromto(statusName ,planName , "分享的背包" , planName )
+      	      val tobag = models.BagHelp.update(bag, change , false )
+      	       bagService.update(tobag) match{
+      	        case Some( bag ) =>
+      	          	val url = "/plan/editShare?statusName=" + URLEncoder.encode( change.toStatus,"utf-8") +
+      	          	"&planName=" +  URLEncoder.encode( change.toPlan,"utf-8")
+      	          	Redirect( url )
+      	        case None =>  InternalServerError("share update bag ")
+      	      }
+      	    case None =>  NotFound
+      	  }
+      	}
+    }
+    }
+   
+ /**
+  *  取消分享，返回到 计划中
+  *  1 shareplan 的状态， 是否在主页显示，设置为  false 
+  *   2  将被告 转移到   计划中
+  *   3 页面返回到 plan 页面 
+  */ 
+  def  cancelShare(  statusName: String , planName: String )= Action {implicit request =>
+
+    session.get("userId") match {
+      	case None => Redirect(routes.Login.login())
+      	case Some(userId) =>{
+      	   bagService.get(userId) match {
+      	    case Some( bag) =>
+      	      val change = BagUpdateFromto(statusName ,planName , "计划中" , planName )
+      	      val tobag = models.BagHelp.update(bag, change , false )
+      	       bagService.update(tobag) match{
+      	        case Some( bag ) =>
+      	          	val url = "/plan/?statusName=" + URLEncoder.encode( change.toStatus ,"utf-8") +
+      	          	"&planName=" +  URLEncoder.encode( change.toPlan,"utf-8")
+      	          	Redirect( url )
+      	        case None =>  InternalServerError("share update bag ")
+      	      }
+      	    case None =>  NotFound
+      	  }
+      	}
+    }
+    }
+  
   
   private  def simplelocationList2LocationViewList(list: List[SimpleLocation]) : List[LocationView]= {
      list.flatMap{ simple =>

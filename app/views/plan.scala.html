@@ -117,10 +117,8 @@
 								 <div class="plan-menu">
 									<span>&nbsp;&nbsp;&nbsp;&nbsp;保存</span>
 									<ul>
-										<li  id="plansave">保存</li>
-										<li id="planpublic">保存为公开</li>
-										<li id="planprivate">保存为私有</li>
-										<li class="last" id="plansavepdf"><a href="/plan/outpdf?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  target="_blank">保存+PDF</a></li>
+										<li id="plansavepdf"><a href="/plan/outpdf?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  target="_blank">保存+PDF</a></li>
+										<li class="last" id="planshare"><a href="/plan/share?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)">分享背包</a></li>
 									</ul>
 								</div>
 								 <div class="plan-map" id="mapbutton">

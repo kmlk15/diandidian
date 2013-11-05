@@ -45,6 +45,10 @@ POST    /plan/updateNote        controllers.Plans.updateNote()
 GET    /plan/updateDate             controllers.Plans.updateDate( statusName : String , planName : String , startDate: Long ,endDate: Long )
 GET    /plan/updateVisible  		controllers.Plans.updateVisible( statusName : String , planName : String , visible: String )
 GET    /plan/outpdf				controllers.Plans.outpdf( statusName : String , planName : String  )
+GET    /plan/share				controllers.Plans.share( statusName : String , planName : String  )
+GET    /plan/cancelShare			controllers.Plans.cancelShare( statusName : String , planName : String  )
+
+
 GET    /plan/testmap                   controllers.Plans.testmap()
 
 GET		/plan/sendfile/$randomstr<[0-9a-zA-Z]{4}>/:planName 	controllers.Plans.sendfile( randomstr: String, planName : String) 

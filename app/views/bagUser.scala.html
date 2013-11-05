@@ -1,4 +1,4 @@
-@( bag: models.Bag  , defaultStatusName : String ,defaultPlanName: String  )(implicit  statusNameList: List[String] = List( "计划中"  ,"准备前往","过去背包"  ))
+@( bag: models.Bag  , defaultStatusName : String ,defaultPlanName: String  )(implicit  statusNameList: List[String] = List( "计划中"  ,"准备前往","过去背包","分享的背包"  ))
 
  
 @script={
@@ -50,7 +50,12 @@
 								</li>
 								}
 								</ul>
-								@if( status.name != "过去背包" ){
+					 
+								@if( status.name == "分享的背包" ){
+								 <a class="cancelShare"  href="/plan/editShare?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">编辑分享</a>
+								}
+								
+								@if( status.name != "分享的背包" ){
 								 <a class="plan"  href="/plan/?statusName=@helper.urlEncode(status.name)&planName=@helper.urlEncode(plan.name)">计划行程</a>
 								}
 							</div>
