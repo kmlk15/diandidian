@@ -74,13 +74,13 @@
 								 }
 								 	
 								 </div>
-								 
-								 @for( location <- shareplan.locationList ){
+								 @defining( shareplan.locationList.reverse zip ( 1 to shareplan.locationList.size)  ){ziped => 
+								 @for( tuple  <- ziped ){
 								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;background-color:rgba(88, 84, 75, 0.19)" >
 									 <div style="float:left;width:630px ">
-									 	<h3 style="margin-left:10px;margin-top:10px;">1.@location.name</h3> 
-										<h4 style="margin-left:20px">@location.address</h4>
-									 	<div style="font-size:15px;margin-left:20px;"><a href="@location.url" target="_blank" style="color:#00aeef">@location.url</a></div>
+									 	<h3 style="margin-left:10px;margin-top:10px;">@{tuple._2}.@tuple._1.name</h3> 
+										<h4 style="margin-left:20px">@tuple._1.address</h4>
+									 	<div style="font-size:15px;margin-left:20px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
 										 <div style="margin-left:20px">
 										 	<textarea style="width:550px;height:120px">
 										 	</textarea>
@@ -88,17 +88,17 @@
 									 </div>
 								 
 									 <div style="float:right;width:130px;margin-top:10px;margin-right:20px"> 
-									 @if(location.img==""){	
+									 @if(tuple._1.img==""){	
 									 	<img src='@routes.Assets.at("images/sharelocation_blank.png")' />
 									 }else{
-									 	<img src="@location.img" />
+									 	<img src="@tuple._1.img" />
 									 }
 									 </div>
 								 
 								</div>
 								<div class="clearfix"></div>
 								 }
-								 
+								 }
 								<div>
 								</div>
 
