@@ -50,7 +50,7 @@ GET    /plan/cancelShare			controllers.Plans.cancelShare( planId: String , statu
 GET    /plan/editShare				controllers.Plans.editShare( planId: String   )
 POST    /plan/updateShare			controllers.Plans.updateShare( planId: String     )
 GET    /plan/shareIt			controllers.Plans.shareIt( planId: String    )
-
+GET    /plan/viewShare			controllers.Plans.viewShare( planId: String    )
 
 GET    /plan/testmap                   controllers.Plans.testmap()
 

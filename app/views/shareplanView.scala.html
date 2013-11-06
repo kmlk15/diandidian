@@ -48,7 +48,7 @@
 			
 			<div id="main">
 				
-				<div id="attraction-planning-wrap">
+				<div id="attraction-planning-wrap" >
 	
 					<div id="attraction-planning">
 
@@ -57,16 +57,11 @@
 								<div class="plan-name">
 									<input type="text" name="planName"  value="@shareplan.name" />
 								</div>
-								 <div class="plan-menu" id="updateShare">
-									<span><a href="/plan/updateShare?planId=@shareplan.id" onclick="alert('x');$('form#form1').submit() ;return false ">保存</a></span>
-								</div>
-								 <div class="plan-menu" id="shareIt">
-								 	<span ><a href="/plan/shareIt?planId=@shareplan.id" onclick="$.getJSON('/plan/shareIt?planId=@shareplan.id',{},function(result){ alert( result ) });return false;">分享背包</a></span>
-								 </div>
+								 
 		
 							</div><!-- end header -->
 							 <form action="/plan/updateShare?planId=@shareplan.id"  method="post" id="form1" >
-							  <div  style="margin-left:20px"> <!--  main -->
+							  <div id="contentmain" style="margin-left:20px;overflow: auto; "  class="customized-scroll" > <!--  main -->
 								 <div >
 								 @if(shareplan.img==""){
 								 	<img src='@routes.Assets.at("images/shareplan_cover.png")' style="width:780px;height:435px" />
@@ -84,7 +79,7 @@
 										<h4 style="margin-left:20px">@tuple._1.address</h4>
 									 	<div style="font-size:15px;margin-left:20px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
 										 <div style="margin-left:20px">
-										 	<textarea style="width:550px;height:120px" name="note_@tuple._1.id" >@tuple._1.note</textarea>
+										 	<div style="width:550px;height:120px" id="note_@tuple._1.id" >@tuple._1.note</div>
 										 </div>
 									 </div>
 								 
@@ -125,12 +120,6 @@
 	
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.simplemodal-1.4.4.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.core.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.widget.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.mouse.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.draggable.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.droppable.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.ui.datepicker.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-scrolltofixed-min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.tokeninput.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.mousewheel.js")'></script>
@@ -141,13 +130,26 @@
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/purl.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/master.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/bagplan.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/bag.js")'></script>
 <!--[if lt IE 9]>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/ie.js")'></script>
 <![endif]-->
  
 
- 
+ <script>
+$(function(){
+	$(window).resize(function(e) {
+		var space = 260;
+		var height = $(this).height()-space;
+		console.log( "height=" + height ) ;
+		$("#contentmain").height(height);
+	 
+		 
+	}).trigger("resize");
+	
+	
+});
+</script>
     
 
 </body>

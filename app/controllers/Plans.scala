@@ -468,13 +468,33 @@ object Plans extends Controller {
                   username = session.get("username").getOrElse(""),
                   avatar = session.get("avatar").getOrElse(""))
                  
-                  Ok(views.html.planeditshare("planning", sharePlan, ""))
+                  Ok(views.html.shareplanEdit("planning", sharePlan, ""))
 
-            }
+            } 
         }
       }
     }
 
+  }
+  
+  /**
+   * 浏览 share  plan  
+   */
+  def viewShare(planId: String ) = Action { implicit request =>
+
+     bagService.getSharePlan(planId) match {
+     	case None => NotFound
+       case Some(sharePlan) =>
+     	if(sharePlan.shareIt && sharePlan.atHomePage){
+     		Ok(views.html.shareplanView("planning", sharePlan, ""))
+     	}else{
+     	  if( Some(sharePlan.userId) ==  session.get("userId")){
+     	    Ok(views.html.shareplanView("planning", sharePlan, ""))
+     	  }else{
+     		NotFound
+     	  }
+     	}
+     }
   }
   
   /**
