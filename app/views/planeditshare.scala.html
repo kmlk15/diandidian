@@ -58,13 +58,14 @@
 									<input type="text" name="planName"  value="@shareplan.name" />
 								</div>
 								 <div class="plan-menu" id="updateShare">
-									<span><a href="/plan/updateShare?planId=@shareplan.id">保存</a></span>
+									<span><a href="/plan/updateShare?planId=@shareplan.id" onclick="alert('x');$('form#form1').submit() ;return false ">保存</a></span>
 								</div>
 								 <div class="plan-menu" id="shareIt">
 								 	<span ><a href="/plan/shareIt?planId=@shareplan.id">分享背包</a></span>
 								 </div>
 		
 							</div><!-- end header -->
+							 <form action="/plan/updateShare?planId=@shareplan.id"  method="post" id="form1" >
 							  <div  style="margin-left:20px"> <!--  main -->
 								 <div >
 								 @if(shareplan.img==""){
@@ -74,6 +75,7 @@
 								 }
 								 	
 								 </div>
+								
 								 @defining( shareplan.locationList.reverse zip ( 1 to shareplan.locationList.size)  ){ziped => 
 								 @for( tuple  <- ziped ){
 								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;background-color:rgba(88, 84, 75, 0.19)" >
@@ -82,8 +84,7 @@
 										<h4 style="margin-left:20px">@tuple._1.address</h4>
 									 	<div style="font-size:15px;margin-left:20px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
 										 <div style="margin-left:20px">
-										 	<textarea style="width:550px;height:120px">
-										 	</textarea>
+										 	<textarea style="width:550px;height:120px" name="note_@tuple._1.id" >@tuple._1.note</textarea>
 										 </div>
 									 </div>
 								 
@@ -99,10 +100,12 @@
 								<div class="clearfix"></div>
 								 }
 								 }
+								 
 								<div>
 								</div>
 
 							 </div>  <!--   main  -->
+							 </form>
 						</div>
 					</div><!-- end attraction-planning -->
 				</div><!-- end attraction-planning-wrap -->

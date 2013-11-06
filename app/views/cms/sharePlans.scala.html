@@ -1,0 +1,78 @@
+@( indexList : List[models.SharePlan])(implicit session: Session)
+
+ 
+
+@script={
+<script>
+
+$(function(){
+	
+	$("button").click(  function(){
+		var  btn = this;
+		var planId =  $(this).attr("id") ;
+		console.log("planId=" + planId);
+		
+		if( $(this).hasClass("btn-inverse")){
+			var param={ "action":"set" , "planId" :  planId }
+			$.post( window.location , param , function( result){
+				if( result.success){
+					$(btn).removeClass("btn-inverse").addClass("btn-success").html("取消显示在首页");
+				}else{
+					console.log(" error ")
+				}
+				
+			}) ;
+			
+		}else{
+			var param={ "action":"unset" , "planId" :  planId }
+			
+			$.post( window.location , param , function( result){
+				if( result.success){
+					$(btn).removeClass("btn-success").addClass("btn-inverse").html("显示在首页");
+				}else{
+					console.log(" error ")
+				}
+				
+			}) ;
+			
+		}
+	});
+	
+ 
+	
+});
+</script>
+
+ 
+}
+ 
+@views.html.cms.main(  "CMS 地点  Plan 列表" , script){
+<table   class="table table-hover">
+	<thead>
+	<tr>
+		<th>username</th>
+		<th>avatar</th>
+		<th>planName</th>
+		<th>操作</th>
+	</tr>
+	</thead>
+	<tbody>
+	@for( shareplan <- indexList ){
+	<tr>
+		
+		<td class="col-lg-2">@shareplan.username</td>
+		<td class="col-lg-2"><img src="@shareplan.avatar" /> </td>
+	    <td class="col-lg-2">@shareplan.name</td>
+	    @if(shareplan.atHomePage   ){
+	    		<td class="col-lg-2" ><button class="btn  btn-success"  id="@shareplan.id" >取消显示在首页</button></td>
+	    }else{
+	    		<td class="col-lg-2"><button  class="btn btn-inverse"    id="@shareplan.id"  >显示在首页</button></td>
+	    }
+		
+		
+		
+	</tr>
+		}
+	</tbody>
+</table>
+}  

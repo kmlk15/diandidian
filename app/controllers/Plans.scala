@@ -36,7 +36,7 @@ import scala.collection.immutable
 import org.apache.commons.lang3.RandomStringUtils
 
 object Plans extends Controller {
-  private val log = LoggerFactory.getLogger(Bags.getClass())
+  private val log = LoggerFactory.getLogger(Plans.getClass())
   private val bagService = base.BagServiceRegistry.bagService
   private val locationService = base.locationFormRegistry.locationService
   private val cmsService = base.CmsServiceRegistry.cmsService
@@ -415,60 +415,134 @@ object Plans extends Controller {
       	}
     }
     }
-  
+
   /**
    * 生成 share  plan 编辑表单
    */
-  def editShare(planId: String ,   statusName: String , planName: String )= Action {implicit request =>
-      session.get("userId") match {
-      	case None => Redirect(routes.Login.login())
-      	case Some(userId) =>{
-      	  val bagId = userId
-      	   bagService.get(userId) match {
-      	     case None => NotFound
-      	     case Some( bag) =>
-      	       bag.getPlan(planId) match{
-      	         case None => NotFound
-      	         case Some(plan)=>
-      	          val sharePlan : SharePlan =  bagService.getSharePlan(planId) match{
-      	             case None => 
-      	               val locationList:List[ShareLocation] =  plan.list.flatMap{ simplelocation => 
-      	                  locationService.getById( simplelocation.id ).map{location =>
-      	                    val address = location.address.city + location.address.district+location.address.street
-      	                    val url = location.url
-      	                    ShareLocation( id = location.id.get, name=location.name , address = address , url =url)  }
-      	             	}
-      	                 
-      	               val sharePlan = SharePlan(id = plan.id , name = plan.name , bagId = bag.id , 
-      	            		   locationList = locationList ,
-      	                   userId = userId , 
-      	                   usertype= session.get("usertype").getOrElse(""),
-      	                   username= session.get("username").getOrElse(""), 
-      	                   avatar= session.get("avatar").getOrElse("")
-      	               )
-      	               sharePlan
-      	             case Some( sharePlan)=> 
-      	               //TODO 需要考虑 地点的 变动， 删除了地点，增加了地点
-      	               sharePlan
-      	               
-      	           }
-      	           
-      	           Ok(views.html.planeditshare("planning", sharePlan  , "" ))
-      	           
-      	       }
-      	   }
-      	}
+  def editShare(planId: String ) = Action { implicit request =>
+
+    session.get("userId") match {
+      case None => Redirect(routes.Login.login())
+      case Some(userId) => {
+        val bagId = userId
+        bagService.get(userId) match {
+          case None => NotFound
+          case Some(bag) =>
+            bag.getPlan(planId) match {
+              case None => NotFound
+              case Some(plan) =>
+
+                val locationList: List[ShareLocation] = bagService.getSharePlan(planId) match {
+                  case None =>
+                     log.debug("not found shareplan planid={}" , planId )
+                    val locationList: List[ShareLocation] = plan.list.flatMap { simplelocation =>
+                      locationService.getById(simplelocation.id).map { location =>
+                        val address = location.address.city + location.address.district + location.address.street
+                        val url = location.url
+                        ShareLocation(id = location.id.get, name = location.name, address = address, url = url )
+                      }
+                    }
+
+                    locationList
+
+                  case Some(sharePlan) =>
+                    //考虑了 地点的 变动， 删除了地点，增加了地点
+                    val locationMap = sharePlan.locationList.map(location => (location.id, location)).toMap
+
+                    val locationList: List[ShareLocation] = plan.list.flatMap { simplelocation =>
+                      locationService.getById(simplelocation.id).map { location =>
+                        val address = location.address.city + location.address.district + location.address.street
+                        val url = location.url
+                        locationMap.get(location.id.get).map(sharelocation => sharelocation.copy( name = location.name, address = address, url = url)).
+                          getOrElse(ShareLocation(id = location.id.get, name = location.name, address = address, url = url))
+                      }
+                    }
+                    locationList
+                }
+                log.debug("locationList={}", locationList)
+                val sharePlan = SharePlan(id = plan.id, name = plan.name, bagId = bag.id,
+                  locationList = locationList,
+                  userId = userId,
+                  usertype = session.get("usertype").getOrElse(""),
+                  username = session.get("username").getOrElse(""),
+                  avatar = session.get("avatar").getOrElse(""))
+                 
+                  Ok(views.html.planeditshare("planning", sharePlan, ""))
+
+            }
+        }
       }
-    
-  	 
+    }
+
   }
   
   /**
    * 更新 share plan 数据
+   * 这里 考虑 只更新文本数据 
    */
-  def updateShare(planId: String  )= Action {implicit request =>
+  def updateShare(planId: String   )= Action {implicit request =>
+      val postData = request.body.asFormUrlEncoded
+      def getNote(id: String) : String = postData.flatMap(m => m.get("note_" + id).flatMap(seq => seq.headOption)).getOrElse("")
+
+    session.get("userId") match {
+      case None => Redirect(routes.Login.login())
+      case Some(userId) => {
+        val bagId = userId
+        bagService.get(userId) match {
+          case None => NotFound
+          case Some(bag) =>
+            bag.getPlan(planId) match {
+              case None => NotFound
+              case Some(plan) =>
+
+                val locationList: List[ShareLocation] = bagService.getSharePlan(planId) match {
+                  case None =>
+                    val locationList: List[ShareLocation] = plan.list.flatMap { simplelocation =>
+                      locationService.getById(simplelocation.id).map { location =>
+                        val address = location.address.city + location.address.district + location.address.street
+                        val url = location.url
+                        ShareLocation(id = location.id.get, name = location.name, address = address, url = url ,note = getNote(  location.id.get ) )
+                      }
+                    }
+
+                    locationList
+
+                  case Some(sharePlan) =>
+                    //考虑了 地点的 变动， 删除了地点，增加了地点
+                    val locationMap = sharePlan.locationList.map(location => (location.id, location)).toMap
+
+                    val locationList: List[ShareLocation] = plan.list.flatMap { simplelocation =>
+                      locationService.getById(simplelocation.id).map { location =>
+                        val address = location.address.city + location.address.district + location.address.street
+                        val url = location.url
+                        locationMap.get(location.id.get).map(sharelocation => sharelocation.copy(name = location.name, address = address, url = url ,note = getNote(  location.id.get ) )).
+                          getOrElse(ShareLocation(id = location.id.get, name = location.name, address = address, url = url ,note = getNote(  location.id.get ) ))
+                      }
+                    }
+                    locationList
+                }
+                val sharePlan = SharePlan(id = plan.id, name = plan.name, bagId = bag.id,
+                  locationList = locationList,
+                  userId = userId,
+                  usertype = session.get("usertype").getOrElse(""),
+                  username = session.get("username").getOrElse(""),
+                  avatar = session.get("avatar").getOrElse(""))
+                  
+                  bagService.updateSharePlan(sharePlan) match{
+                  case None => 
+                  case Some( x ) => 
+                }
+                
+                	val url = "/plan/editShare?planId="+ planId 
+      	          	Redirect( url)
+                 
+
+            }
+        }
+      }
+    }
     
-  	 Ok("updateShare")
+  	 
   }
   
   /**

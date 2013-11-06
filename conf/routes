@@ -47,8 +47,8 @@ GET    /plan/updateVisible  		controllers.Plans.updateVisible( statusName : Stri
 GET    /plan/outpdf				controllers.Plans.outpdf( statusName : String , planName : String  )
 GET    /plan/share				controllers.Plans.share( planId: String , statusName : String , planName : String  )
 GET    /plan/cancelShare			controllers.Plans.cancelShare( statusName : String , planName : String  )
-GET    /plan/editShare				controllers.Plans.editShare( planId: String , statusName : String , planName : String  )
-GET    /plan/updateShare			controllers.Plans.updateShare( planId: String    )
+GET    /plan/editShare				controllers.Plans.editShare( planId: String   )
+POST    /plan/updateShare			controllers.Plans.updateShare( planId: String     )
 GET    /plan/shareIt			controllers.Plans.shareIt( planId: String    )
 
 
@@ -117,6 +117,9 @@ POST 	/cms/userphoto/save/:locationId				controllers.cms.UserPhotos.save(locatio
 GET 	    /cms/userphoto/edit/:id			controllers.cms.UserPhotos.edit( id )
 POST 	/cms/userphoto/update/:id		controllers.cms.UserPhotos.update( id )
 GET   	/cms/userphoto/del/:id				controllers.cms.UserPhotos.del( id )
+
+GET    /cms/shareplan					controllers.cms.Locations.listSharePlan()
+POST   /cms/shareplan					controllers.cms.Locations.assignSharePlan()
 
 
  

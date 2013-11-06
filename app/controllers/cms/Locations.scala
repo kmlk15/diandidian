@@ -113,8 +113,38 @@ object Locations extends Controller  with AuthTrait  {
 
   }
 
+  def listSharePlan(page:Int = 0, pagesize :Int = 1000  ) =isAuthenticated { username =>
+    implicit request =>
+      val  planList = bagService.getSharePlanList( page, pagesize)
+      // 如何过滤出 不存在的 plan , 已经删除的 plan
+      Ok( views.html.cms.sharePlans( planList))
+  }
   
+  
+  def assignSharePlan(   ) = isAuthenticated { username =>
+    implicit request =>
+      val postData = request.body.asFormUrlEncoded
+      val planId = postData.flatMap(m => m.get("planId").flatMap(seq => seq.headOption)).getOrElse("")
+      val action = postData.flatMap(m => m.get("action").flatMap(seq => seq.headOption)).getOrElse("")
+       
+      val jsVal = ( planId , action )match{
+        case ( planId , action) if(planId !="" && ( action=="set" || action == "unset") ) => {
+          bagService.setSharePlanAtHome( planId, action ) match{
+            case None => Json.obj("success" -> false ,  "msg" ->"参数错误")
+            case Some( _ ) => Json.obj("success" -> true,  "msg" ->"")
+          }
+        }
+        case  _ => Json.obj("success" -> false,  "msg" ->" 参数错误")
+      }
+      Ok( jsVal )
+  }
    
+  
+  
+  
+  	/**
+  	 *   准备删除 
+  	 */
    def listPlan(id: String ) = isAuthenticated { username =>
     implicit request =>
       
@@ -141,14 +171,17 @@ object Locations extends Controller  with AuthTrait  {
       }
   }
   
+   /**
+    * 准备删除 
+    */
  def assignPlan(locationId: String ) = isAuthenticated { username =>
     implicit request =>
       
        service.getLocationById(locationId)  match {
         case None => NotFound
         case Some(location) => {
-           val postData = request.body.asFormUrlEncoded
-        	   val planId = postData.flatMap(m => m.get("planId").flatMap(seq => seq.headOption)).getOrElse("")
+            val postData = request.body.asFormUrlEncoded
+        	 val planId = postData.flatMap(m => m.get("planId").flatMap(seq => seq.headOption)).getOrElse("")
             val action = postData.flatMap(m => m.get("action").flatMap(seq => seq.headOption)).getOrElse("")
 
             val jsval = if(  planId == ""  ||  (action != "remove"  && action!="assign") )  { 

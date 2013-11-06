@@ -72,6 +72,21 @@ trait BagServiceComponent {
      * 删除 分享plan 
      */
     def delSharePlan( planId: String) : Option[SharePlan]
+    
+    /**
+     * 
+     * 得到 系统 中分享的背包 列表 
+     */
+    def getSharePlanList(page: Int , pagesize: Int) : List[SharePlan]
+    
+    /**
+     * 得到显示在 首页上的  分享背包
+     */
+    def getHomePageSharePlanList( ): List[SharePlan]
+    /**
+     * 设置是否显示在 首页
+     */
+    def setSharePlanAtHome(planId: String , status: String): Option[SharePlan]
   }
 
 }
@@ -84,7 +99,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
   override val bagService = new BagService {
     lazy val bagsMongoClient = mongoService.getMongoService[Bag]("bags", dbname)
     lazy val locationPlanIndexMongoClient = mongoService.getMongoService[LocationPlanIndex]("locationPlanIndex", dbname)
-
+    lazy val shareplanMongoClient = mongoService.getMongoService[SharePlan]("shareplan", dbname)
     def createNewplan(bagId: String): String = {
 
       val newPlanname = get(bagId) match {
@@ -347,17 +362,67 @@ trait BagServiceComponentImpl extends BagServiceComponent {
      /**
      * 得到 分享 plan 的 数据
      */
-    def getSharePlan( planId: String): Option[SharePlan]= None
+    def getSharePlan( planId: String): Option[SharePlan]= {
+      val q = MongoDBObject("_id" -> planId  )
+      shareplanMongoClient.find(q).headOption
+    }
     
     /**
      * 更新 分享plan 数据
      */
-    def updateSharePlan( plan: SharePlan): Option[SharePlan]= None
+    def updateSharePlan( plan: SharePlan): Option[SharePlan]= {
+      
+      getSharePlan(plan.id) match{
+        case None =>
+          shareplanMongoClient.insert(plan )
+          Some(plan)
+        case Some( _ ) =>
+          val q = MongoDBObject("_id" -> plan.id  )
+          shareplanMongoClient.update(q, plan , false, false, WriteConcern.Normal)
+          Some(plan)
+      }
+      
+    }
     
     /**
      * 删除 分享plan 
      */
     def delSharePlan( planId: String) : Option[SharePlan]= None
+    
+    
+    /**
+     * 
+     * 得到 系统 中分享的背包 列表 
+     */
+    def getSharePlanList(page: Int , pagesize: Int) : List[SharePlan] = {
+       shareplanMongoClient.list( )
+    }
+    
+    /**
+     * 得到显示在 首页上的  分享背包
+     */
+    def getHomePageSharePlanList( ): List[SharePlan] = {
+       val q = MongoDBObject( "atHomePage" -> true  )
+       shareplanMongoClient.find(q).toList
+    }
+    
+    /**
+     * 设置是否显示在 首页
+     */
+    def setSharePlanAtHome(planId: String , status: String): Option[SharePlan] = {
+       getSharePlan(planId) match{
+        case None => None
+        case Some( plan  ) =>
+          val q = MongoDBObject("_id" -> plan.id  )
+           status match{
+            case "set" =>  shareplanMongoClient.update(q, plan.copy( atHomePage = true) , false, false, WriteConcern.Normal)
+            case "unset" =>  shareplanMongoClient.update(q, plan.copy( atHomePage = false), false, false, WriteConcern.Normal)
+            case  _ => 
+          }
+          Some(plan)
+      }
+      
+    }
     
   }
 }
