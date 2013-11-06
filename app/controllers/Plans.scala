@@ -394,7 +394,7 @@ object Plans extends Controller {
   *   2  将被告 转移到   计划中
   *   3 页面返回到 plan 页面 
   */ 
-  def  cancelShare(  statusName: String , planName: String )= Action {implicit request =>
+  def  cancelShare( planId: String ,  statusName: String , planName: String )= Action {implicit request =>
 
     session.get("userId") match {
       	case None => Redirect(routes.Login.login())
@@ -405,6 +405,7 @@ object Plans extends Controller {
       	      val tobag = models.BagHelp.update(bag, change , false )
       	       bagService.update(tobag) match{
       	        case Some( bag ) =>
+      	            bagService.setSharePlanShareIt(planId, false)
       	          	val url = "/plan/?statusName=" + URLEncoder.encode( change.toStatus ,"utf-8") +
       	          	"&planName=" +  URLEncoder.encode( change.toPlan,"utf-8")
       	          	Redirect( url )
@@ -550,8 +551,27 @@ object Plans extends Controller {
    * 主要是 为了  能够 出现在 CMS 中， 或者 说明  这个 share 的内容 已经完整了
    */
   def shareIt( planId: String   )= Action {implicit request =>
-    
-  	 Ok("shareIt")
+      session.get("userId") match {
+      case None => Redirect(routes.Login.login())
+      case Some(userId) => {
+        val bagId = userId
+        bagService.get(userId) match {
+          case None => NotFound
+          case Some(bag) =>
+            bag.getPlan(planId) match {
+              case None => NotFound
+              case Some(plan) =>
+                bagService.setSharePlanShareIt(planId, true) match{
+                  case None =>  Ok(Json.obj("success" -> false,  "msg" ->""))
+                  case Some( x) => Ok(Json.obj("success" -> true,  "msg" ->""))
+                }
+                
+            }
+        }
+      }
+      }
+      
+  	  
   }
   
   

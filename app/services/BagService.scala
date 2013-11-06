@@ -87,6 +87,11 @@ trait BagServiceComponent {
      * 设置是否显示在 首页
      */
     def setSharePlanAtHome(planId: String , status: String): Option[SharePlan]
+    
+    /**
+     * 设置 是否 进入 CMS 管理页面 
+     */
+     def setSharePlanShareIt(planId: String , status: Boolean): Option[SharePlan]
   }
 
 }
@@ -395,7 +400,8 @@ trait BagServiceComponentImpl extends BagServiceComponent {
      * 得到 系统 中分享的背包 列表 
      */
     def getSharePlanList(page: Int , pagesize: Int) : List[SharePlan] = {
-       shareplanMongoClient.list( )
+      val q = MongoDBObject( "shareIt" -> true  )
+       shareplanMongoClient.find(q).toList 
     }
     
     /**
@@ -421,9 +427,17 @@ trait BagServiceComponentImpl extends BagServiceComponent {
           }
           Some(plan)
       }
-      
     }
     
+     def setSharePlanShareIt(planId: String , status: Boolean): Option[SharePlan] = {
+       getSharePlan(planId) match{
+        case None => None
+        case Some( plan  ) =>
+          val q = MongoDBObject("_id" -> plan.id  )
+          shareplanMongoClient.update(q, plan.copy( shareIt = status , atHomePage=if(!status) {false} else{ plan.atHomePage}) , false, false, WriteConcern.Normal)
+          Some(plan)
+      }
+    }   
   }
 }
 

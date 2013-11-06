@@ -33,7 +33,7 @@ case class ShareLocation( id: String ,   note: String = "", img: String = "",
    	  
     )
 
-case class SharePlan( id: String = "" , bagId: String = "" ,  name: String = "" ,  img: String = "", atHomePage: Boolean= false ,
+case class SharePlan( id: String = "" , bagId: String = "" ,  name: String = "" ,  img: String = "", atHomePage: Boolean= false , shareIt: Boolean =false ,
 	locationList : List[ShareLocation] = Nil, citylistStr: String = "",
     userId: String="", usertype: String = "",  username: String = "" , avatar: String = ""     
 )

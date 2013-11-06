@@ -61,7 +61,7 @@
 									<span><a href="/plan/updateShare?planId=@shareplan.id" onclick="alert('x');$('form#form1').submit() ;return false ">保存</a></span>
 								</div>
 								 <div class="plan-menu" id="shareIt">
-								 	<span ><a href="/plan/shareIt?planId=@shareplan.id">分享背包</a></span>
+								 	<span ><a href="/plan/shareIt?planId=@shareplan.id" onclick="$.getJSON('/plan/shareIt?planId=@shareplan.id',{},function(result){ alert( result ) });return false;">分享背包</a></span>
 								 </div>
 		
 							</div><!-- end header -->
