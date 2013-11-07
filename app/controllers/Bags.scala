@@ -115,6 +115,56 @@ object Bags extends Controller {
   }
 
   /**
+   * 复制分享的背包数据
+   * 1 自己不允许复制自己的
+   * 2 名字如何命名？
+   *
+   */
+  def copySharePlan(planId: String) = Action { implicit request =>
+
+   val jsVal = session.get("userId") match {
+      case None => Json.obj("success" -> false, "msg" -> "请先登录。")
+      case Some(userId) =>
+        bagService.getSharePlan(planId) match {
+          case None => Json.obj("success" -> false, "msg" -> "分享的背包不存在")
+          case Some(shareplan) if(userId == shareplan.bagId)=> 
+            Json.obj("success" -> false, "msg" -> "不能复制自己分享的背包")
+            
+          case Some(shareplan) =>
+            val bagId = getBagId(session)
+            val statusName =  defaultStatusName
+            val planName : String = bagService.get(bagId)match{
+              case None => shareplan.name
+              case Some( bag )=>
+                 bag.map.get(statusName).map( status =>{
+                	 if(status.map.get( shareplan.name)==None){
+                		 shareplan.name
+                	 }else{
+                	   var i = 1
+                	   while( status.map.get( shareplan.name + i)!= None){
+                	     i = i + 1
+                	   }
+                	   shareplan.name + i
+                	 }
+                 }).getOrElse( shareplan.name )
+                 
+            } 
+            
+            val typ = "user"
+            log.debug("bagId={}, statusNam={},planName={}", bagId, statusName, planName)
+            val locationList: List[LocationForm] = shareplan.locationList.flatMap( location => locationService.getById( location.id))
+            val addresultList = locationList.map(location => bagService.addLocation(bagId, typ, getUsertype(session), statusName, planName, location) )
+             if(addresultList.forall( x=>x )){
+               Json.obj("success" -> true, "msg" -> "复制完成")
+             }else{
+               Json.obj("success" -> true, "msg" -> ( "存在粗误" + addresultList.count( x=> !x )) )
+             }
+        }
+    }
+    Ok(jsVal)
+  }
+
+  /**
    * 这里需要做 安全认证
    */
   private def getBagId(cookie: Cookie) : String  = {

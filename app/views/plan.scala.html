@@ -115,9 +115,9 @@
 								@* TODO CSS  *@ 
 								
 								 <div class="plan-menu">
-									<span>&nbsp;&nbsp;&nbsp;&nbsp;保存</span>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;设置</span>
 									<ul>
-										<li id="plansavepdf"><a href="/plan/outpdf?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  target="_blank">保存+PDF</a></li>
+										<li id="plansavepdf"><a href="/plan/outpdf?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)"  target="_blank">输出PDF</a></li>
 										<li class="last" id="planshare"><a href="/plan/share?statusName=@helper.urlEncode(planview.statusName)&planName=@helper.urlEncode(planview.name)&planId=@{planview.id}">分享背包</a></li>
 									</ul>
 								</div>
@@ -455,7 +455,7 @@ $(function(){
 	$("div#mapbutton").click( function(){
 		var tag = $("div#map-canvas") ; 
 		var w = $( "div#plan-attractions").width() - $("div#plan-timeline-wrap").width() - 11 ;
-		var h = $( "div#plan-attractions").height() -  148 ;
+		var h = $( "div#plan-attractions").height() -  60 ;
 		console.log("h=" + h ) ;
 		
 		if( gmapon ){

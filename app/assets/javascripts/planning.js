@@ -554,7 +554,7 @@ function setPlanAttractionsListPaddingBottom() {
 	if( gmapon ){
 		var tag = $("div#map-canvas") ; 
 		var w = $( "div#plan-attractions").width() - $("div#plan-timeline-wrap").width() - 11 ;
-		var h = $( "div#plan-attractions").height() -  148 ;
+		var h = $( "div#plan-attractions").height() -  60 ;
 		tag.width( w );
 		tag.height( h );
 	}
