@@ -36,7 +36,7 @@ GET  /bag/get			controllers.Bags.get()
 GET  /bag/update		controllers.Bags.update()
 GET  /bag/createNewplan     controllers.Bags.createNewplan()
 GET  /bag/updateJson      controllers.Bags.updateJson()
- 
+GET  /bag/copySharePlan      controllers.Bags.copySharePlan(planId: String )
 
 GET    /plan/                   controllers.Plans.view()
 POST    /plan/update            controllers.Plans.update()
