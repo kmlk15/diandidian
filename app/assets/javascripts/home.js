@@ -93,9 +93,19 @@ function loadHomeAttractions( query) {
 	
 }
 
+function loadSharePlan(){
+	$.getJSON("/shareplan", query, function( result ){
+		
+	});
+	
+}
 $(function() {
  
 	var url = $.url();
 	var query = url.param()
 	loadHomeAttractions( query );
+	if( $.isEmptyObject( query)  ){
+		//提取 分享背包数据
+		
+	}
 })

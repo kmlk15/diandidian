@@ -62,7 +62,7 @@ $(function(){
 		
 		<td class="col-lg-2">@shareplan.username</td>
 		<td class="col-lg-2"><img src="@shareplan.avatar" /> </td>
-	    <td class="col-lg-2">@shareplan.name</td>
+	    <td class="col-lg-2"><a href="/plan/viewShare?planId=@shareplan.id" target="_blank">@shareplan.name</a></td>
 	    @if(shareplan.atHomePage   ){
 	    		<td class="col-lg-2" ><button class="btn  btn-success"  id="@shareplan.id" >取消显示在首页</button></td>
 	    }else{

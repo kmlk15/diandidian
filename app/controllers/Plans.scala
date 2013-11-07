@@ -485,19 +485,29 @@ object Plans extends Controller {
      bagService.getSharePlan(planId) match {
      	case None => NotFound
        case Some(sharePlan) =>
-     	if(sharePlan.shareIt && sharePlan.atHomePage){
+          
+     	val flag: Boolean = if(sharePlan.shareIt && sharePlan.atHomePage){
+     		true
+     	}else if( Some(sharePlan.userId) ==  session.get("userId")){
+     		true
+     	}else if( session.get("cmsAdmin") != None){
+     		true
+     	 }else{
+     		 false
+     	}
+     	if(flag){
      		Ok(views.html.shareplanView("planning", sharePlan, ""))
      	}else{
-     	  if( Some(sharePlan.userId) ==  session.get("userId")){
-     	    Ok(views.html.shareplanView("planning", sharePlan, ""))
-     	  }else{
-     		NotFound
-     	  }
+     	  NotFound
      	}
      }
   }
   
-
+def listShare()= Action{implicit request =>
+  	val shareplanList = bagService.getHomePageSharePlanList()
+  	import models.BagHelp.sharePlanFmt
+    Ok( Json.toJson(shareplanList))
+}
   
   /**
    * 更新 share plan 数据

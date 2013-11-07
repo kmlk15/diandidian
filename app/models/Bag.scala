@@ -160,7 +160,9 @@ object BagHelp {
   implicit val statusFmt = Json.format[Status]
   implicit val bagFmt = Json.format[Bag]
   implicit val planFormFmt = Json.format[PlanForm]
-
+  implicit val shareLocationFmt = Json.format[ShareLocation]
+  implicit val sharePlanFmt = Json.format[SharePlan]
+  
   val log = LoggerFactory.getLogger(BagHelp.getClass())
   val defaultPlanName = "背包"
   val defaultStatusName = "计划中"
