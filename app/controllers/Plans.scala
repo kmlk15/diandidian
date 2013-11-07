@@ -506,7 +506,8 @@ object Plans extends Controller {
 def listShare()= Action{implicit request =>
   	val shareplanList = bagService.getHomePageSharePlanList()
   	import models.BagHelp.sharePlanFmt
-    Ok( Json.toJson(shareplanList))
+  	val  result = Json.obj("success" -> true , "data" -> Json.toJson(shareplanList) )
+    Ok( result )
 }
   
   /**

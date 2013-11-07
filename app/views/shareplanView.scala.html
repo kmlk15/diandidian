@@ -54,12 +54,12 @@
 
 						<div id="plan-attractions">
 							<div class="header clear-fix ">
-								<div class="plan-name">
-									<input type="text" name="planName"  value="@shareplan.name" />
+								<div class="plan-name"  style="float:left;margin-left:22px;font-size:20px">
+									<span style=""> @shareplan.name  </span>
 								</div>
-								<div style="font-size:18x ;float:right;line-height:36px;margin-top:5px">@shareplan.username</div>
-								<div style="float:right">
-									<img src="@shareplan.avatar"  id="useravatarimg" style="width:36px;height:36px;margin-top:5px"/>
+								<div style="font-size:15px ;float:right;line-height:36px;margin-top:8px;magtin-right:3px">@shareplan.username</div>
+								<div style="float:right;margin-top:13px">
+									<img src="@shareplan.avatar"  id="useravatarimg" style="width:30px;height:30px;"/>
 									
 								</div>
 								
@@ -105,9 +105,11 @@
 								<div>
 								</div>
 								<div>
+								@if( session.get("username")!=None){
 									<div style="float:right;font-size:18px;margin-right:20px;cursor:pointer">
 									<a href="/bag/copySharePlan?planId=@shareplan.id">复制背包</a>
 									</div>
+									}
 								</div>
 								<div class="clearfix"></div>
 							 </div>  <!--   contentmain  -->

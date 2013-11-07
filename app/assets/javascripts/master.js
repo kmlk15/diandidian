@@ -22,6 +22,8 @@ $(function() {
 		var mainWrapWidth = itemWidth*rowCount;
 		$("#attractions-list").width(mainWrapWidth);
 		
+		$("#shareplan-list").width(mainWrapWidth);
+		
 		//sidebar scroll
 		var headerHeight = $("#header").height();
 		var sidebarPaddingTop = parseInt($("#sidebar").css("padding-top"));

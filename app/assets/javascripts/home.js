@@ -93,9 +93,48 @@ function loadHomeAttractions( query) {
 	
 }
 
-function loadSharePlan(){
-	$.getJSON("/shareplan", query, function( result ){
-		
+function loadSharePlan( query ){
+	$.getJSON("/plan/listShare", query, function( result ){
+		if( result.success){
+			console.log( JSON.stringify(result) ) ;
+			var jsonArr = result.data ;
+			var html = "" ;
+			html  += '<ul class="clearfix">';
+			$.each(jsonArr , function(index,  data){
+				var lihtml = "<li>";
+				var item = data ; 
+				lihtml += "<a href='/plan/viewShare?planId=" + item.id + "'>"
+				if(item.img) {
+					lihtml += '<img src="http://diandidian.s3-us-west-1.amazonaws.com/' + item.img + '" width="264" height="260" alt="" />';
+				} else {
+					lihtml += '<img src="/assets/images/dummy/img01.jpg" width="264" height="260" alt="" />';//default image here
+				}
+				lihtml += "</a>"
+				lihtml += '<div class="title2">';
+				lihtml += '<h3>'+item.name+'</h3>';
+				lihtml += '<span></span>';
+				lihtml += '</div>';
+				
+				lihtml += '<div class="user">';
+				lihtml += '<div style="margin-top:5px;margin-right:5px"><img src="' +item.avatar +'" width="32" height="32" alt=""     class="shareplan_avataimage" /></div>';
+				
+				lihtml += '<span style="margin-top:8px">图片分享：</span><span>'+ item.username +'</span>';
+				lihtml += '<div>';
+				lihtml += '<span></span>';
+				lihtml += '<p></p>';
+				lihtml += '</div>';
+				lihtml += '</div>';
+				
+				lihtml += "</li>" ; 
+				html += lihtml  +"\n" ;
+				
+			} );
+			html += "</ul>";
+			console.log( html ) ;
+			
+			$("#shareplan-list").html(html);
+			$("img.shareplan_avataimage").imgr({ radius:"16px"});
+		}
 	});
 	
 }
@@ -106,6 +145,7 @@ $(function() {
 	loadHomeAttractions( query );
 	if( $.isEmptyObject( query)  ){
 		//提取 分享背包数据
-		
+		console.log( "load share plan ") ;
+		loadSharePlan(query ) ;
 	}
 })
