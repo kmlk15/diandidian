@@ -45,13 +45,22 @@ POST    /plan/updateNote        controllers.Plans.updateNote()
 GET    /plan/updateDate             controllers.Plans.updateDate( statusName : String , planName : String , startDate: Long ,endDate: Long )
 GET    /plan/updateVisible  		controllers.Plans.updateVisible( statusName : String , planName : String , visible: String )
 GET    /plan/outpdf				controllers.Plans.outpdf( statusName : String , planName : String  )
-GET    /plan/share				controllers.Plans.share( planId: String , statusName : String , planName : String  )
-GET    /plan/cancelShare			controllers.Plans.cancelShare( planId: String , statusName : String , planName : String  )
-GET    /plan/editShare				controllers.Plans.editShare( planId: String   )
-POST    /plan/updateShare			controllers.Plans.updateShare( planId: String     )
-GET    /plan/shareIt			controllers.Plans.shareIt( planId: String    )
-GET    /plan/viewShare			controllers.Plans.viewShare( planId: String    )
-GET    /plan/listShare			controllers.Plans.listShare()
+
+
+GET    /plan/share				controllers.SharePlans.share( planId: String , statusName : String , planName : String  )
+GET    /plan/cancelShare			controllers.SharePlans.cancelShare( planId: String , statusName : String , planName : String  )
+GET    /plan/editShare				controllers.SharePlans.editShare( planId: String   )
+POST   /plan/updateShare			controllers.SharePlans.updateShare( planId: String     )
+GET    /plan/shareIt			controllers.SharePlans.shareIt( planId: String    )
+GET    /plan/viewShare			controllers.SharePlans.viewShare( planId: String    )
+GET    /plan/listShare			controllers.SharePlans.listShare()
+
+GET    /plan/shareplanLocationImage/:planId/:locationId  controllers.SharePlans.shareplanLocationImage( planId: String , locationId: String )
+POST   /plan/shareplanLocationImage/:planId/:locationId  controllers.SharePlans.shareplanLocationImageSave( planId: String , locationId: String )
+
+GET    /plan/shareplanCoverImage/:planId 					controllers.SharePlans.shareplanCoverImage( planId: String )
+POST   /plan/shareplanCoverImage/:planId 					controllers.SharePlans.shareplanCoverImageSave( planId: String )
+
 
 GET    /plan/testmap                   controllers.Plans.testmap()
 
