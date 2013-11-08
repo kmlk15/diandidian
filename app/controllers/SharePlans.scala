@@ -192,7 +192,11 @@ object SharePlans extends Controller with services.FileUploadService {
   def listShare() = Action { implicit request =>
     val shareplanList = bagService.getHomePageSharePlanList()
     import models.BagHelp.sharePlanFmt
-    val result = Json.obj("success" -> true, "data" -> Json.toJson(shareplanList))
+    val jsvalList = shareplanList.map( plan => {
+      Json.obj("name" -> plan.name , "img" -> plan.homepageimg, "id"-> plan.id,
+          "avatar" -> plan.avatar, "username" -> plan.username )
+    })
+    val result = Json.obj("success" -> true, "data" -> Json.toJson(jsvalList))
     Ok(result)
   }
 
