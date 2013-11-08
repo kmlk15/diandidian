@@ -1,4 +1,4 @@
-@(nickname: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
+@(nickname: String , planview: models.PlanView, cityListStr: String , centerPointer: (Double , Double ) )(implicit session: Session)
 @import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
 
 @displayName(location: models.LocationForm) = {
@@ -216,7 +216,7 @@ td.labe4{
 	</div>
 </div>
 	<div  class="googlemapbox">
-		<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=22.283364,114.173068&zoom=12&size=210x210&sensor=false"  style="width:210px;height:210px;" />
+		<img id="googlemap" src="http://maps.googleapis.com/maps/api/staticmap?center=@{centerPointer._1},@{centerPointer._2}&zoom=12&size=210x210&sensor=false"  style="width:210px;height:210px;" />
 	</div>
 </div>
 

@@ -1,4 +1,4 @@
-package controllers
+	package controllers
 
 import play.api.libs.json
 import play.api.mvc.Action
@@ -79,7 +79,8 @@ object Plans extends Controller {
                 val allLocationViewList : List[LocationView] = simplelocationList2LocationViewList(plan.list)
                  //从这里  计算出所有的 city 信息， 用于传递到 /home 进行搜索
                 val cityListStr = allLocationViewList.map( _.location.address.city).distinct.mkString(",")
-                 
+                val centerPointer = countcenter( allLocationViewList  )
+                log.debug( "centerPointer={}", centerPointer )
                 val allLocationViewMap :Map[Option[String], LocationView] = allLocationViewList.map( view => view.location.id -> view ).toMap
                 
                 log.debug( "allLocationViewList.size={}" , allLocationViewList.size )
@@ -121,11 +122,17 @@ object Plans extends Controller {
                     startDate = plan.startDate, endDate = plan.endDate,
                   first = first, last = last,
                   map = sortmap , noteMap = plan.noteMap )
+                  
                  request.getQueryString("forpdf") match{
-                  case None => Ok(views.html.plan("planning", planview , cityListStr ))
+                  case None => Ok(views.html.plan("planning", planview , cityListStr , centerPointer ))
                   case Some(x) => 
                     val nickname = request.getQueryString("name").getOrElse("")
-                    Ok(views.html.planforpdf841( nickname  , planview , cityListStr ))
+                    
+                    val firstadd :(Double,Double)= allLocationViewList.map( x =>x.location.address).
+                    filterNot( add=> (add.latitude , add.longitude) ==(0.0,0.0)).
+                    headOption.map( add=>(add.latitude, add.longitude)).getOrElse( (0.0, 0.0) )
+                    
+                    Ok(views.html.planforpdf841( nickname  , planview , cityListStr , firstadd))
                 }
             }
         }
@@ -377,6 +384,28 @@ object Plans extends Controller {
        
      }
    
+  }
+
+  /**
+   * 计算 坐标的 中心点
+   */
+  private def countcenter(allLocationViewList: List[LocationView]): (Double, Double) = {
+    val addList: List[(Double, Double)] = allLocationViewList.map(x => x.location.address).map(add => (add.latitude, add.longitude)).filterNot(tuple => tuple == (0.0, 0.0))
+   log.debug("addList={}" , addList )
+   
+ 
+    val result =  if (addList.size == 0) {
+      (0.0, 0.0)
+    } else {
+      val cx = (addList.map(x => x._1)).sum / addList.size
+      val cy = (addList.map(x => x._2)).sum / addList.size
+       
+
+      
+      ( cx , cy )
+    }
+
+    result
   }
   
   /**

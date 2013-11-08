@@ -1,4 +1,4 @@
-@(name: String , planview: models.PlanView, cityListStr: String)(implicit session: Session)
+@(name: String , planview: models.PlanView, cityListStr: String , centerPointer: (Double , Double ))(implicit session: Session)
 @import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
 
 @displayName(location: models.LocationForm) = {
@@ -301,7 +301,10 @@ var infowindow ;
 	
 
 function initialize() {
-  var myLatlng = new google.maps.LatLng(22.283364 , 114.173068);
+ // var myLatlng = new google.maps.LatLng(22.283364 , 114.173068);
+  
+  
+  var myLatlng = new google.maps.LatLng(@centerPointer._1  , @centerPointer._2 );
   var mapOptions = {
     zoom: 9,
     center: myLatlng,
