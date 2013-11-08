@@ -20,7 +20,7 @@ import models.LocationFormHelp.locationFormFmt
 import models.PhotoHelp.photoFmt
 import play.api.libs.json.Json
 import org.apache.commons.lang3.StringUtils
-
+import scala.util.Random
 
 object LocationEndpoints extends Controller {
 	val log = LoggerFactory.getLogger(LocationEndpoints.getClass())
@@ -29,6 +29,9 @@ object LocationEndpoints extends Controller {
      val  bagService = BagServiceRegistry.bagService
      val loginService = base.LoginServiceRegistry.loginService
      
+     val  randomList = ( 0 to 24 ).map( i => Random.shuffle( ( 0 to 100).toList ) )
+     val cookiename = "home_r_index" 
+      val defaultIndex = -1 
    // val ls = locationRegistry.locationService
   /*
    * Test of converting json string into object and back to json string by using sjson
@@ -51,17 +54,17 @@ object LocationEndpoints extends Controller {
     val ids = request.getQueryString("ids").getOrElse("")
     val cityList =  request.getQueryString("cityList").getOrElse("") 
     
-    val locationsList: List[LocationForm] = if (city != "" && district != "") {
+    val (locationsList, randomIndex): (List[LocationForm] ,Int) = if (city != "" && district != "") {
       //按地区搜索
-      ls.list(city, district)
+     ( ls.list(city, district) ,defaultIndex)
     } else if (city != "") {
       //按城市搜索
-      ls.list(city)
+      ( ls.list(city) , defaultIndex)
     } else if( ids != "" ){
       //搜索框 提交的搜索
       log.debug( "ids={}", ids )
       val idsArr = ids.split(",")
-      idsArr.toSet.flatMap( ( id: String ) => { 
+      val list = idsArr.toSet.flatMap( ( id: String ) => { 
         if( id.startsWith("city:")){
           id.split(":") match{
             case  Array(_,_,city) =>{
@@ -73,12 +76,43 @@ object LocationEndpoints extends Controller {
         		ls.getById( id)
         }
       }).toList
+      (list , defaultIndex )
     }else if(cityList != ""){
       //同时搜索多个城市， 用于 planning page   继续搜索 按钮
-      cityList.split(",").toList.flatMap(  city => ls.list(city))
+      val list = cityList.split(",").toList.flatMap(  city => ls.list(city))
+      (list , defaultIndex )
     } else {
       //返回 所有的 地点 
-      ls.list()
+     val locationlist  =  ls.list()
+      
+      /**
+       * For the home page, right now the attractions loaded is in the sequence how I added it, example:
+
+香港会议展览中心, 香港公园, 香港科学馆, 中环广场, 圣保罗大教堂遗址-大三巴牌坊, 金门大桥, 渔人码头
+
+Please make it random loaded whenever it is the first time load to browser, example:
+
+香港科学馆, 圣保罗大教堂遗址-大三巴牌坊, 金门大桥, 香港会议展览中心, 香港公园,  渔人码头, 中环广场
+       * 
+       * 有预先定义的 24个 整数 随机 序列，
+       * 每日 更新一次？
+       * 或者每次重启的时候更新？
+       * 或者 类似 cache 的方式？
+       * Map( id ,   IntList)
+       * 在 cookie 中保存， 用的是那种 序列
+       * 
+       *  
+       */
+      val index = request.cookies.get( cookiename) match{
+       case None =>  Random.nextInt(24)
+       case Some( x ) =>
+         log.debug("cookie={}"+ x  )
+         math.abs( ( x.value.toInt) % 24)
+     }
+     
+     val random = randomList( index )
+     val rList = (locationlist zip random).sortBy( x=> x._2).map( x=> x._1 )
+     (rList , index)
     }
     
     val locations = locationsList map {location =>
@@ -92,34 +126,10 @@ object LocationEndpoints extends Controller {
       }else{
         Photo()
       }
-  
-     /**
-      * 2013-09-30 
-      * 增加 LocationPlanIndex 信息
-      */
-   val locaionPlanIndex =   location.planId.flatMap( planId => {
-        bagService.getLocationPlanIndexByPlanId( location.id.get , planId) .flatMap{ index =>
-            bagService.get(index.bagId).flatMap( bag => { 
-            			 val optionPlan  = bag.getPlan( planId )
-            			 val optionBaseUser = loginService.getBaseUser(bag.id, bag.usertype)  
-            			 if( optionPlan !=None && optionBaseUser !=None ){
-            			   Some( optionPlan.get , optionBaseUser.get)
-            			 }else{
-            			   None
-            			 }
-              })
-          } 
-     }) match{
-       case None =>   Json.obj()
-       case Some( (plan , baseUser) ) =>
-         val jsObj = Json.obj("planName" -> plan.name , "userName" -> baseUser.screenName , "avatar" -> baseUser.avatar)
-          Json.obj( "plan" -> jsObj)
-     }
-      
-   
+     
       
      
-     Json.obj( "photo" -> Json.toJson( photo )) ++ Json.obj("location" -> Json.toJson( location ) )  ++ locaionPlanIndex
+     Json.obj( "photo" -> Json.toJson( photo )) ++ Json.obj("location" -> Json.toJson( location ) )  
     }
     
     //提取 结果中的  地点数据  国家和城市， 用于 在 显示在 导航条上
@@ -148,7 +158,13 @@ object LocationEndpoints extends Controller {
    
     val data = Json.obj( "country" ->resultcountry, "city" -> resultcity, "list" -> Json.toJson( locations) )
     val resultJson = Json.obj("success" -> true , "data" -> data )
-    Ok(  resultJson )
+    log.debug( "randomIndex={}" , randomIndex  )
+    if( randomIndex > defaultIndex){
+       Ok(  resultJson ) .withCookies( Cookie(cookiename,randomIndex.toString) )
+    }else{
+       Ok(  resultJson )  
+    }
+   
     
   }
   
