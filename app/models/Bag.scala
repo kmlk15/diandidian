@@ -28,15 +28,19 @@ case class SimpleLocation(id: String = "", name: String = "", enName: String = "
 case class Plan(id: String=""   , name: String = "背包", startDate: Long = 0L, endDate: Long = 0L,
   list: List[SimpleLocation] = Nil, map: Map[String, String] = Map() , noteMap: Map[String,String]= Map( ) , visible: String ="private")
 
-case class ShareLocation( id: String ,   note: String = "", img: String = "", 
+case class ShareLocation( id: String ,   note: String = "", imgId:String="",   extension: String = "jpg" , 
    	name: String = "" , address: String = "" ,  url: String = ""
    	  
-    )
+    ){
+  val img = if(imgId=="") "" else    "266_" +   imgId +"."+ extension   
+}
 
-case class SharePlan( id: String = "" , bagId: String = "" ,  name: String = "" ,  img: String = "", atHomePage: Boolean= false , shareIt: Boolean =false ,
+case class SharePlan( id: String = "" , bagId: String = "" ,  name: String = "" ,  imgId:String="",   extension: String = "jpg" ,  atHomePage: Boolean= false , shareIt: Boolean =false ,
 	locationList : List[ShareLocation] = Nil, citylistStr: String = "",
     userId: String="", usertype: String = "",  username: String = "" , avatar: String = ""     
-)
+){
+ val img = if(imgId=="") "" else "780_" +   imgId +"."+ extension 
+}
 
 /**
  * 用于页面展示时的对象

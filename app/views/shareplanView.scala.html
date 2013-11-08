@@ -72,7 +72,7 @@
 								 @if(shareplan.img==""){
 								 	<img src='@routes.Assets.at("images/shareplan_cover.png")' style="width:780px;height:435px" />
 								 }else{
-								 	<img src="@shareplan.img"  /> 
+								 	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@shareplan.img"  style="width:780px;height:435px" /> 
 								 }
 								 	
 								 </div>
@@ -80,7 +80,7 @@
 								 @defining( shareplan.locationList.reverse zip ( 1 to shareplan.locationList.size)  ){ziped => 
 								 @for( tuple  <- ziped ){
 								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;background-color:rgba(88, 84, 75, 0.19)" >
-									 <div style="float:left;width:630px ">
+									 <div style="float:left;width:620px ">
 									 	<h3 style="margin-left:10px;margin-top:10px;">@{tuple._2}.@tuple._1.name</h3> 
 										<h4 style="margin-left:20px">@tuple._1.address</h4>
 									 	<div style="font-size:15px;margin-left:20px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
@@ -89,11 +89,11 @@
 										 </div>
 									 </div>
 								 
-									 <div style="float:right;width:130px;margin-top:10px;margin-right:20px"> 
+									 <div style="float:right;width:133px;margin-top:10px;margin-right:20px"> 
 									 @if(tuple._1.img==""){	
-									 	<img src='@routes.Assets.at("images/sharelocation_blank.png")' />
+									 	<img src='@routes.Assets.at("images/sharelocation_blank.png")'  style="width:133px" />
 									 }else{
-									 	<img src="@tuple._1.img" />
+									 	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@tuple._1.img" style="width:133px" />
 									 }
 									 </div>
 								 
@@ -147,9 +147,9 @@
 <!--[if lt IE 9]>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/ie.js")'></script>
 <![endif]-->
- 
 
- <script>
+<script>
+var planId = "@shareplan.id";
 $(function(){
 	$(window).resize(function(e) {
 		var space = 260;
@@ -164,7 +164,7 @@ $(function(){
 	
 });
 </script>
-    
+   
 
 </body>
 </html>

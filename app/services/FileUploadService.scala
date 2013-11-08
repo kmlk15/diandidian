@@ -46,7 +46,7 @@ trait FileUploadService {
       if (imgsize.trim() == w + "x" + h) {
         Seq("cp", "-rpv", from, to).! == 0
       } else {
-        Seq("convert", from, "-resize", w + "x" + h + "^", "-gravity", "center", "-extent", w + "x" + h, "-quality", "100", to).! == 0
+        Seq("convert", from, "-resize", w + "x" + h + "^", "-gravity", "center", "-extent", w + "x" + h, "-quality", "85", to).! == 0
       }
     } else {
 
@@ -101,6 +101,10 @@ trait FileUploadService {
     log.debug(" remove file to s3 , over")
   }
 
+  def removeFile(key: String ) = {
+     s3client.remove( key )
+  }
+  
   val  imageFileExtensionSet = Set("jpg", "jpeg","png")
   
    /**

@@ -1,0 +1,63 @@
+ @(plan: SharePlan,location: ShareLocation ,   msg: String = "" )(implicit    session: Session )
+  
+  
+ @shareplanImageUploadMain("图片上传"){ 
+  <div  >  
+	  <div  >
+	  @if( msg != "") { <h3 style="margin-left:85px;" ><span class="label label-warning">@msg</span></h3>}
+	  <h3 style="margin-left:85px;">
+	    @if( location.img == "") {上传} else {编辑}照片 </h3>
+	   
+	  </div>
+  </div>
+<form action="/plan/shareplanLocationImage/@plan.id/@location.id" method="post" enctype= "multipart/form-data" >  
+<table border="0"  width="90%">
+<tr>
+<td align="right"  width="75px" >地点:</td>
+<td  style=" padding-left: 10px; padding-bottom: 5px; padding-top: 5px;">@location.name</td>
+</tr>
+
+@if( location.img != ""){
+<tr>
+<td></td>
+<td ><img src="http://diandidian.s3-us-west-1.amazonaws.com/@location.img" style="width:67px"></td>
+</tr>
+}
+
+<tr>
+<td  align="right">上传照片:</td>
+<td style=" padding-left: 10px; padding-bottom: 5px; padding-top: 5px;">
+<input type="file" id="imgsrc" name="imgsrc"  >
+</td>
+</tr>
+@**
+<tr>
+<td align="right">描述:</td>
+<td style=" padding-left: 10px; padding-bottom: 5px; padding-top: 5px;">
+<textarea id="brief" name="brief" rows="3" cols="50"  ></textarea>
+</td>
+</tr>
+**@
+
+<tr>
+<td>
+
+</td>
+<td style=" padding-left: 10px; padding-bottom: 5px; padding-top: 5px;"><input class="btn btn-primary" type="submit" value="@if( location.img == "") {保 存} else {保 存}" ></td>
+</tr>
+<tr>
+<td>
+
+</td>
+<td style=" padding-left: 10px; padding-bottom: 5px; padding-top: 5px;">
+<p>
+最佳上传图片尺寸:266px 宽度,262px高度<br/>
+For the best result, upload image with size: 266px width, 262px height
+</p>
+</td>
+</tr>
+
+</table>
+</form>
+
+}

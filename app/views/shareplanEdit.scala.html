@@ -25,7 +25,7 @@
 <link href='@routes.Assets.at("stylesheets/jquery.ui.datepicker.css")' rel="stylesheet" type="text/css" />
 <link href='@routes.Assets.at("stylesheets/jquery.ui.theme.css")' rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/master.css")' />
-
+<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/magnific-popup.css")'  media="all" />
 
 
 <!--[if lt IE 8]>
@@ -67,19 +67,18 @@
 							</div><!-- end header -->
 							 <form action="/plan/updateShare?planId=@shareplan.id"  method="post" id="form1" >
 							  <div   style="margin-left:20px" id="contentmain" class="customized-scroll"> <!--  contentmain -->
-								 <div >
+								 <div  >
 								 @if(shareplan.img==""){
-								 	<img src='@routes.Assets.at("images/shareplan_cover.png")' style="width:780px;height:435px" />
+								 	<img src='@routes.Assets.at("images/shareplan_cover.png")' style="width:780px;height:435px"  id="coverimage" />
 								 }else{
-								 	<img src="@shareplan.img"  /> 
+								 	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@shareplan.img"  style="width:780px;height:435px"  id="coverimage"  /> 
 								 }
-								 	
 								 </div>
 								
 								 @defining( shareplan.locationList.reverse zip ( 1 to shareplan.locationList.size)  ){ziped => 
 								 @for( tuple  <- ziped ){
 								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;background-color:rgba(88, 84, 75, 0.19)" >
-									 <div style="float:left;width:630px ">
+									 <div style="float:left;width:620px ">
 									 	<h3 style="margin-left:10px;margin-top:10px;">@{tuple._2}.@tuple._1.name</h3> 
 										<h4 style="margin-left:20px">@tuple._1.address</h4>
 									 	<div style="font-size:15px;margin-left:20px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
@@ -88,11 +87,11 @@
 										 </div>
 									 </div>
 								 
-									 <div style="float:right;width:130px;margin-top:10px;margin-right:20px"> 
+									 <div style="float:right;width:130px;margin-top:10px;margin-right:20px"  class="shareplan_location_photo" id="@tuple._1.id" > 
 									 @if(tuple._1.img==""){	
-									 	<img src='@routes.Assets.at("images/sharelocation_blank.png")' />
+									 	<img src='@routes.Assets.at("images/sharelocation_blank.png")'  style="width:133px;height:131px" />
 									 }else{
-									 	<img src="@tuple._1.img" />
+									 	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@tuple._1.img" style="width:133px;height:131px" />
 									 }
 									 </div>
 								 
@@ -134,7 +133,7 @@
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-scrolltofixed-min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.tokeninput.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.mousewheel.js")'></script>
- 
+<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.magnific-popup.min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.jscrollpane.js")'></script>
  
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
@@ -145,21 +144,12 @@
 <!--[if lt IE 9]>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/ie.js")'></script>
 <![endif]-->
- 
- <script>
-$(function(){
-	$(window).resize(function(e) {
-		var space = 260;
-		var height = $(this).height()-space;
-		console.log( "height=" + height ) ;
-		$("#contentmain").height(height);
-	 
-		 
-	}).trigger("resize");
-	
-	
-});
+<script>
+var planId = "@shareplan.id";
+
 </script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/shareplan.js")'></script> 
+
  
     
 

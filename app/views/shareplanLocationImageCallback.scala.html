@@ -1,0 +1,10 @@
+@(location: ShareLocation  )
+<script>
+top.$("#@location.id img").hide()
+ .one("load", function(){top.$(this).fadeIn();  top.$.magnificPopup.close() ; })
+ .attr("src", "http://diandidian.s3-us-west-1.amazonaws.com/@location.img")
+ .each(function() {
+      //Cache fix for browsers that don't trigger .load()
+      if(this.complete) top.$(this).trigger('load');
+   });
+</script>
