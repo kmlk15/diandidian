@@ -71,7 +71,14 @@
 							  <div   style="margin-left:20px" id="contentmain"   > <!--  contentmain -->
 								 <div   style="margin-bottom:20px">
 								 @if(shareplan.img==""){
-								 	<img src='@routes.Assets.at("images/shareplan_cover.png")' style="width:780px;height:435px"  id="coverimage" />
+								 	<div style="width:780px;height:435px;background-color:#c6c6c6;margin-left:auto;margin-right:auto"  id="coverimage"  >
+								 		<img src='@routes.Assets.at("images/icon_upload_photo.png")'  style="position:relative;top:160px;" />
+								 		<div style="color:#58544b;font-size:17px;position:relative;top:175px;line-height:25px;">
+								 		<div>上传封面照片</div>
+								 		<div>最佳封面图片尺寸: 780px宽, 435px高</div>
+								 		</div>
+								 	</div>
+								 	 
 								 }else{
 								 	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@shareplan.img"  style="width:780px;height:435px"  id="coverimage"  /> 
 								 }
@@ -79,7 +86,7 @@
 								
 								 @defining( shareplan.locationList.reverse zip ( 1 to shareplan.locationList.size)  ){ziped => 
 								 @for( tuple  <- ziped ){
-								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;background-color:rgba(88, 84, 75, 0.19)" >
+								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;background-color:#e6e6e6" >
 									 <div style="float:left;width:620px; text-align:left  ">
 									 	<h3 style="margin-left:10px;margin-top:10px;line-height:24px">@{tuple._2}.@tuple._1.name</h3> 
 										<h4 style="margin-left:20px;line-height:20px">@tuple._1.address</h4>
@@ -91,7 +98,17 @@
 								 
 									 <div style="float:right;width:130px;margin-top:10px;margin-right:20px"  class="shareplan_location_photo" id="@tuple._1.id" > 
 									 @if(tuple._1.img==""){	
-									 	<img src='@routes.Assets.at("images/sharelocation_blank.png")'  style="width:133px;height:131px" />
+									 
+									 <div style="width:133px;height:131px;background-color:#c6c6c6;border-radius:0 6px 6px 0"  id="coverimage"  >
+								 		<img src='@routes.Assets.at("images/icon_upload_photo.png")'  style="position:relative;top:16px;" />
+								 		<div style="color:#58544b;font-size:15px;position:relative;top:20px;line-height:17px ">
+								 		<div>上传景点照片</div>
+								 		<div>最佳景点图片尺寸:</div>
+								 		<div>266px宽, 262px高</div>
+								 		</div>
+								 	</div>
+								 	
+									 	 
 									 }else{
 									 	<img src="http://diandidian.s3-us-west-1.amazonaws.com/@tuple._1.img" style="width:133px;height:131px" />
 									 }
