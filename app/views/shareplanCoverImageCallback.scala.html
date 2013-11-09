@@ -1,5 +1,8 @@
 @(plan: SharePlan  )
 <script>
-top.$("img#coverimage").attr("src", "http://diandidian.s3-us-west-1.amazonaws.com/@plan.img")
+var imghtml='<img src="http://diandidian.s3-us-west-1.amazonaws.com/@plan.img"  style="width:780px;height:435px"  id="coverimage"  />';
+
+top.$("div#coverimage").html(  imghtml  ) ;
+top.$("img#coverimage").attr("src", "http://diandidian.s3-us-west-1.amazonaws.com/@plan.img");
 top.$.magnificPopup.close() ; 
 </script>

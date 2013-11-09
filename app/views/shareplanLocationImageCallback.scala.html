@@ -1,5 +1,8 @@
 @(location: ShareLocation  )
 <script>
+var imghtml='<img src="http://diandidian.s3-us-west-1.amazonaws.com/@location.img" style="width:133px;height:131px" />' ;
+top.$("#@location.id > div ").parent().html( imghtml );
+
 top.$("#@location.id img").attr("src", "http://diandidian.s3-us-west-1.amazonaws.com/@location.img");
 top.$.magnificPopup.close() ;
 

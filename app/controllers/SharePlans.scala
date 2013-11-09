@@ -117,7 +117,7 @@ object SharePlans extends Controller with services.FileUploadService {
               case Some(plan) =>
 
                 val sharePlan: SharePlan = bagService.getSharePlan(planId) match {
-                  case None =>
+                  case None => 
                     log.debug("not found shareplan planid={}", planId)
                     val locationList: List[ShareLocation] = plan.list.flatMap { simplelocation =>
                       locationService.getById(simplelocation.id).map { location =>
@@ -132,7 +132,8 @@ object SharePlans extends Controller with services.FileUploadService {
                       usertype = session.get("usertype").getOrElse(""),
                       username = session.get("username").getOrElse(""),
                       avatar = session.get("avatar").getOrElse(""))
-
+                      bagService.updateSharePlan(sharePlan)
+                      
                     sharePlan
 
                   case Some(sharePlan) =>
@@ -219,7 +220,7 @@ object SharePlans extends Controller with services.FileUploadService {
               case None => NotFound
               case Some(plan) =>
 
-                val locationList: List[ShareLocation] = bagService.getSharePlan(planId) match {
+                val sharePlan: SharePlan = bagService.getSharePlan(planId) match {
                   case None =>
                     val locationList: List[ShareLocation] = plan.list.flatMap { simplelocation =>
                       locationService.getById(simplelocation.id).map { location =>
@@ -228,9 +229,15 @@ object SharePlans extends Controller with services.FileUploadService {
                         ShareLocation(id = location.id.get, name = location.name, address = address, url = url, note = getNote(location.id.get))
                       }
                     }
-
-                    locationList
-
+                  val sharePlan = SharePlan(id = plan.id, name = plan.name, bagId = bag.id,
+                  locationList = locationList,
+                  userId = userId,
+                  usertype = session.get("usertype").getOrElse(""),
+                  username = session.get("username").getOrElse(""),
+                  avatar = session.get("avatar").getOrElse(""))
+                     
+                  sharePlan
+                  
                   case Some(sharePlan) =>
                     //考虑了 地点的 变动， 删除了地点，增加了地点
                     val locationMap = sharePlan.locationList.map(location => (location.id, location)).toMap
@@ -243,14 +250,15 @@ object SharePlans extends Controller with services.FileUploadService {
                           getOrElse(ShareLocation(id = location.id.get, name = location.name, address = address, url = url, note = getNote(location.id.get)))
                       }
                     }
-                    locationList
+                    
+                      val sharePlan2 = sharePlan.copy(name = plan.name,
+                      locationList = locationList,
+                      avatar = session.get("avatar").getOrElse(""))
+
+                    sharePlan2
+                    
                 }
-                val sharePlan = SharePlan(id = plan.id, name = plan.name, bagId = bag.id,
-                  locationList = locationList,
-                  userId = userId,
-                  usertype = session.get("usertype").getOrElse(""),
-                  username = session.get("username").getOrElse(""),
-                  avatar = session.get("avatar").getOrElse(""))
+                
 
                 bagService.updateSharePlan(sharePlan) match {
                   case None =>
