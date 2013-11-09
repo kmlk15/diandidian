@@ -1,13 +1,13 @@
 
 $(function(){
-	$(window).resize(function(e) {
-		var space = 260;
-		var height = $(this).height()-space;
-		console.log( "height=" + height ) ;
-		$("#contentmain").height(height);
-	 
-		 
-	}).trigger("resize");
+//	$(window).resize(function(e) {
+//		var space = 260;
+//		var height = $(this).height()-space;
+//		console.log( "height=" + height ) ;
+//		$("#contentmain").height(height);
+//	 
+//		 
+//	}).trigger("resize");
 	
 	$("#useravatarimg").imgr({ radius:"16px"});
 	

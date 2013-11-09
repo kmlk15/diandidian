@@ -52,8 +52,8 @@
 	
 					<div id="attraction-planning">
 
-						<div id="plan-attractions">
-							<div class="header clear-fix ">
+						<div id="plan-attractions"   style="text-align:center" >
+							<div class="header clear-fix "  style="width:780px;margin-left:auto;margin-right:auto;">
 								<div class="plan-name">
 									<input type="text" name="planName"  value="@shareplan.name" />
 								</div>
@@ -66,8 +66,8 @@
 		
 							</div><!-- end header -->
 							 <form action="/plan/updateShare?planId=@shareplan.id"  method="post" id="form1" >
-							  <div   style="margin-left:20px" id="contentmain" class="customized-scroll"> <!--  contentmain -->
-								 <div  >
+							  <div   style="margin-left:20px" id="contentmain"   > <!--  contentmain -->
+								 <div   style="margin-bottom:20px">
 								 @if(shareplan.img==""){
 								 	<img src='@routes.Assets.at("images/shareplan_cover.png")' style="width:780px;height:435px"  id="coverimage" />
 								 }else{
@@ -77,13 +77,13 @@
 								
 								 @defining( shareplan.locationList.reverse zip ( 1 to shareplan.locationList.size)  ){ziped => 
 								 @for( tuple  <- ziped ){
-								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;background-color:rgba(88, 84, 75, 0.19)" >
-									 <div style="float:left;width:620px ">
-									 	<h3 style="margin-left:10px;margin-top:10px;">@{tuple._2}.@tuple._1.name</h3> 
-										<h4 style="margin-left:20px">@tuple._1.address</h4>
-									 	<div style="font-size:15px;margin-left:20px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
-										 <div style="margin-left:20px">
-										 	<textarea style="width:550px;height:120px" name="note_@tuple._1.id" >@tuple._1.note</textarea>
+								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;background-color:rgba(88, 84, 75, 0.19)" >
+									 <div style="float:left;width:620px; text-align:left  ">
+									 	<h3 style="margin-left:10px;margin-top:10px;line-height:24px">@{tuple._2}.@tuple._1.name</h3> 
+										<h4 style="margin-left:20px;line-height:20px">@tuple._1.address</h4>
+									 	<div style="font-size:15px;margin-left:20px;line-height:20px"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
+										 <div style="margin-left:20px;margin-top:8px">
+										 	<textarea style="width:573px;height:98px" name="note_@tuple._1.id" >@tuple._1.note</textarea>
 										 </div>
 									 </div>
 								 
