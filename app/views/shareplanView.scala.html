@@ -52,13 +52,13 @@
 	
 					<div id="attraction-planning">
 
-						<div id="plan-attractions">
-							<div class="header clear-fix ">
-								<div class="plan-name"  style="float:left;margin-left:22px;font-size:20px">
+						<div id="plan-attractions"  style="text-align:center">
+							<div class="header clear-fix " style="width:780px;margin-left:auto;margin-right:auto;">
+								<div class="plan-name"  style="float:left;font-size:20px">
 									<span style=""> @shareplan.name  </span>
 								</div>
-								<div style="font-size:15px ;float:right;line-height:36px;margin-top:8px;magtin-right:3px">@shareplan.username</div>
-								<div style="float:right;margin-top:13px">
+								<div style="font-size:15px ;float:right;line-height:36px;margin-top:8px;magrin-right:3px">@shareplan.username</div>
+								<div style="float:right;margin-top:13px;margin-left:auto;marign-right:auto;">
 									<img src="@shareplan.avatar"  id="useravatarimg" style="width:30px;height:30px;"/>
 									
 								</div>
@@ -67,8 +67,8 @@
 		
 							</div><!-- end header -->
 							 
-							  <div id="contentmain" style="margin-left:20px;overflow: auto; "  class="customized-scroll" > <!--  main -->
-								 <div >
+							  <div id="contentmain" style=""   > <!--  main -->
+								 <div  style="margin-bottom:20px">
 								 @if(shareplan.img==""){
 								 	<img src='@routes.Assets.at("images/shareplan_cover.png")' style="width:780px;height:435px" />
 								 }else{
@@ -79,17 +79,17 @@
 								
 								 @defining( shareplan.locationList.reverse zip ( 1 to shareplan.locationList.size)  ){ziped => 
 								 @for( tuple  <- ziped ){
-								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;background-color:rgba(88, 84, 75, 0.19)" >
-									 <div style="float:left;width:620px ">
-									 	<h3 style="margin-left:10px;margin-top:10px;">@{tuple._2}.@tuple._1.name</h3> 
-										<h4 style="margin-left:20px">@tuple._1.address</h4>
-									 	<div style="font-size:15px;margin-left:20px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
-										 <div style="margin-left:20px">
+								 <div  style="width:780px;min-height:198px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;background-color:rgba(88, 84, 75, 0.19)" >
+									 <div style="float:left;width:620px; text-align:left ">
+									 	<h3 style="margin-left:10px;margin-top:15px;line-height:24px">@{tuple._2}.@tuple._1.name</h3> 
+										<h4 style="margin-left:20px;line-height:18px">@tuple._1.address</h4>
+									 	<div style="font-size:15px;margin-left:20px;line-height:18px""><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
+										 <div style="margin-left:20px;margin-top:8px">
 										 	<div style="width:550px;height:120px" id="note_@tuple._1.id" >@tuple._1.note</div>
 										 </div>
 									 </div>
 								 
-									 <div style="float:right;width:133px;margin-top:10px;margin-right:20px"> 
+									 <div style="float:right;width:133px;margin-top:15px;margin-right:17px"> 
 									 @if(tuple._1.img==""){	
 									 	<img src='@routes.Assets.at("images/sharelocation_blank.png")'  style="width:133px" />
 									 }else{
@@ -104,19 +104,22 @@
 								 
 								<div>
 								</div>
-								<div>
-								@if( session.get("username")!=None){
-									<div style="float:right;font-size:18px;margin-right:20px;cursor:pointer">
-									<a href="/bag/copySharePlan?planId=@shareplan.id">复制背包</a>
-									</div>
-									}
-								</div>
+								
 								<div class="clearfix"></div>
 							 </div>  <!--   contentmain  -->
 							 
 						</div>
 					</div><!-- end attraction-planning -->
 				</div><!-- end attraction-planning-wrap -->
+				
+				<div style="min-height:100px;margin-top:20px;margin-left:auto;margin-right:auto;width:780px">
+					 
+						<div style="float:right;font-size:18px;margin-right:20px;cursor:pointer">
+						<a href="/bag/copySharePlan?planId=@shareplan.id">复制背包</a>
+						</div>
+				 
+			</div>
+								
 			</div><!-- end main -->
 		</div><!-- end content -->
 	</div><!-- end container -->
@@ -137,7 +140,7 @@
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.tokeninput.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.mousewheel.js")'></script>
  
-<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.jscrollpane.js")'></script>
+
  
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-migrate-1.2.1.min.js")'></script>
 <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.imgr.min.js")'></script>
@@ -151,14 +154,7 @@
 <script>
 var planId = "@shareplan.id";
 $(function(){
-	$(window).resize(function(e) {
-		var space = 260;
-		var height = $(this).height()-space;
-		console.log( "height=" + height ) ;
-		$("#contentmain").height(height);
 	 
-		 
-	}).trigger("resize");
 	
 	$("#useravatarimg").imgr({ radius:"16px"});
 	
