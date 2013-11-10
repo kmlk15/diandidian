@@ -388,6 +388,7 @@ object Plans extends Controller {
 
   /**
    * 计算 坐标的 中心点
+   * 计算 显示的 level
    */
   private def countcenter(allLocationViewList: List[LocationView]): (Double, Double) = {
     val addList: List[(Double, Double)] = allLocationViewList.map(x => x.location.address).map(add => (add.latitude, add.longitude)).filterNot(tuple => tuple == (0.0, 0.0))
