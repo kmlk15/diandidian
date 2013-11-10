@@ -421,7 +421,10 @@ function initialize() {
   
   var zoomLevel =( bounds ) ?  getBoundsZoomLevel(bounds, mapDim) : 0 ; 
   console.log( "zoomLevel=" + zoomLevel ) ;
-  map.setZoom( zoomLevel ) ;
+  if( bounds ){
+  	map.setZoom( zoomLevel ) ;
+  	map.setCenter( bounds.getCenter() ) ;
+  }
   
 /**
  * 
