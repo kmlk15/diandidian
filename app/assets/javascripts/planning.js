@@ -426,25 +426,38 @@ function initialMapTimeLineLink() {
 			console.log("locationId=" + locationId);
   		    console.log("key=" + "t-"+href );
 
-  		    //全部关闭
-			  for(index in markerMap) {
-				  var   marker = markerMap[index]; 
-				  marker.setMap (  null  ) ; 
-			  } 
-			  if(infowindow){ infowindow.close( ) ; $("#infowindowtimeline").hide() ; }
-			 //只显示满足要求的 地点 
-			 $.each(locationMap , function( index,value){
-				 console.log( "index -> value=" + index + '->' +  value  ) ;
-				 if( value.timeline == newkey){
-					 var   marker = markerMap[index]; 
-					 console.log("show marker ") ;
-					 if( marker != null ){
-						 marker.setMap (   map  ) ; 
-					 }else{
-						 console.log("这个地点已经被删除了 id=" + value);
-					 }
-				 }
-			 });
+//  		    //全部关闭
+//			  for(index in markerMap) {
+//				  var   marker = markerMap[index]; 
+//				  marker.setMap (  null  ) ; 
+//			  } 
+//			  if(infowindow){ infowindow.close( ) ; $("#infowindowtimeline").hide() ; }
+//			  
+//			 //只显示满足要求的 地点 
+//			 $.each(locationMap , function( index,value){
+//				 console.log( "index -> value=" + index + '->' +  value  ) ;
+//				 if( value.timeline == newkey){
+//					 var   marker = markerMap[index]; 
+//					 console.log("show marker ") ;
+//					 if( marker != null ){
+//						 marker.setMap (   map  ) ; 
+//					 }else{
+//						 console.log("这个地点已经被删除了 id=" + value);
+//					 }
+//				 }
+//			 });
+  		    /**
+  		     * 只是 改边 图片的 颜色
+  		     * 需要找到 当前的图标
+  		     * 并改变颜色
+  		     * 这里的问题是， 当页面再次 刷新的时候， 需要 重置 图标的 颜色
+  		     */
+  		    var   marker = markerMap[locationId];
+  		    var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|FF8429|13|b|' + day ;
+  		    console.log( "icon url= " + iconurl)
+  		    marker.setIcon( iconurl ) 
+  		    
+  		    
 			 //移动 li
 			 console.log(" move  li "); 
 			 var $targetHeader = $("#plan-attractions-list").find("h3."+ newkey);
@@ -482,30 +495,38 @@ function initialMapTimeLineLink() {
 						$droppingUl.prev("hr").remove();
 					} else if ($droppingUl.next("hr").length>0) {
 						$droppingUl.next("hr").remove();
-						highlightTopDate();
+						//highlightTopDate();
 					}
 					$droppingUl.remove();
 				}
+				 
+			
 				setPlanAttractionsListPaddingBottom();
 				
 			 
 			
 			 //如果 目标 ul 不存在， 构造 目标ul
-			 
+			 /**
+			  * Edit-11-06-13.pdf 
+			  * 日期的  保持不变 
+			  */
 			 //移动时间线图标
-				console.log(" move timeline ") ;
-				var arrowTopPosstion = 3;
-				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
-				arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index() +1);
-				$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
-				//attractionsApi.scrollToElement($target,true, 1000);
-				$("#plan-timeline .date-line a.active").removeClass("active");
-				$("#plan-timeline .date-line a").each( function( index,element){
-					console.log( $(element).attr("href"));
-					if( $(element).attr("href") == $(atag).attr("href") ){
-						$(element).addClass("active");
-					}
-				});
+//				console.log(" move timeline ") ;
+//				var arrowTopPosstion = 3;
+//				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
+//				console.log("$(this).index()=" + $(this).index() ) ;
+//				
+//				arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index() +1);
+//				
+//				$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
+//				//attractionsApi.scrollToElement($target,true, 1000);
+//				$("#plan-timeline .date-line a.active").removeClass("active");
+//				$("#plan-timeline .date-line a").each( function( index,element){
+//					console.log( $(element).attr("href"));
+//					if( $(element).attr("href") == $(atag).attr("href") ){
+//						$(element).addClass("active");
+//					}
+//				});
 				
 				 
 			 
@@ -802,7 +823,12 @@ function initialTimeLineLink() {
 				$("#date-line-tooltip").hide( );
 				var arrowTopPosstion = 3;
 				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
-				arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
+				console.log("$(this).index()=" + $(this).index() ) ;
+				var index = $(this).index() ;
+				 	
+				 
+				
+				arrowTopPosstion = arrowTopPosstion + linkHeight * (index-1);
 				$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
 				
 				attractionsApi.scrollToElement($target,true, 1000);
@@ -814,6 +840,7 @@ function initialTimeLineLink() {
 				 for(index in markerMap) {
 					  var   marker = markerMap[index]; 
 					  marker.setMap (  null  ) ; 
+					  marker.setIcon (  null  ) ;
 				  } 
 					 var key = "t-"+href   ;
 					 $.each(locationMap , function( index,value){
@@ -838,7 +865,10 @@ function initialTimeLineLink() {
 					$("#date-line-tooltip").hide( );
 					var arrowTopPosstion = 3;
 					var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
-					arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-1);
+					console.log("$(this).index()=" + $(this).index() ) ;
+					var index = $(this).index() ;
+					 
+					arrowTopPosstion = arrowTopPosstion + linkHeight * ( index -1);
 					$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
 					
 					$("#plan-timeline .date-line a.active").removeClass("active");
@@ -847,6 +877,7 @@ function initialTimeLineLink() {
 					 for(index in markerMap) { 
 						 var   marker = markerMap[index]; 
 						  marker.setMap (   map  ) ; 
+						  marker.setIcon (  null  ) ; 
 					 }
 					 
 				}else{
@@ -869,6 +900,8 @@ function initialTimeLineLink() {
 			if ($target.length>0) {
 				var arrowTopPosstion = 3;
 				var linkHeight = $("#plan-timeline .date-line a").outerHeight(true)+0;
+				console.log("$(this).index()=" + $(this).index() ) ;
+				 
 				arrowTopPosstion = arrowTopPosstion + linkHeight * ($(this).index()-2);
 				$("#plan-timeline .date-line > img").animate({top: arrowTopPosstion+"px"},1000);
 				attractionsApi.scrollToElement($target,true, 1000);
