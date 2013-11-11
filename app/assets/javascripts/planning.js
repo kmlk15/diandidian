@@ -43,6 +43,16 @@ function getIconUrl( date ){
 	return iconurl;
 }
 
+function getIconUrlOnlyColor( date ){
+	if(date){
+		var color = dateColor[date] ; 
+		var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|'+color+'|13|b|'  ;
+	}else{
+		var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|'+ dateColor[0] +'|13|b|'  ;
+	}
+	return iconurl;
+}
+
 function getDateOfMonth( timeline){
 	var result  = 0; 
 
@@ -909,7 +919,15 @@ function initialTimeLineLink() {
 					  var   marker = markerMap[index]; 
 					  marker.setMap (  null  ) ; 
 					   
-				  } 
+				  }
+				//保持 图标 带有数字
+					for(index in locationMap) {
+						var  locatoindata = locationMap[index] ;
+						var   marker = markerMap[index]; 
+						var day = getDateOfMonth(  locatoindata.timeline ) ;
+						marker.setIcon( getIconUrlOnlyColor( day ));
+					}
+					
 					 var key = "t-"+href   ;
 					 $.each(locationMap , function( index,value){
 						 console.log( "index -> value=" + index + '->' +  value  ) ;
@@ -918,6 +936,7 @@ function initialTimeLineLink() {
 							 console.log("show marker ") ;
 							 if( marker != null ){
 								 marker.setMap (   map  ) ; 
+								 
 							 }else{
 								 console.log("这个地点已经被删除了 id=" + value);
 							 }
@@ -941,6 +960,14 @@ function initialTimeLineLink() {
 					
 					$("#plan-timeline .date-line a.active").removeClass("active");
 					$(this).addClass("active");
+					
+					//保持 图标 带有数字
+					for(index in locationMap) {
+						var  locatoindata = locationMap[index] ;
+						var   marker = markerMap[index]; 
+						var day = getDateOfMonth(  locatoindata.timeline ) ;
+						marker.setIcon( getIconUrl( day ));
+					}
 					
 					 for(index in markerMap) { 
 						 var   marker = markerMap[index]; 
