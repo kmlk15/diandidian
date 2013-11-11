@@ -34,8 +34,9 @@ dateColor[31] ="B0E0E6" ;
 
 
 function getIconUrl( date ){
+	console.log("date=" + date  ) ;
 	if(date){
-		var color = dateColor[date] ; 
+		var color = dateColor[ parseInt(date) ] ; 
 		var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|'+color+'|13|b|' + date ;
 	}else{
 		var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|'+ dateColor[0] +'|13|b|'  ;
@@ -43,9 +44,9 @@ function getIconUrl( date ){
 	return iconurl;
 }
 
-function getIconUrlOnlyColor( date ){
+function getIconUrlOnlyColor( date  ){
 	if(date){
-		var color = dateColor[date] ; 
+		var color = dateColor[parseInt( date) ] ; 
 		var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|'+color+'|13|b|'  ;
 	}else{
 		var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|'+ dateColor[0] +'|13|b|'  ;
