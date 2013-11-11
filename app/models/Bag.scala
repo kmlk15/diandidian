@@ -81,6 +81,23 @@ case class PlanView(id: String , statusName:String = "" , name: String = "", vis
     }
   }
 
+  def getDateOfMonth(cssClassname: String ): Int = {
+    if (cssClassname == "t-00_no-assign") {
+      0
+    } else {
+      pattern.findFirstMatchIn(cssClassname) match {
+        case None =>  0 
+        case Some(m) =>{
+          val year = m.group(1)
+          val month = m.group(2)
+          val date = m.group( 3)
+           
+        date.toInt
+        }
+      }
+    }
+  }
+  
   def getDays: Long  =( ( endDate - startDate)/( 24L*3600*1000)) 
   
  val  fmt = DateTimeFormat.forPattern("Y d.M");

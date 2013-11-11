@@ -1,3 +1,61 @@
+var dateColor = Array();
+dateColor[0] ="CD5C5C" ;
+dateColor[1] ="9370DB" ;
+dateColor[2] ="D2B48C" ;
+dateColor[3] ="00FFFF" ;
+dateColor[4] ="ADFF2F" ;
+dateColor[5] ="6495ED" ;
+dateColor[6] ="CD5C5C" ;
+dateColor[7] ="AFEEEE" ;
+dateColor[8] ="00FF7F" ;
+dateColor[9] ="98FB98" ;
+dateColor[10] ="B0C4DE" ;
+dateColor[11] ="CD853F" ;
+dateColor[12] ="D2691E" ;
+dateColor[13] ="FF1493" ;
+dateColor[14] ="32CD32" ;
+dateColor[15] ="BDB76B" ;
+dateColor[16] ="6B8E23" ;
+dateColor[17] ="ADD8E6" ;
+dateColor[18] ="FFDAB9" ;
+dateColor[19] ="8FBC8F" ;
+dateColor[20] ="87CEFA" ;
+dateColor[21] ="F0E68C" ;
+dateColor[22] ="00FA9A" ;
+dateColor[23] ="00FF00" ;
+dateColor[24] ="FFD700" ;
+dateColor[25] ="FFDEAD" ;
+dateColor[26] ="90EE90" ;
+dateColor[27] ="87CEEB" ;
+dateColor[28] ="FFE4B5" ;
+dateColor[29] ="D8BFD8" ;
+dateColor[30] ="FFE4E1" ;
+dateColor[31] ="B0E0E6" ;
+
+
+function getIconUrl( date ){
+	if(date){
+		var color = dateColor[date] ; 
+		var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|'+color+'|13|b|' + date ;
+	}else{
+		var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|'+ dateColor[0] +'|13|b|'  ;
+	}
+	return iconurl;
+}
+
+function getDateOfMonth( timeline){
+	var result  = 0; 
+
+	if( timeline == "t-00_no-assign"){
+		result =0 ;
+	}else{
+		var dateregexp = /t-(\d{4})(\d{2})(\d{2})/g ;
+		var match =  dateregexp.exec(timeline);
+		result = match[3];
+	}
+	return result ; 
+}
+
 $(function() {
 	
 	/**
@@ -425,7 +483,17 @@ function initialMapTimeLineLink() {
 			infowindow.setContent( content ) ;
 			console.log("locationId=" + locationId);
   		    console.log("key=" + "t-"+href );
-
+  		    
+  		    //如果当前不是全部显示
+  		    //则 hide 当前 mark
+  		    
+  		  if( $("#plan-timeline .date-line a[href=00_all]").hasClass("active") ){  
+  		  }else{
+  			 if(infowindow){ infowindow.close( ) ; $("#infowindowtimeline").hide() ; }
+  			  var   marker = markerMap[locationId];
+  			  marker.setMap (  null  ) ; 
+  			 
+  		  }
 //  		    //全部关闭
 //			  for(index in markerMap) {
 //				  var   marker = markerMap[index]; 
@@ -453,7 +521,7 @@ function initialMapTimeLineLink() {
   		     * 这里的问题是， 当页面再次 刷新的时候， 需要 重置 图标的 颜色
   		     */
   		    var   marker = markerMap[locationId];
-  		    var iconurl = 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=0.70|0|FF8429|13|b|' + day ;
+  		    var iconurl = getIconUrl ( day ) ; 
   		    console.log( "icon url= " + iconurl)
   		    marker.setIcon( iconurl ) 
   		    
@@ -840,7 +908,7 @@ function initialTimeLineLink() {
 				 for(index in markerMap) {
 					  var   marker = markerMap[index]; 
 					  marker.setMap (  null  ) ; 
-					  marker.setIcon (  null  ) ;
+					   
 				  } 
 					 var key = "t-"+href   ;
 					 $.each(locationMap , function( index,value){
@@ -877,7 +945,7 @@ function initialTimeLineLink() {
 					 for(index in markerMap) { 
 						 var   marker = markerMap[index]; 
 						  marker.setMap (   map  ) ; 
-						  marker.setIcon (  null  ) ; 
+						  
 					 }
 					 
 				}else{

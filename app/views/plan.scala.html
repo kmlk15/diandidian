@@ -380,10 +380,17 @@ function initialize() {
 			  };
 			  
 			  locationMap['@locationview.location.id.get'] = locationData;
-			  
+		
+	    var day = @planview.getDateOfMonth( kv._1 );
+	    
+		var iconurl = getIconUrl ( day ) ; 
+	  	console.log( "icon url= " + iconurl)
+	  		    
+	  		    
 		  var marker_@locationview.location.id.get  = new google.maps.Marker({
 		      position: locationData.position ,
 		      map: map,
+		      icon: iconurl, 
 		      title:   locationData.title
 		  });
 		
@@ -579,8 +586,15 @@ $(function(){
 						for(index in markerMap) {
 							  var   marker = markerMap[index]; 
 							  marker.setMap (  null  ) ; 
-							  marker.setIcon (  null  ) ; 
+							 
 						  } 
+						for(index in locationMap) {
+							var  locatoindata = locationMap[index] ;
+							var   marker = markerMap[index]; 
+							var day = getDateOfMonth(  locatoindata.timeline ) ;
+							marker.setIcon( getIconUrl( day ));
+						}
+						
 							 var key = "t-"+href   ;
 							 $.each(locationMap , function( index,value){
 								 console.log( "index -> value=" + index + '->' +  value  ) ;
@@ -589,6 +603,7 @@ $(function(){
 									 console.log("show marker ") ;
 									 if( marker != null ){
 										 marker.setMap (   map  ) ; 
+										
 									 }else{
 										 console.log("这个地点已经被删除了 id=" + value);
 									 }
