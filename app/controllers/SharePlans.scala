@@ -151,7 +151,9 @@ object SharePlans extends Controller with services.FileUploadService {
                     val sharePlan2 = sharePlan.copy(name = plan.name,
                       locationList = locationList,
                       avatar = session.get("avatar").getOrElse(""))
-
+                      if( sharePlan2 != sharePlan){
+                        bagService.updateSharePlan(sharePlan2)
+                      	}
                     sharePlan2
                 }
 
@@ -220,7 +222,7 @@ object SharePlans extends Controller with services.FileUploadService {
               case None => NotFound
               case Some(plan) =>
 
-                val sharePlan: SharePlan = bagService.getSharePlan(planId) match {
+                val (sharePlan , status):( SharePlan, String) = bagService.getSharePlan(planId) match {
                   case None =>
                     val locationList: List[ShareLocation] = plan.list.flatMap { simplelocation =>
                       locationService.getById(simplelocation.id).map { location =>
@@ -236,7 +238,7 @@ object SharePlans extends Controller with services.FileUploadService {
                   username = session.get("username").getOrElse(""),
                   avatar = session.get("avatar").getOrElse(""))
                      
-                  sharePlan
+                 (sharePlan , "new")
                   
                   case Some(sharePlan) =>
                     //考虑了 地点的 变动， 删除了地点，增加了地点
@@ -255,19 +257,19 @@ object SharePlans extends Controller with services.FileUploadService {
                       locationList = locationList,
                       avatar = session.get("avatar").getOrElse(""))
 
-                    sharePlan2
+                    (sharePlan2, if(sharePlan2==sharePlan) "same" else "update")
                     
                 }
                 
-
-                bagService.updateSharePlan(sharePlan) match {
-                  case None =>
-                  case Some(x) =>
+                if(status=="same"){
+                  log.debug("没有任何改变， 不需要更新")
+                  	Ok( Json.obj("success"-> true , "msg" -> ""))
+                }else{
+                   bagService.updateSharePlan(sharePlan) match {
+                   	case None => Ok( Json.obj("success"-> false , "msg" -> "内部错误"))
+                   	case Some(x) => Ok( Json.obj("success"-> true , "msg" -> "reload"))
+                   }
                 }
-
-                val url = "/plan/editShare?planId=" + planId
-                Redirect(url)
-
             }
         }
       }
@@ -290,11 +292,17 @@ object SharePlans extends Controller with services.FileUploadService {
             bag.getPlan(planId) match {
               case None => NotFound
               case Some(plan) =>
-                bagService.setSharePlanShareIt(planId, true) match {
-                  case None => Ok(Json.obj("success" -> false, "msg" -> ""))
-                  case Some(x) => Ok(Json.obj("success" -> true, "msg" -> ""))
+                bagService.getSharePlan(planId) match{
+                  case None => NotFound
+                  
+                  case Some( share) if (!share.readyToShare) =>
+                    	Ok(Json.obj("success" -> false, "msg" -> "请将内容输入完整，所有的地点需要有图片和文字说明。"))
+                  case Some( share) if (share.readyToShare) =>
+                    bagService.setSharePlanShareIt(planId, true) match {
+                    case None => Ok(Json.obj("success" -> false, "msg" -> "发生内部错误！"))
+                    case Some(x) => Ok(Json.obj("success" -> true, "msg" -> "分享成功！"))
+                    }
                 }
-
             }
         }
       }

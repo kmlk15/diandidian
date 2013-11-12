@@ -36,4 +36,39 @@ $(function(){
 	});
 	
 
+	$( "#shareIt >span > a  ").click(function(event){
+		event.preventDefault() ;
+		var url = $(this).attr("href");
+		$.getJSON(url ,{},function(result){ 
+			if( result.success){
+				alert( result.msg)
+			}else{
+				alert( result.msg );
+			}
+			});
+		return false;
+	});
+	
+	$("#updateShare > span >   a  ").click(function(event){
+		event.preventDefault() ;
+		console.log("click updateShare ") ;
+		var url = $('form#form1').attr("action");
+		console.log("url=" + url ) ;
+		$.post(url, $('form#form1').serialize(), function( result ){
+			if( result.success){
+				if( result.msg==""){
+					alert("没有任何改变");
+				}else{
+					alert("保存成功");
+				}
+			}else{
+				alert( result.msg );
+			}
+		});
+		
+		 
+		  
+		  return false 
+		
+	});
 });

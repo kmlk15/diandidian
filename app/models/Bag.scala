@@ -43,6 +43,14 @@ case class SharePlan( id: String = "" , bagId: String = "" ,  name: String = "" 
  val homepageimg : String = locationList.filter( l=> l.imgId != "").headOption.map( l=>{
     "266_" + l.imgId + "." + l.extension 
  }).getOrElse("")
+ 
+ def  readyToShare : Boolean ={
+   if( imgId != "" &&  locationList.forall(  location => location.imgId!="" &&  location.note != "" )){
+      true
+   }else{
+     false
+   }
+ }
 }
 
 /**
