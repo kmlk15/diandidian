@@ -6,8 +6,10 @@ function loadHomeAttractions( query) {
 		 //alert( query.country == null )
 			if( result.data.country == ""  && result.data.city== ""  ){
 				attractionListHtml += '<h2>  </h2>';
+			}else if( result.data.country != ""  && result.data.city== ""  ){
+				attractionListHtml += '<h2><a href="/home?country=' + encodeURI( result.data.country ) +'">' + result.data.country + '</a></h2>';
 			}else{
-				attractionListHtml += '<h2>' + result.data.country + ' &gt;' + result.data.city+'</h2>';
+				attractionListHtml += '<h2><a href="/home?country=' + encodeURI( result.data.country ) +'">' + result.data.country + '</a> &gt;' + result.data.city+'</h2>';
 			}
 			
 		if (json.length > 0) {

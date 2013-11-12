@@ -46,6 +46,8 @@ object LocationEndpoints extends Controller {
 /**
  *  根据 不同的搜索条件 返回 相应的结果
  *  
+ *  2013-11-12 增加 只有 country 的情况
+ *  通过 country 得到  cityList  ； 再通过 cityList 进行实际查？
  */
   def location=Action{ implicit request =>
     val country =  request.getQueryString("country").getOrElse("")
@@ -60,6 +62,8 @@ object LocationEndpoints extends Controller {
     } else if (city != "") {
       //按城市搜索
       ( ls.list(city) , defaultIndex)
+    }else if( country !="" ){
+       ( ls.listByCountry(country) , defaultIndex)
     } else if( ids != "" ){
       //搜索框 提交的搜索
       log.debug( "ids={}", ids )
