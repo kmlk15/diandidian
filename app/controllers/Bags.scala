@@ -157,7 +157,7 @@ object Bags extends Controller {
              if(addresultList.forall( x=>x )){
                Json.obj("success" -> true, "msg" -> "复制完成")
              }else{
-               Json.obj("success" -> true, "msg" -> ( "存在粗误" + addresultList.count( x=> !x )) )
+               Json.obj("success" -> true, "msg" -> ( "存在错误" + addresultList.count( x=> !x )) )
              }
         }
     }

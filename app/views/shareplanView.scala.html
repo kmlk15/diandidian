@@ -115,7 +115,7 @@
 				<div style="min-height:100px;margin-top:20px;margin-left:auto;margin-right:auto;width:780px">
 					 
 						<div style="" class="copyknapsack">
-						<a href="/bag/copySharePlan?planId=@shareplan.id">复制背包</a>
+						<a href="/bag/copySharePlan?planId=@shareplan.id" id="copybag">复制背包</a>
 						</div>
 				 
 			</div>
@@ -158,6 +158,24 @@ $(function(){
 	
 	$("#useravatarimg").imgr({ radius:"16px"});
 	
+	$("#copybag").click(function(){
+		console.log("copybag click");
+		var url = $(this).attr("href");
+		
+		$.getJSON(url , {} , function( result){
+			console.log("result=" + result ) ;
+			if(result.success){
+				console.log("msg=" + result.msg);
+				//重新加载 bag 
+				loadBag();
+			}else{
+				alert( result.msg );
+				
+			}
+			
+		});
+		return false;
+	});
 });
 </script>
    
