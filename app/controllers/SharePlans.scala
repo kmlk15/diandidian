@@ -58,15 +58,20 @@ object SharePlans extends Controller with services.FileUploadService {
           case Some(bag) =>
             val change = BagUpdateFromto(statusName, planName, "分享的背包", planName)
             val tobag = models.BagHelp.update(bag, change, false)
-            bagService.update(tobag) match {
-              case Some(bag) =>
-                val url = "/plan/editShare?planId=" + planId + "&statusName=" + URLEncoder.encode(change.toStatus, "utf-8") +
-                  "&planName=" + URLEncoder.encode(change.toPlan, "utf-8")
-                Redirect(url)
-              case None => InternalServerError("share update bag ")
+            if( bag == tobag){
+            		InternalServerError("在分享背包下，存在同名背包，请先更改背包的名字！")
+            }else{
+	            bagService.update(tobag) match {
+	              case Some(bag) =>
+	                val url = "/plan/editShare?planId=" + planId + "&statusName=" + URLEncoder.encode(change.toStatus, "utf-8") +
+	                  "&planName=" + URLEncoder.encode(change.toPlan, "utf-8")
+	                Redirect(url)
+	              case None => InternalServerError("share update bag ")
+	            }
             }
           case None => NotFound
         }
+        
       }
     }
   }
@@ -84,15 +89,21 @@ object SharePlans extends Controller with services.FileUploadService {
       case Some(userId) => {
         bagService.get(userId) match {
           case Some(bag) =>
+            
             val change = BagUpdateFromto(statusName, planName, "计划中", planName)
+            
             val tobag = models.BagHelp.update(bag, change, false)
-            bagService.update(tobag) match {
-              case Some(bag) =>
-                bagService.setSharePlanShareIt(planId, false)
-                val url = "/plan/?statusName=" + URLEncoder.encode(change.toStatus, "utf-8") +
-                  "&planName=" + URLEncoder.encode(change.toPlan, "utf-8")
-                Redirect(url)
-              case None => InternalServerError("share update bag ")
+            if( bag == tobag){
+              InternalServerError("在\"计划中\"下，存在同名背包，请先更改\"计划中\"背包的名字！")
+            }else{
+	            bagService.update(tobag) match {
+	              case Some(bag) =>
+	                bagService.setSharePlanShareIt(planId, false)
+	                val url = "/plan/?statusName=" + URLEncoder.encode(change.toStatus, "utf-8") +
+	                  "&planName=" + URLEncoder.encode(change.toPlan, "utf-8")
+	                Redirect(url)
+	              case None => InternalServerError("share update bag ")
+	            }
             }
           case None => NotFound
         }

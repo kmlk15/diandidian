@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 object Auth extends Controller  with AuthTrait {
   val log = LoggerFactory.getLogger(Auth.getClass())
 
-  val pp = "xyz"
+  val pp = "pwd!1336688"
 
 
   def login = Action { implicit request =>

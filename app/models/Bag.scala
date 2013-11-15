@@ -40,7 +40,7 @@ case class SharePlan( id: String = "" , bagId: String = "" ,  name: String = "" 
     userId: String="", usertype: String = "",  username: String = "" , avatar: String = ""     
 ){
  val img : String  = if(imgId=="") "" else "780_" +   imgId +"."+ extension 
- val homepageimg : String = locationList.filter( l=> l.imgId != "").headOption.map( l=>{
+ val homepageimg : String = locationList.reverse.filter( l=> l.imgId != "").headOption.map( l=>{
     "266_" + l.imgId + "." + l.extension 
  }).getOrElse("")
  
