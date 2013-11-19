@@ -88,11 +88,11 @@
 								 @for( tuple  <- ziped ){
 								 <div  style="width:780px;height:200px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;background-color:#e6e6e6" >
 									 <div style="float:left;width:620px; text-align:left  ">
-									 	<h3 style="margin-left:10px;margin-top:10px;line-height:24px">@{tuple._2}.@tuple._1.name</h3> 
-										<h4 style="margin-left:20px;line-height:20px">@tuple._1.address</h4>
-									 	<div style="font-size:15px;margin-left:20px;line-height:20px"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
+									 	<h3 style="margin-left:10px;margin-top:10px;line-height:24px;color:#3f3f3f">@{tuple._2}.@tuple._1.name</h3> 
+										<h4 style="margin-left:20px;line-height:20px;color:#3f3f3f">@tuple._1.address</h4>
+									 	<div style="font-family:verdana;font-size:12px;margin-left:20px;line-height:20px"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
 										 <div style="margin-left:20px;margin-top:8px">
-										 	<textarea style="width:573px;height:98px" name="note_@tuple._1.id" >@tuple._1.note</textarea>
+										 	<textarea style="width:573px;height:98px;color:#3f3f3f;font-size:14px" name="note_@tuple._1.id" >@tuple._1.note</textarea>
 										 </div>
 									 </div>
 								 
