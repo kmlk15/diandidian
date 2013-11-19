@@ -7,6 +7,8 @@ import com.mongodb.casbah.WriteConcern
 import org.slf4j.LoggerFactory
 import com.mongodb.DBObject
 import play.api.libs.json.Json
+import java.util.regex.Pattern
+
 
 import models._
 
@@ -77,12 +79,12 @@ trait BagServiceComponent {
      * 
      * 得到 系统 中分享的背包 列表 
      */
-    def getSharePlanList(page: Int , pagesize: Int) : List[SharePlan]
+    def getSharePlanList(page: Int , pagesize: Int ) : List[SharePlan]
     
     /**
      * 得到显示在 首页上的  分享背包
      */
-    def getHomePageSharePlanList( ): List[SharePlan]
+    def getHomePageSharePlanList(  country: String = "" , province:String = "" , city: String = ""): List[SharePlan]
     /**
      * 设置是否显示在 首页
      */
@@ -399,16 +401,37 @@ trait BagServiceComponentImpl extends BagServiceComponent {
      * 
      * 得到 系统 中分享的背包 列表 
      */
+ 
+    
     def getSharePlanList(page: Int , pagesize: Int) : List[SharePlan] = {
-      val q = MongoDBObject( "shareIt" -> true  )
+      val q  = MongoDBObject( "shareIt" -> true  )
        shareplanMongoClient.find(q).toList 
     }
     
     /**
      * 得到显示在 首页上的  分享背包
      */
-    def getHomePageSharePlanList( ): List[SharePlan] = {
-       val q = MongoDBObject( "atHomePage" -> true  )
+    def getHomePageSharePlanList(   country: String = "" , province:String = "" , city: String = ""): List[SharePlan] = {
+       val q1 = MongoDBObject( "atHomePage" -> true  )
+       
+        val q  = if( city != ""){ 
+         val pattern = Pattern.compile( Pattern.quote (city) , Pattern.CASE_INSENSITIVE);
+         val q2 = MongoDBObject( "cityStr" -> pattern)
+         log.debug("q2={}", q2)
+         
+         MongoDBObject( "$and" ->List(q1,q2 ))
+      }else if( province!=""){
+        val pattern = Pattern.compile(Pattern.quote (province) , Pattern.CASE_INSENSITIVE);
+         val q2 = MongoDBObject( "provinceStr" -> pattern)
+         MongoDBObject( "$and" ->List(q1,q2 ))
+      }else if(country != ""){
+        val pattern = Pattern.compile(Pattern.quote (country) , Pattern.CASE_INSENSITIVE);
+         val q2 = MongoDBObject( "countryStr" -> pattern)
+         MongoDBObject( "$and" ->List(q1,q2 ))
+      }else{
+        q1
+      }
+       
        shareplanMongoClient.find(q).toList
     }
     
@@ -434,7 +457,14 @@ trait BagServiceComponentImpl extends BagServiceComponent {
         case None => None
         case Some( plan  ) =>
           val q = MongoDBObject("_id" -> plan.id  )
-          shareplanMongoClient.update(q, plan.copy( shareIt = status , atHomePage=if(!status) {false} else{ plan.atHomePage}) , false, false, WriteConcern.Normal)
+          val countryStr =  plan.locationList.map( _.country).toSeq.distinct.mkString(",")
+          val provinceStr = plan.locationList.map( _.province).toSeq.distinct.mkString(",")
+          val cityStr = plan.locationList.map( _.city).toSeq.distinct.mkString(",")
+          
+          shareplanMongoClient.update(q, plan.copy( 
+              countryStr = countryStr , provinceStr = provinceStr, cityStr=cityStr,
+              shareIt = status , atHomePage=if(!status) {false} else{ plan.atHomePage}
+              ) , false, false, WriteConcern.Normal)
           Some(plan)
       }
     }   

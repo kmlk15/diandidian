@@ -131,7 +131,7 @@ function loadSharePlan( query ){
 				lihtml += '<div class="user">';
 				lihtml += '<div style="margin-top:5px;margin-right:5px"><img src="' +item.avatar +'" width="32" height="32" alt=""     class="shareplan_avataimage" /></div>';
 				
-				lihtml += '<span style="margin-top:10px;">'+ item.username +'</span>';
+				lihtml += '<span style="margin-top:18px;">'+ item.username +'</span>';
 				lihtml += '<div>';
 				lihtml += '<span></span>';
 				lihtml += '<p></p>';
@@ -156,9 +156,9 @@ $(function() {
 	var url = $.url();
 	var query = url.param()
 	loadHomeAttractions( query );
-	if( $.isEmptyObject( query)  ){
+	//if( $.isEmptyObject( query)  ){
 		//提取 分享背包数据
 		console.log( "load share plan ") ;
 		loadSharePlan(query ) ;
-	}
+	//}
 })

@@ -29,14 +29,14 @@ case class Plan(id: String=""   , name: String = "背包", startDate: Long = 0L,
   list: List[SimpleLocation] = Nil, map: Map[String, String] = Map() , noteMap: Map[String,String]= Map( ) , visible: String ="private")
 
 case class ShareLocation( id: String ,   note: String = "", imgId:String="",   extension: String = "jpg" , 
-   	name: String = "" , address: String = "" ,  url: String = ""
+   	name: String = "" , address: String = "" ,  url: String = "", country: String ="" , province: String = "" , city: String = "" 
    	  
     ){
   val img = if(imgId=="") "" else    "266_" +   imgId +"."+ extension   
 }
 
 case class SharePlan( id: String = "" , bagId: String = "" ,  name: String = "" ,  imgId:String="",   extension: String = "jpg" ,  atHomePage: Boolean= false , shareIt: Boolean =false ,
-	locationList : List[ShareLocation] = Nil, citylistStr: String = "",
+	locationList : List[ShareLocation] = Nil,    countryStr: String ="" , provinceStr: String = "" , cityStr: String = "" ,
     userId: String="", usertype: String = "",  username: String = "" , avatar: String = ""     
 ){
  val img : String  = if(imgId=="") "" else "780_" +   imgId +"."+ extension 

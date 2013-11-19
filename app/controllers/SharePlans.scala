@@ -130,11 +130,13 @@ object SharePlans extends Controller with services.FileUploadService {
                 val sharePlan: SharePlan = bagService.getSharePlan(planId) match {
                   case None => 
                     log.debug("not found shareplan planid={}", planId)
+                    
                     val locationList: List[ShareLocation] = plan.list.flatMap { simplelocation =>
                       locationService.getById(simplelocation.id).map { location =>
                         val address = location.address.city + location.address.district + location.address.street
                         val url = location.url
-                        ShareLocation(id = location.id.get, name = location.name, address = address, url = url)
+                        ShareLocation(id = location.id.get, name = location.name, address = address, url = url ,
+                        country = location.address.country , province = location.address.stateProvince, city = location.address.city )
                       }
                     }
                     val sharePlan = SharePlan(id = plan.id, name = plan.name, bagId = bag.id,
@@ -156,7 +158,8 @@ object SharePlans extends Controller with services.FileUploadService {
                         val address = location.address.city + location.address.district + location.address.street
                         val url = location.url
                         locationMap.get(location.id.get).map(sharelocation => sharelocation.copy(name = location.name, address = address, url = url)).
-                          getOrElse(ShareLocation(id = location.id.get, name = location.name, address = address, url = url))
+                          getOrElse(ShareLocation(id = location.id.get, name = location.name, address = address, url = url,
+                              country = location.address.country , province = location.address.stateProvince, city = location.address.city ))
                       }
                     }
                     val sharePlan2 = sharePlan.copy(name = plan.name,
@@ -204,7 +207,20 @@ object SharePlans extends Controller with services.FileUploadService {
   }
 
   def listShare() = Action { implicit request =>
-    val shareplanList = bagService.getHomePageSharePlanList()
+     val country =  request.getQueryString("country").getOrElse("")
+    val province=  request.getQueryString("province").getOrElse("")
+    val city = request.getQueryString("city").getOrElse("")
+    
+    val shareplanList =if(city!="") {
+      bagService.getHomePageSharePlanList(  city=city )
+    }else if(province != "" ){
+      bagService.getHomePageSharePlanList(  province=province )
+    }else if( country != ""){
+      bagService.getHomePageSharePlanList(  country=country )
+    }else{
+      bagService.getHomePageSharePlanList(   )
+    }
+     
     import models.BagHelp.sharePlanFmt
     val jsvalList = shareplanList.map( plan => {
       Json.obj("name" -> plan.name , "img" -> plan.homepageimg, "id"-> plan.id,
