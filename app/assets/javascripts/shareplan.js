@@ -1,5 +1,12 @@
-
+ 
+ 
+  
 $(function(){
+	
+	
+	
+	
+	
 //	$(window).resize(function(e) {
 //		var space = 260;
 //		var height = $(this).height()-space;
@@ -49,6 +56,13 @@ $(function(){
 		return false;
 	});
 	
+	$("textarea").on("keypress",function(){
+		$(window).on('beforeunload', function(){
+		    return "你现在正编辑中，如果你离开这页面，这些编辑将丢失";
+		});
+		
+	});
+	
 	$("#updateShare > span >   a  ").click(function(event){
 		event.preventDefault() ;
 		console.log("click updateShare ") ;
@@ -61,6 +75,9 @@ $(function(){
 				}else{
 					alert("保存成功");
 				}
+				
+				$(window).off('beforeunload');
+				
 			}else{
 				alert( result.msg );
 			}
