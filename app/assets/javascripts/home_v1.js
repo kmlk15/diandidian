@@ -1,18 +1,5 @@
-function twoajax( query ){
-	
-	$.when( $.getJSON("/location", query) , $.getJSON("/plan/listShare", query )  ).done(function( a1, a2 ){
-		
-		console.log( a1[0].data  );
-		console.log(a2[0].data ) ;
-		var  shareplanHtml =  loadSharePlan( a2[0]) ;
-		
-		loadHomeAttractions(a1[0] , shareplanHtml ) ;
-	});
-			
-}
-
-function loadHomeAttractions( result , shareplanHtml ) {
-	 
+function loadHomeAttractions( query) {
+	$.getJSON("/location", query, function( result ){
 		var attractionListHtml = '';
 		 var json = result.data.list ; 
 		 
@@ -102,14 +89,10 @@ function loadHomeAttractions( result , shareplanHtml ) {
 				attractionListHtml += attractionHtml;
 				 
 			});
-			
-			attractionListHtml += shareplanHtml  ;
 			attractionListHtml += '</ul>';
 		}else{
 //			attractionListHtml += '<h2>' + query.country + ' &gt;' + query.city+'</h2>';
-			attractionListHtml += '<ul class="clearfix">';
- 		
-			attractionListHtml += shareplanHtml  ;
+ 		attractionListHtml += '<ul class="clearfix">';
  			attractionListHtml += '</ul>';
 		}
 		
@@ -117,16 +100,14 @@ function loadHomeAttractions( result , shareplanHtml ) {
 		
 		$(window).trigger("resize");
 		$("#attractions-list h2").scrollToFixed({zIndex: 97, marginTop: $("#header").outerHeight(true)});
-		
-		$("img.shareplan_avataimage").imgr({ radius:"16px"});
-		
 		homeAttractionHover();
- 
+	});
+	
 	
 }
 
-function loadSharePlan( result  ){
- 
+function loadSharePlan( query ){
+	$.getJSON("/plan/listShare", query, function( result ){
 		if( result.success){
 			console.log( JSON.stringify(result) ) ;
 			var jsonArr = result.data ;
@@ -167,12 +148,17 @@ function loadSharePlan( result  ){
 			 
 			//$("img.shareplan_avataimage").imgr({ radius:"16px"});
 		}
-	 
+	});
 	
 }
 $(function() {
  
 	var url = $.url();
 	var query = url.param()
-	twoajax( query );
+	loadHomeAttractions( query );
+	//if( $.isEmptyObject( query)  ){
+		//提取 分享背包数据
+		console.log( "load share plan ") ;
+		loadSharePlan(query ) ;
+	//}
 })
