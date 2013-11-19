@@ -51,6 +51,7 @@ object LocationEndpoints extends Controller {
  */
   def location=Action{ implicit request =>
     val country =  request.getQueryString("country").getOrElse("")
+    val province=  request.getQueryString("province").getOrElse("")
     val city = request.getQueryString("city").getOrElse("")
     val district = request.getQueryString("district").getOrElse("")
     val ids = request.getQueryString("ids").getOrElse("")
@@ -62,6 +63,8 @@ object LocationEndpoints extends Controller {
     } else if (city != "") {
       //按城市搜索
       ( ls.list(city) , defaultIndex)
+    }else if( province != "" ){
+      ( ls.listByProvince(province) , defaultIndex)
     }else if( country !="" ){
        ( ls.listByCountry(country) , defaultIndex)
     } else if( ids != "" ){
@@ -156,11 +159,29 @@ Please make it random loaded whenever it is the first time load to browser, exam
 //      ( "" , "" )
 //    }
     //根据 Edit-10-9-13-REVISED  修改
-    val(resultcountry ,  resultcity ) =  (country,city)
+    val resultprovince : String = if(province!="") province else {
+      if( city ==""  || city=="香港" || city =="澳门" ){ 
+    	  ""
+      }else{  
+        locationsList.headOption.map( location=> location.address.stateProvince).getOrElse("")
+        }
+     }
+    val resultcountry : String=  if(  country!="") country else{ 
+      if( resultprovince !=""){
+         locationsList.headOption.map( location=> location.address.country).getOrElse("") 
+      }else{
+	      if( city!="" ) {
+	        locationsList.headOption.map( location=> location.address.country).getOrElse("") 
+	      }else{""}
+	      }
+    }
+    val( resultcity ) =  (city)
    
    log.debug("(resultcountry ,  resultcity )={}", (resultcountry ,  resultcity ) ) 
    
-    val data = Json.obj( "country" ->resultcountry, "city" -> resultcity, "list" -> Json.toJson( locations) )
+    val data = Json.obj( "country" ->resultcountry.trim( ), "province" -> resultprovince.trim( ), "city" -> resultcity.trim( ) , 
+        "list" -> Json.toJson( locations) )
+        
     val resultJson = Json.obj("success" -> true , "data" -> data )
     log.debug( "randomIndex={}" , randomIndex  )
     if( randomIndex > defaultIndex){

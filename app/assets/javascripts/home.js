@@ -4,13 +4,24 @@ function loadHomeAttractions( query) {
 		 var json = result.data.list ; 
 		 
 		 //alert( query.country == null )
-			if( result.data.country == ""  && result.data.city== ""  ){
+			if( result.data.country == ""     ){
 				attractionListHtml += '<h2>  </h2>';
-			}else if( result.data.country != ""  && result.data.city== ""  ){
-				attractionListHtml += '<h2><a href="/home?country=' + encodeURI( result.data.country ) +'">' + result.data.country + '</a></h2>';
-			}else{
-				attractionListHtml += '<h2><a href="/home?country=' + encodeURI( result.data.country ) +'">' + result.data.country + '</a> &gt;' + result.data.city+'</h2>';
-			}
+			}else {
+				attractionListHtml+='<h2>'
+					var  tmptxt = ""
+					if( result.data.country != "" ){
+						attractionListHtml += '<a href="/home?country=' + encodeURI( result.data.country ) +'">' + result.data.country + '</a>';
+					}
+				  if(result.data.province!= ""  ){
+					   attractionListHtml += ' &gt;<a href="/home?province=' + encodeURI( result.data.province ) +'">' + result.data.province + '</a>';
+				   }
+				 
+				   if(result.data.city!= ""  ){
+					   attractionListHtml += ' &gt;<a href="/home?city=' + encodeURI( result.data.city ) +'">' + result.data.city + '</a>';
+				   }
+				   
+				attractionListHtml+='</h2>'
+			} 
 			
 		if (json.length > 0) {
 			

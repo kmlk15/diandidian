@@ -18,6 +18,8 @@ trait LocationFormServiceComponent {
     
     def list( city:String , district: String): List[LocationForm] 
     
+    def listByProvince(city: String ): List[LocationForm] 
+    
     def listByCountry(country: String ): List[LocationForm]
     
     def search(q: String): List[LocationForm]
@@ -64,9 +66,17 @@ trait LocationFormServiceComponentImpl extends LocationFormServiceComponent {
    
     def listByCountry(country: String ): List[LocationForm] ={
        val q = MongoDBObject()
-       q.put("address.country", country)
+       val pattern = Pattern.compile(Pattern.quote (country) , Pattern.CASE_INSENSITIVE);   
+       q.put("address.country", pattern)
        mongoClient.find(q)
       
+    }
+    
+    def listByProvince(province: String ): List[LocationForm] ={
+        val q = MongoDBObject()
+        val pattern = Pattern.compile(Pattern.quote (province) , Pattern.CASE_INSENSITIVE);  
+       q.put("address.stateProvince", pattern)
+       mongoClient.find(q)
     }
     
    def search(query: String): List[LocationForm] ={
