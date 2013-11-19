@@ -157,7 +157,9 @@ object SharePlans extends Controller with services.FileUploadService {
                       locationService.getById(simplelocation.id).map { location =>
                         val address = location.address.city + location.address.district + location.address.street
                         val url = location.url
-                        locationMap.get(location.id.get).map(sharelocation => sharelocation.copy(name = location.name, address = address, url = url)).
+                        locationMap.get(location.id.get).map(sharelocation =>
+                          sharelocation.copy(name = location.name, address = address, url = url,
+                              country = location.address.country , province = location.address.stateProvince, city = location.address.city )).
                           getOrElse(ShareLocation(id = location.id.get, name = location.name, address = address, url = url,
                               country = location.address.country , province = location.address.stateProvince, city = location.address.city ))
                       }
