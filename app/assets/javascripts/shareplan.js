@@ -4,7 +4,7 @@
 $(function(){
 	
 	
-	
+	var bindbeforeunload = false; 
 	
 	
 //	$(window).resize(function(e) {
@@ -57,9 +57,12 @@ $(function(){
 	});
 	
 	$("textarea").on("keypress",function(){
-		$(window).on('beforeunload', function(){
-		    return "你现在正编辑中，如果你离开这页面，这些编辑将丢失。如果你想保存资料，请选择取消，并点击保存按钮。";
-		});
+		 if( !bindbeforeunload){
+			$(window).on('beforeunload', function(){
+			    return "你现在正编辑中，如果你离开这页面，这些编辑将丢失。如果你想保存资料，请选择留在当前页面 ,并点击保存按钮。";
+			});
+			bindbeforeunload = true ;
+		 }
 		
 	});
 	
@@ -77,7 +80,7 @@ $(function(){
 				}
 				
 				$(window).off('beforeunload');
-				
+				bindbeforeunload = false;
 			}else{
 				alert( result.msg );
 			}
