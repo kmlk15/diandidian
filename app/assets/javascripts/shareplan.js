@@ -58,7 +58,7 @@ $(function(){
 	
 	$("textarea").on("keypress",function(){
 		$(window).on('beforeunload', function(){
-		    return "你现在正编辑中，如果你离开这页面，这些编辑将丢失";
+		    return "你现在正编辑中，如果你离开这页面，这些编辑将丢失。如果你想保存资料，请选择取消，并点击保存按钮。";
 		});
 		
 	});
