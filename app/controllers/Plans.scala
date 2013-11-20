@@ -33,7 +33,10 @@ import models.BagHelp.bagFmt
 import models.LocationView
 import models.SimpleLocation
 import scala.collection.immutable
+import scala.collection.mutable
 import org.apache.commons.lang3.RandomStringUtils
+import play.api.cache.Cache
+import play.api.Play.current
 
 object Plans extends Controller {
   private val log = LoggerFactory.getLogger(Plans.getClass())
@@ -42,10 +45,19 @@ object Plans extends Controller {
   private val cmsService = base.CmsServiceRegistry.cmsService
 
    
+  
   def getUserId( request: Request[AnyContent] ): Option[String] ={
     if( request.getQueryString("forpdf") != None){
-       if( request.getQueryString("userId") != None){
-         request.getQueryString("userId")
+       if( request.getQueryString("userId") != None ){
+         val token : String = request.getQueryString("token").getOrElse("")
+          if( Cache.getAs[String](token) != None){
+        	   Cache.remove(token)
+        	  request.getQueryString("userId")
+          }else{
+             None
+          	}
+         
+         
        }else{
     	   request.session.get( "userId")
        	}
@@ -330,11 +342,14 @@ object Plans extends Controller {
       	case None => Redirect(routes.Login.login())
       	case Some(userId) =>
       	  val name = session.get("username").getOrElse("")
+      	  val randomstr = RandomStringUtils.randomAlphanumeric(4) ;
+      	  val token = userId + randomstr
+      	  Cache.set(token,"",60)
       	  val url = "http://www.diandidian.com/plan/?statusName=" + URLEncoder.encode( statusName,"utf-8") +
       	  "&planName=" +  URLEncoder.encode( planName,"utf-8") +
-      	  "&forpdf=true&userId="+ userId +"&name=" + URLEncoder.encode( name ,"utf-8")
+      	  "&forpdf=true&userId="+ userId +"&name=" + URLEncoder.encode( name ,"utf-8") +"&token=" + token
       	  log.debug("url={}", url )
-      	  val randomstr = RandomStringUtils.randomAlphanumeric(4) ;
+      	 
       	  //val js = "rasterize.coffee" 
       	  val js = "/printheaderfooter.js"
       	  val  filename = "/opt/phantomjs/tmp/" + userId +  randomstr   + ".pdf"
