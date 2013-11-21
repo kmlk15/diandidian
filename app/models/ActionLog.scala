@@ -10,6 +10,6 @@ package models
  * 年 月 日
  * 
  */
-case class ActionLog (id: String ="" , ts: Long =0L , year:Int=0 , month:Int = 0 , day:Int = 0 , action:String=""  , usertype: String="" , userId: String="" ){
+case class ActionLog (id:Option[ String] =None , ts: Long =0L , year:Int=0 , month:Int = 0 , day:Int = 0 , action:String=""  , usertype: String="" , userId: String="" ){
 
 }

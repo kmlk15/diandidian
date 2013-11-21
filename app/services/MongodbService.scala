@@ -37,6 +37,7 @@ trait MongodbServiceComponent {
     def update(q: DBObject, obj: T): Int
     def delete(obj: DBObject, concern: WriteConcern): Int
     def delete(obj: DBObject): Int
+    def getCollction( ) : MongoCollection
   }
 
 }
@@ -46,6 +47,8 @@ trait MongodbServiceComponentImpl extends MongodbServiceComponent {
     val mongoDB = MongoConnection()( dbname )
     val col = mongoDB(collection)
 
+    def getCollction( ) : MongoCollection = col 
+    
     override def list(): List[T] = {
       col.find(MongoDBObject()).toList.map(item => {
         //println(item);
