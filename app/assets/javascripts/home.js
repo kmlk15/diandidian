@@ -55,7 +55,7 @@ function loadHomeAttractions( result , shareplanHtml ) {
 					attractionHtml += '<img src="/assets/images/dummy/img01.jpg" width="264" height="260" alt="" />';//default image here
 				}				 
 				
-				if( item.name.length > 10 ){
+				if( item.name.length >= 7 ){
 					attractionHtml += '<div class="title2">';
 					attractionHtml += '<h3>'+item.name+'</h3>';
 					attractionHtml += '<span>'+item.address.city+': '+item.address.district+'</span>';
