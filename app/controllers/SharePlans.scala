@@ -213,12 +213,36 @@ object SharePlans extends Controller with services.FileUploadService {
     val province=  request.getQueryString("province").getOrElse("")
     val city = request.getQueryString("city").getOrElse("")
     
-    val shareplanList =if(city!="") {
+    val district = request.getQueryString("district").getOrElse("")
+    val ids = request.getQueryString("ids").getOrElse("")
+    val cityList =  request.getQueryString("cityList").getOrElse("") 
+    
+    val shareplanList:List[SharePlan] =if(city!="") {
       bagService.getHomePageSharePlanList(  city=city )
     }else if(province != "" ){
       bagService.getHomePageSharePlanList(  province=province )
     }else if( country != ""){
       bagService.getHomePageSharePlanList(  country=country )
+    }  else if( ids != "" ){
+      log.debug( "ids={}", ids )
+      val idsArr = ids.split(",")
+      val list = idsArr.toSet.flatMap( ( id: String ) => { 
+        if( id.startsWith("city:")){
+          id.split(":") match{
+            case  Array(_,_,city) =>{
+             bagService.getHomePageSharePlanList(  city=city )
+            }
+            case  _ => Nil
+          }
+        }else{
+        	 Nil
+        }
+      }).toList
+       list 
+    }else if(cityList != ""){
+      //同时搜索多个城市， 用于 planning page   继续搜索 按钮
+      val list = cityList.split(",").toList.flatMap(  city => bagService.getHomePageSharePlanList(  city=city ) )
+       list 
     }else{
       bagService.getHomePageSharePlanList(   )
     }
