@@ -11,13 +11,13 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.libs.ws.WS
 import play.api.mvc.Action
 import play.api.mvc.Controller
-
+import models.ActionLogHelp
 
 object LoginFacebook extends Controller   {
   val log = LoggerFactory.getLogger(LoginFacebook.getClass())
 
   val loginService = base.LoginServiceRegistry.loginService
-  
+  val actionLogService = base.ActionLogServiceRegistry.actionLogService
   //facebook
   val facebookappkey = Play.configuration.getString("facebookappkey", None).getOrElse("")
   val facebookappSecret = Play.configuration.getString("facebookappSecret", None).getOrElse("")
@@ -102,6 +102,7 @@ object LoginFacebook extends Controller   {
               (myjson \ "id").asOpt[String] match {
                 case None => { Ok("ERROR get useId  ERROR") }
                 case Some(facebookId) => {
+                 actionLogService.save( ActionLogHelp.loginLog("facebook", facebookId) )
                  loginService.getFacebookUser(facebookId) match{
                    case None =>  newAccount(myjson, facebookId, access_token, expires)
                    case Some(facebookUser) => Redirect(routes.Home.index()).withSession("userId" -> facebookUser.userId,

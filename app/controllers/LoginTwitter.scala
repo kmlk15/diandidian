@@ -24,12 +24,14 @@ import twitter4j.Twitter
 import twitter4j.conf.ConfigurationBuilder
 
 import models.v2.TwitterUser
+import models.ActionLogHelp
+
 
 object LoginTwitter extends Controller {
   val log = LoggerFactory.getLogger(LoginTwitter.getClass())
 
   val loginService = base.LoginServiceRegistry.loginService
-
+  val actionLogService = base.ActionLogServiceRegistry.actionLogService
   val key = Play.configuration.getString("twitterappkey", None).getOrElse("")
   val secret = Play.configuration.getString("twitterappSecret", None).getOrElse("")
   val callbackurl = Play.configuration.getString("twittercallbackurl", None).getOrElse("")
@@ -69,7 +71,7 @@ object LoginTwitter extends Controller {
 	            case x: Array[String] if x.length == 2 => {
 	              val twitterId = x(0)
 	              log.debug("twitterId=" + twitterId)
-	               
+	               actionLogService.save( ActionLogHelp.loginLog("twitter", twitterId) )
 	              loginService.getTwitterUser(twitterId) match {
 	                case None => {
 	                  log.debug("第一次登录的用户")

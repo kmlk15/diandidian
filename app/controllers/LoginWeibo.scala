@@ -10,12 +10,14 @@ import play.api.libs.json.Json
 import play.api.libs.ws.WS
 import play.api.mvc.Action
 import play.api.mvc.Controller
+import models.ActionLogHelp
 
 object LoginWeibo extends Controller {
   val log = LoggerFactory.getLogger(LoginWeibo.getClass())
 
   val loginService = base.LoginServiceRegistry.loginService
-
+  val actionLogService = base.ActionLogServiceRegistry.actionLogService
+  
   //获取 新浪授权
 
   val sinaappkey = Play.configuration.getString("sinaappkey", None).getOrElse("2454366401")
@@ -65,7 +67,7 @@ object LoginWeibo extends Controller {
               Ok(accesstokenJson.toString)
             }
             case Some(weiboId) => {
-             
+            	actionLogService.save( ActionLogHelp.loginLog("weibo", weiboId) )
               loginService.getWeiboUser(weiboId)  match {
                 case None =>  newAccount(accesstokenJson, weiboId)
                  
