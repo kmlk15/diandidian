@@ -23,7 +23,8 @@ object LoginWeibo extends Controller {
   val sinaappkey = Play.configuration.getString("sinaappkey", None).getOrElse("2454366401")
   val sinaappSecret = Play.configuration.getString("sinaappSecret", None).getOrElse("9067b727d0f051496d3df4175c251fed")
   val sinacallbackurl = Play.configuration.getString("sinacallbackurl", None).getOrElse("http://127.0.0.1:8084/login/callback/weibo")
-
+  val usertype="weibo"
+    
   def weibo() = Action {
 
     val url = "https://api.weibo.com/oauth2/authorize"
@@ -67,13 +68,15 @@ object LoginWeibo extends Controller {
               Ok(accesstokenJson.toString)
             }
             case Some(weiboId) => {
-            	actionLogService.save( ActionLogHelp.loginLog("weibo", weiboId) )
+            	
               loginService.getWeiboUser(weiboId)  match {
                 case None =>  newAccount(accesstokenJson, weiboId)
                  
-                case Some(weiboUser) => Redirect(routes.Home.index()).withSession(
+                case Some(weiboUser) =>
+                  actionLogService.save( ActionLogHelp.loginLog(usertype, weiboUser.userId) )
+                  Redirect(routes.Home.index()).withSession(
                     "userId" -> weiboUser.userId, "username" -> weiboUser.screenName, 
-                    "avatar" -> weiboUser.avatar , "usertype"-> "weibo")
+                    "avatar" -> weiboUser.avatar , "usertype"-> usertype)
                 
               }
             }
@@ -114,8 +117,9 @@ object LoginWeibo extends Controller {
               if (screenName != "") {
                 val w = WeiboUser(weiboId = weiboId, userId = "", screenName = screenName, avatar = avatar, token = Json.stringify(accesstokenJson), profile = Json.stringify(userinfoJson))
                 val w2 =  loginService.saveWeiboUser(w)
+                actionLogService.save( ActionLogHelp.loginLog(usertype, w2.userId) )
                 Redirect(routes.Home.index()).withSession("userId" -> w2.userId,
-                    "username" -> screenName, "avatar" -> avatar , "usertype"-> "weibo")
+                    "username" -> screenName, "avatar" -> avatar , "usertype"-> usertype)
               } else {
                 Ok("error screenname is empty")
               }

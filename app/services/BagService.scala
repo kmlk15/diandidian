@@ -1,6 +1,7 @@
 package services
 
 import base.mongoService
+import base.ActionLogServiceRegistry
 import com.mongodb.casbah.commons.MongoDBObject
 import org.bson.types.ObjectId
 import com.mongodb.casbah.WriteConcern
@@ -105,8 +106,12 @@ trait BagServiceComponentImpl extends BagServiceComponent {
   val dbname = "topo"
   override val bagService = new BagService {
     lazy val bagsMongoClient = mongoService.getMongoService[Bag]("bags", dbname)
+    
     lazy val locationPlanIndexMongoClient = mongoService.getMongoService[LocationPlanIndex]("locationPlanIndex", dbname)
     lazy val shareplanMongoClient = mongoService.getMongoService[SharePlan]("shareplan", dbname)
+    
+    lazy val actionLogService = ActionLogServiceRegistry.actionLogService
+    
     def createNewplan(bagId: String): String = {
 
       val newPlanname = get(bagId) match {
@@ -154,7 +159,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
           val plan = Plan(id = (new ObjectId().toString), name = planName, list = List(simpleLocation))
           val status = Status(statusName, Map(plan.name -> plan))
           val bag = Bag(bagId, typ, usertype, Map(status.name -> status))
-          bagsMongoClient.insert(bag)
+          save( bag )
         case Some(bag) =>
           val (newBag, optionPlan) = BagHelp.addLocation(bag, statusName, planName, List(simpleLocation))
           log.debug("addlocation Bag={}", newBag)
@@ -249,6 +254,8 @@ trait BagServiceComponentImpl extends BagServiceComponent {
     def save(bag: Bag): Option[Bag] = {
       get(bag.id) match {
         case None =>
+          val actionLog = models.ActionLogHelp.addBagLog(bag.usertype, bag.id )
+          actionLogService.save( actionLog )
           bagsMongoClient.insert(bag)
           Some(bag)
         case Some(existBag) => None

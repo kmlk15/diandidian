@@ -47,7 +47,8 @@ object Bags extends Controller {
   private val log = LoggerFactory.getLogger(Bags.getClass())
   private val bagService = base.BagServiceRegistry.bagService
   private val locationService = base.locationFormRegistry.locationService
-
+  private val actionLogService = base.ActionLogServiceRegistry.actionLogService
+  
   private val bagIdCookieName = "tmpbagId"
 
   def add(locationName: String , statusName: String = defaultStatusName ,planName : String = defaultPlanName ) = Action { implicit request =>
@@ -319,6 +320,10 @@ object Bags extends Controller {
     val bagId = getBagId(session)
     
    val planName =  bagService.createNewplan(bagId)
+   
+   val actionLog = models.ActionLogHelp.addPlanLog(getUsertype(session), bagId )
+   actionLogService.save( actionLog )
+          
    val jsobj = Json.obj( "success" -> true , "data" -> Json.obj("planName" -> planName , "statusName" -> defaultStatusName ) )
    Ok( jsobj)
    

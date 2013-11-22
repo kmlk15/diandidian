@@ -35,7 +35,8 @@ object LoginTwitter extends Controller {
   val key = Play.configuration.getString("twitterappkey", None).getOrElse("")
   val secret = Play.configuration.getString("twitterappSecret", None).getOrElse("")
   val callbackurl = Play.configuration.getString("twittercallbackurl", None).getOrElse("")
-
+  val usertype="twitter"
+  
   val KEY = ConsumerKey(key, secret)
   val twitterServiceInfo = ServiceInfo(
     "https://api.twitter.com/oauth/request_token",
@@ -71,7 +72,7 @@ object LoginTwitter extends Controller {
 	            case x: Array[String] if x.length == 2 => {
 	              val twitterId = x(0)
 	              log.debug("twitterId=" + twitterId)
-	               actionLogService.save( ActionLogHelp.loginLog("twitter", twitterId) )
+	               
 	              loginService.getTwitterUser(twitterId) match {
 	                case None => {
 	                  log.debug("第一次登录的用户")
@@ -79,8 +80,9 @@ object LoginTwitter extends Controller {
 	                }
 	                case Some(twitterUser) => {
 	                  log.debug("已有用户登录 twitterUser= " + twitterUser)
+	                  actionLogService.save( ActionLogHelp.loginLog(usertype, twitterUser.userId) )
 	                	Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, 
-	                	    "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar , "usertype"-> "twitter")
+	                	    "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar , "usertype"-> usertype)
 	                }
 	                
 	              }
@@ -164,8 +166,11 @@ object LoginTwitter extends Controller {
         avatar = avatar,
         token = Json.stringify(Json.obj("token" -> reqToken.token, "secret" -> reqToken.secret)),
         profile = Json.stringify(Json.obj("name" -> name, "avatar" -> avatar))))
+        
+         actionLogService.save( ActionLogHelp.loginLog(usertype, twitterUser.userId) )
+         
       Redirect(routes.Home.index()).withSession("userId" -> twitterUser.userId, 
-          "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar , "usertype"-> "twitter")
+          "username" -> twitterUser.screenName, "avatar" -> twitterUser.avatar , "usertype"-> usertype)
     } else {
       Ok("ERROR profile= " + profile.toString)
     }

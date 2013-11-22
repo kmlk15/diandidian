@@ -22,7 +22,8 @@ object LoginFacebook extends Controller   {
   val facebookappkey = Play.configuration.getString("facebookappkey", None).getOrElse("")
   val facebookappSecret = Play.configuration.getString("facebookappSecret", None).getOrElse("")
   val facebookcallbackurl = Play.configuration.getString("facebookcallbackurl", None).getOrElse("")
-
+  val usertype="facebook"
+    
   def facebook() = Action {
 
     val url = "https://www.facebook.com/dialog/oauth"
@@ -102,11 +103,13 @@ object LoginFacebook extends Controller   {
               (myjson \ "id").asOpt[String] match {
                 case None => { Ok("ERROR get useId  ERROR") }
                 case Some(facebookId) => {
-                 actionLogService.save( ActionLogHelp.loginLog("facebook", facebookId) )
+                  
                  loginService.getFacebookUser(facebookId) match{
                    case None =>  newAccount(myjson, facebookId, access_token, expires)
-                   case Some(facebookUser) => Redirect(routes.Home.index()).withSession("userId" -> facebookUser.userId,
-                       "username" -> facebookUser.screenName, "avatar" -> facebookUser.avatar, "usertype"-> "facebook")
+                   case Some(facebookUser) => 
+                     actionLogService.save( ActionLogHelp.loginLog(usertype, facebookUser.userId) )
+                     Redirect(routes.Home.index()).withSession("userId" -> facebookUser.userId,
+                       "username" -> facebookUser.screenName, "avatar" -> facebookUser.avatar, "usertype"-> usertype)
                  }
                 }
               }
@@ -129,7 +132,8 @@ object LoginFacebook extends Controller   {
        token = Json.stringify( Json.obj("token"-> access_token , "expires"-> expires )),
        profile  = Json.stringify(userinfoJson)
        ))
+    actionLogService.save( ActionLogHelp.loginLog(usertype, facebookUser.userId) )
     Redirect(routes.Home.index()).withSession("userId" ->facebookUser.userId, 
-        "username" -> facebookUser.screenName, "avatar" -> facebookUser.avatar, "usertype"-> "facebook")
+        "username" -> facebookUser.screenName, "avatar" -> facebookUser.avatar, "usertype"-> usertype)
   }
 }

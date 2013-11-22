@@ -21,6 +21,7 @@ object ActionLogHelp{
   val delPlan = "delPlan"
   val addShare = "addShare"
   val delShare = "delShare"
+  val addBag = "addBag"
   
   def getDate:(Long , Int, Int, Int)={
     val ts = System.currentTimeMillis()
@@ -37,6 +38,9 @@ object ActionLogHelp{
   }
   
   def  loginLog(   usertype: String="" , userId: String=""): ActionLog =  getTemplate(login ,    usertype , userId) 
+
+  def  addBagLog( usertype: String="" , userId: String=""): ActionLog =  getTemplate(addBag ,  usertype , userId) 
+
   def  addPlanLog( usertype: String="" , userId: String=""): ActionLog =  getTemplate(addPlan ,  usertype , userId) 
   def  delPlanLog( usertype: String="" , userId: String=""): ActionLog =  getTemplate(delPlan ,  usertype , userId) 
   def  addShareLog(usertype: String="" , userId: String=""): ActionLog =  getTemplate(delShare , usertype , userId)  
