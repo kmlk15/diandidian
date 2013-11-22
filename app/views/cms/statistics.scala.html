@@ -1,0 +1,105 @@
+@(date: org.joda.time.DateTime , dataMap: Map[String , List[(Int,Int)]] )(implicit session: Session)
+
+
+
+ 
+@script={
+
+}
+
+
+@views.html.cms.main( "Statistics"){
+  
+  <h3>登录统计</h3>
+  <br/>
+  <h4>按年统计</h4>
+  <table  class="table  table-bordered table-hover " style="width:200px">
+  	<tr>
+  	<th style="width:100px">年</th>
+  	<th style="width:100px">次数</th>
+  	</tr>
+  	@for( kv <- dataMap("loginStatsYear")){
+  		<tr>
+  			<td>@kv._1</td>
+  			<td>@kv._2</td>
+  		</tr>
+  	}
+  </table> 
+  
+  <h4>当年按月统计</h4>
+  <table  class="table table-bordered  table-hover" style="width:200px">
+  	<tr>
+  	<th style="width:100px">月</th>
+  	<th style="width:100px">次数</th>
+  	</tr>
+  	@for( kv <- dataMap("loginStatsMonth")){
+  		<tr>
+  			<td>@kv._1</td>
+  			<td>@kv._2</td>
+  		</tr>
+  	}
+  </table> 
+   
+  <h4>当月按日统计</h4>
+  <table  class="table table-bordered  table-hover" style="width:200px">
+  	<tr>
+  	<th style="width:100px">日</th>
+  	<th style="width:100px">次数</th>
+  	</tr>
+  	@for( kv <- dataMap("loginStatsDay")){
+  		<tr>
+  			<td>@kv._1</td>
+  			<td>@kv._2</td>
+  		</tr>
+  	}
+  </table>
+  
+  
+  <hr></hr>
+  
+  
+  <h3>背包统计</h3>
+  <br/>
+  <h4>按年统计</h4>
+  <table  class="table  table-bordered table-hover " style="width:200px">
+  	<tr>
+  	<th style="width:100px">年</th>
+  	<th style="width:100px">次数</th>
+  	</tr>
+  	@for( kv <- dataMap("bagStatsYear")){
+  		<tr>
+  			<td>@kv._1</td>
+  			<td>@kv._2</td>
+  		</tr>
+  	}
+  </table> 
+  
+  <h4>当年按月统计</h4>
+  <table  class="table table-bordered  table-hover" style="width:200px">
+  	<tr>
+  	<th style="width:100px">月</th>
+  	<th style="width:100px">次数</th>
+  	</tr>
+  	@for( kv <- dataMap("bagStatsMonth")){
+  		<tr>
+  			<td>@kv._1</td>
+  			<td>@kv._2</td>
+  		</tr>
+  	}
+  </table> 
+   
+  <h4>当月按日统计</h4>
+  <table  class="table table-bordered  table-hover" style="width:200px">
+  	<tr>
+  	<th style="width:100px">日</th>
+  	<th style="width:100px">次数</th>
+  	</tr>
+  	@for( kv <- dataMap("bagStatsDay")){
+  		<tr>
+  			<td>@kv._1</td>
+  			<td>@kv._2</td>
+  		</tr>
+  	}
+  </table>
+  
+}

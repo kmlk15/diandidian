@@ -131,7 +131,7 @@ GET   	/cms/userphoto/del/:id				controllers.cms.UserPhotos.del( id )
 GET    /cms/shareplan					controllers.cms.Locations.listSharePlan()
 POST   /cms/shareplan					controllers.cms.Locations.assignSharePlan()
 
-
+GET		/cms/statistics				controllers.cms.Statistics.index()
  
 GET /sessiontest						controllers.SessionView.index()
 
