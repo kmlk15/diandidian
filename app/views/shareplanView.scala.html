@@ -80,13 +80,13 @@
 								
 								 @defining( shareplan.locationList.reverse zip ( 1 to shareplan.locationList.size)  ){ziped => 
 								 @for( tuple  <- ziped ){
-								 <div  style="width:780px;min-height:198px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;background-color:#e6e6e6" >
+								 <div  style="overflow:auto;width:780px; min-height:198px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;background-color:#e6e6e6;padding-bottom:20px" >
 									 <div style="float:left;width:620px; text-align:left ">
 									 	<h3 style="margin-left:10px;margin-top:15px;line-height:24px;color:#3f3f3f">@{tuple._2}.<a href="/detail/view/@helper.urlEncode( tuple._1.name)"  target="_blank">@tuple._1.name</a></h3> 
 										<h4 style="margin-left:26px;line-height:18px;color:#3f3f3f">@tuple._1.address</h4>
 									 	<div style="margin-left:26px;line-height:18px;font-family:verdana;font-size:12px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
 										 <div style="margin-left:26px;margin-top:8px">
-										 	<div style="width:550px;height:120px;color:#3f3f3f;font-size:14px;line-height:20px" id="note_@tuple._1.id" >@tuple._1.note</div>
+										 	<div style="width:550px; color:#3f3f3f;font-size:14px;line-height:20px" id="note_@tuple._1.id" >@tuple._1.note</div>
 										 </div>
 									 </div>
 								 
