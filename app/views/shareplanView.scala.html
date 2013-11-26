@@ -53,14 +53,14 @@
 					<div id="attraction-planning">
 
 						<div id="plan-attractions"  style="text-align:center">
-							<div class="header clear-fix " style="width:780px;margin-left:auto;margin-right:auto;height:54px">
+							<div class="header clear-fix " style="width:780px;margin-left:auto;margin-right:auto;height:70px">
 
-								<div style=" margin-top:13px; float:left">
-									<img src="@shareplan.avatar"  id="useravatarimg" style="width:30px;height:30px;"/>
+								<div style=" margin-top:20px; float:left">
+									<img src="@shareplan.avatar"  id="useravatarimg" style="width:36px;height:36px;"/>
 								</div>
-								<div style="font-size:15px;float:left ; line-height:36px;margin-top:12px;margin-left:5px">@shareplan.username</div>
+								<div style="font-size:18px;float:left ; line-height:36px;margin-top:20px;margin-left:5px">@shareplan.username</div>
 								
-								<div    style="font-size:20px;float:left;line-height:36px;margin:13px 0px 0px 16px">
+								<div    style="font-size:20px;float:left;line-height:36px;margin:20px 0px 0px 16px">
 									<span style=""> @shareplan.name  </span>
 								</div>
 								
@@ -82,11 +82,11 @@
 								 @for( tuple  <- ziped ){
 								 <div  style="width:780px;min-height:198px;margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;background-color:#e6e6e6" >
 									 <div style="float:left;width:620px; text-align:left ">
-									 	<h3 style="margin-left:10px;margin-top:15px;line-height:24px;color:#3f3f3f">@{tuple._2}.@tuple._1.name</h3> 
-										<h4 style="margin-left:20px;line-height:18px;color:#3f3f3f">@tuple._1.address</h4>
-									 	<div style="margin-left:20px;line-height:18px;font-family:verdana;font-size:12px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
-										 <div style="margin-left:20px;margin-top:8px">
-										 	<div style="width:550px;height:120px;color:#3f3f3f;font-size:14px" id="note_@tuple._1.id" >@tuple._1.note</div>
+									 	<h3 style="margin-left:10px;margin-top:15px;line-height:24px;color:#3f3f3f">@{tuple._2}.<a href="/detail/view/@helper.urlEncode( tuple._1.name)"  target="_blank">@tuple._1.name</a></h3> 
+										<h4 style="margin-left:26px;line-height:18px;color:#3f3f3f">@tuple._1.address</h4>
+									 	<div style="margin-left:26px;line-height:18px;font-family:verdana;font-size:12px;"><a href="@tuple._1.url" target="_blank" style="color:#00aeef">@tuple._1.url</a></div>
+										 <div style="margin-left:26px;margin-top:8px">
+										 	<div style="width:550px;height:120px;color:#3f3f3f;font-size:14px;line-height:20px" id="note_@tuple._1.id" >@tuple._1.note</div>
 										 </div>
 									 </div>
 								 
@@ -161,7 +161,7 @@ var planId = "@shareplan.id";
 $(function(){
 	 
 	
-	$("#useravatarimg").imgr({ radius:"16px"});
+	$("#useravatarimg").imgr({ radius:"18px"});
 	
 	$("#copybag").click(function(){
 		console.log("copybag click");
