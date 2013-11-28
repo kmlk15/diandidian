@@ -174,14 +174,6 @@ case class Bag(id: String = "", typ: String = "", usertype: String = ""  ,  map:
 //用于 更改名字时， 传递参数 
 case class BagUpdateFromto(fromStatus: String = "", fromPlan: String = "", toStatus: String = "", toPlan: String = "")
 
-//locaionId 和 plan 之间的关联关系
-//用于通过 locationId 搜索到对应的 plan
-//目前，只记录  public 的plan 
-//   planName: Option[ String ] = None  , userName: Option[ String ] = None  , avatar: Option[ String ] = None在 实际使用时候 填充 
-case class LocationPlanIndex(id: Option[String] =None, locationId: String , 
-    bagId: String, planId: String , visible: String="public", 
-    plan: Option[ Plan ] = None  , baseUser:Option[BaseUser] = None )
-
 
 object BagHelp {
 

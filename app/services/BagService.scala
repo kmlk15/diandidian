@@ -38,29 +38,13 @@ trait BagServiceComponent {
 
     def save(bag: Bag): Option[Bag]
 
-    /**
-     * 根据 plan visible
-     * 1 private , 执行删除操作
-     * 2 public , 先执行删除操作， 在执行加入操作，
-     */
-    def indexPlan(bagId: String, plan: Plan): Boolean
-
+ 
     /**
      * 设置 Plan 的可见性
      */
     def updatePlanVisible(bagId: String, statusName: String, planName: String, visible: String): play.api.libs.json.JsObject
 
-    /**
-     * 根据地点，查 公开的 Plan
-     * 这里 实际使用时，是需要 planName , user name , user avatar
-     */
-    def getLocationPlanIndex(locationId: String): List[LocationPlanIndex]
-
-    /**
-     * 根据ID 得到 某一个具体 Index
-     */
-    def getLocationPlanIndexByPlanId(locationId: String , planId: String ): Option[LocationPlanIndex]
-
+     
     /**
      * 得到 分享 plan 的 数据
      */
@@ -107,7 +91,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
   override val bagService = new BagService {
     lazy val bagsMongoClient = mongoService.getMongoService[Bag]("bags", dbname)
     
-    lazy val locationPlanIndexMongoClient = mongoService.getMongoService[LocationPlanIndex]("locationPlanIndex", dbname)
+    
     lazy val shareplanMongoClient = mongoService.getMongoService[SharePlan]("shareplan", dbname)
     
     lazy val actionLogService = ActionLogServiceRegistry.actionLogService
@@ -164,10 +148,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
           val (newBag, optionPlan) = BagHelp.addLocation(bag, statusName, planName, List(simpleLocation))
           log.debug("addlocation Bag={}", newBag)
 
-          optionPlan match {
-            case None =>
-            case Some(plan) => indexPlan(bagId, plan)
-          }
+          
 
           update(newBag)
 
@@ -191,13 +172,9 @@ trait BagServiceComponentImpl extends BagServiceComponent {
             true
           }
 
-          val step2: Boolean = optionPlan match {
-            case None => true
-            case Some(plan) => indexPlan(bagId, plan)
+          
 
-          }
-
-          step1 && step2
+          step1  
       }
 
     }
@@ -301,12 +278,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
               update(newbag) match {
                 case None => Json.obj("success" -> false, "msg" -> " update newbag ERROR")
                 case Some(updatedBag) => {
-                  //建立和修改  索引( locationId, bagId , planId , visible)
-                  //如果是  private , 则执行删除
-                  //如果是 public , 则执行加入
-                  //这里的索引 用于  地点和 plan 建立关联，  实际 使用时， 还需要 再确认比较一次，因为 location 有可能被删除了
-                  indexPlan(bagId, newplan)
-
+                   
                   Json.obj("success" -> true, "msg" -> "")
                 }
               }
@@ -319,58 +291,7 @@ trait BagServiceComponentImpl extends BagServiceComponent {
       }
     }
 
-    /**
-     * 建立 Location Plan 索引
-     */
-    def indexPlan(bagId: String, plan: Plan): Boolean = {
-
-      if (plan.visible == "private") {
-        val q = MongoDBObject("planId" -> plan.id)
-        locationPlanIndexMongoClient.delete(q, WriteConcern.Normal)
-
-      } else if (plan.visible == "public") {
-        log.debug("public plan. plan.list={}", plan.list)
-        val q = MongoDBObject("planId" -> plan.id)
-        val existsLocationList = locationPlanIndexMongoClient.find(q).map(index => index.locationId)
-        val newLocationList = plan.list.map(simplelocation => simplelocation.id)
-        val needDelList = existsLocationList.diff(newLocationList)
-        val needAddList = newLocationList.diff(existsLocationList)
-        log.debug("existsLocationList={}", existsLocationList)
-        log.debug("newLocationList={}", newLocationList)
-        log.debug("needDelList={}", needDelList)
-        log.debug("needAddList={}", needAddList)
-
-        needDelList.map(locationId => {
-          val q = MongoDBObject("planId" -> plan.id, "locationId" -> locationId)
-          locationPlanIndexMongoClient.delete(q, WriteConcern.Normal)
-        })
-
-        needAddList.map(locationId => {
-          val index = LocationPlanIndex(id = Some(new ObjectId().toString),
-            bagId = bagId,
-            planId = plan.id,
-            locationId = locationId)
-          log.debug("index={}", index)
-          locationPlanIndexMongoClient.insert(index)
-        })
-
-      }
-
-      true
-    }
-
-    def getLocationPlanIndex(locationId: String): List[LocationPlanIndex] = {
-
-      val q = MongoDBObject("locationId" -> locationId)
-      locationPlanIndexMongoClient.find(q)
-
-    }
-
-    def getLocationPlanIndexByPlanId(locationId: String, planId: String ): Option[LocationPlanIndex] = {
-
-      val q = MongoDBObject("locationId" -> locationId , "planId" -> planId )
-      locationPlanIndexMongoClient.find(q).headOption
-    }
+   
 
     
      /**

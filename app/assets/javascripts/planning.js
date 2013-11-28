@@ -54,15 +54,22 @@ function getIconUrlOnlyColor( date  ){
 	return iconurl;
 }
 
-function getDateOfMonth( timeline){
-	var result  = 0; 
 
+
+function getDateOfMonth( timeline){
+	console.log("line 60 \t timeline=" + timeline ) ;
+	var result  = 0; 
+	
 	if( timeline == "t-00_no-assign"){
 		result =0 ;
 	}else{
-		var dateregexp = /t-(\d{4})(\d{2})(\d{2})/g ;
+		var dateregexp = new RegExp("t-(\\d{4})(\\d{2})(\\d{2})") ;
 		var match =  dateregexp.exec(timeline);
-		result = match[3];
+		if( match){
+			result = match[3];
+		}else{	
+			result = 0 ;
+		}
 	}
 	return result ; 
 }
