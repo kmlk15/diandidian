@@ -3,7 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Home.coming
+#GET     /                           controllers.Home.coming
+GET     /                           controllers.Home.index
 
 GET     /home                           controllers.Home.index
  
