@@ -238,6 +238,10 @@ $.ajaxSetup({ cache: false });
 				if( needremove.length !=0){
 					 //重新加载  bag 部分页面
 					loadBag();
+				}else if($ul.length == 0){
+					console.log("背包不存在");
+					loadBag();
+			
 				}else{ 
 					var itemHtml = '<li><table cellpadding="0" cellspacing="0"><tr><td>'+titleText+'</td>';
 					itemHtml = itemHtml + '<td class="del" ><a href="?locationId='+encodeURI(result.data.id ) +'&statusName='+ encodeURI(statusName)+'&planName='+encodeURI(planName)+'" ></a></td>';

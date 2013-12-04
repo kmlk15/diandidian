@@ -72,8 +72,10 @@
 					<h3><small><span id="currentStatus"></span> <span id="currentPlan"></span></small></h3>
  				<div class="accordion">
  				  	@for( key <- statusNameList ){
+ 				  	@if( bag.map.get(key)!=None && !bag.map(key).map.isEmpty ){
 						 @statusOptionDisplay( bag.map.get(key)  )
 					    }
+					   }
 					</div><!-- end accordion -->
 				</div><!-- end my-bag -->
 </div>
