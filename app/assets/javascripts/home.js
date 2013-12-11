@@ -69,8 +69,20 @@ function loadHomeAttractions( result , shareplanHtml ) {
 				
 				if( data.photo.uploadtype =="admin"){
 					attractionHtml += '<div class="user">';
-					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
-					attractionHtml += '<span>'+ data.photo.username +'</span>';
+					if( data.photo.avatar!=""){
+						attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
+						attractionHtml += '<span>'+ data.photo.username  +'</span>';
+					}else{
+						if(   data.photo.brief != "" ){
+							attractionHtml += '<table><tr><td style="width:50px;vertical-align:top;text-align:right;">'+ data.photo.username  +':</td>';
+							attractionHtml += '<td style="width:216px">'+ data.photo.brief +"</td></tr></table>";
+						}else{
+							attractionHtml += '<span>'+ data.photo.username  +'</span>';
+						}
+						
+					}
+					
+					
 				 
 					attractionHtml += '</div>';
 				}else if(  data.photo.uploadtype =="user" ){
@@ -83,8 +95,11 @@ function loadHomeAttractions( result , shareplanHtml ) {
 					attractionHtml += '</div>';					
 				}else{
 					attractionHtml += '<div class="user">';
-					attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
-					attractionHtml += '<br/><p>'+ data.photo.username +'</p>';
+					console.log( data.photo.avatar )
+					if( data.photo.avatar!=""){
+						attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a><br/>';
+					}
+					attractionHtml += '<p>'+ data.photo.username +'</p>';
 					attractionHtml += '<div>';
 					attractionHtml += '<span></span>';
 					attractionHtml += '<p></p>';

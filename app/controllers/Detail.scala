@@ -286,7 +286,7 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
         <div class="user-content clearfix" style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
           <div class="col col1">
         {if (photo.avatar =="" ){
-        	   <div class="title">图片来源 : </div>
+        	   <div class="title">&nbsp;</div>
         	 }else{
         	   <div class="title"><a href={ photo.avatar } target="_blank">图片来源</a> :</div>
         	 }
