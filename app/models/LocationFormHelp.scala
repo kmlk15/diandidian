@@ -171,7 +171,10 @@ case class AdmissionForm(
   
 }
   
-
+/**
+ * 2014-01-03 增加字段
+ * notDisplayAtHomePage :Option[String] = None 
+ */
 case class LocationForm(
   id: Option[String] = None, 
   name: String = "" ,
@@ -184,7 +187,8 @@ case class LocationForm(
   category: CategoryForm = CategoryForm(  ),
   fact: String = "",
   photo: String = "" ,
-  planId: Option[String] =  None
+  planId: Option[String] =  None,
+  notDisplayAtHomePage: Option[String]= None
 )
  
   
@@ -256,7 +260,8 @@ object LocationFormHelp {
 
       "fact" -> text,
       "photo" -> default(text , ""),
-      "planId" -> optional(of[String])
+      "planId" -> optional(of[String]),
+      "notDisplayAtHomePage" -> optional( default(text , "false"))
       
     )(LocationForm.apply)(LocationForm.unapply)
 

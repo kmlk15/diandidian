@@ -90,7 +90,11 @@ object LocationEndpoints extends Controller {
       (list , defaultIndex )
     } else {
       //返回 所有的 地点 
-     val locationlist  =  ls.list()
+      /**
+       * 2014-01-03 增加过滤条件， 
+       * 过滤掉 不需要显示在首页的 景点
+       */
+     val locationlist  =  ls.list().filterNot( _.notDisplayAtHomePage == Some("true"))
       
       /**
        * For the home page, right now the attractions loaded is in the sequence how I added it, example:

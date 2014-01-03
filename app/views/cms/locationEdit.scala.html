@@ -184,8 +184,15 @@ $(function(){
      @helper.select( form("category.categoryId") ,  categoryList.map(c => (c.id -> (  ( {"-" * ( c.level-1) * 2    } ) + c.level +":"+ c.name+"-"+c.enName) ))    , '_label -> "类别"  ,  'class -> "form-control"     ) 
       
      
-    @helper.textarea(field = form("fact"), args = 'rows -> 3, 'cols -> 50 , '_label -> "内容",  'class -> "form-control" )
+    @helper.textarea(field = form("fact"), args = 'rows ->5, 'cols -> 50 , '_label -> "内容",  'class -> "form-control" )
      
+     
+     @helper.inputRadioGroup(
+form("notDisplayAtHomePage"),
+options = Seq("false"->"显示","true"->"不显示"),
+'_label -> "是否显示在首页",
+'_error -> form("notDisplayAtHomePage").error.map(_.withMessage("select gender")))
+
     <div class="form-actions">
       <input class="btn btn-primary" type="submit">
     </div>

@@ -53,7 +53,7 @@ object Locations extends Controller  with AuthTrait  {
 
   def add() =  isAuthenticated { username => implicit request =>
   	implicit val cList = categoryList
-    Ok(views.html.cms.locationEdit(None, form))
+    Ok(views.html.cms.locationEdit(None, form.fill( LocationForm( notDisplayAtHomePage=Some("false") ))))
 
   }
 
@@ -78,7 +78,13 @@ object Locations extends Controller  with AuthTrait  {
     implicit val cList = categoryList
     service.getLocationById(id) match {
       case None => NotFound
-      case Some(location) => Ok(views.html.cms.locationEdit(location.id, LocationFormHelp.form.fill(location)))
+      case Some(location) => 
+        val location2 = if(location.notDisplayAtHomePage==None){
+          location.copy(notDisplayAtHomePage=Some("false"))
+        }else{
+          location
+        }
+        Ok(views.html.cms.locationEdit(location.id, LocationFormHelp.form.fill(location2)))
     }
   }
 
