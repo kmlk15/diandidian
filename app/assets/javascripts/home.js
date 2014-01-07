@@ -70,8 +70,8 @@ function loadHomeAttractions( result , shareplanHtml ) {
 				if( data.photo.uploadtype =="admin"){
 					attractionHtml += '<div class="user">';
 					if( data.photo.avatar!=""){
-						attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源:</a>';
-						attractionHtml += '<span>'+ data.photo.username  +'</span>';
+						attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源: '+ data.photo.username +'</a>'  ;
+						attractionHtml += '<span>'+ data.photo.brief  +'</span>';
 					}else{
 						if(   data.photo.brief != "" ){
 							attractionHtml += '<table><tr><td style="vertical-align:top;padding-left:10px;line-height:16px">'+ data.photo.username  +':</td>';
