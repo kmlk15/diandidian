@@ -115,13 +115,15 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     
   }
   
-  def galleryHtml( xml: scala.xml.Elem)={
+  def galleryHtml( xml: scala.xml.Elem): String ={
     val str  = (xml.child).mkString("\n")
     str 
   }
   
-  def galleryHtml( xmlList: List[scala.xml.Elem])={
-    xmlList.map( xml =>  (xml.child).mkString("\n")).mkString("\n")
+  def galleryHtml( xmlList: List[scala.xml.Elem]): String={
+    val str = xmlList.map( xml =>  (xml.child).mkString("\n")).mkString("\n")
+    log.debug("detail 缩略图内容={}", str)
+    str
   }
   
    def gallery(location : LocationForm) : scala.xml.Elem = {
@@ -252,26 +254,26 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
   }
 
    def displayAdminPhotoContent( photo: Photo): scala.xml.Elem = {
-    val  brief = photo.brief
+    val  brief = (photo.brief).replaceAll("\n", "<br/>")
+    log.debug("brief={}", brief)
+    
     if(brief.trim().isEmpty()){
       <div class="content">
-        <p>
-        
-        </p>
+        <p> </p>
       </div>
     }else{
     if (brief.size > 100) {
       <div class="content">
         <p>
-          { brief.substring(0, 100) }
-          <span class="more">	{ brief.substring(100) }</span>
+          { scala.xml.Unparsed(brief.substring(0, 100)) }
+          <span class="more">	{ scala.xml.Unparsed(brief.substring(100)) }</span>
         </p>
         <div class="switch clearfix"><span class="more">更多</span><span class="less">关闭</span></div>
       </div>
     } else {
       <div class="content">
         <p>
-          { brief }
+         {scala.xml.Unparsed(brief)}
         </p>
       </div>
     }
@@ -284,25 +286,18 @@ val awsbase  = "http://diandidian.s3-us-west-1.amazonaws.com/"
     if( photo.uploadtype == "admin"){
       <div>
         <div class="user-content clearfix" style={ if (isFirst) { "" } else { "display:none" } } id={ "content_" + photo.id.get }>
-          <div class="col col1">
-        {if (photo.avatar =="" ){
-        	   <div class="title">&nbsp;</div>
+        	{if (photo.avatar =="" ){
         	 }else{
-        	   <div class="title"><a href={ photo.avatar } target="_blank">图片来源</a> :</div>
+        	   <div class="col col1"><div class="title"><a href={ photo.avatar } target="_blank">图片来源</a> :</div></div>
         	 }
         	  }
-          </div>
           <div class="col col2">
-             
         	  {if (photo.avatar =="" ){
         	   <div class="title"> { photo.username } </div>
         	 }else{
         	   <div class="title"> { photo.username } </div>
         	 }
         	  }
-        	  
-            
- 
         	  { displayAdminPhotoContent(photo ) }
           </div>
         </div>

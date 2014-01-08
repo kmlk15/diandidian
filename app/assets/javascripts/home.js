@@ -71,11 +71,11 @@ function loadHomeAttractions( result , shareplanHtml ) {
 					attractionHtml += '<div class="user">';
 					if( data.photo.avatar!=""){
 						attractionHtml += '<a href="' + data.photo.avatar +'" target="_blank" >图片来源: '+ data.photo.username +'</a>'  ;
-						attractionHtml += '<span>'+ data.photo.brief  +'</span>';
+						attractionHtml += '<span>'+ data.photo.brief.replace(/\n/g, '<br />')  +'</span>';
 					}else{
 						if(   data.photo.brief != "" ){
 							attractionHtml += '<table><tr><td style="vertical-align:top;padding-left:10px;line-height:16px">'+ data.photo.username  +':</td>';
-							attractionHtml += '<td style="width:200px;text-align:left;line-height:16px">'+ data.photo.brief +"</td></tr></table>";
+							attractionHtml += '<td style="width:200px;text-align:left;line-height:16px">'+ data.photo.brief.replace(/\n/g, '<br />') +"</td></tr></table>";
 						}else{
 							attractionHtml += '<span>'+ data.photo.username  +'</span>';
 						}
