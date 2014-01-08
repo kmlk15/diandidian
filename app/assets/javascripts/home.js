@@ -75,7 +75,7 @@ function loadHomeAttractions( result , shareplanHtml ) {
 					}else{
 						if(   data.photo.brief != "" ){
 							attractionHtml += '<table><tr><td style="vertical-align:top;padding-left:10px;line-height:16px">'+ data.photo.username  +':</td>';
-							attractionHtml += '<td style="width:216px;text-align:left;line-height:16px">'+ data.photo.brief +"</td></tr></table>";
+							attractionHtml += '<td style="width:200px;text-align:left;line-height:16px">'+ data.photo.brief +"</td></tr></table>";
 						}else{
 							attractionHtml += '<span>'+ data.photo.username  +'</span>';
 						}
